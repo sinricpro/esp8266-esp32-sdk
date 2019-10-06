@@ -49,8 +49,16 @@ DynamicJsonDocument SinricProDevice::prepareEvent(const char* deviceId, const ch
 
 void SinricProDevice::sendEvent(JsonDocument& event) {
   unsigned long actualMillis = millis();
+/*
   if (actualMillis - lastEventMillis < eventWaitTime) return;
   if (eventSender) eventSender->sendEvent(event);
   lastEventMillis = actualMillis;
+*/
+  String eventName = event["payload"]["action"] | ""; // get event name
+  unsigned long lastEventMillis = eventFilter[eventName] | 0; // get the last timestamp for event
+  if (actualMillis - lastEventMillis < eventWaitTime) return; // if last event was before waitTime return...
+
+  if (eventSender) eventSender->sendEvent(event); // send event
+  eventFilter[eventName] = actualMillis; // set lastEventTime to now
 }
 #endif
