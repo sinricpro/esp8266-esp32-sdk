@@ -61,7 +61,13 @@ void websocketListener::begin(String server, String appkey, String deviceIds) {
         stop();
     }
 
-    String headers = "appkey:" + appkey + "\r\n" + "deviceids:" + deviceIds;
+    String headers = "appkey:" + appkey + "\r\n" + "deviceids:" + deviceIds + "\r\nplatform:";
+    #ifdef ESP8266
+      headers += "ESP8266";
+    #endif
+    #ifdef ESP32
+      headers += "ESP32";
+    #endif
     DEBUG_SINRIC("[SinricPro:Websocket]: headers: \"%s\"\r\n", headers.c_str());
     webSocket.setExtraHeaders(headers.c_str());
     webSocket.begin(server, SERVER_PORT, "/"); // server address, port and URL
