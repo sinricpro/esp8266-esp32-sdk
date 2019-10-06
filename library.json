@@ -1,0 +1,29 @@
+{
+  "name": "SinricPro3",
+  "keywords": "ethernet, sinric, alexa, iot",
+  "description": "A c++ sdk for SinricPro.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinricpro/SinricPro"
+  },
+  "authors": [
+    {
+      "name": "sivar2311",
+      "email": "sivar2311@gmail.com",
+      "maintainer": true
+    }
+  ],
+  "version": "3.0.0.0",
+  "frameworks": "arduino",
+  "platforms": [
+    "espressif8266",
+    "espressif32"
+  ],
+  "examples":[
+    "examples/Switch/src/Switch.cpp",
+    "examples/DimmableSwitch/src/DimmableSwitch.cpp",
+    "examples/Light/src/Light.cpp",
+    "examples/Doorbell/src/Doorbell.cpp",
+    "examples/TemperatureSensor/src/TemperatureSensor.cpp"
+  ]
+}
