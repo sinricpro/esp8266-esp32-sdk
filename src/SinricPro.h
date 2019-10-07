@@ -41,7 +41,7 @@ class SinricProClass : public EventSender {
   websocketListener _websocketListener;
   udpListener _udpListener;
   myNTP _ntp;
-  SinricProQueue_t myReceiveQueue;
+  SinricProQueue_t receiveQueue;
   SinricProQueue_t sendQueue;
 };
 
@@ -81,19 +81,16 @@ void SinricProClass::handle() {
 
 void SinricProClass::handleRequest() {
 
-  //if (receiveQueue.count() == 0) return;
-  if (myReceiveQueue.count() == 0) return;
-  DEBUG_SINRIC("[SinricProClass.handleRequest()]: %i requests in queue\r\n", myReceiveQueue.count());
+  if (receiveQueue.count() == 0) return;
+  DEBUG_SINRIC("[SinricPro.handleRequest()]: %i items in receiveQueue\r\n", receiveQueue.count());
   // POP requests and call device.handle() for each related device
-//  while (receiveQueue.count() > 0) {
-  while (myReceiveQueue.count() > 0) {  
-    //SinricProMessage* rawMessage = receiveQueue.pop();
-    SinricProMessage* rawMessage = myReceiveQueue.pop();
+  while (receiveQueue.count() > 0) {  
+    SinricProMessage* rawMessage = receiveQueue.pop();
     DynamicJsonDocument requestMessage(1024);
     deserializeJson(requestMessage, rawMessage->getMessage());
     // check signature
     bool sigMatch = verifyMessage(_app_secret, requestMessage);
-    DEBUG_SINRIC("[SinricProClass.handleRequest(): Signature is %s\r\n", sigMatch?"valid":"invalid");
+    DEBUG_SINRIC("[SinricPro.handleRequest()]: Signature is %s\r\n", sigMatch?"valid":"invalid");
 
     if (sigMatch) { // signature is valid }
       #ifndef NODEBUG_SINRIC
@@ -128,7 +125,7 @@ void SinricProClass::handleRequest() {
       // push response message to sendQueue
       sendQueue.push(new SinricProMessage(rawMessage->getInterface(), responseString.c_str()));
     } else { // signature is invalid!
-//      DEBUG_SINRIC("[SinricProClass.handleRequest(): Signature should be: %s\r\n", calculateSignature(_app_secret.c_str(), jsonMessage).c_str());
+//      DEBUG_SINRIC("[SinricPro.handleRequest()]: Signature should be: %s\r\n", calculateSignature(_app_secret.c_str(), jsonMessage).c_str());
     }
     delete rawMessage;
   }
@@ -137,9 +134,9 @@ void SinricProClass::handleRequest() {
 void SinricProClass::handleSendQueue() {
   if (!isConnected()) return;
   if (sendQueue.count() > 0) {
-    DEBUG_SINRIC("[SinricProClass:handleSendQueue]: %i send items in queue\r\n", sendQueue.count());
+    DEBUG_SINRIC("[SinricPro:handleSendQueue()]: %i item(s) in sendQueue\r\n", sendQueue.count());
     SinricProMessage* rawMessage = sendQueue.pop();
-    DEBUG_SINRIC("[SinricProClass:handleSendQueue]:\r\n%s\r\n", rawMessage->getMessage());
+//    DEBUG_SINRIC("[SinricPro:handleSendQueue()]:\r\n%s\r\n", rawMessage->getMessage());
     switch (rawMessage->getInterface()) {
       case IF_WEBSOCKET: _websocketListener.sendResponse(rawMessage->getMessage()); break;
       case IF_UDP:       _udpListener.sendResponse(rawMessage->getMessage()); break;
@@ -158,15 +155,15 @@ void SinricProClass::connect() {
         i++;
     }
 
-    _websocketListener.begin(_server, _app_key, deviceList.c_str(), &myReceiveQueue);
+    _websocketListener.begin(_server, _app_key, deviceList.c_str(), &receiveQueue);
     while (_websocketListener.isConnected() == false) { DEBUG_SINRIC("."); delay(250); }
     DEBUG_SINRIC("\r\n");
-    _udpListener.begin(&myReceiveQueue);
+    _udpListener.begin(&receiveQueue);
 }
 
 
 void SinricProClass::stop() {
-  DEBUG_SINRIC("[SinricProClass:stop()\r\n");
+  DEBUG_SINRIC("[SinricPro:stop()\r\n");
   _websocketListener.disconnect();
   _websocketListener.stop();
 }
@@ -235,7 +232,8 @@ DynamicJsonDocument SinricProClass::prepareEvent(const char* deviceId, const cha
   return eventMessage;
 }
 
-
+#ifndef NOSINRIC_INSTANCE
 SinricProClass SinricPro;
+#endif
 
 #endif
