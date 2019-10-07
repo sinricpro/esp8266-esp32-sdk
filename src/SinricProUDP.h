@@ -9,19 +9,21 @@
 #endif
 
 #include <WiFiUdp.h>
-#include "Globals.h"
+#include "SinricProQueue.h"
 
 class udpListener {
 public:
-  void begin();
+  void begin(SinricProQueue_t* receiveQueue);
   void handle();
   void sendResponse(String response);
   void stop();
 private:
   WiFiUDP _udp;
+  SinricProQueue_t* receiveQueue;
 };
 
-void udpListener::begin() {
+void udpListener::begin(SinricProQueue_t* receiveQueue) {
+  this->receiveQueue = receiveQueue;
   #if defined ESP8266
     _udp.beginMulticast(WiFi.localIP(), UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
   #endif  
@@ -39,14 +41,13 @@ void udpListener::handle() {
     buffer[n] = 0;
     SinricProMessage* request = new SinricProMessage(IF_UDP, buffer);
     DEBUG_SINRIC("[SinricPro:UDP]: receiving request\r\n");
-    receiveQueue.push(request);
+    receiveQueue->push(request);
   }
 }
 
 void udpListener::sendResponse(String response) {
   _udp.beginPacket(_udp.remoteIP(), _udp.remotePort());
   _udp.print(response);
-//  _udp.write(response.c_str());
   _udp.endPacket();
 }
 

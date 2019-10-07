@@ -2,6 +2,7 @@
 #define _EVENTSENDER_H_
 
 #include "ArduinoJson.h"
+#include "SinricProQueue.h"
 
 class EventSender {
   public:

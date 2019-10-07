@@ -1,14 +1,14 @@
 #ifndef _SINRIC_H_
 #define _SINRIC_H_
 
-#include "EventSender.h"
+#include "SinricProEventSender.h"
 #include "SinricProDevice.h"
-
 #include "SinricProWebsocket.h"
 #include "SinricProUDP.h"
-#include "Globals.h"
-#include "Signature.h"
-#include "messageid.h"
+#include "SinricProSignature.h"
+#include "SinricProMessageid.h"
+#include "SinricProQueue.h"
+#include "SinricProNTP.h"
 
 #include "extralib/ESPTrueRandom/ESPTrueRandom.h"
 
@@ -23,7 +23,6 @@ class SinricProClass : public EventSender {
   void stop();
   bool isConnected();
 
-  //void sendEvent(JsonDocument& jsonEvent) override;
   DynamicJsonDocument prepareResponse(JsonDocument& requestMessage);
   DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause) override;
   void sendEvent(JsonDocument& event) override;
@@ -42,6 +41,8 @@ class SinricProClass : public EventSender {
   websocketListener _websocketListener;
   udpListener _udpListener;
   myNTP _ntp;
+  SinricProQueue_t myReceiveQueue;
+  SinricProQueue_t sendQueue;
 };
 
 void SinricProClass::begin(String app_key, String app_secret, String server) {
@@ -80,12 +81,14 @@ void SinricProClass::handle() {
 
 void SinricProClass::handleRequest() {
 
-  if (receiveQueue.count() == 0) return;
-  
-  DEBUG_SINRIC("[SinricProClass.handleRequest()]: %i requests in queue\r\n", receiveQueue.count());
+  //if (receiveQueue.count() == 0) return;
+  if (myReceiveQueue.count() == 0) return;
+  DEBUG_SINRIC("[SinricProClass.handleRequest()]: %i requests in queue\r\n", myReceiveQueue.count());
   // POP requests and call device.handle() for each related device
-  while (receiveQueue.count() > 0) {
-    SinricProMessage* rawMessage = receiveQueue.pop();
+//  while (receiveQueue.count() > 0) {
+  while (myReceiveQueue.count() > 0) {  
+    //SinricProMessage* rawMessage = receiveQueue.pop();
+    SinricProMessage* rawMessage = myReceiveQueue.pop();
     DynamicJsonDocument requestMessage(1024);
     deserializeJson(requestMessage, rawMessage->getMessage());
     // check signature
@@ -155,10 +158,10 @@ void SinricProClass::connect() {
         i++;
     }
 
-    _websocketListener.begin(_server, _app_key, deviceList.c_str());
+    _websocketListener.begin(_server, _app_key, deviceList.c_str(), &myReceiveQueue);
     while (_websocketListener.isConnected() == false) { DEBUG_SINRIC("."); delay(250); }
     DEBUG_SINRIC("\r\n");
-    _udpListener.begin();
+    _udpListener.begin(&myReceiveQueue);
 }
 
 

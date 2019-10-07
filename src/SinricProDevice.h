@@ -1,7 +1,7 @@
 #ifndef _SINRICDEVICE_H_
 #define _SINRICDEVICE_H_
 
-#include "EventSender.h"
+#include "SinricProEventSender.h"
 #include <map>
 
 class SinricProDevice {

@@ -11,9 +11,10 @@
 
 #include <WebSocketsClient.h>
 #include <ArduinoJson.h>
-#include <SinricProDebug.h>
+#include "SinricProDebug.h"
 #include "SinricProConfig.h"
-#include "Globals.h"
+#include "SinricProQueue.h"
+#include "SinricProEventSender.h"
 
 class websocketListener
 {
@@ -24,7 +25,7 @@ class websocketListener
     websocketListener();
     ~websocketListener();
 
-    void begin(String server, String appkey, String deviceIds);
+    void begin(String server, String appkey, String deviceIds, SinricProQueue_t* receiveQueue);
     void handle();
     void stop();
     bool isConnected() { return _isConnected; }
@@ -45,6 +46,8 @@ class websocketListener
     wsDisconnectedCallback _wsDisconnectedCb;
 
     void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
+    SinricProQueue_t* receiveQueue;
+
 };
 
 websocketListener::websocketListener() : _isConnected(false) {}
@@ -53,8 +56,8 @@ websocketListener::~websocketListener() {
   stop();
 }
 
-void websocketListener::begin(String server, String appkey, String deviceIds) {
-
+void websocketListener::begin(String server, String appkey, String deviceIds, SinricProQueue_t* receiveQueue) {
+    this->receiveQueue = receiveQueue;
     DEBUG_SINRIC("[SinricPro:Websocket]: Conecting to WebSocket Server\r\n");
 
     if (_isConnected) {
@@ -112,7 +115,7 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
     case WStype_TEXT: {
       SinricProMessage* request = new SinricProMessage(IF_WEBSOCKET, (char*)payload);
       DEBUG_SINRIC("[SinricPro:Websocket]: receiving request\r\n");
-      receiveQueue.push(request);
+      receiveQueue->push(request);
       break;
     }
     default: break;

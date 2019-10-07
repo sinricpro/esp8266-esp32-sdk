@@ -3,6 +3,7 @@
 
 #include "extralib/QueueList/QueueList.h"
 
+
 typedef enum {
   IF_UNKNOWN    = 0,
   IF_WEBSOCKET  = 1,
@@ -19,5 +20,7 @@ private:
   interface_t _interface;
   char* _message;
 };
+
+typedef QueueList<SinricProMessage*> SinricProQueue_t;
 
 #endif
