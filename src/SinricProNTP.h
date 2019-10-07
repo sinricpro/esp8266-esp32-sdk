@@ -2,6 +2,7 @@
 #define _NTP_H_
 
 #include <NTPClient.h>
+#include <WiFiUdp.h>
 
 #if defined ESP8266
   #include <ESP8266WiFi.h>
@@ -10,7 +11,6 @@
   #include <WiFi.h>
 #endif
 
-#include <WiFiUdp.h>
 
 class myNTP {
 public:

@@ -14,8 +14,8 @@ class SinricProFanUS :  public SinricProDevice {
     void onRangeValue(RangeValueCallback cb) { rangeValueCallback = cb; }
 
     // event
-    void sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
-    void sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION");
+    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION");
 
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
@@ -49,18 +49,18 @@ bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, Jso
   return success;
 }
 
-void SinricProFanUS::sendPowerStateEvent(bool state, String cause) {
+bool SinricProFanUS::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProFanUS::sendRangeValueEvent(int rangeValue, String cause) {
+bool SinricProFanUS::sendRangeValueEvent(int rangeValue, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setRangeValue", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["rangeValue"] = rangeValue;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
 #endif

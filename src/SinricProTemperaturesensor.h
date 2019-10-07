@@ -12,8 +12,8 @@ class SinricProTemperaturesensor :  public SinricProDevice {
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
 
     // event
-    void sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
-    void sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
+    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
 
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
@@ -38,19 +38,19 @@ bool SinricProTemperaturesensor::handleRequest(const char* deviceId, const char*
   return success;
 }
 
-void SinricProTemperaturesensor::sendPowerStateEvent(bool state, String cause) {
+bool SinricProTemperaturesensor::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProTemperaturesensor::sendTemperatureEvent(float temperature, float humidity, String cause) {
+bool SinricProTemperaturesensor::sendTemperatureEvent(float temperature, float humidity, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "currentTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["humidity"] = humidity;
   event_value["temperature"] = temperature;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
 #endif

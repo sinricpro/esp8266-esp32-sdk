@@ -12,7 +12,7 @@ class SinricProSwitch :  public SinricProDevice {
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
 
     // event
-    void sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
 
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
@@ -37,11 +37,11 @@ bool SinricProSwitch::handleRequest(const char* deviceId, const char* action, Js
   return success;
 }
 
-void SinricProSwitch::sendPowerStateEvent(bool state, String cause) {
+bool SinricProSwitch::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 #endif
 

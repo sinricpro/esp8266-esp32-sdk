@@ -14,7 +14,7 @@
 
 class SinricProClass : public EventSender {
   public:
-  void begin(String app_key, String app_secret, String server = SERVER_URL);
+  void begin(String socketAuthToken, String signingKey, String serverURL = SERVER_URL);
   template <typename DeviceType>
   DeviceType& add(const char* deviceId, unsigned long eventWaitTime = 1000);
   void add(SinricProDevice& newDevice);
@@ -34,9 +34,9 @@ class SinricProClass : public EventSender {
   void reconnect();
 
   std::vector<SinricProDevice*> devices;
-  String _app_key;
-  String _app_secret;
-  String _server;
+  String socketAuthToken;
+  String signingKey;
+  String serverURL;
 
   websocketListener _websocketListener;
   udpListener _udpListener;
@@ -45,10 +45,10 @@ class SinricProClass : public EventSender {
   SinricProQueue_t sendQueue;
 };
 
-void SinricProClass::begin(String app_key, String app_secret, String server) {
-  _app_key = app_key;
-  _app_secret = app_secret;
-  _server = server;
+void SinricProClass::begin(String socketAuthToken, String signingKey, String serverURL) {
+  this->socketAuthToken = socketAuthToken;
+  this->signingKey = signingKey;
+  this->serverURL = serverURL;
   _ntp.begin();
 }
 
@@ -80,8 +80,8 @@ void SinricProClass::handle() {
 }
 
 void SinricProClass::handleRequest() {
-
   if (receiveQueue.count() == 0) return;
+
   DEBUG_SINRIC("[SinricPro.handleRequest()]: %i items in receiveQueue\r\n", receiveQueue.count());
   // POP requests and call device.handle() for each related device
   while (receiveQueue.count() > 0) {  
@@ -89,7 +89,7 @@ void SinricProClass::handleRequest() {
     DynamicJsonDocument requestMessage(1024);
     deserializeJson(requestMessage, rawMessage->getMessage());
     // check signature
-    bool sigMatch = verifyMessage(_app_secret, requestMessage);
+    bool sigMatch = verifyMessage(signingKey, requestMessage);
     DEBUG_SINRIC("[SinricPro.handleRequest()]: Signature is %s\r\n", sigMatch?"valid":"invalid");
 
     if (sigMatch) { // signature is valid }
@@ -115,7 +115,7 @@ void SinricProClass::handleRequest() {
         }
       }
       // sign message
-      String responseString = signMessage(_app_secret.c_str(), responseMessage);
+      String responseString = signMessage(signingKey.c_str(), responseMessage);
       // debug output message
       #ifndef NODEBUG_SINRIC
         String responseStringPretty;
@@ -125,7 +125,7 @@ void SinricProClass::handleRequest() {
       // push response message to sendQueue
       sendQueue.push(new SinricProMessage(rawMessage->getInterface(), responseString.c_str()));
     } else { // signature is invalid!
-//      DEBUG_SINRIC("[SinricPro.handleRequest()]: Signature should be: %s\r\n", calculateSignature(_app_secret.c_str(), jsonMessage).c_str());
+//      DEBUG_SINRIC("[SinricPro.handleRequest()]: Signature should be: %s\r\n", calculateSignature(_signingKey.c_str(), jsonMessage).c_str());
     }
     delete rawMessage;
   }
@@ -155,7 +155,7 @@ void SinricProClass::connect() {
         i++;
     }
 
-    _websocketListener.begin(_server, _app_key, deviceList.c_str(), &receiveQueue);
+    _websocketListener.begin(serverURL, socketAuthToken, deviceList.c_str(), &receiveQueue);
     while (_websocketListener.isConnected() == false) { DEBUG_SINRIC("."); delay(250); }
     DEBUG_SINRIC("\r\n");
     _udpListener.begin(&receiveQueue);
@@ -184,7 +184,7 @@ void SinricProClass::reconnect() {
 
 
 void SinricProClass::sendEvent(JsonDocument& event) {
-  String messageString = signMessage(_app_secret, event);
+  String messageString = signMessage(signingKey, event);
   sendQueue.push(new SinricProMessage(IF_WEBSOCKET, messageString.c_str()));
   #ifndef NODEBUG_SINRIC
     String debugOutput;
@@ -225,8 +225,7 @@ DynamicJsonDocument SinricProClass::prepareEvent(const char* deviceId, const cha
   payload["cause"] = cause;
   payload["createdAt"] = _ntp.getTimestamp();
   payload["deviceId"] = deviceId;
-  MessageID msgId;
-  payload["replyToken"] = msgId.getID();
+  payload["replyToken"] = MessageID().getID();
   payload["type"] = "event";
   payload.createNestedObject("value");
   return eventMessage;

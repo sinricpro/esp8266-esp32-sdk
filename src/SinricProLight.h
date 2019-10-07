@@ -22,10 +22,10 @@ class SinricProLight :  public SinricProDevice {
     void onDecreaseColorTemperature(ColorTemperatureCallback cb) { decreaseColorTemperatureCallback = cb; }
 
     // event
-    void sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
-    void sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
-    void sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION");
-    void sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION");
+    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
+    bool sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION");
+    bool sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION");
 
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
@@ -105,34 +105,34 @@ bool SinricProLight::handleRequest(const char* deviceId, const char* action, Jso
   return success;
 }
 
-void SinricProLight::sendPowerStateEvent(bool state, String cause) {
+bool SinricProLight::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProLight::sendBrightnessEvent(int brightness, String cause) {
+bool SinricProLight::sendBrightnessEvent(int brightness, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setBrightness", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["brightness"] = brightness;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProLight::sendColorEvent(byte r, byte g, byte b, String cause) {
+bool SinricProLight::sendColorEvent(byte r, byte g, byte b, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setColor", cause.c_str());
   JsonObject event_color = eventMessage["payload"]["value"].createNestedObject("color");
   event_color["r"] = r;
   event_color["g"] = g;
   event_color["b"] = b;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProLight::sendColorTemperatureEvent(int colorTemperature, String cause) {
+bool SinricProLight::sendColorTemperatureEvent(int colorTemperature, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setColorTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["colorTemperature"] = colorTemperature;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
 

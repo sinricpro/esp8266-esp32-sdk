@@ -13,7 +13,7 @@ class SinricProDevice {
     void begin(EventSender* eventSender);
   protected:
     char* deviceId;
-    void sendEvent(JsonDocument& event);
+    bool sendEvent(JsonDocument& event);
     DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause);
   private:
     EventSender* eventSender;
@@ -47,7 +47,7 @@ DynamicJsonDocument SinricProDevice::prepareEvent(const char* deviceId, const ch
   return DynamicJsonDocument(1024);
 }
 
-void SinricProDevice::sendEvent(JsonDocument& event) {
+bool SinricProDevice::sendEvent(JsonDocument& event) {
   unsigned long actualMillis = millis();
 /*
   if (actualMillis - lastEventMillis < eventWaitTime) return;
@@ -56,9 +56,10 @@ void SinricProDevice::sendEvent(JsonDocument& event) {
 */
   String eventName = event["payload"]["action"] | ""; // get event name
   unsigned long lastEventMillis = eventFilter[eventName] | 0; // get the last timestamp for event
-  if (actualMillis - lastEventMillis < eventWaitTime) return; // if last event was before waitTime return...
+  if (actualMillis - lastEventMillis < eventWaitTime) return false; // if last event was before waitTime return...
 
   if (eventSender) eventSender->sendEvent(event); // send event
   eventFilter[eventName] = actualMillis; // set lastEventTime to now
+  return true;
 }
 #endif

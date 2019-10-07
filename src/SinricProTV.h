@@ -26,12 +26,12 @@ class SinricProTV :  public SinricProDevice {
     void onSkipChannels(SkipChannelsCallback cb) { skipChannelsCallback = cb; }
 
     // event
-    void sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
-    void sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION");
-    void sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION");
-    void sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION");
-    void sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION");
-    void sendChangeChannelEvent(String channelName, String cause = "PHYSICAL_INTERACTION");
+    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION");
+    bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION");
+    bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION");
+    bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION");
+    bool sendChangeChannelEvent(String channelName, String cause = "PHYSICAL_INTERACTION");
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
@@ -124,47 +124,47 @@ bool SinricProTV::handleRequest(const char* deviceId, const char* action, JsonOb
   return success;
 }
 
-void SinricProTV::sendPowerStateEvent(bool state, String cause) {
+bool SinricProTV::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProTV::sendVolumeEvent(int volume, String cause) {
+bool SinricProTV::sendVolumeEvent(int volume, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setVolume", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["volume"] = volume;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProTV::sendMuteEvent(bool mute, String cause) {
+bool SinricProTV::sendMuteEvent(bool mute, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setMute", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["mute"] = mute;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProTV::sendMediaControlEvent(String mediaControl, String cause) {
+bool SinricProTV::sendMediaControlEvent(String mediaControl, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "mediaControl", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["control"] = mediaControl;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProTV::sendSelectInputEvent(String input, String cause) {
+bool SinricProTV::sendSelectInputEvent(String input, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "selectInput", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["input"] = input;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProTV::sendChangeChannelEvent(String channelName, String cause) {
+bool SinricProTV::sendChangeChannelEvent(String channelName, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "changeChannel", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   JsonObject event_channel = event_value["channel"].createNestedObject("name");
   event_channel["name"] = channelName;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
 

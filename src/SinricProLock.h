@@ -12,7 +12,7 @@ class SinricProLock :  public SinricProDevice {
     void onLockState(LockStateCallback cb) { lockStateCallback = cb; }
 
     // event
-    void sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
 
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
@@ -37,11 +37,11 @@ bool SinricProLock::handleRequest(const char* deviceId, const char* action, Json
   return success;
 }
 
-void SinricProLock::sendLockStateEvent(bool state, String cause) {
+bool SinricProLock::sendLockStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setLockState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   state ? event_value["state"] = "LOCKED" : event_value["state"] = "UNLOCKED";
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 #endif
 

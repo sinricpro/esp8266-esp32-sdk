@@ -12,8 +12,8 @@ class SinricProContactsensor :  public SinricProDevice {
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
 
     // event
-    void sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
-    void sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION");
+    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION");
 
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
@@ -38,20 +38,19 @@ bool SinricProContactsensor::handleRequest(const char* deviceId, const char* act
   return success;
 }
 
-void SinricProContactsensor::sendPowerStateEvent(bool state, String cause) {
+bool SinricProContactsensor::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
-void SinricProContactsensor::sendContactEvent(bool state, String cause) {
+bool SinricProContactsensor::sendContactEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setContactState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"closed":"open";
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
-
 
 #endif
 
