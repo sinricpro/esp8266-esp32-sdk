@@ -6,11 +6,11 @@
  */
 
 #include <Arduino.h>
-#ifdef ESP8266
-  #include <ESP8266WiFi.h>
-#endif
-#ifdef ESP32
-  #include <WiFi.h>
+#ifdef ESP8266 
+       #include <ESP8266WiFi.h>
+#endif 
+#ifdef ESP32   
+       #include <WiFi.h>
 #endif
 
 #include "SinricPro.h"
@@ -33,10 +33,10 @@ unsigned long lastBtnPress = 0;
  * Callback for setPowerState request
  * parameters
  *  String deviceId (r)
- *    contains deviceId (useful if this callback used by more devices)
+ *    contains deviceId (useful if this callback used by multiple devices)
  *  bool &state (r/w)
  *    contains the requested state (true:on / false:off)
- *    returns the new state
+ *    must return the new state
  * 
  * return
  *  true if request should be marked as handled correctly / false if not
@@ -46,6 +46,21 @@ bool onPowerState(String deviceId, bool &state) {
   myPowerState = state;
   digitalWrite(LED_BUILTIN, myPowerState?LOW:HIGH);
   return true; // request handled properly
+}
+
+void handleButtonPress() {
+  unsigned long actualMillis = millis(); // get actual millis() and keep it in variable actualMillis
+  if (digitalRead(BTN_FLASH) == LOW && actualMillis - lastBtnPress > 1000)  { // is button pressed (inverted logic! button pressed = LOW) and debounced?
+    if (myPowerState) {     // flip myPowerState: if it was true, set it to false, vice versa
+      myPowerState = false;
+    } else {
+      myPowerState = true;
+    }
+    digitalWrite(LED_BUILTIN, myPowerState?LOW:HIGH); // if myPowerState indicates device turned on: turn on led (builtin led uses inverted logic: LOW = LED ON / HIGH = LED OFF)
+    Serial.printf("Device %s turned %s (manually via flashbutton)\r\n", mySwitch.getDeviceId(), myPowerState?"on":"off");
+    mySwitch.sendPowerStateEvent(myPowerState); // send the new powerState to SinricPro server
+    lastBtnPress = actualMillis;  // update last button press variable
+  } 
 }
 
 // setup function for WiFi connection
@@ -83,19 +98,6 @@ void setup() {
 }
 
 void loop() {
-  // handle SinricPro communication
+  handleButtonPress();
   SinricPro.handle();
-
-  unsigned long actualMillis = millis(); // get actual millis() and keep it in variable actualMillis
-  if (digitalRead(BTN_FLASH) == LOW && actualMillis - lastBtnPress > 1000)  { // is button pressed (inverted logic! button pressed = LOW) and debounced?
-    if (myPowerState) {     // flip myPowerState: if it was true, set it to false, vice versa
-      myPowerState = false;
-    } else {
-      myPowerState = true;
-    }
-    digitalWrite(LED_BUILTIN, myPowerState?LOW:HIGH); // if myPowerState indicates device turned on: turn on led (builtin led uses inverted logic: LOW = LED ON / HIGH = LED OFF)
-    Serial.printf("Device %s turned %s (manually via flashbutton)\r\n", mySwitch.getDeviceId(), state?"on":"off");
-  mySwitch.sendPowerStateEvent(myPowerState); // send the new powerState to SinricPro server
-    lastBtnPress = actualMillis;  // update last button press variable
-  } 
 }

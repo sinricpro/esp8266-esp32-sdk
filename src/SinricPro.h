@@ -93,10 +93,10 @@ void SinricProClass::handleRequest() {
     DEBUG_SINRIC("[SinricPro.handleRequest()]: Signature is %s\r\n", sigMatch?"valid":"invalid");
 
     if (sigMatch) { // signature is valid }
-      #ifndef NODEBUG_SINRIC
-        String debugOutput;
-        serializeJsonPretty(requestMessage, debugOutput);
-        DEBUG_SINRIC("%s\r\n", debugOutput.c_str());
+      #ifndef NODEBUG_SINRIC  
+              String debugOutput;
+              serializeJsonPretty(requestMessage, debugOutput);
+              DEBUG_SINRIC("%s\r\n", debugOutput.c_str());
       #endif
 
       DynamicJsonDocument responseMessage = prepareResponse(requestMessage);
@@ -118,9 +118,9 @@ void SinricProClass::handleRequest() {
       String responseString = signMessage(signingKey.c_str(), responseMessage);
       // debug output message
       #ifndef NODEBUG_SINRIC
-        String responseStringPretty;
-        serializeJsonPretty(responseMessage, responseStringPretty);
-        DEBUG_SINRIC("[SinricPro.handleRequest()]: response:\r\n%s\r\n", responseStringPretty.c_str());
+              String responseStringPretty;
+              serializeJsonPretty(responseMessage, responseStringPretty);
+              DEBUG_SINRIC("[SinricPro.handleRequest()]: response:\r\n%s\r\n", responseStringPretty.c_str());
       #endif
       // push response message to sendQueue
       sendQueue.push(new SinricProMessage(rawMessage->getInterface(), responseString.c_str()));
@@ -187,9 +187,9 @@ void SinricProClass::sendEvent(JsonDocument& event) {
   String messageString = signMessage(signingKey, event);
   sendQueue.push(new SinricProMessage(IF_WEBSOCKET, messageString.c_str()));
   #ifndef NODEBUG_SINRIC
-    String debugOutput;
-    serializeJsonPretty(event, debugOutput);
-    DEBUG_SINRIC("Signed event:\r\n%s\r\n", debugOutput.c_str());
+          String debugOutput;
+          serializeJsonPretty(event, debugOutput);
+          DEBUG_SINRIC("Signed event:\r\n%s\r\n", debugOutput.c_str());
   #endif
 }
 
@@ -231,7 +231,7 @@ DynamicJsonDocument SinricProClass::prepareEvent(const char* deviceId, const cha
   return eventMessage;
 }
 
-#ifndef NOSINRIC_INSTANCE
+#ifndef NOSINRIC_INSTANCE 
 SinricProClass SinricPro;
 #endif
 
