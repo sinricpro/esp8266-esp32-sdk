@@ -8,8 +8,8 @@ class SinricProDimSwitch :  public SinricProDevice {
   public:
 	  SinricProDimSwitch(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-	  typedef std::function<bool(String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
-    typedef std::function<bool(String, int&)> PowerLevelCallback; // void onPowerLevel(const char* deviceId, int& powerLevel);
+	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
+    typedef std::function<bool(const String, int&)> PowerLevelCallback; // void onPowerLevel(const char* deviceId, int& powerLevel);
   
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
     void onPowerLevel(PowerLevelCallback cb) { powerLevelCallback = cb; }

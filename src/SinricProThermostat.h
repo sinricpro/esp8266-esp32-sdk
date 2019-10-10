@@ -8,9 +8,9 @@ class SinricProThermostat :  public SinricProDevice {
   public:
 	  SinricProThermostat(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-	  typedef std::function<bool(String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
-    typedef std::function<bool(String, float&)> TargetTemperatureCallback;
-    typedef std::function<bool(String, String&)> ThermostatModeCallback;
+	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
+    typedef std::function<bool(const String, float&)> TargetTemperatureCallback;
+    typedef std::function<bool(const String, String&)> ThermostatModeCallback;
 
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
     void onTargetTemperatue(TargetTemperatureCallback cb) { targetTemperatureCallback = cb; }

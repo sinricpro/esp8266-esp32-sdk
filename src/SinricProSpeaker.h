@@ -8,12 +8,12 @@ class SinricProSpeaker :  public SinricProDevice {
   public:
 	  SinricProSpeaker(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-	  typedef std::function<bool(String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
-    typedef std::function<bool(String, int&)> VolumeCallback;
-    typedef std::function<bool(String, bool&)> MuteCallback;
-    typedef std::function<bool(String, String&)> MediaControlCallback;
-    typedef std::function<bool(String, String, int&)> BandsCallback;
-    typedef std::function<bool(String, String&)> ModeCallback;
+	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
+    typedef std::function<bool(const String, int&)> VolumeCallback;
+    typedef std::function<bool(const String, bool&)> MuteCallback;
+    typedef std::function<bool(const String, String&)> MediaControlCallback;
+    typedef std::function<bool(const String, String, int&)> BandsCallback;
+    typedef std::function<bool(const String, String&)> ModeCallback;
 
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
     void onSetVolume(VolumeCallback cb) { volumeCallback = cb; }

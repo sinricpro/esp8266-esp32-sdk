@@ -8,7 +8,7 @@ class SinricProLock :  public SinricProDevice {
   public:
 	  SinricProLock(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-	  typedef std::function<bool(String, bool&)> LockStateCallback; // void onLockState(const char* deviceId, bool& lockState);
+	  typedef std::function<bool(const String, bool&)> LockStateCallback; // void onLockState(const char* deviceId, bool& lockState);
     void onLockState(LockStateCallback cb) { lockStateCallback = cb; }
 
     // event

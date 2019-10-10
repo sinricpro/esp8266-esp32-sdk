@@ -8,7 +8,7 @@ class SinricProDoorbell :  public SinricProDevice {
   public:
 	  SinricProDoorbell(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-	  typedef std::function<bool(String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
+	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
 
     // event
