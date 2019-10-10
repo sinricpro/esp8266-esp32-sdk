@@ -13,13 +13,13 @@
       "maintainer": true
     }
   ],
-  "version": "2.0.0.1",
+  "version": "2.0.0.2",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",
     "espressif32"
   ],
   "examples":[
-    "examples/Switch/src/switch.cpp",
+    "examples/Switch/src/switch.cpp"
   ]
 }
