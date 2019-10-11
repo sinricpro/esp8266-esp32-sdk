@@ -1,5 +1,4 @@
 
-
 # SinricPro (ESP8266 / ESP32 SDK)
 
 ## usage
@@ -40,92 +39,92 @@ bool onPowerState(const String deviceId, bool &state) {
 
 ## Switch
 Callbacks
-: [onPowerState](#onpowerstate)
+- [onPowerState](#onpowerstate)
 
 Events
-: [sendPowerStateEvent](#sendpowerstateevent)
+- [sendPowerStateEvent](#sendpowerstateevent)
 
 ---
 
 ## Dimmable Switch
 Callbacks
-: [onPowerState](#onpowerstate)
-: [onPowerLevel](#onpowerlevel)
-: [onAdjustPowerLevel](#onadjustpowerlevel)
+- [onPowerState](#onpowerstate)
+- [onPowerLevel](#onpowerlevel)
+- [onAdjustPowerLevel](#onadjustpowerlevel)
 
 Events
-: [sendPowerStateEvent](#sendpowerstateevent)
-: [sendPowerLevelEvent](#sendpowerlevelevent)
+- [sendPowerStateEvent](#sendpowerstateevent)
+- [sendPowerLevelEvent](#sendpowerlevelevent)
 ---
 
 ## Light
 
 Callbacks
-: [onPowerState](#onpowerstate)
-: [onBrightness](#onbrightness)
-: [onAdjustBrightness](#onadjustbrightness)
-: [onColor](#oncolor)
-: [onColorTemperature](#oncolortemperature)
-: [onIncreaseColorTemperature](#onincreasecolortemperature)
-: [onDecreaseColorTemperature](#ondecreasecolortemperature)
+- [onPowerState](#onpowerstate)
+- [onBrightness](#onbrightness)
+- [onAdjustBrightness](#onadjustbrightness)
+- [onColor](#oncolor)
+- [onColorTemperature](#oncolortemperature)
+- [onIncreaseColorTemperature](#onincreasecolortemperature)
+- [onDecreaseColorTemperature](#ondecreasecolortemperature)
 
 Events 
-: [sendPowerStateEvent](#sendpowerstateevent)
-: [sendBrightnessEvent](#sendbrightnessevent)
-: [sendColorEvent](#sendcolorevent)
-: [sendColorTemperatureEvent](#sendcolortemperatureevent)
+- [sendPowerStateEvent](#sendpowerstateevent)
+- [sendBrightnessEvent](#sendbrightnessevent)
+- [sendColorEvent](#sendcolorevent)
+- [sendColorTemperatureEvent](#sendcolortemperatureevent)
 ---
 		
 ## TV
 
 Callbacks
-: [onPowerState](#onpowerstate)
-: [onChangeChannel](#onchangechannel)
-: [onSkipChannels](#onskipchannels)
-: [onSelectInput](#onselectinput)
-: [onSetVolume](#onsetvolume)
-: [onAdjustVolume](#onadjustvolume)
-: [onMute](#onmute)
-: [onMediaControl](#onmediacontrol)
+- [onPowerState](#onpowerstate)
+- [onChangeChannel](#onchangechannel)
+- [onSkipChannels](#onskipchannels)
+- [onSelectInput](#onselectinput)
+- [onSetVolume](#onsetvolume)
+- [onAdjustVolume](#onadjustvolume)
+- [onMute](#onmute)
+- [onMediaControl](#onmediacontrol)
 
 Events
-: [sendPowerStateEvent](#sendpowerstateevent)
+- [sendPowerStateEvent](#sendpowerstateevent)
 ---
 
 ## Speaker
 
 Callbacks
-: [onPowerState](#onpowerstate)
-: [onSetVolume](#onsetvolume)
-: [onAdjustVolume](#onadjustvolume)
-: [onMute](#onmute)
-: [onMediaControl](#onmediacontrol)
-: [onSetBands](#onsetbands)
-: [onAdjustBands](#onadjustbands)
-: [onResetBands](#onresetbands)
-: [onSetMode](#onsetmode)
+- [onPowerState](#onpowerstate)
+- [onSetVolume](#onsetvolume)
+- [onAdjustVolume](#onadjustvolume)
+- [onMute](#onmute)
+- [onMediaControl](#onmediacontrol)
+- [onSetBands](#onsetbands)
+- [onAdjustBands](#onadjustbands)
+- [onResetBands](#onresetbands)
+- [onSetMode](#onsetmode)
 
 Events
-: [sendPowerStateEvent](#sendpowerstateevent)
+- [sendPowerStateEvent](#sendpowerstateevent)
 ---
 
 ## Thermostat
 
 Callbacks
-: [onPowerState](#onpowerstate)
-: [onTargetTemperature](#ontargettemperature)
-: [onThermostatMode](#onthermostatmode)
+- [onPowerState](#onpowerstate)
+- [onTargetTemperature](#ontargettemperature)
+- [onThermostatMode](#onthermostatmode)
 
 Events
-: [sendPowerStateEvent](#sendpowerstateevent)
+- [sendPowerStateEvent](#sendpowerstateevent)
 ---
 ## Lock
 
 Callbacks
-: [onLockState](#onlockstate)
+- [onLockState](#onlockstate)
 
 Events
-: [sendLockStateEvent](#sendlockstateevent)
+- [sendLockStateEvent](#sendlockstateevent)
 ---
 
 
@@ -162,9 +161,10 @@ bool onAdjustPowerLevel(const String deviceId, int &levelDelta)
 | ```deviceId``` |  ```const String``` | ```deviceId``` | --- | ```"5d8f5ade41307b450335925d"``` |
 |```levelDelta```|```int&```|```-100```..```100```|```0```..```100```|*Input*:```-25```(reduce level about 25)<br>*Output*:```50``` (new level is 50)<br>(*see note*)|
 | ```[return]```|  ```bool``` | --- | ```true```: request handled properly<br>```false```: error | ```true``` |
+
 Note
-: *Input*: relative value between -100 and 100
-: *Output*: absolute value between 0 and 100
+*Input*: relative value between -100 and 100
+*Output*: absolute value between 0 and 100
 
 ---
 ### onBrightness
@@ -187,8 +187,8 @@ bool onAdjustBrightness(const String deviceId, int &brightnessDelta)
 |```brightnessDelta```|```int&```|```-100```..```100```|```0```..```100```|Input*:```-25```(reduce brightness about 25)<br>*Output*:```50``` (new brightness is 50)<br>(*see note*)|
 | ```[return]```|  ```bool``` | --- | ```true```: request handled properly<br>```false```: error | ```true``` |
 Note
-: *Input*: relative value between -100 and 100
-: *Output*: absolute value between 0 and 100
+*Input*: relative value between -100 and 100
+*Output*: absolute value between 0 and 100
 
 ---
 
@@ -227,8 +227,8 @@ bool onIncreaseColorTemperature(const String deviceId, int &colorTemperature)
 | ```[return]```|  ```bool``` | --- | ```true```: request handled properly<br>```false```: error | ```true``` |
 
 Note
-: *Input*: ---
-: *Output*: new color temperature [```2200```,```2700```, ```4000```, ```5500```, ```7000```]
+*Input*: ---
+*Output*: new color temperature [```2200```,```2700```, ```4000```, ```5500```, ```7000```]
 
 ---
 
@@ -243,8 +243,8 @@ bool onDecreaseColorTemperature(const String deviceId, int &colorTemperature)
 | ```[return]```|  ```bool``` | --- | ```true```: request handled properly<br>```false```: error | ```true``` |
 
 Note
-: *Input*: ---
-: *Output*: new color temperature [```2200```,```2700```, ```4000```, ```5500```, ```7000```]
+*Input*: ---
+*Output*: new color temperature [```2200```,```2700```, ```4000```, ```5500```, ```7000```]
 
 ---
 ### onChangeChannel
@@ -302,8 +302,8 @@ bool onAdjustVolume(const String deviceId, int&volumeDelta)
 |```volumeDelta```|```int&```|```-100```..```100```|```0```..```100```|```-10``` (*see note*)|
 | ```[return]```|  ```bool``` | --- | ```true```: request handled properly<br>```false```: error | ```true``` |
 Note
-: *Input*: relative value between -100 and 100
-: *Output*: absolute value between 0 and 100
+*Input*: relative value between -100 and 100
+*Output*: absolute value between 0 and 100
 
 ---
 
@@ -353,8 +353,8 @@ bool onAdjustBands(const String deviceId, const String bands, int &levelDelta)
 |```levelDelta```| ```int&``` |```-n```..```+n```|```0```..```n```|*Input*:```-3``` (lower level about 3)<br>*Output*:```2``` (new level is 2)<br>(see note) |
 | ```[return]```|  ```bool``` | --- | ```true```: request handled properly<br>```false```: error | ```true``` |
 Note
-: *Input*: relative value between ```-n``` and ```+n```
-: *Output*: absolute value between ```0``` and ```n```
+*Input*: relative value between ```-n``` and ```+n```
+*Output*: absolute value between ```0``` and ```n```
 
 ---
 ### onResetBands
@@ -386,7 +386,7 @@ bool onTargetTemperatue(const String deviceId, float &temperature)
 | ```[return]```|  ```bool``` | --- | ```true```: request handled properly<br>```false```: error | ```true``` |
 
 Note
-: (Values are in Celsius or Kelvin depending on your account settings)
+Values are in Celsius or Kelvin (depending on your account settings
 
 ---
 ### onThermostatMode
