@@ -117,6 +117,10 @@ Callbacks
 
 Events
 - [sendPowerStateEvent](#sendpowerstateevent)
+- [sendTemperatureEvent](#sendtemperatureevent)
+- [sendTargetTemperatureEvent](#sendtargettemperatureevent)
+- [sendThermostatModeEvent](#sendthermostatmodeevent)
+
 ---
 ## Lock
 
@@ -126,7 +130,41 @@ Callbacks
 Events
 - [sendLockStateEvent](#sendlockstateevent)
 ---
+## Doorbell
 
+Callbacks
+- [onPowerState](#onpowerstate)
+
+Events
+- [sendDoorbellEvent](#senddoorbellevent)
+---
+## Temperaturesensor
+
+Callbacks
+- [onPowerState](#onpowerstate)
+
+Events
+- [sendTemperatureEvent](#sendtemperatureevent)
+---
+## MotionSensor
+
+Callbacks
+- [onPowerState](#onpowerstate)
+
+Events
+- [sendPowerStateEvent](#sendpowerstateevent)
+- [sendMotionEvent](#sendmotionevent)
+---
+
+## ContactSensor
+
+Callbacks
+- [onPowerState](#onpowerstate)
+
+Events
+- [sendPowerStateEvent](#sendpowerstateevent)
+- [sendContactEvent](#sendcontactevent)
+---
 
 ## Callbacks
 
@@ -140,7 +178,7 @@ bool onPowerState(const String deviceId, bool &state)
 | `state`|  `bool&` | `true`: turn on<br>`false`: turn off | `true`: turned on<br>`false`: turned off | `true` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) |
+Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) | [Doorbell](#doorbell) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) |
 
 ---
 ### onPowerLevel
@@ -153,7 +191,7 @@ bool onPowerLevel(const String deviceId, int &level)
 |`level`|`int&`|`0`..`100`|`0`..`100`|`75`|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 ---
-| [Dimmable Switch](#dimmable-switch) |
+Devices: | [Dimmable Switch](#dimmable-switch) |
 
 ### onAdjustPowerLevel
 ```C++
@@ -169,7 +207,7 @@ Note<br>
 *Input*: relative value between `-100` and `100`<br>
 *Output*: absolute value between `0` and `100`
 
-| [Dimmable Switch](#dimmable-switch) |
+Devices: | [Dimmable Switch](#dimmable-switch) |
 
 ---
 ### onBrightness
@@ -182,7 +220,7 @@ bool onBrightness(const String deviceId, int &brightness)
 |`brightness`|`int&`|`0`..`100`|`0`..`100`|`75`|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [Light](#light) |
+Devices: | [Light](#light) |
 
 ---
 ### onAdjustBrightness
@@ -215,7 +253,7 @@ bool onColor(const String deviceId, byte &r, byte &g, byte &b)
 | `b`|`byte&`|`0`..`255` | `0`..`255` | `37` (blue value) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [Light](#light) |
+Devices: | [Light](#light) |
 
 ---
 
@@ -231,7 +269,7 @@ bool onColorTemperature(const String deviceId, int &colorTemperature)
 |`colorTemperature` | `int&` | `2200`,`2700`, `4000`, `5500`, `7000` | `2200`,`2700`, `4000`, `5500`, `7000` | `2700` (soft white) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [Light](#light) |
+Devices: | [Light](#light) |
 
 ---
 
@@ -249,7 +287,7 @@ Note<br>
 *Input*: ---<br>
 *Output*: new color temperature [`2200`,`2700`, `4000`, `5500`, `7000`]
 
-| [Light](#light) |
+Devices: | [Light](#light) |
 
 ---
 
@@ -267,7 +305,7 @@ Note<br>
 *Input*: ---<br>
 *Output*: new color temperature [`2200`,`2700`, `4000`, `5500`, `7000`]
 
-| [Light](#light) |
+Devices: | [Light](#light) |
 
 ---
 ### onChangeChannel
@@ -280,7 +318,7 @@ bool onChangeChannel(const String deviceId, String &channel)
 |`channel` | `String&` | `channel name` | `channel name` | `"HBO"` (name of a tv channel) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [TV](#tv) | 
+Devices: | [TV](#tv) | 
 
 ---
 ### onSkipChannels
@@ -294,7 +332,7 @@ bool onSkipChannels(const String deviceId, const int channelCount, String &chann
 |`channelName` | `String&` | --- | `channel name` | `"HBO"` (name of the new tv channel) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [TV](#tv) | 
+Devices: | [TV](#tv) | 
 
 ---
 ### onSelectInput
@@ -307,7 +345,7 @@ bool onSelectInput(const String deviceId, String &input)
 |`input` | `String&` | `input name` | `input name` | `"HDMI 1"` (name of an input) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [TV](#tv) | 
+Devices: | [TV](#tv) | 
 
 ---
 ### onSetVolume
@@ -320,7 +358,7 @@ bool onSetVolume(const String deviceId, int &volume)
 |`volume`|`int&`|`0`..`100`|`0`..`100`|`75`|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [TV](#tv) | [Speaker](#speaker) |
+Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ---
 ### onAdjustVolume
@@ -337,7 +375,7 @@ Note<br>
 *Input*: relative value between `-100` and `100`<br>
 *Output*: absolute value between `0` and `100`
 
-| [TV](#tv) | [Speaker](#speaker) |
+Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ---
 
@@ -351,7 +389,7 @@ bool onMute(const String deviceId, bool &mute)
 | `mute`|  `bool&` | `true`: mute<br>`false`: unmute | `true`: device is muted<br>`false`: device is not muted | `true` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [TV](#tv) | [Speaker](#speaker) |
+Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ---
 ### onMediaControl
@@ -364,7 +402,7 @@ bool onMediaControl(const String deviceId, String &control)
 | `control`|  `String&` | `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"`| `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"` | `Pause`: device is paused |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [TV](#tv) | [Speaker](#speaker) |
+Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ---
 ### onSetBands
@@ -374,11 +412,11 @@ bool onSetBands(const String deviceId, const String bands, int &level)
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`bands`|`const String`| `BASS`, `MIDRANGE`, `TREBBLE` |---| `BASS` (set bass band)|
+|`bands`|`const String`| `"BASS"`, `"MIDRANGE"`, `"TREBBLE"` |---| `"BASS"` (set bass band)|
 |`level`| `int&` |`0`..`n`|`0`..`n`|`5` (set level to 5) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [Speaker](#speaker) |
+Devices: | [Speaker](#speaker) |
 
 ---
 ### onAdjustBands
@@ -388,7 +426,7 @@ bool onAdjustBands(const String deviceId, const String bands, int &levelDelta)
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`bands`|`const String`| `BASS`, `MIDRANGE`, `TREBBLE` |---| `BASS` (adjust BASS band)|
+|`bands`|`const String`| `"BASS"`, `"MIDRANGE"`, `"TREBBLE"` |---| `"BASS"` (adjust BASS band)|
 |`levelDelta`| `int&` |`-n`..`+n`|`0`..`n`|*Input*:`-3` (lower level about 3)<br>*Output*:`2` (new level is 2)<br>(see note) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -396,7 +434,7 @@ Note<br>
 *Input*: relative value between `-n` and `+n`<br>
 *Output*: absolute value between `0` and `n`
 
-| [Speaker](#speaker) |
+Devices: | [Speaker](#speaker) |
 
 ---
 ### onResetBands
@@ -404,7 +442,7 @@ Note<br>
 bool onResetBands(const String deviceId, const String bands, int &level)
 ```
 
-| [Speaker](#speaker) |
+Devices: | [Speaker](#speaker) |
 
 ---
 ### onSetMode
@@ -417,7 +455,7 @@ bool onSetMode(const String deviceId, String &mode)
 |`mode`|`String&`| `MODE` | `MODE`| `"MOVIE"` (set mode to MOVIE)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [Speaker](#speaker) |
+Devices: | [Speaker](#speaker) |
 
 ---
 ### onTargetTemperature
@@ -433,7 +471,7 @@ bool onTargetTemperatue(const String deviceId, float &temperature)
 Note<br>
 Values are in Celsius or Kelvin (depending on your account settings)
 
-| [Thermostat](#thermostat) |
+Devices: | [Thermostat](#thermostat) |
 
 ---
 ### onThermostatMode
@@ -443,10 +481,10 @@ bool onThermostatMode(const String deviceId, String &mode)
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`mode`|`String&`| `COOL`, `HEAT`,`AUTO` | `COOL`, `HEAT`,`AUTO`| `AUTO` (set mode to "automatic")|
+|`mode`|`String&`| `COOL`, `"HEA"T`,`"AUTO"` | `"COOL"`, `"HEAT"`,`"AUTO"`| `"AUTO"` (set mode to "automatic")|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [Thermostat](#thermostat) |
+Devices: | [Thermostat](#thermostat) |
 
 ---
 
@@ -460,7 +498,7 @@ bool onLockState(const String deviceId, bool &state)
 |`state`|`bool&`| `true`: lock device<br>`false`: unlock device |  `true`: device is locked<br>`false`: device is unlocked | `true` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-| [Lock](#lock) |
+Devices: | [Lock](#lock) |
 
 ---
 
@@ -476,7 +514,7 @@ sendPowerStateEvent(bool state, String cause="PHYSICAL_INTERACTION")
 | `state` | `bool` | device state |`true`: device is on<br>`false`: device is off | 
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"`
 
-| [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) |
+Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) |
 
 ---
 ### sendPowerLevelEvent
@@ -486,15 +524,125 @@ sendPowerLevelEvent(int level, String cause="PHYSICAL_INTERACTION")
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `level` | `int` | device power level | `0`..`100`| 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"`
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
 
-| [Dimmable Switch](#dimmable-switch) |
+Devices: | [Dimmable Switch](#dimmable-switch) |
+
+---
+### sendBrightnessEvent
+```C++
+void sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `brightness` | `int` | brightness level | `0`..`100`| 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Light](#light) |
+
+---
+### sendColorEvent
+```C++
+void sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `r` | `byte` | red value | `0`..`255` | 
+| `g` | `byte` | green value | `0`..`255` | 
+| `b` | `byte` | blue value | `0`..`255` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Light](#light) |
+
+---
+### sendColorTemperatureEvent
+```C++
+void sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `colorTemperature` | `int` | color temperature | `2200`, `2700`, `4000`, `5500`, `7000` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Light](#light) |
+
+---
+### sendDoorbellEvent
+```C++
+void sendDoorbellEvent(String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Doorbell](#doorbell) |
+
+---
+### sendTemperatureEvent
+```C++
+void sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `temperature` | `float` | temperature | `-n`..`n` | 
+| `humidity` | `float` | (optional) humidity | `-n`..`+n`<br>(`-1` if not supported) | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
+
+Devices: | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) |
+
+---
+### sendTargetTemperatureEvent
+```C++
+void sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `temperature` | `float` | temperature | `-n`..`n` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
+
+Devices: | [Thermostat](#thermostat) |
+
+---
+### sendThermostatModeEvent
+```C++
+void sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `thermostatMode` | `String` | thermostat mode | `"COOL"`, `"HEAT"`, `"AUTO"` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Thermostat](#thermostat) |
+
+---
+### sendMotionEvent
+```C++
+void sendMotionEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `detected` | `bool` | `true`: motion detected<br>`false`: motion not detected (should be sent if motion not happens any longer) | `true`, `false` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [MotionSensor](#motionsensor) |
+
+---
+### sendContactEvent
+```C++
+void sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `detected` | `bool` | `true`: contact is closed<br>`false`: contact is open | `true`, `false` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [ContactSensor](#contactsensor) |
 
 ---
 
 
 
 ## Dependencies / Needed libraries
-[WebSocketsClient](https://github.com/Links2004/arduinoWebSockets)
-[ArduinoJson](https://github.com/bblanchon/ArduinoJson)
+[ArduinoJson](https://github.com/bblanchon/ArduinoJson)<br>
+[WebSocketsClient](https://github.com/Links2004/arduinoWebSockets)<br>
 [NTPClient](https://github.com/arduino-libraries/NTPClient)
