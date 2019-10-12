@@ -36,7 +36,9 @@ bool onPowerState(const String deviceId, bool &state) {
   SinricPro.handle();
 ```
 # Devices
+[Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) | [Fan (US)](#fan-us) | [Fan (non US)](#fan-non-us) | [Lock](#lock) | [Doorbell](#doorbell) | [TemperatureSensor](#temperaturesensor) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | 
 
+---
 ## Switch
 Callbacks
 - [onPowerState](#onpowerstate)
@@ -58,7 +60,6 @@ Events
 ---
 
 ## Light
-
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onBrightness](#onbrightness)
@@ -76,7 +77,6 @@ Events
 ---
 		
 ## TV
-
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onChangeChannel](#onchangechannel)
@@ -92,7 +92,6 @@ Events
 ---
 
 ## Speaker
-
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onSetVolume](#onsetvolume)
@@ -109,7 +108,6 @@ Events
 ---
 
 ## Thermostat
-
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onTargetTemperature](#ontargettemperature)
@@ -122,8 +120,28 @@ Events
 - [sendThermostatModeEvent](#sendthermostatmodeevent)
 
 ---
-## Lock
+## Fan (US)
+Callbacks
+- [onPowerState](#onpowerstate)
+- [onRangeValue](#onrangevalue)
 
+Events
+- [sendPowerStateEvent](#sendpowerstateevent)
+- [sendRangeValueEvent](#sendrangevalueevent)
+
+---
+## Fan (non US)
+Callbacks
+- [onPowerState](#onpowerstate)
+- [onPowerLevel](#onpowerlevel)
+- [onAdjustPowerLevel](#onadjustpowerlevel)
+
+Events
+- [sendPowerStateEvent](#sendpowerstateevent)
+- [sendPowerLevelEvent](#sendpowerlevelevent)
+---
+
+## Lock
 Callbacks
 - [onLockState](#onlockstate)
 
@@ -131,7 +149,6 @@ Events
 - [sendLockStateEvent](#sendlockstateevent)
 ---
 ## Doorbell
-
 Callbacks
 - [onPowerState](#onpowerstate)
 
@@ -139,7 +156,6 @@ Events
 - [sendDoorbellEvent](#senddoorbellevent)
 ---
 ## Temperaturesensor
-
 Callbacks
 - [onPowerState](#onpowerstate)
 
@@ -147,7 +163,6 @@ Events
 - [sendTemperatureEvent](#sendtemperatureevent)
 ---
 ## MotionSensor
-
 Callbacks
 - [onPowerState](#onpowerstate)
 
@@ -157,7 +172,6 @@ Events
 ---
 
 ## ContactSensor
-
 Callbacks
 - [onPowerState](#onpowerstate)
 
@@ -178,7 +192,7 @@ bool onPowerState(const String deviceId, bool &state)
 | `state`|  `bool&` | `true`: turn on<br>`false`: turn off | `true`: turned on<br>`false`: turned off | `true` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) | [Doorbell](#doorbell) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) |
+Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) | [Doorbell](#doorbell) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | [Fan (non US)](#fan-non-us) | [Fan (US)](#fan-us) |
 
 ---
 ### onPowerLevel
@@ -191,7 +205,7 @@ bool onPowerLevel(const String deviceId, int &level)
 |`level`|`int&`|`0`..`100`|`0`..`100`|`75`|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 ---
-Devices: | [Dimmable Switch](#dimmable-switch) |
+Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) |
 
 ### onAdjustPowerLevel
 ```C++
@@ -207,7 +221,7 @@ Note<br>
 *Input*: relative value between `-100` and `100`<br>
 *Output*: absolute value between `0` and `100`
 
-Devices: | [Dimmable Switch](#dimmable-switch) |
+Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) |
 
 ---
 ### onBrightness
@@ -237,7 +251,7 @@ Note<br>
 *Input*: relative value between `-100` and `100`<br>
 *Output*: absolute value between `0` and `100`
 
-| [Light](#light) |
+Devices: | [Light](#light) |
 
 ---
 
@@ -490,6 +504,20 @@ Devices: | [Thermostat](#thermostat) |
 
 ### onLockState
 ```C++
+bool onRangeValue(const String deviceId, int &rangeValue)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+|`rangeValue`|`int&`| `0`..`n` | `0`..`n` | `3` (device is set to 3)
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Devices: | [Fan (US)](#fan-us) |
+
+---
+
+### onRangeValue
+```C++
 bool onLockState(const String deviceId, bool &state)
 ```
 | parameter | type|  input value | output value | example |
@@ -498,10 +526,9 @@ bool onLockState(const String deviceId, bool &state)
 |`state`|`bool&`| `true`: lock device<br>`false`: unlock device |  `true`: device is locked<br>`false`: device is unlocked | `true` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Devices: | [Lock](#lock) |
+Devices: | [Fan (US)](#fan-us) |
 
 ---
-
 
 
 ## Events
@@ -514,7 +541,7 @@ sendPowerStateEvent(bool state, String cause="PHYSICAL_INTERACTION")
 | `state` | `bool` | device state |`true`: device is on<br>`false`: device is off | 
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"`
 
-Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) |
+Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | [Fan (non US)](#fan-non-us) | [Fan (US)](#fan-us) |
 
 ---
 ### sendPowerLevelEvent
@@ -526,7 +553,7 @@ sendPowerLevelEvent(int level, String cause="PHYSICAL_INTERACTION")
 | `level` | `int` | device power level | `0`..`100`| 
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
 
-Devices: | [Dimmable Switch](#dimmable-switch) |
+Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) | 
 
 ---
 ### sendBrightnessEvent
@@ -639,7 +666,18 @@ void sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
 Devices: | [ContactSensor](#contactsensor) |
 
 ---
+### sendRangeValueEvent
+```C++
+bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `rangeValue` | `int` | report actual range value | `0`..`n` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
 
+Devices: | [Fan (US)](#fan-us) |
+
+---
 
 
 ## Dependencies / Needed libraries
