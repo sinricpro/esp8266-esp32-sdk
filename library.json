@@ -13,13 +13,14 @@
       "maintainer": true
     }
   ],
-  "version": "2.0.0.2",
+  "version": "2.0.0.3",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",
     "espressif32"
   ],
   "examples":[
-    "examples/Switch/src/switch.cpp"
+    "examples/Switch/src/switch.cpp",
+    "examples/Doorbell/src/doorbell.cpp"
   ]
 }
