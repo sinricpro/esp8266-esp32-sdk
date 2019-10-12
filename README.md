@@ -165,7 +165,7 @@ bool onAdjustPowerLevel(const String deviceId, int &levelDelta)
 |`levelDelta`|`int&`|`-100`..`100`|`0`..`100`|*Input*:`-25`(reduce level about 25)<br>*Output*:`50` (new level is 50)<br>(*see note*)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Note
+Note<br>
 *Input*: relative value between `-100` and `100`<br>
 *Output*: absolute value between `0` and `100`
 
@@ -195,7 +195,7 @@ bool onAdjustBrightness(const String deviceId, int &brightnessDelta)
 |`brightnessDelta`|`int&`|`-100`..`100`|`0`..`100`|Input*:`-25`(reduce brightness about 25)<br>*Output*:`50` (new brightness is 50)<br>(*see note*)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Note
+Note<br>
 *Input*: relative value between `-100` and `100`<br>
 *Output*: absolute value between `0` and `100`
 
@@ -245,8 +245,8 @@ bool onIncreaseColorTemperature(const String deviceId, int &colorTemperature)
 |`colorTemperature` | `int&` | ---<br>(see note) | `2200`,`2700`, `4000`, `5500`, `7000` | `4000` (white) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Note
-*Input*: ---
+Note<br>
+*Input*: ---<br>
 *Output*: new color temperature [`2200`,`2700`, `4000`, `5500`, `7000`]
 
 | [Light](#light) |
@@ -263,8 +263,8 @@ bool onDecreaseColorTemperature(const String deviceId, int &colorTemperature)
 |`colorTemperature` | `int&` | ---<br>(see note) | `2200`,`2700`, `4000`, `5500`, `7000` | `2200` (warm white) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Note
-*Input*: ---
+Note<br>
+*Input*: ---<br>
 *Output*: new color temperature [`2200`,`2700`, `4000`, `5500`, `7000`]
 
 | [Light](#light) |
@@ -333,9 +333,9 @@ bool onAdjustVolume(const String deviceId, int&volumeDelta)
 |`volumeDelta`|`int&`|`-100`..`100`|`0`..`100`|`-10` (*see note*)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Note
-*Input*: relative value between -100 and 100
-*Output*: absolute value between 0 and 100
+Note<br>
+*Input*: relative value between `-100` and `100`<br>
+*Output*: absolute value between `0` and `100`
 
 | [TV](#tv) | [Speaker](#speaker) |
 
@@ -392,8 +392,8 @@ bool onAdjustBands(const String deviceId, const String bands, int &levelDelta)
 |`levelDelta`| `int&` |`-n`..`+n`|`0`..`n`|*Input*:`-3` (lower level about 3)<br>*Output*:`2` (new level is 2)<br>(see note) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Note
-*Input*: relative value between `-n` and `+n`
+Note<br>
+*Input*: relative value between `-n` and `+n`<br>
 *Output*: absolute value between `0` and `n`
 
 | [Speaker](#speaker) |
@@ -430,8 +430,8 @@ bool onTargetTemperatue(const String deviceId, float &temperature)
 |`temperature`|`float&`| `-n`..`+n` | `-n`..`+n`| `18.2f` (set temperature to 18.2°)<br>(see note)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Note
-Values are in Celsius or Kelvin (depending on your account settings
+Note<br>
+Values are in Celsius or Kelvin (depending on your account settings)
 
 | [Thermostat](#thermostat) |
 
