@@ -89,6 +89,11 @@ Callbacks
 
 Events
 - [sendPowerStateEvent](#sendpowerstateevent)
+- [sendVolumeEvent](#sendvolumeevent)
+- [sendMuteEvent](#sendmuteevent)
+- [sendMediaControlEvent](#sendmediacontrolevent)
+- [sendSelectInputEvent](#sendselectinputevent)
+- [sendChangeChannelEvent](#sendchangechannelevent)
 ---
 
 ## Speaker
@@ -105,6 +110,11 @@ Callbacks
 
 Events
 - [sendPowerStateEvent](#sendpowerstateevent)
+- [sendVolumeEvent](#sendvolumeevent)
+- [sendMuteEvent](#sendmuteevent)
+- [sendMediaControlEvent](#sendmediacontrolevent)
+- [sendSetBandsEvent](#sendsetbandsevent)
+- [sendModeEvent](#sendmodeevent)
 ---
 
 ## Thermostat
@@ -356,7 +366,7 @@ bool onSelectInput(const String deviceId, String &input)
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`input` | `String&` | `input name` | `input name` | `"HDMI 1"` (name of an input) |
+|`input` | `String&` | `input name` | `input name` | `"AUX 1"`, `"AUX 2"`, `"AUX 3"`, `"AUX 4"`, `"AUX 5"`, `"AUX 6"`, `"AUX 7"`, `"BLURAY"`, `"CABLE"`, `"CD"`, `"COAX 1"`,`"COAX 2"`, `"COMPOSITE 1"`, `"DVD"`, `"GAME"`, `"HD RADIO"`, `"HDMI 1"`, `"HDMI 2"`, `"HDMI 3"`, `"HDMI 4"`, `"HDMI 5"`, `"HDMI 6"`, `"HDMI 7"`, `"HDMI 8"`, `"HDMI 9"`, `"HDMI 10"`, `"HDMI ARC"`, `"INPUT 1"`, `"INPUT 2"`, `"INPUT 3"`, `"INPUT 4"`, `"INPUT 5"`, `"INPUT 6"`, `"INPUT 7"`, `"INPUT 8"`, `"INPUT 9"`, `"INPUT 10"`, `"IPOD"`, `"LINE 1"`, `"LINE 2"`, `"LINE 3"`, `"LINE 4"`, `"LINE 5"`, `"LINE 6"`, `"LINE 7"`, `"MEDIA PLAYER"`, `"OPTICAL 1"`, `"OPTICAL 2"`, `"PHONO"`, `"PLAYSTATION"`, `"PLAYSTATION 3"`, `"PLAYSTATION 4"`, `"SATELLITE"`, `"SMARTCAST"`, `"TUNER"`, `"TV"`, `"USB DAC"`, `"VIDEO 1"`, `"VIDEO 2"`, `"VIDEO 3"`, `"XBOX"` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
 Devices: | [TV](#tv) | 
@@ -466,7 +476,7 @@ bool onSetMode(const String deviceId, String &mode)
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`mode`|`String&`| `MODE` | `MODE`| `"MOVIE"` (set mode to MOVIE)|
+|`mode`|`String&`| `MODE` | `MODE`| `"MOVIE"`, `"MUSIC"`, `"NIGHT"`, `"SPORT"`, `"TV"` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
 Devices: | [Speaker](#speaker) |
@@ -648,7 +658,7 @@ void sendMotionEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
-| `detected` | `bool` | `true`: motion detected<br>`false`: motion not detected (should be sent if motion not happens any longer) | `true`, `false` | 
+| `detected` | `bool` | report motion event | `true`: motion detected<br>`false`: motion not detected (should be sent if motion not happens any longer) | 
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
 
 Devices: | [MotionSensor](#motionsensor) |
@@ -660,7 +670,7 @@ void sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
-| `detected` | `bool` | `true`: contact is closed<br>`false`: contact is open | `true`, `false` | 
+| `detected` | `bool` | report contact state | `true`: contact is closed<br>`false`: contact is open | 
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
 
 Devices: | [ContactSensor](#contactsensor) |
@@ -678,6 +688,96 @@ bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION")
 Devices: | [Fan (US)](#fan-us) |
 
 ---
+
+### sendVolumeEvent
+```C++
+bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `volume` | `int` | report actual volume level| `0`..`100` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [TV](#tv) | [Speaker](#speaker) |
+
+---
+
+### sendMuteEvent
+```C++
+bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `mute` | `bool` | report mute event | `true`: device is muted <br>`false`: device is unmuted | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [TV](#tv) | [Speaker](#speaker) |
+
+---
+
+### sendMediaControlEvent
+```C++
+bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `mediaControl` | `String` | report a media event | `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [TV](#tv) | [Speaker](#speaker) |
+
+---
+
+### sendSelectInputEvent
+```C++
+bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `input` | `String` | report actual input | `"AUX 1"`, `"AUX 2"`, `"AUX 3"`, `"AUX 4"`, `"AUX 5"`, `"AUX 6"`, `"AUX 7"`, `"BLURAY"`, `"CABLE"`, `"CD"`, `"COAX 1"`,`"COAX 2"`, `"COMPOSITE 1"`, `"DVD"`, `"GAME"`, `"HD RADIO"`, `"HDMI 1"`, `"HDMI 2"`, `"HDMI 3"`, `"HDMI 4"`, `"HDMI 5"`, `"HDMI 6"`, `"HDMI 7"`, `"HDMI 8"`, `"HDMI 9"`, `"HDMI 10"`, `"HDMI ARC"`, `"INPUT 1"`, `"INPUT 2"`, `"INPUT 3"`, `"INPUT 4"`, `"INPUT 5"`, `"INPUT 6"`, `"INPUT 7"`, `"INPUT 8"`, `"INPUT 9"`, `"INPUT 10"`, `"IPOD"`, `"LINE 1"`, `"LINE 2"`, `"LINE 3"`, `"LINE 4"`, `"LINE 5"`, `"LINE 6"`, `"LINE 7"`, `"MEDIA PLAYER"`, `"OPTICAL 1"`, `"OPTICAL 2"`, `"PHONO"`, `"PLAYSTATION"`, `"PLAYSTATION 3"`, `"PLAYSTATION 4"`, `"SATELLITE"`, `"SMARTCAST"`, `"TUNER"`, `"TV"`, `"USB DAC"`, `"VIDEO 1"`, `"VIDEO 2"`, `"VIDEO 3"`, `"XBOX"` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [TV](#tv) | 
+
+---
+
+### sendChangeChannelEvent
+```C++
+bool sendChangeChannelEvent(String channelName, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `channelName` | `String` | report new channel | example: `"HBO"` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [TV](#tv) |
+
+---
+
+### sendBandsEvent
+```C++
+bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION")"PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `bands` | `String` | selected band | `"BASS"`, `"MIDRANGE"`,`"TREBBLE"` | 
+| `level` | `int` | report new band level | `0`..`n` |
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Speaker](#speaker) |
+
+---
+
+### sendModeEvent
+```C++
+bool sendModeEvent(String mode, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `mode` | `String` | report new mode | `"MOVIE"`, `"MUSIC"`, `"NIGHT"`, `"SPORT"`, `"TV"` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Speaker](#speaker) |
 
 
 ## Dependencies / Needed libraries
