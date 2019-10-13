@@ -36,7 +36,7 @@ bool onPowerState(const String deviceId, bool &state) {
   SinricPro.handle();
 ```
 # Devices
-[Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) | [Fan (US)](#fan-us) | [Fan (non US)](#fan-non-us) | [Lock](#lock) | [Doorbell](#doorbell) | [TemperatureSensor](#temperaturesensor) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | 
+[Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) | [Fan (US)](#fan-us) | [Fan (non US)](#fan-non-us) | [Lock](#lock) | [Doorbell](#doorbell) | [TemperatureSensor](#temperaturesensor) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | [Window AC Unit](#window-ac-unit)
 
 ---
 ## Switch
@@ -134,6 +134,7 @@ Events
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onRangeValue](#onrangevalue)
+- [onAdjustRangeValue](#onadjustrangevalue)
 
 Events
 - [sendPowerStateEvent](#sendpowerstateevent)
@@ -190,7 +191,23 @@ Events
 - [sendContactEvent](#sendcontactevent)
 ---
 
-## Callbacks
+## Window AC Unit
+Callbacks
+- [onPowerState](#onpowerstate)
+- [onTargetTemperature](#ontargettemperature)
+- [onThermostatMode](#onthermostatmode)
+- [onRangeValue](#onrangevalue)
+- [onAdjustRangeValue](#onadjustrangevalue)
+
+Events
+- [sendPowerStateEvent](#sendpowerstateevent)
+- [sendTemperatureEvent](#sendtemperatureevent)
+- [sendTargetTemperatureEvent](#sendtargettemperatureevent)
+- [sendThemostatModeEvent](#sendthermostatmodeevent)
+- [sendRangeValueEvent](#sendrangevalueevent)
+---
+
+# Callbacks
 
 ### onAdjustBands
 ```C++
@@ -244,6 +261,24 @@ Note<br>
 *Output*: absolute value between `0` and `100`
 
 Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) |
+
+---
+
+### onAdjustRangeValue
+```C++
+bool onAdjustPowerLevel(const String deviceId, int &rangeValueDelta)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `rangeValueDelta` | `int&` | `-n`..`n` | `0`..`n` |*Input*:`-2`(reduce rangeValue about 2)<br>*Output*:`1` (new range Value is 1)<br>(*see note*)|
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Note<br>
+*Input*: relative value between `-n` and `n`<br>
+*Output*: absolute value between `0` and `n`
+
+Devices: | [Fan (US)](#fan-us) | [Window AC Unit](#window-ac-unit) |
 
 ---
 
@@ -441,7 +476,7 @@ bool onRangeValue(const String deviceId, int &rangeValue)
 |`rangeValue`|`int&`| `0`..`n` | `0`..`n` | `3` (device is set to 3)
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Devices: | [Fan (US)](#fan-us) |
+Devices: | [Fan (US)](#fan-us) | [Window AC Unit](#window-ac-unit) |
 
 ---
 
@@ -539,7 +574,7 @@ bool onTargetTemperatue(const String deviceId, float &temperature)
 Note<br>
 Values are in Celsius or Kelvin (depending on your account settings)
 
-Devices: | [Thermostat](#thermostat) |
+Devices: | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
 ---
 
@@ -553,11 +588,11 @@ bool onThermostatMode(const String deviceId, String &mode)
 |`mode`|`String&`| `"COOL"`, `"HEAT"`, `"AUTO"` | `"COOL"`, `"HEAT"`,`"AUTO"`| `"AUTO"` (set mode to "automatic")|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Devices: | [Thermostat](#thermostat) |
+Devices: | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
 ---
 
-## Events
+# Events
 
 ### sendBandsEvent
 ```C++
@@ -739,7 +774,7 @@ bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION")
 | `rangeValue` | `int` | report actual range value | `0`..`n` | 
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
 
-Devices: | [Fan (US)](#fan-us) |
+Devices: | [Fan (US)](#fan-us) | [Window AC Unit](#window-ac-unit) |
 
 ---
 
@@ -765,7 +800,7 @@ void sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTE
 | `temperature` | `float` | temperature | `-n`..`n` | 
 | `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
 
-Devices: | [Thermostat](#thermostat) |
+Devices: | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
 ---
 
@@ -779,7 +814,7 @@ void sendTemperatureEvent(float temperature, float humidity = -1, String cause =
 | `humidity` | `float` | (optional) humidity | `-n`..`+n`<br>(`-1` if not supported) | 
 | `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
 
-Devices: | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) |
+Devices: | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
 ---
 

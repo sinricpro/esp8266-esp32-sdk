@@ -12,6 +12,7 @@ class SinricProFanUS :  public SinricProDevice {
     typedef std::function<bool(const String, int&)> RangeValueCallback;
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
     void onRangeValue(RangeValueCallback cb) { rangeValueCallback = cb; }
+    void onAdjustRangeValue(RangeValueCallback cb) { adjustRangeValueCallback = cb; }
 
     // event
     bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
@@ -22,6 +23,7 @@ class SinricProFanUS :  public SinricProDevice {
   private:
     PowerStateCallback powerStateCallback;
     RangeValueCallback rangeValueCallback; 
+    RangeValueCallback adjustRangeValueCallback;
 };
 
 SinricProFanUS::SinricProFanUS(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
@@ -46,6 +48,14 @@ bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, Jso
     response_value["rangeValue"] = rangeValue;
     return success;
   }
+
+  if (actionString == "adjustRangeValue" && adjustRangeValueCallback) {
+    int rangeValueDelta = request_value["rangeValueDelta"] | 0;
+    success = adjustRangeValueCallback(String(deviceId), rangeValueDelta);
+    response_value["rangeValue"] = rangeValueDelta;
+    return success;
+  }
+
   return success;
 }
 
