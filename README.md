@@ -192,30 +192,42 @@ Events
 
 ## Callbacks
 
-### onPowerState
+### onAdjustBands
 ```C++
-bool onPowerState(const String deviceId, bool &state)
+bool onAdjustBands(const String deviceId, const String bands, int &levelDelta)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-| `state`|  `bool&` | `true`: turn on<br>`false`: turn off | `true`: turned on<br>`false`: turned off | `true` |
+|`bands`|`const String`| `"BASS"`, `"MIDRANGE"`, `"TREBBLE"` |---| `"BASS"` (adjust BASS band)|
+|`levelDelta`| `int&` |`-n`..`+n`|`0`..`n`|*Input*:`-3` (lower level about 3)<br>*Output*:`2` (new level is 2)<br>(see note) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) | [Doorbell](#doorbell) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | [Fan (non US)](#fan-non-us) | [Fan (US)](#fan-us) |
+Note<br>
+*Input*: relative value between `-n` and `+n`<br>
+*Output*: absolute value between `0` and `n`
+
+Devices: | [Speaker](#speaker) |
 
 ---
-### onPowerLevel
+
+### onAdjustBrightness
 ```C++
-bool onPowerLevel(const String deviceId, int &level)
+bool onAdjustBrightness(const String deviceId, int &brightnessDelta)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`level`|`int&`|`0`..`100`|`0`..`100`|`75`|
+| `deviceId` | `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+|`brightnessDelta`|`int&`|`-100`..`100`|`0`..`100`|Input*:`-25`(reduce brightness about 25)<br>*Output*:`50` (new brightness is 50)<br>(*see note*)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Note<br>
+*Input*: relative value between `-100` and `100`<br>
+*Output*: absolute value between `0` and `100`
+
+Devices: | [Light](#light) |
+
 ---
-Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) |
 
 ### onAdjustPowerLevel
 ```C++
@@ -234,6 +246,25 @@ Note<br>
 Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) |
 
 ---
+
+### onAdjustVolume
+```C++
+bool onAdjustVolume(const String deviceId, int&volumeDelta)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+|`volumeDelta`|`int&`|`-100`..`100`|`0`..`100`|`-10` (*see note*)|
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Note<br>
+*Input*: relative value between `-100` and `100`<br>
+*Output*: absolute value between `0` and `100`
+
+Devices: | [TV](#tv) | [Speaker](#speaker) |
+
+---
+
 ### onBrightness
 ```C++
 bool onBrightness(const String deviceId, int &brightness)
@@ -247,21 +278,18 @@ bool onBrightness(const String deviceId, int &brightness)
 Devices: | [Light](#light) |
 
 ---
-### onAdjustBrightness
+
+### onChangeChannel
 ```C++
-bool onAdjustBrightness(const String deviceId, int &brightnessDelta)
+bool onChangeChannel(const String deviceId, String &channel)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` | `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`brightnessDelta`|`int&`|`-100`..`100`|`0`..`100`|Input*:`-25`(reduce brightness about 25)<br>*Output*:`50` (new brightness is 50)<br>(*see note*)|
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+|`channel` | `String&` | `channel name` | `channel name` | `"HBO"` (name of a tv channel) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Note<br>
-*Input*: relative value between `-100` and `100`<br>
-*Output*: absolute value between `0` and `100`
-
-Devices: | [Light](#light) |
+Devices: | [TV](#tv) | 
 
 ---
 
@@ -281,7 +309,6 @@ Devices: | [Light](#light) |
 
 ---
 
-
 ### onColorTemperature
 
 ```C++
@@ -292,6 +319,24 @@ bool onColorTemperature(const String deviceId, int &colorTemperature)
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`colorTemperature` | `int&` | `2200`,`2700`, `4000`, `5500`, `7000` | `2200`,`2700`, `4000`, `5500`, `7000` | `2700` (soft white) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Devices: | [Light](#light) |
+
+---
+
+### onDecreaseColorTemperature
+```C++
+bool onDecreaseColorTemperature(const String deviceId, int &colorTemperature)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+|`colorTemperature` | `int&` | ---<br>(see note) | `2200`,`2700`, `4000`, `5500`, `7000` | `2200` (warm white) |
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Note<br>
+*Input*: ---<br>
+*Output*: new color temperature [`2200`,`2700`, `4000`, `5500`, `7000`]
 
 Devices: | [Light](#light) |
 
@@ -315,89 +360,30 @@ Devices: | [Light](#light) |
 
 ---
 
-### onDecreaseColorTemperature
+### onLockState
+
 ```C++
-bool onDecreaseColorTemperature(const String deviceId, int &colorTemperature)
+bool onLockState(const String deviceId, bool &state)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`colorTemperature` | `int&` | ---<br>(see note) | `2200`,`2700`, `4000`, `5500`, `7000` | `2200` (warm white) |
+|`state`|`bool&`| `true`: lock device<br>`false`: unlock device |  `true`: device is locked<br>`false`: device is unlocked | `true` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Note<br>
-*Input*: ---<br>
-*Output*: new color temperature [`2200`,`2700`, `4000`, `5500`, `7000`]
-
-Devices: | [Light](#light) |
+Devices: | [Lock](#lock) |
 
 ---
-### onChangeChannel
+
+### onMediaControl
 ```C++
-bool onChangeChannel(const String deviceId, String &channel)
+bool onMediaControl(const String deviceId, String &control)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`channel` | `String&` | `channel name` | `channel name` | `"HBO"` (name of a tv channel) |
+| `control`|  `String&` | `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"`| `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"` | `Pause`: device is paused |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
-
-Devices: | [TV](#tv) | 
-
----
-### onSkipChannels
-```C++
-bool onSkipChannels(const String deviceId, const int channelCount, String &channelName)
-```
-| parameter | type|  input value | output value | example |
-|--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-| `channelCount` | `const int`| `-n`..`+n` | --- | `-5`|
-|`channelName` | `String&` | --- | `channel name` | `"HBO"` (name of the new tv channel) |
-| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
-
-Devices: | [TV](#tv) | 
-
----
-### onSelectInput
-```C++
-bool onSelectInput(const String deviceId, String &input)
-```
-| parameter | type|  input value | output value | example |
-|--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`input` | `String&` | `input name` | `input name` | `"AUX 1"`, `"AUX 2"`, `"AUX 3"`, `"AUX 4"`, `"AUX 5"`, `"AUX 6"`, `"AUX 7"`, `"BLURAY"`, `"CABLE"`, `"CD"`, `"COAX 1"`,`"COAX 2"`, `"COMPOSITE 1"`, `"DVD"`, `"GAME"`, `"HD RADIO"`, `"HDMI 1"`, `"HDMI 2"`, `"HDMI 3"`, `"HDMI 4"`, `"HDMI 5"`, `"HDMI 6"`, `"HDMI 7"`, `"HDMI 8"`, `"HDMI 9"`, `"HDMI 10"`, `"HDMI ARC"`, `"INPUT 1"`, `"INPUT 2"`, `"INPUT 3"`, `"INPUT 4"`, `"INPUT 5"`, `"INPUT 6"`, `"INPUT 7"`, `"INPUT 8"`, `"INPUT 9"`, `"INPUT 10"`, `"IPOD"`, `"LINE 1"`, `"LINE 2"`, `"LINE 3"`, `"LINE 4"`, `"LINE 5"`, `"LINE 6"`, `"LINE 7"`, `"MEDIA PLAYER"`, `"OPTICAL 1"`, `"OPTICAL 2"`, `"PHONO"`, `"PLAYSTATION"`, `"PLAYSTATION 3"`, `"PLAYSTATION 4"`, `"SATELLITE"`, `"SMARTCAST"`, `"TUNER"`, `"TV"`, `"USB DAC"`, `"VIDEO 1"`, `"VIDEO 2"`, `"VIDEO 3"`, `"XBOX"` |
-| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
-
-Devices: | [TV](#tv) | 
-
----
-### onSetVolume
-```C++
-bool onSetVolume(const String deviceId, int &volume)
-```
-| parameter | type|  input value | output value | example |
-|--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`volume`|`int&`|`0`..`100`|`0`..`100`|`75`|
-| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
-
-Devices: | [TV](#tv) | [Speaker](#speaker) |
-
----
-### onAdjustVolume
-```C++
-bool onAdjustVolume(const String deviceId, int&volumeDelta)
-```
-| parameter | type|  input value | output value | example |
-|--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`volumeDelta`|`int&`|`-100`..`100`|`0`..`100`|`-10` (*see note*)|
-| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
-
-Note<br>
-*Input*: relative value between `-100` and `100`<br>
-*Output*: absolute value between `0` and `100`
 
 Devices: | [TV](#tv) | [Speaker](#speaker) |
 
@@ -416,19 +402,72 @@ bool onMute(const String deviceId, bool &mute)
 Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ---
-### onMediaControl
+
+### onPowerLevel
 ```C++
-bool onMediaControl(const String deviceId, String &control)
+bool onPowerLevel(const String deviceId, int &level)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-| `control`|  `String&` | `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"`| `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"` | `Pause`: device is paused |
+|`level`|`int&`|`0`..`100`|`0`..`100`|`75`|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Devices: | [TV](#tv) | [Speaker](#speaker) |
+Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) |
 
 ---
+
+### onPowerState
+```C++
+bool onPowerState(const String deviceId, bool &state)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `state`|  `bool&` | `true`: turn on<br>`false`: turn off | `true`: turned on<br>`false`: turned off | `true` |
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) | [Doorbell](#doorbell) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | [Fan (non US)](#fan-non-us) | [Fan (US)](#fan-us) |
+
+---
+
+### onRangeValue
+```C++
+bool onRangeValue(const String deviceId, int &rangeValue)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+|`rangeValue`|`int&`| `0`..`n` | `0`..`n` | `3` (device is set to 3)
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Devices: | [Fan (US)](#fan-us) |
+
+---
+
+### onResetBands
+```C++
+bool onResetBands(const String deviceId, const String bands, int &level)
+```
+
+Devices: | [Speaker](#speaker) |
+
+---
+
+### onSelectInput
+```C++
+bool onSelectInput(const String deviceId, String &input)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+|`input` | `String&` | `input name` | `input name` | `"AUX 1"`, `"AUX 2"`, `"AUX 3"`, `"AUX 4"`, `"AUX 5"`, `"AUX 6"`, `"AUX 7"`, `"BLURAY"`, `"CABLE"`, `"CD"`, `"COAX 1"`,`"COAX 2"`, `"COMPOSITE 1"`, `"DVD"`, `"GAME"`, `"HD RADIO"`, `"HDMI 1"`, `"HDMI 2"`, `"HDMI 3"`, `"HDMI 4"`, `"HDMI 5"`, `"HDMI 6"`, `"HDMI 7"`, `"HDMI 8"`, `"HDMI 9"`, `"HDMI 10"`, `"HDMI ARC"`, `"INPUT 1"`, `"INPUT 2"`, `"INPUT 3"`, `"INPUT 4"`, `"INPUT 5"`, `"INPUT 6"`, `"INPUT 7"`, `"INPUT 8"`, `"INPUT 9"`, `"INPUT 10"`, `"IPOD"`, `"LINE 1"`, `"LINE 2"`, `"LINE 3"`, `"LINE 4"`, `"LINE 5"`, `"LINE 6"`, `"LINE 7"`, `"MEDIA PLAYER"`, `"OPTICAL 1"`, `"OPTICAL 2"`, `"PHONO"`, `"PLAYSTATION"`, `"PLAYSTATION 3"`, `"PLAYSTATION 4"`, `"SATELLITE"`, `"SMARTCAST"`, `"TUNER"`, `"TV"`, `"USB DAC"`, `"VIDEO 1"`, `"VIDEO 2"`, `"VIDEO 3"`, `"XBOX"` |
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Devices: | [TV](#tv) | 
+
+---
+
 ### onSetBands
 ```C++
 bool onSetBands(const String deviceId, const String bands, int &level)
@@ -443,32 +482,7 @@ bool onSetBands(const String deviceId, const String bands, int &level)
 Devices: | [Speaker](#speaker) |
 
 ---
-### onAdjustBands
-```C++
-bool onAdjustBands(const String deviceId, const String bands, int &levelDelta)
-```
-| parameter | type|  input value | output value | example |
-|--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`bands`|`const String`| `"BASS"`, `"MIDRANGE"`, `"TREBBLE"` |---| `"BASS"` (adjust BASS band)|
-|`levelDelta`| `int&` |`-n`..`+n`|`0`..`n`|*Input*:`-3` (lower level about 3)<br>*Output*:`2` (new level is 2)<br>(see note) |
-| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
-Note<br>
-*Input*: relative value between `-n` and `+n`<br>
-*Output*: absolute value between `0` and `n`
-
-Devices: | [Speaker](#speaker) |
-
----
-### onResetBands
-```C++
-bool onResetBands(const String deviceId, const String bands, int &level)
-```
-
-Devices: | [Speaker](#speaker) |
-
----
 ### onSetMode
 ```C++
 bool onSetMode(const String deviceId, String &mode)
@@ -482,6 +496,36 @@ bool onSetMode(const String deviceId, String &mode)
 Devices: | [Speaker](#speaker) |
 
 ---
+
+### onSetVolume
+```C++
+bool onSetVolume(const String deviceId, int &volume)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+|`volume`|`int&`|`0`..`100`|`0`..`100`|`75`|
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Devices: | [TV](#tv) | [Speaker](#speaker) |
+
+---
+
+### onSkipChannels
+```C++
+bool onSkipChannels(const String deviceId, const int channelCount, String &channelName)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `channelCount` | `const int`| `-n`..`+n` | --- | `-5`|
+|`channelName` | `String&` | --- | `channel name` | `"HBO"` (name of the new tv channel) |
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Devices: | [TV](#tv) | 
+
+---
+
 ### onTargetTemperature
 ```C++
 bool onTargetTemperatue(const String deviceId, float &temperature)
@@ -498,6 +542,7 @@ Values are in Celsius or Kelvin (depending on your account settings)
 Devices: | [Thermostat](#thermostat) |
 
 ---
+
 ### onThermostatMode
 ```C++
 bool onThermostatMode(const String deviceId, String &mode)
@@ -505,67 +550,29 @@ bool onThermostatMode(const String deviceId, String &mode)
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
 | `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`mode`|`String&`| `COOL`, `"HEA"T`,`"AUTO"` | `"COOL"`, `"HEAT"`,`"AUTO"`| `"AUTO"` (set mode to "automatic")|
+|`mode`|`String&`| `"COOL"`, `"HEAT"`, `"AUTO"` | `"COOL"`, `"HEAT"`,`"AUTO"`| `"AUTO"` (set mode to "automatic")|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
 Devices: | [Thermostat](#thermostat) |
 
 ---
 
-### onLockState
-```C++
-bool onRangeValue(const String deviceId, int &rangeValue)
-```
-| parameter | type|  input value | output value | example |
-|--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`rangeValue`|`int&`| `0`..`n` | `0`..`n` | `3` (device is set to 3)
-| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
-
-Devices: | [Fan (US)](#fan-us) |
-
----
-
-### onRangeValue
-```C++
-bool onLockState(const String deviceId, bool &state)
-```
-| parameter | type|  input value | output value | example |
-|--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`state`|`bool&`| `true`: lock device<br>`false`: unlock device |  `true`: device is locked<br>`false`: device is unlocked | `true` |
-| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
-
-Devices: | [Fan (US)](#fan-us) |
-
----
-
-
 ## Events
-### sendPowerStateEvent
-```C++
-sendPowerStateEvent(bool state, String cause="PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|--|
-| `state` | `bool` | device state |`true`: device is on<br>`false`: device is off | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"`
 
-Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | [Fan (non US)](#fan-non-us) | [Fan (US)](#fan-us) |
-
----
-### sendPowerLevelEvent
+### sendBandsEvent
 ```C++
-sendPowerLevelEvent(int level, String cause="PHYSICAL_INTERACTION")
+bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION")"PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
-| `level` | `int` | device power level | `0`..`100`| 
+| `bands` | `String` | selected band | `"BASS"`, `"MIDRANGE"`,`"TREBBLE"` | 
+| `level` | `int` | report new band level | `0`..`n` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
 
-Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) | 
+Devices: | [Speaker](#speaker) |
 
 ---
+
 ### sendBrightnessEvent
 ```C++
 void sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION")
@@ -576,168 +583,6 @@ void sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION")
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
 
 Devices: | [Light](#light) |
-
----
-### sendColorEvent
-```C++
-void sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `r` | `byte` | red value | `0`..`255` | 
-| `g` | `byte` | green value | `0`..`255` | 
-| `b` | `byte` | blue value | `0`..`255` | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [Light](#light) |
-
----
-### sendColorTemperatureEvent
-```C++
-void sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `colorTemperature` | `int` | color temperature | `2200`, `2700`, `4000`, `5500`, `7000` | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [Light](#light) |
-
----
-### sendDoorbellEvent
-```C++
-void sendDoorbellEvent(String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [Doorbell](#doorbell) |
-
----
-### sendTemperatureEvent
-```C++
-void sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `temperature` | `float` | temperature | `-n`..`n` | 
-| `humidity` | `float` | (optional) humidity | `-n`..`+n`<br>(`-1` if not supported) | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
-
-Devices: | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) |
-
----
-### sendTargetTemperatureEvent
-```C++
-void sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `temperature` | `float` | temperature | `-n`..`n` | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
-
-Devices: | [Thermostat](#thermostat) |
-
----
-### sendThermostatModeEvent
-```C++
-void sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `thermostatMode` | `String` | thermostat mode | `"COOL"`, `"HEAT"`, `"AUTO"` | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [Thermostat](#thermostat) |
-
----
-### sendMotionEvent
-```C++
-void sendMotionEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `detected` | `bool` | report motion event | `true`: motion detected<br>`false`: motion not detected (should be sent if motion not happens any longer) | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [MotionSensor](#motionsensor) |
-
----
-### sendContactEvent
-```C++
-void sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `detected` | `bool` | report contact state | `true`: contact is closed<br>`false`: contact is open | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [ContactSensor](#contactsensor) |
-
----
-### sendRangeValueEvent
-```C++
-bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `rangeValue` | `int` | report actual range value | `0`..`n` | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [Fan (US)](#fan-us) |
-
----
-
-### sendVolumeEvent
-```C++
-bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `volume` | `int` | report actual volume level| `0`..`100` | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [TV](#tv) | [Speaker](#speaker) |
-
----
-
-### sendMuteEvent
-```C++
-bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `mute` | `bool` | report mute event | `true`: device is muted <br>`false`: device is unmuted | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [TV](#tv) | [Speaker](#speaker) |
-
----
-
-### sendMediaControlEvent
-```C++
-bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `mediaControl` | `String` | report a media event | `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"` | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [TV](#tv) | [Speaker](#speaker) |
-
----
-
-### sendSelectInputEvent
-```C++
-bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION")
-```
-| parameter| type | description | value |
-|--|--|--|:--:|
-| `input` | `String` | report actual input | `"AUX 1"`, `"AUX 2"`, `"AUX 3"`, `"AUX 4"`, `"AUX 5"`, `"AUX 6"`, `"AUX 7"`, `"BLURAY"`, `"CABLE"`, `"CD"`, `"COAX 1"`,`"COAX 2"`, `"COMPOSITE 1"`, `"DVD"`, `"GAME"`, `"HD RADIO"`, `"HDMI 1"`, `"HDMI 2"`, `"HDMI 3"`, `"HDMI 4"`, `"HDMI 5"`, `"HDMI 6"`, `"HDMI 7"`, `"HDMI 8"`, `"HDMI 9"`, `"HDMI 10"`, `"HDMI ARC"`, `"INPUT 1"`, `"INPUT 2"`, `"INPUT 3"`, `"INPUT 4"`, `"INPUT 5"`, `"INPUT 6"`, `"INPUT 7"`, `"INPUT 8"`, `"INPUT 9"`, `"INPUT 10"`, `"IPOD"`, `"LINE 1"`, `"LINE 2"`, `"LINE 3"`, `"LINE 4"`, `"LINE 5"`, `"LINE 6"`, `"LINE 7"`, `"MEDIA PLAYER"`, `"OPTICAL 1"`, `"OPTICAL 2"`, `"PHONO"`, `"PLAYSTATION"`, `"PLAYSTATION 3"`, `"PLAYSTATION 4"`, `"SATELLITE"`, `"SMARTCAST"`, `"TUNER"`, `"TV"`, `"USB DAC"`, `"VIDEO 1"`, `"VIDEO 2"`, `"VIDEO 3"`, `"XBOX"` | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
-
-Devices: | [TV](#tv) | 
 
 ---
 
@@ -754,17 +599,69 @@ Devices: | [TV](#tv) |
 
 ---
 
-### sendBandsEvent
+### sendColorEvent
 ```C++
-bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION")"PHYSICAL_INTERACTION")
+void sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
-| `bands` | `String` | selected band | `"BASS"`, `"MIDRANGE"`,`"TREBBLE"` | 
-| `level` | `int` | report new band level | `0`..`n` |
+| `r` | `byte` | red value | `0`..`255` | 
+| `g` | `byte` | green value | `0`..`255` | 
+| `b` | `byte` | blue value | `0`..`255` | 
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
 
-Devices: | [Speaker](#speaker) |
+Devices: | [Light](#light) |
+
+---
+
+### sendColorTemperatureEvent
+```C++
+void sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `colorTemperature` | `int` | color temperature | `2200`, `2700`, `4000`, `5500`, `7000` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Light](#light) |
+
+---
+
+### sendContactEvent
+```C++
+void sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `detected` | `bool` | report contact state | `true`: contact is closed<br>`false`: contact is open | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [ContactSensor](#contactsensor) |
+
+---
+
+### sendDoorbellEvent
+```C++
+void sendDoorbellEvent(String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Doorbell](#doorbell) |
+
+---
+
+### sendMediaControlEvent
+```C++
+bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `mediaControl` | `String` | report a media event | `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ---
 
@@ -779,6 +676,138 @@ bool sendModeEvent(String mode, String cause = "PHYSICAL_INTERACTION")
 
 Devices: | [Speaker](#speaker) |
 
+---
+
+### sendMotionEvent
+```C++
+void sendMotionEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `detected` | `bool` | report motion event | `true`: motion detected<br>`false`: motion not detected (should be sent if motion not happens any longer) | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [MotionSensor](#motionsensor) |
+
+---
+
+### sendMuteEvent
+```C++
+bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `mute` | `bool` | report mute event | `true`: device is muted <br>`false`: device is unmuted | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [TV](#tv) | [Speaker](#speaker) |
+
+---
+
+### sendPowerLevelEvent
+```C++
+sendPowerLevelEvent(int level, String cause="PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `level` | `int` | device power level | `0`..`100`| 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) | 
+
+---
+
+### sendPowerStateEvent
+```C++
+sendPowerStateEvent(bool state, String cause="PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|--|
+| `state` | `bool` | device state |`true`: device is on<br>`false`: device is off | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"`
+
+Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | [Fan (non US)](#fan-non-us) | [Fan (US)](#fan-us) |
+
+---
+
+### sendRangeValueEvent
+```C++
+bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `rangeValue` | `int` | report actual range value | `0`..`n` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Fan (US)](#fan-us) |
+
+---
+
+### sendSelectInputEvent
+```C++
+bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `input` | `String` | report actual input | `"AUX 1"`, `"AUX 2"`, `"AUX 3"`, `"AUX 4"`, `"AUX 5"`, `"AUX 6"`, `"AUX 7"`, `"BLURAY"`, `"CABLE"`, `"CD"`, `"COAX 1"`,`"COAX 2"`, `"COMPOSITE 1"`, `"DVD"`, `"GAME"`, `"HD RADIO"`, `"HDMI 1"`, `"HDMI 2"`, `"HDMI 3"`, `"HDMI 4"`, `"HDMI 5"`, `"HDMI 6"`, `"HDMI 7"`, `"HDMI 8"`, `"HDMI 9"`, `"HDMI 10"`, `"HDMI ARC"`, `"INPUT 1"`, `"INPUT 2"`, `"INPUT 3"`, `"INPUT 4"`, `"INPUT 5"`, `"INPUT 6"`, `"INPUT 7"`, `"INPUT 8"`, `"INPUT 9"`, `"INPUT 10"`, `"IPOD"`, `"LINE 1"`, `"LINE 2"`, `"LINE 3"`, `"LINE 4"`, `"LINE 5"`, `"LINE 6"`, `"LINE 7"`, `"MEDIA PLAYER"`, `"OPTICAL 1"`, `"OPTICAL 2"`, `"PHONO"`, `"PLAYSTATION"`, `"PLAYSTATION 3"`, `"PLAYSTATION 4"`, `"SATELLITE"`, `"SMARTCAST"`, `"TUNER"`, `"TV"`, `"USB DAC"`, `"VIDEO 1"`, `"VIDEO 2"`, `"VIDEO 3"`, `"XBOX"` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [TV](#tv) | 
+
+---
+
+### sendTargetTemperatureEvent
+```C++
+void sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `temperature` | `float` | temperature | `-n`..`n` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
+
+Devices: | [Thermostat](#thermostat) |
+
+---
+
+### sendTemperatureEvent
+```C++
+void sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `temperature` | `float` | temperature | `-n`..`n` | 
+| `humidity` | `float` | (optional) humidity | `-n`..`+n`<br>(`-1` if not supported) | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
+
+Devices: | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) |
+
+---
+
+### sendThermostatModeEvent
+```C++
+void sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `thermostatMode` | `String` | thermostat mode | `"COOL"`, `"HEAT"`, `"AUTO"` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [Thermostat](#thermostat) |
+
+---
+
+### sendVolumeEvent
+```C++
+bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION")
+```
+| parameter| type | description | value |
+|--|--|--|:--:|
+| `volume` | `int` | report actual volume level| `0`..`100` | 
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+
+Devices: | [TV](#tv) | [Speaker](#speaker) |
+
+---
 
 ## Dependencies / Needed libraries
 [ArduinoJson](https://github.com/bblanchon/ArduinoJson)<br>
