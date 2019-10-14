@@ -121,6 +121,7 @@ Events
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onTargetTemperature](#ontargettemperature)
+- [onAdjustTargetTemperature](#onadjusttargettemperature)
 - [onThermostatMode](#onthermostatmode)
 
 Events
@@ -195,6 +196,7 @@ Events
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onTargetTemperature](#ontargettemperature)
+- [onAdjustTargetTemperature](#onadjusttargettemperature)
 - [onThermostatMode](#onthermostatmode)
 - [onRangeValue](#onrangevalue)
 - [onAdjustRangeValue](#onadjustrangevalue)
@@ -279,6 +281,24 @@ Note<br>
 *Output*: absolute value between `0` and `n`
 
 Devices: | [Fan (US)](#fan-us) | [Window AC Unit](#window-ac-unit) |
+
+---
+
+### onAdjustTargetTemperature
+```C++
+bool onAdjustTargetTemperature(const String deviceId, float &temperatureDelta)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `temperatureDelta` | `float&` | `-n`..`n` | `0`..`n` |*Input*:`-2`(reduce temperature about 2°)<br>*Output*:`1` (new temperature Value is 1)<br>(*see note*)|
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Note<br>
+*Input*: relative value between `-n` and `n`<br>
+*Output*: absolute value between `0` and `n`
+
+Devices: | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
 ---
 

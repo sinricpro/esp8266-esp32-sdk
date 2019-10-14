@@ -14,6 +14,7 @@ class SinricProThermostat :  public SinricProDevice {
 
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
     void onTargetTemperatue(TargetTemperatureCallback cb) { targetTemperatureCallback = cb; }
+    void onAdjustTargetTemperature(TargetTemperatureCallback cb) { adjustTargetTemperatureCallback = cb; }
     void onThermostatMode(ThermostatModeCallback cb) { thermostatModeCallback = cb; }
 
     // event
@@ -27,12 +28,14 @@ class SinricProThermostat :  public SinricProDevice {
   private:
     PowerStateCallback powerStateCallback;
     TargetTemperatureCallback targetTemperatureCallback;
+    TargetTemperatureCallback adjustTargetTemperatureCallback;
     ThermostatModeCallback thermostatModeCallback;
 };
 
 SinricProThermostat::SinricProThermostat(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
   powerStateCallback(nullptr),
   targetTemperatureCallback(nullptr),
+  adjustTargetTemperatureCallback(nullptr),
   thermostatModeCallback(nullptr) {}
 
 bool SinricProThermostat::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
@@ -48,9 +51,21 @@ bool SinricProThermostat::handleRequest(const char* deviceId, const char* action
   }
 
   if (actionString == "targetTemperature" && targetTemperatureCallback) {
-    float temperature = request_value["temperature"] | -1;
+    float temperature;
+    if (request_value.containsKey("temperature")) {
+      temperature = request_value["temperature"];
+    } else {
+      temperature = 1;
+    }
     success = targetTemperatureCallback(String(deviceId), temperature);
     response_value["temperature"] = temperature;
+    return success;
+  }
+
+  if (actionString == "adjustTemperature" && adjustTargetTemperatureCallback) {
+    float temperatureDelta = request_value["temperature"];
+    success = adjustTargetTemperatureCallback(String(deviceId), temperatureDelta);
+    response_value["temperature"] = temperatureDelta;
     return success;
   }
 

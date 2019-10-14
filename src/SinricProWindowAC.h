@@ -17,6 +17,7 @@ class SinricProWindowAC :  public SinricProDevice {
     void onRangeValue(RangeValueCallback cb) { rangeValueCallback = cb; }
     void onAdjustRangeValue(RangeValueCallback cb) { adjustRangeValueCallback = cb; }
     void onTargetTemperatue(TargetTemperatureCallback cb) { targetTemperatureCallback = cb; }
+    void onAdjustTargetTemperature(TargetTemperatureCallback cb) { adjustTargetTemperatureCallback = cb; }
     void onThermostatMode(ThermostatModeCallback cb) { thermostatModeCallback = cb; }
 
     // event
@@ -33,6 +34,7 @@ class SinricProWindowAC :  public SinricProDevice {
     RangeValueCallback rangeValueCallback; 
     RangeValueCallback adjustRangeValueCallback; 
     TargetTemperatureCallback targetTemperatureCallback;
+    TargetTemperatureCallback adjustTargetTemperatureCallback;
     ThermostatModeCallback thermostatModeCallback;
 
 };
@@ -42,6 +44,7 @@ SinricProWindowAC::SinricProWindowAC(const char* deviceId, unsigned long eventWa
   rangeValueCallback(nullptr),
   adjustRangeValueCallback(nullptr),
   targetTemperatureCallback(nullptr),
+  adjustTargetTemperatureCallback(nullptr),
   thermostatModeCallback(nullptr) {}
 
 bool SinricProWindowAC::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
@@ -70,11 +73,22 @@ bool SinricProWindowAC::handleRequest(const char* deviceId, const char* action, 
     return success;
   }
 
-
   if (actionString == "targetTemperature" && targetTemperatureCallback) {
-    float temperature = request_value["temperature"] | -1;
+    float temperature;
+    if (request_value.containsKey("temperature")) {
+      temperature = request_value["temperature"];
+    } else {
+      temperature = 1;
+    }
     success = targetTemperatureCallback(String(deviceId), temperature);
     response_value["temperature"] = temperature;
+    return success;
+  }
+
+  if (actionString == "adjustTemperature" && adjustTargetTemperatureCallback) {
+    float temperatureDelta = request_value["temperature"];
+    success = adjustTargetTemperatureCallback(String(deviceId), temperatureDelta);
+    response_value["temperature"] = temperatureDelta;
     return success;
   }
 
