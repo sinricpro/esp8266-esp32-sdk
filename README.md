@@ -1,8 +1,24 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
+## Installation
+This library is designed for use with [platform.io](https://platformio.org/platformio-ide).  
+We recommend using [VS Code](https://code.visualstudio.com/) as code editor.  
 
-## usage
-#### include SinricPro-Library (SinricPro.h) and SinricPro-Device-Libraries (eg. SinricProSwitch.h) 
+1. Install [VS Code](https://code.visualstudio.com/)  
+2. Install [platform.io](https://platformio.org/platformio-ide)  
+3. Install library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)
+4. Follow Quickstart Instructions on [SinricPro](https://help.sinric.pro/pages/quickstart.html)
+
+---
+
+## Dependencies
+[ArduinoJson](https://github.com/bblanchon/ArduinoJson)<br>
+[WebSocketsClient](https://github.com/Links2004/arduinoWebSockets)<br>
+[NTPClient](https://github.com/arduino-libraries/NTPClient)
+
+---
+## Usage
+#### Include SinricPro-Library (SinricPro.h) and SinricPro-Device-Libraries (eg. SinricProSwitch.h) 
 ```C++
 #include <SinricPro.h>
 #include <SinricProSwitch.h>
@@ -13,7 +29,7 @@
 #define signingKey  	"your-signing-key"
 #define myDeviceId  	"your-device-id"
 ```
-#### define callback routine(s)
+#### Define callback routine(s)
 ```C++
 bool onPowerState(const String deviceId, bool &state) {
   Serial.printf("device %s turned %s\r\n, deviceId.c_str(), state?"on":"off");
@@ -863,8 +879,3 @@ bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION")
 Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ---
-
-## Dependencies / Needed libraries
-[ArduinoJson](https://github.com/bblanchon/ArduinoJson)<br>
-[WebSocketsClient](https://github.com/Links2004/arduinoWebSockets)<br>
-[NTPClient](https://github.com/arduino-libraries/NTPClient)
