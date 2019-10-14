@@ -831,7 +831,7 @@ void sendTemperatureEvent(float temperature, float humidity = -1, String cause =
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `temperature` | `float` | temperature | `-n`..`n` | 
-| `humidity` | `float` | (optional) humidity | `-n`..`+n`<br>(`-1` if not supported) | 
+| `humidity` | `float` | (optional) humidity | `0`..`+n`<br>(`-1` if not supported) | 
 | `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
 
 Devices: | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
