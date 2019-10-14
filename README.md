@@ -818,7 +818,7 @@ void sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTE
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `temperature` | `float` | temperature | `-n`..`n` | 
-| `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
+| `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
 
 Devices: | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
