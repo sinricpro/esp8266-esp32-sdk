@@ -1,3 +1,10 @@
+/*
+ *  Copyright (c) 2019 Sinric. All rights reserved.
+ *  Licensed under Creative Commons Attribution-Share Alike (CC BY-SA)
+ *
+ *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
+ */
+
 #ifndef _SINRIC_H_
 #define _SINRIC_H_
 
@@ -147,18 +154,15 @@ void SinricProClass::handleSendQueue() {
 }
 
 void SinricProClass::connect() {
-    String deviceList;
-    int i = 0;
-    for (auto& device : devices) {
-        if (i>0) deviceList += ";";
-        deviceList += String(device->getDeviceId());
-        i++;
-    }
+  String deviceList;
+  int i = 0;
+  for (auto& device : devices) {
+    if (i>0) deviceList += ";";
+    deviceList += String(device->getDeviceId());
+    i++;
+  }
 
-    _websocketListener.begin(serverURL, socketAuthToken, deviceList.c_str(), &receiveQueue);
-    while (_websocketListener.isConnected() == false) { DEBUG_SINRIC("."); delay(250); }
-    DEBUG_SINRIC("\r\n");
-    _udpListener.begin(&receiveQueue);
+  _websocketListener.begin(serverURL, socketAuthToken, deviceList.c_str(), &receiveQueue);
 }
 
 
@@ -175,7 +179,7 @@ bool SinricProClass::isConnected() {
 
 void SinricProClass::reconnect() {
   DEBUG_SINRIC("SinricProClass.reconnect(): disconnecting\r\n");
-  disconnect();
+  stop();
   DEBUG_SINRIC("SinricProClass.reconnect(): wait 1second\r\n");
   delay(1000);
   DEBUG_SINRIC("SinricProClass.reconnect(): connecting\r\n");

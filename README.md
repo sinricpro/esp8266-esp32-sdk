@@ -6,7 +6,7 @@ We recommend using [VS Code](https://code.visualstudio.com/) as code editor.
 
 1. Install [VS Code](https://code.visualstudio.com/)  
 2. Install [platform.io](https://platformio.org/platformio-ide)  
-3. Install library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)
+3. Install SinricPro library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)
 4. Follow Quickstart Instructions on [SinricPro](https://help.sinric.pro/pages/quickstart.html)
 
 ---
@@ -29,6 +29,9 @@ We recommend using [VS Code](https://code.visualstudio.com/) as code editor.
 #define signingKey  	"your-signing-key"
 #define myDeviceId  	"your-device-id"
 ```
+*Note:*  
+socketAuthToken may be named "APP KEY" in portal.sinric.pro  
+signingKey may be named "APP SECRET" in portal.sinric.pro
 #### Define callback routine(s)
 ```C++
 bool onPowerState(const String deviceId, bool &state) {

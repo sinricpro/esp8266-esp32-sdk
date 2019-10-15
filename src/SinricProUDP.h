@@ -1,3 +1,10 @@
+/*
+ *  Copyright (c) 2019 Sinric. All rights reserved.
+ *  Licensed under Creative Commons Attribution-Share Alike (CC BY-SA)
+ *
+ *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
+ */
+
 #ifndef __SINRIC_PRO_UDP_H__
 #define __SINRIC_PRO_UDP_H__
 

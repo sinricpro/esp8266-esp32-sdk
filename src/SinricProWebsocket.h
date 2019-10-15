@@ -1,3 +1,10 @@
+/*
+ *  Copyright (c) 2019 Sinric. All rights reserved.
+ *  Licensed under Creative Commons Attribution-Share Alike (CC BY-SA)
+ *
+ *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
+ */
+
 
 #ifndef _SINRICPRO_WEBSOCKET_H__
 #define _SINRICPRO_WEBSOCKET_H__
@@ -38,6 +45,7 @@ class websocketListener
 
     void disconnect() { webSocket.disconnect(); }
   private:
+    bool _begin = false;
     bool _isConnected = false;
 
     WebSocketsClient webSocket;
@@ -57,31 +65,27 @@ websocketListener::~websocketListener() {
 }
 
 void websocketListener::begin(String server, String appkey, String deviceIds, SinricProQueue_t* receiveQueue) {
-    this->receiveQueue = receiveQueue;
-    DEBUG_SINRIC("[SinricPro:Websocket]: Conecting to WebSocket Server\r\n");
+  if (_begin) return;
+  _begin = true;
+  this->receiveQueue = receiveQueue;
+  DEBUG_SINRIC("[SinricPro:Websocket]: Conecting to WebSocket Server\r\n");
 
-    if (_isConnected) {
-        stop();
-    }
+  if (_isConnected) {
+    stop();
+  }
 
-    String headers = "appkey:" + appkey + "\r\n" + "deviceids:" + deviceIds + "\r\nplatform:";
-    #ifdef ESP8266
-      headers += "ESP8266";
-    #endif
-    #ifdef ESP32
-      headers += "ESP32";
-    #endif
-    DEBUG_SINRIC("[SinricPro:Websocket]: headers: \"%s\"\r\n", headers.c_str());
-    webSocket.setExtraHeaders(headers.c_str());
-    webSocket.begin(server, SERVER_PORT, "/"); // server address, port and URL
-    webSocket.onEvent([&](WStype_t type, uint8_t * payload, size_t length) { webSocketEvent(type, payload, length); });
-    webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
-    DEBUG_SINRIC("[SinricPro:Websocket]: connecting");
-    while (!_isConnected) {
-      DEBUG_SINRIC(".");
-      webSocket.loop();
-      delay(100);
-    }
+  String headers = "appkey:" + appkey + "\r\n" + "deviceids:" + deviceIds + "\r\nplatform:";
+  #ifdef ESP8266
+         headers += "ESP8266";
+  #endif
+  #ifdef ESP32
+         headers += "ESP32";
+  #endif
+  DEBUG_SINRIC("[SinricPro:Websocket]: headers: \"%s\"\r\n", headers.c_str());
+  webSocket.setExtraHeaders(headers.c_str());
+  webSocket.onEvent([&](WStype_t type, uint8_t * payload, size_t length) { webSocketEvent(type, payload, length); });
+  webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
+  webSocket.begin(server, SERVER_PORT, "/"); // server address, port and URL
 }
 
 void websocketListener::handle() {
@@ -92,6 +96,7 @@ void websocketListener::stop() {
   if (_isConnected) {
     webSocket.disconnect();
   }
+  _begin = false;
 }
 
 void websocketListener::sendResponse(String response) {
