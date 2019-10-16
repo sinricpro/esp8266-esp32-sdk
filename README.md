@@ -1,17 +1,14 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
 ## Installation
-This library is designed for use with [platform.io](https://platformio.org/platformio-ide).  
-We recommend using [VS Code](https://code.visualstudio.com/) as code editor.  
+This library is designed for use with [platform.io](https://platformio.org/platformio-ide). We recommend using [VS Code](https://code.visualstudio.com/) as code editor.  
 
 1. Install [VS Code](https://code.visualstudio.com/)  
 2. Install [platform.io](https://platformio.org/platformio-ide)  
 3. Open the example project using VS Code.
-4. Install SinricPro library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)
+4. Install **SinricPro** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)
 
 ![sinricpro library manager](https://github.com/sinricpro/images/blob/master/platformio-install-sinricpro.png)
-
-
 
 5. Follow Quickstart Instructions on [SinricPro](https://help.sinric.pro/pages/quickstart.html)
 ---
