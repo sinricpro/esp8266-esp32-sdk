@@ -9,7 +9,8 @@ We recommend using [VS Code](https://code.visualstudio.com/) as code editor.
 3. Open the example project using VS Code.
 4. Install SinricPro library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)
 
-![sinricpro library manager](https://imgur.com/Fmxzq2P)
+![sinricpro library manager](https://github.com/sinricpro/images/blob/master/platformio-install-sinricpro.png)
+
 
 
 5. Follow Quickstart Instructions on [SinricPro](https://help.sinric.pro/pages/quickstart.html)
