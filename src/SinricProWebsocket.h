@@ -32,7 +32,7 @@ class websocketListener
     websocketListener();
     ~websocketListener();
 
-    void begin(String server, String appkey, String deviceIds, SinricProQueue_t* receiveQueue);
+    void begin(String server, String socketAuthToken, String deviceIds, SinricProQueue_t* receiveQueue);
     void handle();
     void stop();
     bool isConnected() { return _isConnected; }
@@ -64,7 +64,7 @@ websocketListener::~websocketListener() {
   stop();
 }
 
-void websocketListener::begin(String server, String appkey, String deviceIds, SinricProQueue_t* receiveQueue) {
+void websocketListener::begin(String server, String socketAuthToken, String deviceIds, SinricProQueue_t* receiveQueue) {
   if (_begin) return;
   _begin = true;
   this->receiveQueue = receiveQueue;
@@ -74,7 +74,7 @@ void websocketListener::begin(String server, String appkey, String deviceIds, Si
     stop();
   }
 
-  String headers = "appkey:" + appkey + "\r\n" + "deviceids:" + deviceIds + "\r\nplatform:";
+  String headers = "appkey:" + socketAuthToken + "\r\n" + "deviceids:" + deviceIds + "\r\nplatform:";
   #ifdef ESP8266
          headers += "ESP8266";
   #endif
