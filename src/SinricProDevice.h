@@ -24,14 +24,12 @@ class SinricProDevice {
     DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause);
   private:
     EventSender* eventSender;
-    unsigned long lastEventMillis;
     unsigned long eventWaitTime;
     std::map<String, unsigned long> eventFilter;
 };
 
 SinricProDevice::SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime) : 
   eventSender(nullptr),
-  lastEventMillis(0),
   eventWaitTime(eventWaitTime) {
   deviceId = strdup(newDeviceId);
   if (this->eventWaitTime < 100) this->eventWaitTime = 100;
@@ -56,17 +54,17 @@ DynamicJsonDocument SinricProDevice::prepareEvent(const char* deviceId, const ch
 
 bool SinricProDevice::sendEvent(JsonDocument& event) {
   unsigned long actualMillis = millis();
-/*
-  if (actualMillis - lastEventMillis < eventWaitTime) return;
-  if (eventSender) eventSender->sendEvent(event);
-  lastEventMillis = actualMillis;
-*/
   String eventName = event["payload"]["action"] | ""; // get event name
+
+  if (eventFilter.find(eventName) == eventFilter.end()) {  // if eventFilter is not initialized
+    eventFilter[eventName] = -eventWaitTime; // initialize eventFilter
+  }
+
   unsigned long lastEventMillis = eventFilter[eventName] | 0; // get the last timestamp for event
   if (actualMillis - lastEventMillis < eventWaitTime) return false; // if last event was before waitTime return...
 
   if (eventSender) eventSender->sendEvent(event); // send event
-  eventFilter[eventName] = actualMillis; // set lastEventTime to now
+  eventFilter[eventName] = actualMillis; // update lastEventTime
   return true;
 }
 #endif
