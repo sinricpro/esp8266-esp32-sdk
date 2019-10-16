@@ -8,19 +8,19 @@
   },
   "authors": [
     {
-      "name": "sivar2311",
+      "name": "Boris Jaeger",
       "email": "sivar2311@gmail.com",
       "maintainer": true
     }
   ],
-  "version": "2.0.1",
+  "version": "2.0.2",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",
     "espressif32"
   ],
   "examples":[
-    "examples/Switch/src/switch.cpp",
-    "examples/Doorbell/src/doorbell.cpp"
+    "pio-examples/switch/src/switch.cpp",
+    "pio-examples/doorbell/src/doorbell.cpp"
   ]
 }

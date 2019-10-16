@@ -1,21 +1,24 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
 ## Installation
-This library is designed for use with [platform.io](https://platformio.org/platformio-ide). We recommend using [VS Code](https://code.visualstudio.com/) as code editor.  
 
+### VS Code & PlatformIO:
 1. Install [VS Code](https://code.visualstudio.com/)  
-2. Install [platform.io](https://platformio.org/platformio-ide)  
-3. Open the [example](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Switch) project using VS Code.
-4. Install **SinricPro** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)
+2. Install [PlatformIO](https://platformio.org/platformio-ide)  
+3. Install **SinricPro** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)
 
 ![sinricpro library manager](https://github.com/sinricpro/images/blob/master/platformio-install-sinricpro.png)
 
+### ArduinoIDE
+1. Download **SinricPro** [esp8266-esp32-sdk-master.zip](https://github.com/sinricpro/esp8266-esp32-sdk/archive/master.zip) from git
+2. Extract ZIP File to Arduino Library Folder (C:\Users\USERNAME\Documents\Arduino\libraries\SinricPro)
+3. Open Example in ArduinoIDE (File / Examples / SinricPro / ... )
 
 ---
 
 ## Dependencies
-[ArduinoJson](https://github.com/bblanchon/ArduinoJson)<br>
-[WebSocketsClient](https://github.com/Links2004/arduinoWebSockets)<br>
+[ArduinoJson](https://github.com/bblanchon/ArduinoJson) (Version 6.12.0)   
+[WebSocketsClient](https://github.com/Links2004/arduinoWebSockets) (Version 2.2.0)  
 [NTPClient](https://github.com/arduino-libraries/NTPClient)
 
 ---
