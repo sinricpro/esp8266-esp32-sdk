@@ -69,7 +69,7 @@ bool SinricProThermostat::handleRequest(const char* deviceId, const char* action
     return success;
   }
 
-  if (actionString == "adjustTemperature" && adjustTargetTemperatureCallback) {
+  if (actionString == "adjustTargetTemperature" && adjustTargetTemperatureCallback) {
     float temperatureDelta = request_value["temperature"];
     success = adjustTargetTemperatureCallback(String(deviceId), temperatureDelta);
     response_value["temperature"] = temperatureDelta;

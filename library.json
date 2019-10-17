@@ -13,7 +13,7 @@
       "maintainer": true
     }
   ],
-  "version": "2.0.2",
+  "version": "2.0.3",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",
@@ -22,5 +22,6 @@
   "examples":[
     "pio-examples/switch/src/switch.cpp",
     "pio-examples/doorbell/src/doorbell.cpp"
-  ]
+  ],
+  "license": "CC-BY-SA-4.0"
 }
