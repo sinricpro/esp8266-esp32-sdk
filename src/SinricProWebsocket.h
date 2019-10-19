@@ -68,7 +68,7 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
   if (_begin) return;
   _begin = true;
   this->receiveQueue = receiveQueue;
-  DEBUG_SINRIC("[SinricPro:Websocket]: Conecting to WebSocket Server\r\n");
+  DEBUG_SINRIC("[SinricPro:Websocket]: Conecting to WebSocket Server (%s)\r\n", server.c_str());
 
   if (_isConnected) {
     stop();
