@@ -21,36 +21,61 @@
 
 class SinricProClass : public EventSender {
   public:
-  void begin(String socketAuthToken, String signingKey, String serverURL = SERVER_URL);
-  template <typename DeviceType>
-  DeviceType& add(const char* deviceId, unsigned long eventWaitTime = 1000);
-  void add(SinricProDevice& newDevice);
-  void add(SinricProDevice* newDevice);
-  void handle();
-  void stop();
-  bool isConnected();
+    void begin(String socketAuthToken, String signingKey, String serverURL = SERVER_URL);
+    template <typename DeviceType>
+    DeviceType& add(const char* deviceId, unsigned long eventWaitTime = 1000);
 
-  DynamicJsonDocument prepareResponse(JsonDocument& requestMessage);
-  DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause) override;
-  void sendEvent(JsonDocument& event) override;
+    void add(SinricProDevice& newDevice);
+    void add(SinricProDevice* newDevice);
+    void handle();
+    void stop();
+    bool isConnected();
+
+    DynamicJsonDocument prepareResponse(JsonDocument& requestMessage);
+    DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause) override;
+    void sendEvent(JsonDocument& event) override;
+  
+    struct proxy {
+      proxy(SinricProClass* ptr, String deviceId) : ptr(ptr), deviceId(deviceId) {}
+      SinricProClass* ptr;
+      String deviceId;
+      template <typename DeviceType>
+      operator DeviceType&() { return ptr->getDeviceInstance<DeviceType>(deviceId); }
+    };
+    
+    proxy operator[](const String deviceId) { return proxy(this, deviceId); }
+
   private:
-  void handleRequest();
-  void handleSendQueue();
-  void connect();
-  void disconnect();
-  void reconnect();
+    void handleRequest();
+    void handleSendQueue();
+    void connect();
+    void disconnect();
+    void reconnect();
+    bool checkDeviceId(String deviceId);
 
-  std::vector<SinricProDevice*> devices;
-  String socketAuthToken;
-  String signingKey;
-  String serverURL;
+    SinricProDevice* getDevice(String deviceId);
+    
+    template <typename DeviceType>
+    DeviceType& getDeviceInstance(String deviceId) { return (DeviceType&) *getDevice(deviceId); }
 
-  websocketListener _websocketListener;
-  udpListener _udpListener;
-  myNTP _ntp;
-  SinricProQueue_t receiveQueue;
-  SinricProQueue_t sendQueue;
+    std::vector<SinricProDevice*> devices;
+    String socketAuthToken;
+    String signingKey;
+    String serverURL;
+
+    websocketListener _websocketListener;
+    udpListener _udpListener;
+    myNTP _ntp;
+    SinricProQueue_t receiveQueue;
+    SinricProQueue_t sendQueue;
 };
+
+SinricProDevice* SinricProClass::getDevice(String deviceId) {
+  for (auto& device : devices) {
+    if (deviceId == String(device->getDeviceId())) return device;
+  }
+  return nullptr;
+}
 
 void SinricProClass::begin(String socketAuthToken, String signingKey, String serverURL) {
   this->socketAuthToken = socketAuthToken;
@@ -62,12 +87,15 @@ void SinricProClass::begin(String socketAuthToken, String signingKey, String ser
 template <typename DeviceType>
 DeviceType& SinricProClass::add(const char* deviceId, unsigned long eventWaitTime) {
   DeviceType* newDevice = new DeviceType(deviceId, eventWaitTime);
-  newDevice->begin(this);
-  devices.push_back(newDevice);
+  if (checkDeviceId(String(deviceId))){
+    newDevice->begin(this);
+    devices.push_back(newDevice);
+  }
   return *newDevice;
 }
 
 void SinricProClass::add(SinricProDevice* newDevice) {
+  if (!checkDeviceId(String(newDevice->getDeviceId()))) return;
   newDevice->begin(this);
   devices.push_back(newDevice);
 }
@@ -184,6 +212,23 @@ void SinricProClass::reconnect() {
   delay(1000);
   DEBUG_SINRIC("SinricProClass.reconnect(): connecting\r\n");
   connect();
+}
+
+bool SinricProClass::checkDeviceId(String deviceId) {
+  if (deviceId.length() != 24) {
+    DEBUG_SINRIC("[SinricPro.add()]: Invalid deviceId \"%s\"! Device will be ignored!\r\n", deviceId.c_str());
+    return false;
+  }
+
+  for (size_t i = 0; i < deviceId.length(); i++) {
+    char current = deviceId[i];
+    if (current >= '0' && current <= '9') continue;
+    if (current >= 'A' && current <= 'F') continue;
+    if (current >= 'a' && current <= 'f') continue;
+    DEBUG_SINRIC("[SinricPro.add()]: Invalid deviceId \"%s\"! Device will be ignored!\r\n", deviceId.c_str());
+    return false;
+  }
+  return true;
 }
 
 
