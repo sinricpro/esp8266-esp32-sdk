@@ -40,11 +40,12 @@ void udpListener::begin(SinricProQueue_t* receiveQueue) {
 }
 
 void udpListener::handle() {
+  if (!_udp.available()) return;
   int len = _udp.parsePacket();
   if (len) {
 
-    char buffer[512];
-    int n = _udp.read(buffer, 512);
+    char buffer[1024];
+    int n = _udp.read(buffer, 1024);
     buffer[n] = 0;
     SinricProMessage* request = new SinricProMessage(IF_UDP, buffer);
     DEBUG_SINRIC("[SinricPro:UDP]: receiving request\r\n");

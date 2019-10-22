@@ -108,7 +108,6 @@ void SinricProClass::handle() {
   if (!isConnected()) connect();
   _websocketListener.handle();
   _udpListener.handle();
-  _ntp.update();
 
   handleRequest();
   handleSendQueue();
