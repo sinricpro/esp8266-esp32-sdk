@@ -16,9 +16,8 @@
 
 ---
 
-#### Examples
-[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/switch)
-
+### Examples
+[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/switch) 
 [Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)
 
 
