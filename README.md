@@ -16,6 +16,11 @@
 
 ---
 
+#### Examples
+[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/switch)
+[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)
+
+
 ## Dependencies
 [ArduinoJson](https://github.com/bblanchon/ArduinoJson) (Version 6.12.0)   
 [WebSocketsClient](https://github.com/Links2004/arduinoWebSockets) (Version 2.2.0)  
@@ -60,75 +65,8 @@ bool onPowerState(const String deviceId, bool &state) {
   SinricPro.handle();
 ```
 
-#### Complete example
 
-```C++
-#include <Arduino.h>
-#ifdef ESP8266 
-       #include <ESP8266WiFi.h>
-#endif 
-#ifdef ESP32   
-       #include <WiFi.h>
-#endif
-
-#include "SinricPro.h"
-#include "SinricProSwitch.h"
-
-#define WIFI_SSID         "YOUR-WIFI-SSID"
-#define WIFI_PASS         "YOUR-WIFI-PASSWORD"
-#define APP_KEY 	  "APP_KEY" // Copy from https://portal.sinric.pro -> Credentials
-#define APP_SECRET        "APP_SECRET" // Copy from https://portal.sinric.pro -> Credentials
-#define SWITCH_ID         "YOUR-DEVICE-ID" // eg: 5d7e6f18c74dab51ca422b5a // Copy the device id from https://portal.sinric.pro -> Devices
  
-SinricProSwitch mySwitch(SWITCH_ID);
- 
-bool onPowerState(String deviceId, bool &state) {
-  Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
-  return true; // request handled properly
-}
-
-// setup function for WiFi connection
-void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
-
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
-    delay(250);
-  }
-  IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
-}
-
-// setup function for SinricPro
-void setupSinricPro() {
-  // set callback function to device
-  mySwitch.onPowerState(onPowerState);
-
-  // add device to SinricPro
-  SinricPro.add(mySwitch);
-
-  // setup SinricPro
-  SinricPro.begin(APP_KEY, APP_SECRET);
-}
-
-// main setup function
-void setup() {
-  Serial.begin(9600);
-  
-  setupWiFi();
-  setupSinricPro();
-}
-
-void loop() {
-  handleButtonPress();
-  SinricPro.handle();
-}
-
-// For more advanced examples https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples
-// Documentation: http://help.sinric.pro
-
-```
 
 
 
