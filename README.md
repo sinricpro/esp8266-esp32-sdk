@@ -5,14 +5,16 @@
 ### VS Code & PlatformIO:
 1. Install [VS Code](https://code.visualstudio.com/)  
 2. Install [PlatformIO](https://platformio.org/platformio-ide)  
-3. Install **SinricPro** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)
+3. Install **SinricPro** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)  
 
 ![sinricpro library manager](https://github.com/sinricpro/images/blob/master/platformio-install-sinricpro.png)
 
 ### ArduinoIDE
-1. Download **SinricPro** [esp8266-esp32-sdk-master.zip](https://github.com/sinricpro/esp8266-esp32-sdk/archive/master.zip) from git
-2. Extract ZIP File to Arduino Library Folder (C:\Users\USERNAME\Documents\Arduino\libraries\SinricPro)
-3. Open Example in ArduinoIDE (File / Examples / SinricPro / ... )
+1. Open Library Manager (*Tools / Manage Libraries*)  
+2. Search for *SinricPro* and click *Install*  
+3. Open Example in ArduinoIDE (*File / Examples / SinricPro / ...*)  
+
+![ArduinoIDE Library Manager](https://github.com/sinricpro/images/blob/master/ArduinoIDE-Library-Manager.png)
 
 ---
 
