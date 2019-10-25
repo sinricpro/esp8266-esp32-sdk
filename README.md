@@ -18,6 +18,11 @@
 
 ---
 
+### Examples
+[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/switch) 
+[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)
+
+
 ## Dependencies
 [ArduinoJson](https://github.com/bblanchon/ArduinoJson) (Version 6.12.0)   
 [WebSocketsClient](https://github.com/Links2004/arduinoWebSockets) (Version 2.2.0)  
@@ -61,6 +66,12 @@ bool onPowerState(const String deviceId, bool &state) {
 ```C++
   SinricPro.handle();
 ```
+
+
+ 
+
+
+
 # Devices
 [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) | [Fan (US)](#fan-us) | [Fan (non US)](#fan-non-us) | [Lock](#lock) | [Doorbell](#doorbell) | [TemperatureSensor](#temperaturesensor) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | [Window AC Unit](#window-ac-unit)
 
