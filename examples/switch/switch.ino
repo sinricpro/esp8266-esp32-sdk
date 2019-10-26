@@ -24,7 +24,6 @@
 
 #define BTN_FLASH 0
 
-SinricProSwitch mySwitch(SWITCH_ID);
 bool myPowerState = false;
 unsigned long lastBtnPress = 0;
 
@@ -57,8 +56,13 @@ void handleButtonPress() {
       myPowerState = true;
     }
     digitalWrite(LED_BUILTIN, myPowerState?LOW:HIGH); // if myPowerState indicates device turned on: turn on led (builtin led uses inverted logic: LOW = LED ON / HIGH = LED OFF)
-    Serial.printf("Device %s turned %s (manually via flashbutton)\r\n", mySwitch.getDeviceId(), myPowerState?"on":"off");
+
+    // get Switch device back
+    SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
+    // send powerstate event
     mySwitch.sendPowerStateEvent(myPowerState); // send the new powerState to SinricPro server
+    Serial.printf("Device %s turned %s (manually via flashbutton)\r\n", mySwitch.getDeviceId(), myPowerState?"on":"off");
+
     lastBtnPress = actualMillis;  // update last button press variable
   } 
 }
@@ -78,10 +82,12 @@ void setupWiFi() {
 
 // setup function for SinricPro
 void setupSinricPro() {
+  // add device to SinricPro
+  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>(SWITCH_ID);
+
   // set callback function to device
   mySwitch.onPowerState(onPowerState);
-  // add device to SinricPro
-  SinricPro.add(mySwitch);
+
   // setup SinricPro
   SinricPro.begin(SOCKET_AUTH_TOKEN, SIGNING_KEY);
 }

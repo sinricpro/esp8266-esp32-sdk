@@ -1,5 +1,6 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
+## Version 2.1.0
 ## Installation
 
 ### VS Code & PlatformIO:
@@ -18,10 +19,13 @@
 
 ---
 
-### Examples
-[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/switch) 
-[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)
+## Examples
+|PlatformIO|Arduino|
+|--|--|
+|[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/switch)  |[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/switch)|
+|[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/doorbell)|[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)|
 
+---
 
 ## Dependencies
 [ArduinoJson](https://github.com/bblanchon/ArduinoJson) (Version 6.12.0)   
@@ -37,13 +41,13 @@
 ```
 #### Define your credentials from SinricPro-Portal (portal.sinric.pro)
 ```C++
-#define socketAuthToken	"your-socket-auth-token"
-#define signingKey  	"your-signing-key"
-#define myDeviceId  	"your-device-id"
+#define SOCKET_AUTH_TOKEN	"your-socket-auth-token"
+#define SIGNING_KEY  	    "your-signing-key"
+#define SWITCH_ID  	      "your-switch-device-id"
 ```
 *Note:*  
-socketAuthToken may be named "APP KEY" in portal.sinric.pro  
-signingKey may be named "APP SECRET" in portal.sinric.pro
+SOCKET_AUTH_TOKEN may be named "APP KEY" in portal.sinric.pro  
+SIGNING_KEY may be named "APP SECRET" in portal.sinric.pro
 #### Define callback routine(s)
 ```C++
 bool onPowerState(const String deviceId, bool &state) {
@@ -53,13 +57,15 @@ bool onPowerState(const String deviceId, bool &state) {
 ```
 #### In setup()
 ```C++
-  SinricPro.begin(socketAuthToken, signingKey);
-  // create a switch
-  SinricProSwitch mySwitch(myDeviceId);
+  // create and add a switch to SinricPro
+  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>(SWITCH_ID);
   // set callback function
   mySwitch.onPowerState(onPowerState);
   // add switch to SinricPro  
   SinricPro.add(mySwitch);
+  // startup SinricPro
+  SinricPro.begin(SOCKET_AUTH_TOKEN, SIGNING_KEY);
+
 ```
   
 #### In loop()
@@ -67,16 +73,44 @@ bool onPowerState(const String deviceId, bool &state) {
   SinricPro.handle();
 ```
 
+---
+## How to add a device?
+Syntax is  
+```C++
+  DeviceType& myDevice = SinricPro.add<DeviceType>(DEVICE_ID);
+```
+Example  
+```C++
+  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>("5daf50cff082f27422a6f5b8");
+```
 
- 
+---
+## How to retrieve a device for sending an event?
+Syntax is  
+```C++
+  DeviceType& myDevice = SinricPro[DEVICE_ID];
+```
+Example 1 
+```C++
+  SinricProDoorbell& myDoorbell = SinricPro["5daf50cff082f27422a6f5b8"];
+  myDoorbell.sendDoorbellEvent();
+```
+
+Example 2 (alternatively)
+```C++
+  SinricPro["5daf50cff082f27422a6f5b8"].as<SinricProDoorbell>().sendDoorbellEvent();
+```
 
 
+---
 
 # Devices
 [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Thermostat](#thermostat) | [Fan (US)](#fan-us) | [Fan (non US)](#fan-non-us) | [Lock](#lock) | [Doorbell](#doorbell) | [TemperatureSensor](#temperaturesensor) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | [Window AC Unit](#window-ac-unit)
 
 ---
 ## Switch
+Defined in [SinricProSwitch.h](/src/SinricProSwitch.h)  
+
 Callbacks
 - [onPowerState](#onpowerstate)
 
@@ -86,6 +120,8 @@ Events
 ---
 
 ## Dimmable Switch
+Defined in [SinricProDimSwitch.h](/src/SinricProDimSwitch.h)
+  
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onPowerLevel](#onpowerlevel)
@@ -97,6 +133,8 @@ Events
 ---
 
 ## Light
+Defined in [SinricProLight.h](/src/SinricProLight.h)  
+  
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onBrightness](#onbrightness)
@@ -114,6 +152,8 @@ Events
 ---
 		
 ## TV
+Defined in [SinricProTV.h](/src/SinricProTV.h)  
+  
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onChangeChannel](#onchangechannel)
@@ -134,6 +174,8 @@ Events
 ---
 
 ## Speaker
+Defined in [SinricProSpeaker.h](/src/SinricProSpeaker.h)
+  
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onSetVolume](#onsetvolume)
@@ -155,6 +197,8 @@ Events
 ---
 
 ## Thermostat
+Defined in [SinricProThermostat.h](/src/SinricProThermostat.h)  
+
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onTargetTemperature](#ontargettemperature)
@@ -169,6 +213,8 @@ Events
 
 ---
 ## Fan (US)
+Defined in [SinricProFanUS.h](/src/SinricProFanUS.h)  
+  
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onRangeValue](#onrangevalue)
@@ -180,6 +226,8 @@ Events
 
 ---
 ## Fan (non US)
+Defined in [SinricProFan.h](/src/SinricProFan.h)  
+
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onPowerLevel](#onpowerlevel)
@@ -191,6 +239,8 @@ Events
 ---
 
 ## Lock
+Defined in [SinricProLock.h](/src/SinricProLock.h)  
+  
 Callbacks
 - [onLockState](#onlockstate)
 
@@ -198,6 +248,8 @@ Events
 - [sendLockStateEvent](#sendlockstateevent)
 ---
 ## Doorbell
+Defined in [SinricProDoorbell.h](/src/SinricProDoorbell.h)
+  
 Callbacks
 - [onPowerState](#onpowerstate)
 
@@ -205,6 +257,8 @@ Events
 - [sendDoorbellEvent](#senddoorbellevent)
 ---
 ## Temperaturesensor
+Defined in [SinricProTemperatureSensor.h](/src/SinricProTemperaturesensor.h)  
+  
 Callbacks
 - [onPowerState](#onpowerstate)
 
@@ -212,6 +266,8 @@ Events
 - [sendTemperatureEvent](#sendtemperatureevent)
 ---
 ## MotionSensor
+Defined in [SinricProMotionsensor.h](/src/SinricProMotionsensor.h)  
+  
 Callbacks
 - [onPowerState](#onpowerstate)
 
@@ -221,6 +277,8 @@ Events
 ---
 
 ## ContactSensor
+Defined in [SinricProContactsensor.h](/src/SinricProContactsensor.h)  
+  
 Callbacks
 - [onPowerState](#onpowerstate)
 
@@ -230,6 +288,8 @@ Events
 ---
 
 ## Window AC Unit
+Defined in [SinricProWindowAC.h](/src/SinricProWindowAC.h)  
+  
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onTargetTemperature](#ontargettemperature)

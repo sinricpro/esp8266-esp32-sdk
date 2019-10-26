@@ -22,13 +22,10 @@
 
 #define DOORBELL_ID       "YOUR-DEVICE-ID"
 
-
 // change this to your button PIN
 // on NodeMCU D3 / GPIO-0 is flash button PIN so you can use the builtin flash button
 #define BUTTON_PIN 0
 
-// define SinricPro Doorbell Device
-SinricProDoorbell myDoorbell(DOORBELL_ID);
 
 // checkButtonpress
 // reads if BUTTON_PIN gets LOW and send Event
@@ -39,6 +36,11 @@ void checkButtonPress() {
   if (actualMillis-lastBtnPress > 500) {
     if (digitalRead(BUTTON_PIN)==LOW) {
       lastBtnPress = actualMillis;
+
+      // get Doorbell device back
+      SinricProDoorbell& myDoorbell = SinricPro[DOORBELL_ID];
+
+      // send doorbell event
       myDoorbell.sendDoorbellEvent();
     }
   }
@@ -59,8 +61,8 @@ void setupWiFi() {
 
 // setup function for SinricPro
 void setupSinricPro() {
-  // add device to SinricPro
-  SinricPro.add(myDoorbell);
+  // add doorbell device to SinricPro
+  SinricPro.add<SinricProDoorbell>(DOORBELL_ID);
   // setup SinricPro
   SinricPro.begin(SOCKET_AUTH_TOKEN, SIGNING_KEY);
 }
