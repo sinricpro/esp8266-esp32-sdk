@@ -5,13 +5,13 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _EVENTSENDER_H_
-#define _EVENTSENDER_H_
+#ifndef _SINRICPRO_INTERFACE_H_
+#define _SINRICPRO_INTERFACE_H_
 
 #include "ArduinoJson.h"
 #include "SinricProQueue.h"
 
-class EventSender {
+class SinricProInterface {
   public:
     virtual void sendEvent(JsonDocument& jsonEvent);
     virtual DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause);

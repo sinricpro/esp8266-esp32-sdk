@@ -8,8 +8,8 @@
 #ifndef _SINRIC_H_
 #define _SINRIC_H_
 
-#include "SinricProEventSender.h"
-#include "SinricProDevice.h"
+#include "SinricProInterface.h"
+#include "SinricProDeviceInterface.h"
 #include "SinricProWebsocket.h"
 #include "SinricProUDP.h"
 #include "SinricProSignature.h"
@@ -19,14 +19,14 @@
 
 #include "extralib/ESPTrueRandom/ESPTrueRandom.h"
 
-class SinricProClass : public EventSender {
+class SinricProClass : public SinricProInterface {
   public:
     void begin(String socketAuthToken, String signingKey, String serverURL = SERVER_URL);
     template <typename DeviceType>
     DeviceType& add(const char* deviceId, unsigned long eventWaitTime = 1000);
 
-    void add(SinricProDevice& newDevice);
-    void add(SinricProDevice* newDevice);
+    void add(SinricProDeviceInterface& newDevice);
+    void add(SinricProDeviceInterface* newDevice);
     void handle();
     void stop();
     bool isConnected();
@@ -40,7 +40,9 @@ class SinricProClass : public EventSender {
       SinricProClass* ptr;
       String deviceId;
       template <typename DeviceType>
-      operator DeviceType&() { return ptr->getDeviceInstance<DeviceType>(deviceId); }
+      operator DeviceType&() { return as<DeviceType>(); }
+      template <typename DeviceType>
+      DeviceType& as() { return ptr->getDeviceInstance<DeviceType>(deviceId); }
     };
     
     proxy operator[](const String deviceId) { return proxy(this, deviceId); }
@@ -53,12 +55,12 @@ class SinricProClass : public EventSender {
     void reconnect();
     bool checkDeviceId(String deviceId);
 
-    SinricProDevice* getDevice(String deviceId);
+    SinricProDeviceInterface* getDevice(String deviceId);
     
     template <typename DeviceType>
     DeviceType& getDeviceInstance(String deviceId) { return (DeviceType&) *getDevice(deviceId); }
 
-    std::vector<SinricProDevice*> devices;
+    std::vector<SinricProDeviceInterface*> devices;
     String socketAuthToken;
     String signingKey;
     String serverURL;
@@ -70,7 +72,7 @@ class SinricProClass : public EventSender {
     SinricProQueue_t sendQueue;
 };
 
-SinricProDevice* SinricProClass::getDevice(String deviceId) {
+SinricProDeviceInterface* SinricProClass::getDevice(String deviceId) {
   for (auto& device : devices) {
     if (deviceId == String(device->getDeviceId())) return device;
   }
@@ -94,14 +96,18 @@ DeviceType& SinricProClass::add(const char* deviceId, unsigned long eventWaitTim
   return *newDevice;
 }
 
-void SinricProClass::add(SinricProDevice* newDevice) {
+__attribute__ ((deprecated("Please use DeviceType& myDevice = SinricPro.add<DeviceType>(DeviceId);")))
+void SinricProClass::add(SinricProDeviceInterface* newDevice) {
   if (!checkDeviceId(String(newDevice->getDeviceId()))) return;
   newDevice->begin(this);
   devices.push_back(newDevice);
 }
 
-void SinricProClass::add(SinricProDevice& newDevice) {
-  add(&newDevice);
+__attribute__ ((deprecated("Please use DeviceType& myDevice = SinricPro.add<DeviceType>(DeviceId);")))
+void SinricProClass::add(SinricProDeviceInterface& newDevice) {
+  if (!checkDeviceId(String(newDevice.getDeviceId()))) return;
+  newDevice.begin(this);
+  devices.push_back(&newDevice);
 }
 
 void SinricProClass::handle() {

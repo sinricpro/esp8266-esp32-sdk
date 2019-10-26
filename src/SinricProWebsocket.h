@@ -21,7 +21,7 @@
 #include "SinricProDebug.h"
 #include "SinricProConfig.h"
 #include "SinricProQueue.h"
-#include "SinricProEventSender.h"
+#include "SinricProInterface.h"
 
 class websocketListener
 {

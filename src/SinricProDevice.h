@@ -8,22 +8,22 @@
 #ifndef _SINRICDEVICE_H_
 #define _SINRICDEVICE_H_
 
-#include "SinricProEventSender.h"
+#include "SinricProDeviceInterface.h"
 #include <map>
 
-class SinricProDevice {
+class SinricProDevice : public SinricProDeviceInterface {
   public:
     SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime=100);
     virtual ~SinricProDevice();
     virtual bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) { return false; };
-    const char* getDeviceId();
-    void begin(EventSender* eventSender);
+    virtual const char* getDeviceId();
+    virtual void begin(SinricProInterface* eventSender);
   protected:
+    virtual bool sendEvent(JsonDocument& event);
+    virtual DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause);
     char* deviceId;
-    bool sendEvent(JsonDocument& event);
-    DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause);
   private:
-    EventSender* eventSender;
+    SinricProInterface* eventSender;
     unsigned long eventWaitTime;
     std::map<String, unsigned long> eventFilter;
 };
@@ -39,7 +39,7 @@ SinricProDevice::~SinricProDevice() {
   if (deviceId) free(deviceId);
 }
 
-void SinricProDevice::begin(EventSender* eventSender) {
+void SinricProDevice::begin(SinricProInterface* eventSender) {
   this->eventSender = eventSender;
 }
 
