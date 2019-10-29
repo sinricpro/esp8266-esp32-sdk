@@ -63,7 +63,7 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
   unsigned long lastEventMillis = eventFilter[eventName] | 0; // get the last timestamp for event
   if (actualMillis - lastEventMillis < eventWaitTime) return false; // if last event was before waitTime return...
 
-  if (eventSender) eventSender->sendEvent(event); // send event
+  if (eventSender) eventSender->sendMessage(event); // send event
   eventFilter[eventName] = actualMillis; // update lastEventTime
   return true;
 }
