@@ -1,7 +1,7 @@
 {
   "name": "SinricPro",
   "keywords": "ethernet, sinric, alexa, iot",
-  "description": "A c++ sdk for https://sinric.pro",
+  "description": "Library for https://sinric.pro - simple way to connect your device to alexa",
   "repository": {
     "type": "git",
     "url": "https://github.com/sinricpro/esp8266-esp32-sdk"
@@ -13,7 +13,7 @@
       "maintainer": true
     }
   ],
-  "version": "2.1.0",
+  "version": "2.1.1",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",

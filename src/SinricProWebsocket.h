@@ -119,7 +119,7 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
       break;
     case WStype_TEXT: {
       SinricProMessage* request = new SinricProMessage(IF_WEBSOCKET, (char*)payload);
-      DEBUG_SINRIC("[SinricPro:Websocket]: receiving request\r\n");
+      DEBUG_SINRIC("[SinricPro:Websocket]: receiving data\r\n");
       receiveQueue->push(request);
       break;
     }

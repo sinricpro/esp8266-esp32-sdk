@@ -55,8 +55,8 @@ bool SinricProTemperaturesensor::sendPowerStateEvent(bool state, String cause) {
 bool SinricProTemperaturesensor::sendTemperatureEvent(float temperature, float humidity, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "currentTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["humidity"] = humidity;
-  event_value["temperature"] = temperature;
+  event_value["humidity"] = roundf(humidity * 10) / 10.0;
+  event_value["temperature"] = roundf(temperature * 10) / 10.0;
   return sendEvent(eventMessage);
 }
 
