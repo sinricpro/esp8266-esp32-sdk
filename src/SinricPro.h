@@ -33,7 +33,7 @@ class SinricProClass : public SinricProInterface {
 
     DynamicJsonDocument prepareResponse(JsonDocument& requestMessage);
     DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause) override;
-    void sendEvent(JsonDocument& event) override;
+    void sendMessage(JsonDocument& jsonMessage) override;
   
     struct proxy {
       proxy(SinricProClass* ptr, String deviceId) : ptr(ptr), deviceId(deviceId) {}
@@ -237,12 +237,12 @@ bool SinricProClass::checkDeviceId(String deviceId) {
 }
 
 
-void SinricProClass::sendEvent(JsonDocument& event) {
-  String messageString = signMessage(signingKey, event);
+void SinricProClass::sendMessage(JsonDocument& jsonMessage) {
+  String messageString = signMessage(signingKey, jsonMessage);
   sendQueue.push(new SinricProMessage(IF_WEBSOCKET, messageString.c_str()));
   #ifndef NODEBUG_SINRIC
           String debugOutput;
-          serializeJsonPretty(event, debugOutput);
+          serializeJsonPretty(jsonMessage, debugOutput);
           DEBUG_SINRIC("Signed event:\r\n%s\r\n", debugOutput.c_str());
   #endif
 }
