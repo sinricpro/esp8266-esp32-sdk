@@ -17,8 +17,6 @@
 #include "SinricProQueue.h"
 #include "SinricProNTP.h"
 
-#include "extralib/ESPTrueRandom/ESPTrueRandom.h"
-
 class SinricProClass : public SinricProInterface {
   public:
     void begin(String socketAuthToken, String signingKey, String serverURL = SERVER_URL);
