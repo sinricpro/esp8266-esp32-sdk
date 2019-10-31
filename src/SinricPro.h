@@ -15,9 +15,6 @@
 #include "SinricProSignature.h"
 #include "SinricProMessageid.h"
 #include "SinricProQueue.h"
-// #include "SinricProNTP.h"
-
-#include "extralib/ESPTrueRandom/ESPTrueRandom.h"
 
 class SinricProClass : public SinricProInterface {
   public:
@@ -274,6 +271,7 @@ void SinricProClass::connect() {
   }
 
   _websocketListener.begin(serverURL, socketAuthToken, deviceList.c_str(), &receiveQueue);
+ 
 }
 
 
