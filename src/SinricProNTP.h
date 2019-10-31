@@ -24,7 +24,14 @@ public:
   myNTP() : _timeClient(_udpClient) {}
   void begin() { _timeClient.begin(); _timeClient.update(); }
   void update() { _timeClient.update(); }
-  unsigned long getTimestamp() { return _timeClient.getEpochTime(); }
+  unsigned long getTimestamp() { 
+    unsigned long timestamp = _timeClient.getEpochTime();
+    while (timestamp < 1500000000) {
+      _timeClient.forceUpdate();
+      timestamp = _timeClient.getEpochTime();
+    }
+    return timestamp; 
+  }
 private:
   WiFiUDP _udpClient;
   NTPClient _timeClient;

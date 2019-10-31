@@ -8,8 +8,8 @@
 #ifndef __SINRICPRO_CONFIG_H__
 #define __SINRICPRO_CONFIG_H__
 
-#define SERVER_URL "ws.sinric.pro"
-#define SERVER_PORT 80
+#define SINRICPRO_SERVER_URL "ws.sinric.pro"
+#define SINRICPRO_SERVER_PORT 80
 
 #define UDP_MULTICAST_IP IPAddress(224,9,9,9)
 #define UDP_MULTICAST_PORT 3333

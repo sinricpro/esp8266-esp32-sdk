@@ -85,7 +85,7 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
   webSocket.setExtraHeaders(headers.c_str());
   webSocket.onEvent([&](WStype_t type, uint8_t * payload, size_t length) { webSocketEvent(type, payload, length); });
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
-  webSocket.begin(server, SERVER_PORT, "/"); // server address, port and URL
+  webSocket.begin(server, SINRICPRO_SERVER_PORT, "/"); // server address, port and URL
 }
 
 void websocketListener::handle() {
