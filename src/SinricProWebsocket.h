@@ -38,8 +38,7 @@ class websocketListener
     bool isConnected() { return _isConnected; }
     void setRestoreDeviceStates(bool flag) { this->restoreDeviceStates = flag; };
 
-    void sendResponse(String response);
-    void sendEvent(String& event) { sendResponse(event); }
+    void sendMessage(String &message);
 
     void onConnected(wsConnectedCallback callback) { _wsConnectedCb = callback; }
     void onDisconnected(wsDisconnectedCallback callback) { _wsDisconnectedCb = callback; }
@@ -103,8 +102,8 @@ void websocketListener::stop() {
   _begin = false;
 }
 
-void websocketListener::sendResponse(String response) {
-  webSocket.sendTXT(response);
+void websocketListener::sendMessage(String &message) {
+  webSocket.sendTXT(message);
 }
  
 

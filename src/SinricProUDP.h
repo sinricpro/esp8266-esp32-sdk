@@ -22,7 +22,7 @@ class udpListener {
 public:
   void begin(SinricProQueue_t* receiveQueue);
   void handle();
-  void sendResponse(String response);
+  void sendMessage(String &message);
   void stop();
 private:
   WiFiUDP _udp;
@@ -53,9 +53,9 @@ void udpListener::handle() {
   }
 }
 
-void udpListener::sendResponse(String response) {
+void udpListener::sendMessage(String &message) {
   _udp.beginPacket(_udp.remoteIP(), _udp.remotePort());
-  _udp.print(response);
+  _udp.print(message);
   _udp.endPacket();
 }
 

@@ -181,11 +181,6 @@ void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interfac
   sendQueue.push(new SinricProMessage(Interface, responseString.c_str()));
 }
 
-bool ignoreTimestamp(const char* message, bool sigBool) {
-  if (strncmp(message, "{\"timestamp\":", 13) == 0 && strlen(message) <= 26) return true;
-  return sigBool;
-}
-
 void SinricProClass::handleReceiveQueue() {
   if (receiveQueue.count() == 0) return;
 
@@ -199,15 +194,15 @@ void SinricProClass::handleReceiveQueue() {
 
     if (strncmp(rawMessage->getMessage(), "{\"timestamp\":", 13) == 0 && strlen(rawMessage->getMessage()) <= 26) {
       sigMatch=true; // timestamp message has no signature...ignore sigMatch for this!
-     } else {
-       sigMatch = verifyMessage(signingKey, jsonMessage);
-     }
+    } else {
+      sigMatch = verifyMessage(signingKey, jsonMessage);
+    }
     
     String messageType = jsonMessage["payload"]["type"];
 
     if (sigMatch) { // signature is valid process message
-      extractTimestamp(jsonMessage);
       DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is valid! Processing message.\r\n");
+      extractTimestamp(jsonMessage);
       if (messageType == "response") handleResponse(jsonMessage);
       if (messageType == "request") handleRequest(jsonMessage, rawMessage->getInterface());
     } else {
@@ -240,8 +235,8 @@ void SinricProClass::handleSendQueue() {
     #endif
 
     switch (rawMessage->getInterface()) {
-      case IF_WEBSOCKET: _websocketListener.sendResponse(messageStr.c_str()); break;
-      case IF_UDP:       _udpListener.sendResponse(messageStr.c_str()); break;
+      case IF_WEBSOCKET: _websocketListener.sendMessage(messageStr); break;
+      case IF_UDP:       _udpListener.sendMessage(messageStr); break;
       default:           break;
     }
     delete rawMessage;
@@ -304,6 +299,7 @@ void SinricProClass::extractTimestamp(JsonDocument &message) {
   tempTimestamp = message["timestamp"] | 0;
   if (tempTimestamp) {
     baseTimestamp = tempTimestamp - (millis() / 1000);
+    DEBUG_SINRIC("[SinricPro:extractTimestamp(): Got Timestamp %lu\r\n", tempTimestamp);
     return;
   }
 
