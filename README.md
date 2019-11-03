@@ -51,7 +51,7 @@ SIGNING_KEY may be named "APP SECRET" in portal.sinric.pro
 #### Define callback routine(s)
 ```C++
 bool onPowerState(const String deviceId, bool &state) {
-  Serial.printf("device %s turned %s\r\n, deviceId.c_str(), state?"on":"off");
+  Serial.printf("device %s turned %s\r\n", deviceId.c_str(), state?"on":"off");
   return true; // indicate that callback handled correctly
 }
 ```
@@ -81,7 +81,7 @@ Syntax is
 ```
 Example  
 ```C++
-  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>("5daf50cff082f27422a6f5b8");
+  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>("YOUR-DEVICE-ID-HERE");
 ```
 
 ---
@@ -92,13 +92,13 @@ Syntax is
 ```
 Example 1 
 ```C++
-  SinricProDoorbell& myDoorbell = SinricPro["5daf50cff082f27422a6f5b8"];
+  SinricProDoorbell& myDoorbell = SinricPro["YOUR-DEVICE-ID-HERE"];
   myDoorbell.sendDoorbellEvent();
 ```
 
 Example 2 (alternatively)
 ```C++
-  SinricPro["5daf50cff082f27422a6f5b8"].as<SinricProDoorbell>().sendDoorbellEvent();
+  SinricPro["YOUR-DEVICE-ID-HERE"].as<SinricProDoorbell>().sendDoorbellEvent();
 ```
 
 
