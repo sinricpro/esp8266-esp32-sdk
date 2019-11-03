@@ -8,6 +8,8 @@
 #ifndef __SINRICPRO_CONFIG_H__
 #define __SINRICPRO_CONFIG_H__
 
+#define SDK_VERSION "2.2.0-dev-1"
+
 #define SINRICPRO_SERVER_URL "ws.sinric.pro"
 #define SINRICPRO_SERVER_PORT 80
 

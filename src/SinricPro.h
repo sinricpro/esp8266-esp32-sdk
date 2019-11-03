@@ -27,6 +27,7 @@ class SinricProClass : public SinricProInterface {
     void handle();
     void stop();
     bool isConnected();
+    void restoreDeviceStates(bool flag) { _websocketListener.setRestoreDeviceStates(flag); }
 
     DynamicJsonDocument prepareResponse(JsonDocument& requestMessage);
     DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause) override;
@@ -44,8 +45,6 @@ class SinricProClass : public SinricProInterface {
     
     proxy operator[](const String deviceId) { return proxy(this, deviceId); }
 
-    void sendTimestampRequest();
-    void flush();
   private:
     void handleReceiveQueue();
     void handleSendQueue();
@@ -58,7 +57,12 @@ class SinricProClass : public SinricProInterface {
     void connect();
     void disconnect();
     void reconnect();
+
+    void onConnect() { DEBUG_SINRIC("[SinricPro:onConnect()]\r\n"); }
+    void onDisconnect() { DEBUG_SINRIC("[SinricPro:onDisconnect()]\r\n"); }
+
     bool checkDeviceId(String deviceId);
+    void extractTimestamp(JsonDocument &message);
 
     SinricProDeviceInterface* getDevice(String deviceId);
     
@@ -72,7 +76,6 @@ class SinricProClass : public SinricProInterface {
 
     websocketListener _websocketListener;
     udpListener _udpListener;
-//    myNTP _ntp;
     SinricProQueue_t receiveQueue;
     SinricProQueue_t sendQueue;
 
@@ -91,7 +94,6 @@ void SinricProClass::begin(String socketAuthToken, String signingKey, String ser
   this->socketAuthToken = socketAuthToken;
   this->signingKey = signingKey;
   this->serverURL = serverURL;
-//  _ntp.begin();
 }
 
 template <typename DeviceType>
@@ -135,36 +137,12 @@ DynamicJsonDocument SinricProClass::prepareRequest(const char* deviceId, const c
 
   JsonObject payload = requestMessage.createNestedObject("payload");
   payload["action"] = action;
-  payload["createdAt"] = getTimestamp();
+  payload["createdAt"] = 0;
   payload["deviceId"] = deviceId;
   payload["replyToken"] = MessageID().getID();
   payload["type"] = "request";
-//  payload.createNestedObject("value");
+  payload.createNestedObject("value");
   return requestMessage;
-}
-
-void SinricProClass::sendTimestampRequest() {
-  if (devices.size() == 0) return; // no deviceId...can't ask server...
-  DEBUG_SINRIC("[SinricPro.sendTimestampRequest]: asking for tamestamp...\r\n");
-  DynamicJsonDocument requestMessage = prepareRequest(devices[0]->getDeviceId(), "getTimestamp");
-  requestMessage["payload"]["createdAt"] = 0; // set timestamp to 0
-  sendMessage(requestMessage);
-  flush();
-//  if (!isConnected()) connect();
-  while (baseTimestamp==0) {
-    handle();
-    yield();
-  }
-  DEBUG_SINRIC("[SinricPro:sendTimestampRequest]: got new timestamp!\r\n");
-}
-
-void SinricProClass::flush() {
-  DEBUG_SINRIC("[SinricPro:flush()]: flushing sendQueue\r\n");
-  while (sendQueue.count()) {
-//    handleSendQueue();
-    handle();
-    yield();
-  }
 }
 
 void SinricProClass::handleResponse(DynamicJsonDocument& responseMessage) {
@@ -174,14 +152,6 @@ void SinricProClass::handleResponse(DynamicJsonDocument& responseMessage) {
           serializeJsonPretty(responseMessage, DEBUG_ESP_PORT);
           Serial.println();
   #endif
-
-  String action = responseMessage["payload"]["action"];
-  JsonObject value = responseMessage["payload"]["value"];
-
-  if (action == "getTimestamp") {
-    baseTimestamp = value["timestamp"];
-  }
-
 }
 
 void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interface_t Interface) {
@@ -206,31 +176,42 @@ void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interfac
     }
   }
   
-  // sign message
-  String responseString = signMessage(signingKey.c_str(), responseMessage);
-  // push response message to sendQueue
+  String responseString;
+  serializeJson(responseMessage, responseString);
   sendQueue.push(new SinricProMessage(Interface, responseString.c_str()));
+}
+
+bool ignoreTimestamp(const char* message, bool sigBool) {
+  if (strncmp(message, "{\"timestamp\":", 13) == 0 && strlen(message) <= 26) return true;
+  return sigBool;
 }
 
 void SinricProClass::handleReceiveQueue() {
   if (receiveQueue.count() == 0) return;
 
-  DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: %i items in receiveQueue\r\n", receiveQueue.count());
-  // POP requests and call device.handle() for each related device
+  DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: %i message(s) in receiveQueue\r\n", receiveQueue.count());
   while (receiveQueue.count() > 0) {  
     SinricProMessage* rawMessage = receiveQueue.pop();
     DynamicJsonDocument jsonMessage(1024);
     deserializeJson(jsonMessage, rawMessage->getMessage());
+    
+    bool sigMatch = false;
 
-    // check signature
-    bool sigMatch = verifyMessage(signingKey, jsonMessage);
-    DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is %s\r\n", sigMatch?"valid":"invalid");
-
+    if (strncmp(rawMessage->getMessage(), "{\"timestamp\":", 13) == 0 && strlen(rawMessage->getMessage()) <= 26) {
+      sigMatch=true; // timestamp message has no signature...ignore sigMatch for this!
+     } else {
+       sigMatch = verifyMessage(signingKey, jsonMessage);
+     }
+    
     String messageType = jsonMessage["payload"]["type"];
 
-    if (sigMatch) { // signature is valid }
+    if (sigMatch) { // signature is valid process message
+      extractTimestamp(jsonMessage);
+      DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is valid! Processing message.\r\n");
       if (messageType == "response") handleResponse(jsonMessage);
       if (messageType == "request") handleRequest(jsonMessage, rawMessage->getInterface());
+    } else {
+      DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is invalid...sending messsage to [dev/null] ;)\r\n");
     }
     delete rawMessage;
   }
@@ -238,26 +219,33 @@ void SinricProClass::handleReceiveQueue() {
 
 void SinricProClass::handleSendQueue() {
   if (!isConnected()) return;
-  if (sendQueue.count() > 0) {
+  if (!baseTimestamp) return;
+  while (sendQueue.count() > 0) {
     DEBUG_SINRIC("[SinricPro:handleSendQueue()]: %i message(s) in sendQueue\r\n", sendQueue.count());
     DEBUG_SINRIC("[SinricPro:handleSendQueue()]: Sending message...\r\n");
 
     SinricProMessage* rawMessage = sendQueue.pop();
 
+    DynamicJsonDocument jsonMessage(1024);
+    deserializeJson(jsonMessage, rawMessage->getMessage());
+    jsonMessage["payload"]["createdAt"] = getTimestamp();
+    signMessage(signingKey, jsonMessage);
+    
+    String messageStr;
+
+    serializeJson(jsonMessage, messageStr);
     #ifndef NODEBUG_SINRIC
-            DynamicJsonDocument message(1024);
-            deserializeJson(message, rawMessage->getMessage());
-            serializeJsonPretty(message, DEBUG_ESP_PORT);
+            serializeJsonPretty(jsonMessage, DEBUG_ESP_PORT);
             Serial.println();
     #endif
 
-//    DEBUG_SINRIC("[SinricPro:handleSendQueue()]:\r\n%s\r\n", rawMessage->getMessage());
     switch (rawMessage->getInterface()) {
-      case IF_WEBSOCKET: _websocketListener.sendResponse(rawMessage->getMessage()); break;
-      case IF_UDP:       _udpListener.sendResponse(rawMessage->getMessage()); break;
+      case IF_WEBSOCKET: _websocketListener.sendResponse(messageStr.c_str()); break;
+      case IF_UDP:       _udpListener.sendResponse(messageStr.c_str()); break;
       default:           break;
     }
     delete rawMessage;
+    DEBUG_SINRIC("[SinricPro:handleSendQueue()]: message sent.\r\n");
   }
 }
 
@@ -271,13 +259,11 @@ void SinricProClass::connect() {
   }
 
   _websocketListener.begin(serverURL, socketAuthToken, deviceList.c_str(), &receiveQueue);
- 
 }
 
 
 void SinricProClass::stop() {
   DEBUG_SINRIC("[SinricPro:stop()\r\n");
-  _websocketListener.disconnect();
   _websocketListener.stop();
 }
 
@@ -312,18 +298,29 @@ bool SinricProClass::checkDeviceId(String deviceId) {
   return true;
 }
 
+void SinricProClass::extractTimestamp(JsonDocument &message) {
+  unsigned long tempTimestamp = 0;
+  // extract timestamp from timestamp message right after websocket connection is established
+  tempTimestamp = message["timestamp"] | 0;
+  if (tempTimestamp) {
+    baseTimestamp = tempTimestamp - (millis() / 1000);
+    return;
+  }
+
+  // extract timestamp from request message
+  tempTimestamp = message["payload"]["createdAt"] | 0;
+  if (tempTimestamp) {
+    baseTimestamp = tempTimestamp - (millis() / 1000);
+    return;
+  }
+}
+
 
 void SinricProClass::sendMessage(JsonDocument& jsonMessage) {
   DEBUG_SINRIC("[SinricPro:sendMessage()]: pushing message into sendQueue\r\n");
-  String messageString = signMessage(signingKey, jsonMessage);
+  String messageString;
+  serializeJson(jsonMessage, messageString);
   sendQueue.push(new SinricProMessage(IF_WEBSOCKET, messageString.c_str()));
-/*
-  #ifndef NODEBUG_SINRIC
-          String debugOutput;
-          serializeJsonPretty(jsonMessage, debugOutput);
-          DEBUG_SINRIC("Signed message:\r\n%s\r\n", debugOutput.c_str());
-  #endif
-*/
 }
 
 
@@ -336,7 +333,7 @@ DynamicJsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage
   JsonObject payload = responseMessage.createNestedObject("payload");
   payload["action"] = requestMessage["payload"]["action"];
   payload["clientId"] = requestMessage["payload"]["clientId"];
-  payload["createdAt"] = getTimestamp();
+  payload["createdAt"] = 0;
   payload["deviceId"] = requestMessage["payload"]["deviceId"];
   payload["message"] = "OK";
   payload["replyToken"] = requestMessage["payload"]["replyToken"];
@@ -356,7 +353,7 @@ DynamicJsonDocument SinricProClass::prepareEvent(const char* deviceId, const cha
   JsonObject payload = eventMessage.createNestedObject("payload");
   payload["action"] = action;
   payload["cause"] = cause;
-  payload["createdAt"] = getTimestamp();
+  payload["createdAt"] = 0;
   payload["deviceId"] = deviceId;
   payload["replyToken"] = MessageID().getID();
   payload["type"] = "event";
