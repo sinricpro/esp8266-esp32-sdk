@@ -61,8 +61,6 @@ bool onPowerState(const String deviceId, bool &state) {
   SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>(SWITCH_ID);
   // set callback function
   mySwitch.onPowerState(onPowerState);
-  // add switch to SinricPro  
-  SinricPro.add(mySwitch);
   // startup SinricPro
   SinricPro.begin(SOCKET_AUTH_TOKEN, SIGNING_KEY);
 
