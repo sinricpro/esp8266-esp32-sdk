@@ -25,6 +25,11 @@ class SinricProClass : public SinricProInterface {
     void handle();
     void stop();
     bool isConnected();
+
+    typedef std::function<void(void)> connectCallbackHandler;
+    void onConnected(connectCallbackHandler cb) { _websocketListener.onConnected(cb); }
+    void onDisconnected(connectCallbackHandler cb) { _websocketListener.onDisconnected(cb); }
+
     void restoreDeviceStates(bool flag) { _websocketListener.setRestoreDeviceStates(flag); }
 
     DynamicJsonDocument prepareResponse(JsonDocument& requestMessage);
