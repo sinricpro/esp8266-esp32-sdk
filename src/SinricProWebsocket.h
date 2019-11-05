@@ -78,10 +78,10 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
   String headers = "appkey:" + socketAuthToken + "\r\n" + "deviceids:" + deviceIds + "\r\n";
   headers += "restoredevicestates:" + String(restoreDeviceStates?"true":"false") + "\r\n";
   #ifdef ESP8266
-         headers += "platform:ESP8266";
+         headers += "platform:ESP8266\r\n";
   #endif
   #ifdef ESP32
-         headers += "platform:ESP32";
+         headers += "platform:ESP32\r\n";
   #endif
   headers += "version:" + String(SDK_VERSION);
   DEBUG_SINRIC("[SinricPro:Websocket]: headers: \r\n%s\r\n", headers.c_str());
