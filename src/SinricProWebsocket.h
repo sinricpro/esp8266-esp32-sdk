@@ -36,9 +36,9 @@ class websocketListener
     void handle();
     void stop();
     bool isConnected() { return _isConnected; }
+    void setRestoreDeviceStates(bool flag) { this->restoreDeviceStates = flag; };
 
-    void sendResponse(String response);
-    void sendEvent(String& event) { sendResponse(event); }
+    void sendMessage(String &message);
 
     void onConnected(wsConnectedCallback callback) { _wsConnectedCb = callback; }
     void onDisconnected(wsDisconnectedCallback callback) { _wsDisconnectedCb = callback; }
@@ -47,6 +47,7 @@ class websocketListener
   private:
     bool _begin = false;
     bool _isConnected = false;
+    bool restoreDeviceStates = false;
 
     WebSocketsClient webSocket;
 
@@ -74,18 +75,20 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
     stop();
   }
 
-  String headers = "appkey:" + socketAuthToken + "\r\n" + "deviceids:" + deviceIds + "\r\nplatform:";
+  String headers = "appkey:" + socketAuthToken + "\r\n" + "deviceids:" + deviceIds + "\r\n";
+  headers += "restoredevicestates:" + String(restoreDeviceStates?"true":"false") + "\r\n";
   #ifdef ESP8266
-         headers += "ESP8266";
+         headers += "platform:ESP8266\r\n";
   #endif
   #ifdef ESP32
-         headers += "ESP32";
+         headers += "platform:ESP32\r\n";
   #endif
-  DEBUG_SINRIC("[SinricPro:Websocket]: headers: \"%s\"\r\n", headers.c_str());
+  headers += "version:" + String(SDK_VERSION);
+  DEBUG_SINRIC("[SinricPro:Websocket]: headers: \r\n%s\r\n", headers.c_str());
   webSocket.setExtraHeaders(headers.c_str());
   webSocket.onEvent([&](WStype_t type, uint8_t * payload, size_t length) { webSocketEvent(type, payload, length); });
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
-  webSocket.begin(server, SERVER_PORT, "/"); // server address, port and URL
+  webSocket.begin(server, SINRICPRO_SERVER_PORT, "/"); // server address, port and URL
 }
 
 void websocketListener::handle() {
@@ -99,8 +102,8 @@ void websocketListener::stop() {
   _begin = false;
 }
 
-void websocketListener::sendResponse(String response) {
-  webSocket.sendTXT(response);
+void websocketListener::sendMessage(String &message) {
+  webSocket.sendTXT(message);
 }
  
 

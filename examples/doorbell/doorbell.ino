@@ -17,8 +17,8 @@
 
 #define WIFI_SSID         "YOUR-WIFI-SSID"
 #define WIFI_PASS         "YOUR-WIFI-PASSWORD"
-#define SOCKET_AUTH_TOKEN "YOUR-SOCKET-AUTH-TOKEN"
-#define SIGNING_KEY       "YOUR-SIGNING-KEY"
+#define APP_KEY           "YOUR-APP-KEY"
+#define APP_SECRET        "YOUR-APP-SECRET"
 
 #define DOORBELL_ID       "YOUR-DEVICE-ID"
 
@@ -64,7 +64,7 @@ void setupSinricPro() {
   // add doorbell device to SinricPro
   SinricPro.add<SinricProDoorbell>(DOORBELL_ID);
   // setup SinricPro
-  SinricPro.begin(SOCKET_AUTH_TOKEN, SIGNING_KEY);
+  SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
