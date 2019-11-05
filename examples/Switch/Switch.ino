@@ -18,7 +18,6 @@
 
 #define WIFI_SSID         "YOUR-WIFI-SSID"
 #define WIFI_PASS         "YOUR-WIFI-PASSWORD"
-#define SOCKET_AUTH_TOKEN "YOUR-SOCKET-AUTH-TOKEN"
 #define APP_KEY           "YOUR-APP-KEY"
 #define APP_SECRET        "YOUR-APP-SECRET"
 
