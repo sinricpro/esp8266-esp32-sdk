@@ -1,19 +1,21 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
-## Version 2.1.0
+## Version 2.2.0
 ## Installation
 
 ### VS Code & PlatformIO:
 1. Install [VS Code](https://code.visualstudio.com/)  
 2. Install [PlatformIO](https://platformio.org/platformio-ide)  
 3. Install **SinricPro** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)  
+4. Use included [platformio.ini](https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/pio-examples/switch/platformio.ini) files from [examples](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples) to ensure that all dependent libraries will installed automaticly.
 
 ![sinricpro library manager](https://github.com/sinricpro/images/blob/master/platformio-install-sinricpro.png)
 
 ### ArduinoIDE
 1. Open Library Manager (*Tools / Manage Libraries*)  
 2. Search for *SinricPro* and click *Install*  
-3. Open Example in ArduinoIDE (*File / Examples / SinricPro / ...*)  
+3. Repeat step 2 for all [dependent libraries](#dependencies)!
+4. Open example in ArduinoIDE (*File / Examples / SinricPro / ...*)  
 
 ![ArduinoIDE Library Manager](https://github.com/sinricpro/images/blob/master/ArduinoIDE-Library-Manager.png)
 
@@ -22,7 +24,7 @@
 ## Examples
 |PlatformIO|Arduino|
 |--|--|
-|[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/switch)  |[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/switch)|
+|[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/switch)  |[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Switch)|
 |[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/doorbell)|[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)|
 
 ---
@@ -30,7 +32,6 @@
 ## Dependencies
 [ArduinoJson](https://github.com/bblanchon/ArduinoJson) (Version 6.12.0)   
 [WebSocketsClient](https://github.com/Links2004/arduinoWebSockets) (Version 2.2.0)  
-[NTPClient](https://github.com/arduino-libraries/NTPClient)
 
 ---
 ## Usage
@@ -41,13 +42,11 @@
 ```
 #### Define your credentials from SinricPro-Portal (portal.sinric.pro)
 ```C++
-#define SOCKET_AUTH_TOKEN	"your-socket-auth-token"
-#define SIGNING_KEY  	    "your-signing-key"
-#define SWITCH_ID  	      "your-switch-device-id"
+#define APP_KEY	    "YOUR-APP-KEY" 
+#define APP_SECRET  "YOUR-APP-SECRET"
+#define SWITCH_ID   "YOUR-SWITCH-DEVICEID" // Note: This is not device name! This is device id like "5da8xxxxxxxxxxxxxxxxxxxx"
 ```
-*Note:*  
-SOCKET_AUTH_TOKEN may be named "APP KEY" in portal.sinric.pro  
-SIGNING_KEY may be named "APP SECRET" in portal.sinric.pro
+
 #### Define callback routine(s)
 ```C++
 bool onPowerState(const String deviceId, bool &state) {
@@ -61,10 +60,8 @@ bool onPowerState(const String deviceId, bool &state) {
   SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>(SWITCH_ID);
   // set callback function
   mySwitch.onPowerState(onPowerState);
-  // add switch to SinricPro  
-  SinricPro.add(mySwitch);
   // startup SinricPro
-  SinricPro.begin(SOCKET_AUTH_TOKEN, SIGNING_KEY);
+  SinricPro.begin(APP_KEY, APP_SECRET);
 
 ```
   
@@ -81,7 +78,7 @@ Syntax is
 ```
 Example  
 ```C++
-  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>("5daf50cff082f27422a6f5b8");
+  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>("YOUR-SWITCH-ID-HERE");
 ```
 
 ---
@@ -92,13 +89,13 @@ Syntax is
 ```
 Example 1 
 ```C++
-  SinricProDoorbell& myDoorbell = SinricPro["5daf50cff082f27422a6f5b8"];
+  SinricProDoorbell& myDoorbell = SinricPro["YOUR-DOORBELL-ID-HERE"];
   myDoorbell.sendDoorbellEvent();
 ```
 
 Example 2 (alternatively)
 ```C++
-  SinricPro["5daf50cff082f27422a6f5b8"].as<SinricProDoorbell>().sendDoorbellEvent();
+  SinricPro["YOUR-DOORBELL-ID-HERE"].as<SinricProDoorbell>().sendDoorbellEvent();
 ```
 
 
