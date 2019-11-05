@@ -11,9 +11,9 @@
 #include "SinricProDevice.h"
 #include <ArduinoJson.h>
 
-class SinricProThermostat :  public SinricProDevice {
+class SinricProThermostat_t :  public SinricProDevice_t {
   public:
-	  SinricProThermostat(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProThermostat_t(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
 	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
     typedef std::function<bool(const String, float&)> TargetTemperatureCallback;
@@ -38,14 +38,15 @@ class SinricProThermostat :  public SinricProDevice {
     TargetTemperatureCallback adjustTargetTemperatureCallback;
     ThermostatModeCallback thermostatModeCallback;
 };
+typedef SinricProThermostat_t& SinricProThermostat;
 
-SinricProThermostat::SinricProThermostat(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProThermostat_t::SinricProThermostat_t(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice_t(deviceId, eventWaitTime),
   powerStateCallback(nullptr),
   targetTemperatureCallback(nullptr),
   adjustTargetTemperatureCallback(nullptr),
   thermostatModeCallback(nullptr) {}
 
-bool SinricProThermostat::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProThermostat_t::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
   bool success = false;
   String actionString = String(action);
@@ -86,7 +87,7 @@ bool SinricProThermostat::handleRequest(const char* deviceId, const char* action
   return success;
 }
 
-void SinricProThermostat::sendPowerStateEvent(bool state, String cause) {
+void SinricProThermostat_t::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
@@ -94,7 +95,7 @@ void SinricProThermostat::sendPowerStateEvent(bool state, String cause) {
 }
 
 
-void SinricProThermostat::sendTemperatureEvent(float temperature, float humidity, String cause) {
+void SinricProThermostat_t::sendTemperatureEvent(float temperature, float humidity, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "currentTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["humidity"] = humidity;
@@ -102,14 +103,14 @@ void SinricProThermostat::sendTemperatureEvent(float temperature, float humidity
   sendEvent(eventMessage);
 }
 
-void SinricProThermostat::sendTargetTemperatureEvent(float temperature, String cause) {
+void SinricProThermostat_t::sendTargetTemperatureEvent(float temperature, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "targetTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["temperature"] = roundf(temperature * 10) / 10.0;
   sendEvent(eventMessage);
 }
 
-void SinricProThermostat::sendThermostatModeEvent(String thermostatMode, String cause) {
+void SinricProThermostat_t::sendThermostatModeEvent(String thermostatMode, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setThermostatMode", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["thermostatMode"] = thermostatMode;

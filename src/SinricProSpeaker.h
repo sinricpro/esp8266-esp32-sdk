@@ -11,9 +11,9 @@
 #include "SinricProDevice.h"
 #include <ArduinoJson.h>
 
-class SinricProSpeaker :  public SinricProDevice {
+class SinricProSpeaker_t :  public SinricProDevice_t {
   public:
-	  SinricProSpeaker(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProSpeaker_t(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
 	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
     typedef std::function<bool(const String, int&)> VolumeCallback;
@@ -52,9 +52,9 @@ class SinricProSpeaker :  public SinricProDevice {
     BandsCallback resetBandsCallback;
     ModeCallback setModeCallback;
 };
+typedef SinricProSpeaker_t& SinricProSpeaker;
 
-
-SinricProSpeaker::SinricProSpeaker(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProSpeaker_t::SinricProSpeaker_t(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice_t(deviceId, eventWaitTime),
   powerStateCallback(nullptr),
   volumeCallback(nullptr),
   adjustVolumeCallback(nullptr),
@@ -66,7 +66,7 @@ SinricProSpeaker::SinricProSpeaker(const char* deviceId, unsigned long eventWait
   setModeCallback(nullptr) {
 }
 
-bool SinricProSpeaker::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProSpeaker_t::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
   bool success = false;
   String actionString = String(action);
@@ -163,42 +163,42 @@ bool SinricProSpeaker::handleRequest(const char* deviceId, const char* action, J
   return success;
 }
 
-bool SinricProSpeaker::sendPowerStateEvent(bool state, String cause) {
+bool SinricProSpeaker_t::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
   return sendEvent(eventMessage);
 }
 
-bool SinricProSpeaker::sendVolumeEvent(int volume, String cause) {
+bool SinricProSpeaker_t::sendVolumeEvent(int volume, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setVolume", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["volume"] = volume;
   return sendEvent(eventMessage);
 }
 
-bool SinricProSpeaker::sendMuteEvent(bool mute, String cause) {
+bool SinricProSpeaker_t::sendMuteEvent(bool mute, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setMute", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["mute"] = mute;
   return sendEvent(eventMessage);
 }
 
-bool SinricProSpeaker::sendMediaControlEvent(String mediaControl, String cause) {
+bool SinricProSpeaker_t::sendMediaControlEvent(String mediaControl, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "mediaControl", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["control"] = mediaControl;
   return sendEvent(eventMessage);
 }
 
-bool SinricProSpeaker::sendModeEvent(String mode, String cause) {
+bool SinricProSpeaker_t::sendModeEvent(String mode, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setMode", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["mode"] = mode;
   return sendEvent(eventMessage);
 }
 
-bool SinricProSpeaker::sendBandsEvent(String bands, int level, String cause) {
+bool SinricProSpeaker_t::sendBandsEvent(String bands, int level, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setBands", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   JsonArray event_value_bands = event_value.createNestedArray("bands");

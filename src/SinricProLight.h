@@ -11,9 +11,9 @@
 #include "SinricProDevice.h"
 #include <ArduinoJson.h>
 
-class SinricProLight :  public SinricProDevice {
+class SinricProLight_t :  public SinricProDevice_t {
   public:
-    SinricProLight(const char* deviceId, unsigned long eventWaitTime=100);
+    SinricProLight_t(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
     typedef std::function<bool(const String, bool&)> PowerStateCallback;
     typedef std::function<bool(const String, int&)> BrightnessCallback;
@@ -45,8 +45,9 @@ class SinricProLight :  public SinricProDevice {
     ColorTemperatureCallback increaseColorTemperatureCallback;
     ColorTemperatureCallback decreaseColorTemperatureCallback;
 };
+typedef SinricProLight_t& SinricProLight;
 
-SinricProLight::SinricProLight(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProLight_t::SinricProLight_t(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice_t(deviceId, eventWaitTime),
   powerStateCallback(nullptr),
   brightnessCallback(nullptr),
   adjustBrightnessCallback(nullptr),
@@ -55,7 +56,7 @@ SinricProLight::SinricProLight(const char* deviceId, unsigned long eventWaitTime
   increaseColorTemperatureCallback(nullptr),
   decreaseColorTemperatureCallback(nullptr) {}
 
-bool SinricProLight::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProLight_t::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
   bool success = false;
   String actionString = String(action);
@@ -112,21 +113,21 @@ bool SinricProLight::handleRequest(const char* deviceId, const char* action, Jso
   return success;
 }
 
-bool SinricProLight::sendPowerStateEvent(bool state, String cause) {
+bool SinricProLight_t::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
   return sendEvent(eventMessage);
 }
 
-bool SinricProLight::sendBrightnessEvent(int brightness, String cause) {
+bool SinricProLight_t::sendBrightnessEvent(int brightness, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setBrightness", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["brightness"] = brightness;
   return sendEvent(eventMessage);
 }
 
-bool SinricProLight::sendColorEvent(byte r, byte g, byte b, String cause) {
+bool SinricProLight_t::sendColorEvent(byte r, byte g, byte b, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setColor", cause.c_str());
   JsonObject event_color = eventMessage["payload"]["value"].createNestedObject("color");
   event_color["r"] = r;
@@ -135,7 +136,7 @@ bool SinricProLight::sendColorEvent(byte r, byte g, byte b, String cause) {
   return sendEvent(eventMessage);
 }
 
-bool SinricProLight::sendColorTemperatureEvent(int colorTemperature, String cause) {
+bool SinricProLight_t::sendColorTemperatureEvent(int colorTemperature, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setColorTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["colorTemperature"] = colorTemperature;

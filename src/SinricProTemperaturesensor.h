@@ -11,9 +11,9 @@
 #include "SinricProDevice.h"
 #include <ArduinoJson.h>
 
-class SinricProTemperaturesensor :  public SinricProDevice {
+class SinricProTemperaturesensor_t :  public SinricProDevice_t {
   public:
-	  SinricProTemperaturesensor(const char* deviceId, unsigned long eventWaitTime=30000);
+	  SinricProTemperaturesensor_t(const char* deviceId, unsigned long eventWaitTime=30000);
     // callback
 	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
@@ -27,11 +27,12 @@ class SinricProTemperaturesensor :  public SinricProDevice {
   private:
     PowerStateCallback powerStateCallback;
 };
+typedef SinricProTemperaturesensor_t& SinricProTemperaturesensor;
 
-SinricProTemperaturesensor::SinricProTemperaturesensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProTemperaturesensor_t::SinricProTemperaturesensor_t(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice_t(deviceId, eventWaitTime),
   powerStateCallback(nullptr) {}
 
-bool SinricProTemperaturesensor::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProTemperaturesensor_t::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
   bool success = false;
   String actionString = String(action);
@@ -45,14 +46,14 @@ bool SinricProTemperaturesensor::handleRequest(const char* deviceId, const char*
   return success;
 }
 
-bool SinricProTemperaturesensor::sendPowerStateEvent(bool state, String cause) {
+bool SinricProTemperaturesensor_t::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
   return sendEvent(eventMessage);
 }
 
-bool SinricProTemperaturesensor::sendTemperatureEvent(float temperature, float humidity, String cause) {
+bool SinricProTemperaturesensor_t::sendTemperatureEvent(float temperature, float humidity, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "currentTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["humidity"] = roundf(humidity * 10) / 10.0;

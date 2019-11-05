@@ -11,9 +11,9 @@
 #include "SinricProDevice.h"
 #include <ArduinoJson.h>
 
-class SinricProMotionsensor :  public SinricProDevice {
+class SinricProMotionsensor_t :  public SinricProDevice_t {
   public:
-	  SinricProMotionsensor(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProMotionsensor_t(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
 	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
@@ -27,11 +27,12 @@ class SinricProMotionsensor :  public SinricProDevice {
   private:
     PowerStateCallback powerStateCallback;
 };
+typedef SinricProMotionsensor_t& SinricProMotionsensor;
 
-SinricProMotionsensor::SinricProMotionsensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProMotionsensor_t::SinricProMotionsensor_t(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice_t(deviceId, eventWaitTime),
   powerStateCallback(nullptr) {}
 
-bool SinricProMotionsensor::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProMotionsensor_t::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
   bool success = false;
   String actionString = String(action);
@@ -45,14 +46,14 @@ bool SinricProMotionsensor::handleRequest(const char* deviceId, const char* acti
   return success;
 }
 
-bool SinricProMotionsensor::sendPowerStateEvent(bool state, String cause) {
+bool SinricProMotionsensor_t::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
   return sendEvent(eventMessage);
 }
 
-bool SinricProMotionsensor::sendMotionEvent(bool state, String cause) {
+bool SinricProMotionsensor_t::sendMotionEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "motion", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"detected":"notDetected";
