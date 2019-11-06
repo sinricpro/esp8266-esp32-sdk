@@ -11,9 +11,9 @@
 #include "SinricProDevice.h"
 #include <ArduinoJson.h>
 
-class SinricProLock_t :  public SinricProDevice_t {
+class SinricProLock :  public SinricProDevice {
   public:
-	  SinricProLock_t(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProLock(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
 	  typedef std::function<bool(const String, bool&)> LockStateCallback; // void onLockState(const char* deviceId, bool& lockState);
     void onLockState(LockStateCallback cb) { lockStateCallback = cb; }
@@ -26,12 +26,11 @@ class SinricProLock_t :  public SinricProDevice_t {
   private:
     LockStateCallback lockStateCallback;
 };
-typedef SinricProLock_t& SinricProLock;
 
-SinricProLock_t::SinricProLock_t(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice_t(deviceId, eventWaitTime),
+SinricProLock::SinricProLock(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
   lockStateCallback(nullptr) {}
 
-bool SinricProLock_t::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProLock::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
   bool success = false;
   String actionString = String(action);
@@ -45,7 +44,7 @@ bool SinricProLock_t::handleRequest(const char* deviceId, const char* action, Js
   return success;
 }
 
-bool SinricProLock_t::sendLockStateEvent(bool state, String cause) {
+bool SinricProLock::sendLockStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setLockState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   state ? event_value["state"] = "LOCKED" : event_value["state"] = "UNLOCKED";

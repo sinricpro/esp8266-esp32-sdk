@@ -11,9 +11,9 @@
 #include "SinricProDevice.h"
 #include <ArduinoJson.h>
 
-class SinricProFanUS_t :  public SinricProDevice_t {
+class SinricProFanUS :  public SinricProDevice {
   public:
-	  SinricProFanUS_t(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProFanUS(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
 	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
     typedef std::function<bool(const String, int&)> RangeValueCallback;
@@ -32,13 +32,12 @@ class SinricProFanUS_t :  public SinricProDevice_t {
     RangeValueCallback rangeValueCallback; 
     RangeValueCallback adjustRangeValueCallback;
 };
-typedef SinricProFanUS_t& SinricProFanUS;
 
-SinricProFanUS_t::SinricProFanUS_t(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice_t(deviceId, eventWaitTime),
+SinricProFanUS::SinricProFanUS(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
   powerStateCallback(nullptr),
   rangeValueCallback(nullptr) {}
 
-bool SinricProFanUS_t::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
   bool success = false;
   String actionString = String(action);
@@ -67,14 +66,14 @@ bool SinricProFanUS_t::handleRequest(const char* deviceId, const char* action, J
   return success;
 }
 
-bool SinricProFanUS_t::sendPowerStateEvent(bool state, String cause) {
+bool SinricProFanUS::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
   return sendEvent(eventMessage);
 }
 
-bool SinricProFanUS_t::sendRangeValueEvent(int rangeValue, String cause) {
+bool SinricProFanUS::sendRangeValueEvent(int rangeValue, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setRangeValue", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["rangeValue"] = rangeValue;

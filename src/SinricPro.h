@@ -22,6 +22,8 @@ class SinricProClass : public SinricProInterface {
     template <typename DeviceType>
     DeviceType& add(const char* deviceId, unsigned long eventWaitTime = 1000);
 
+    void add(SinricProDeviceInterface& newDevice);
+    void add(SinricProDeviceInterface* newDevice);
     void handle();
     void stop();
     bool isConnected();
@@ -36,17 +38,14 @@ class SinricProClass : public SinricProInterface {
     DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause) override;
     void sendMessage(JsonDocument& jsonMessage) override;
   
-    class proxy {
-      public:
-        proxy(SinricProClass* ptr, String deviceId) : ptr(ptr), deviceId(deviceId) {}
-        template <typename DeviceType>
-        operator DeviceType&() { return as<DeviceType>(); }
-
-        template <typename DeviceType>
-        DeviceType& as() { return ptr->getDeviceInstance<DeviceType>(deviceId); }
-      private:
-        SinricProClass* ptr;
-        String deviceId;
+    struct proxy {
+      proxy(SinricProClass* ptr, String deviceId) : ptr(ptr), deviceId(deviceId) {}
+      SinricProClass* ptr;
+      String deviceId;
+      template <typename DeviceType>
+      operator DeviceType&() { return as<DeviceType>(); }
+      template <typename DeviceType>
+      DeviceType& as() { return ptr->getDeviceInstance<DeviceType>(deviceId); }
     };
     
     proxy operator[](const String deviceId) { return proxy(this, deviceId); }
@@ -104,12 +103,26 @@ void SinricProClass::begin(String socketAuthToken, String signingKey, String ser
 
 template <typename DeviceType>
 DeviceType& SinricProClass::add(const char* deviceId, unsigned long eventWaitTime) {
-  typename std::remove_reference<DeviceType>::type *newDevice = new typename std::remove_reference<DeviceType>::type(deviceId, eventWaitTime);
+  DeviceType* newDevice = new DeviceType(deviceId, eventWaitTime);
   if (checkDeviceId(String(deviceId))){
     newDevice->begin(this);
     devices.push_back(newDevice);
   }
   return *newDevice;
+}
+
+__attribute__ ((deprecated("Please use DeviceType& myDevice = SinricPro.add<DeviceType>(DeviceId);")))
+void SinricProClass::add(SinricProDeviceInterface* newDevice) {
+  if (!checkDeviceId(String(newDevice->getDeviceId()))) return;
+  newDevice->begin(this);
+  devices.push_back(newDevice);
+}
+
+__attribute__ ((deprecated("Please use DeviceType& myDevice = SinricPro.add<DeviceType>(DeviceId);")))
+void SinricProClass::add(SinricProDeviceInterface& newDevice) {
+  if (!checkDeviceId(String(newDevice.getDeviceId()))) return;
+  newDevice.begin(this);
+  devices.push_back(&newDevice);
 }
 
 void SinricProClass::handle() {
@@ -245,7 +258,7 @@ void SinricProClass::connect() {
     i++;
   }
 
-  _websocketListener.begin(serverURL, socketAuthToken, deviceList, &receiveQueue);
+  _websocketListener.begin(serverURL, socketAuthToken, deviceList.c_str(), &receiveQueue);
 }
 
 

@@ -11,9 +11,9 @@
 #include "SinricProDevice.h"
 #include <ArduinoJson.h>
 
-class SinricProDoorbell_t :  public SinricProDevice_t {
+class SinricProDoorbell :  public SinricProDevice {
   public:
-	  SinricProDoorbell_t(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProDoorbell(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
 	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
@@ -26,12 +26,11 @@ class SinricProDoorbell_t :  public SinricProDevice_t {
   private:
     PowerStateCallback powerStateCallback;
 };
-typedef SinricProDoorbell_t& SinricProDoorbell;
 
-SinricProDoorbell_t::SinricProDoorbell_t(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice_t(deviceId, eventWaitTime),
+SinricProDoorbell::SinricProDoorbell(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
   powerStateCallback(nullptr) {}
 
-bool SinricProDoorbell_t::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProDoorbell::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
   bool success = false;
   String actionString = String(action);
@@ -45,14 +44,14 @@ bool SinricProDoorbell_t::handleRequest(const char* deviceId, const char* action
   return success;
 }
 
-bool SinricProDoorbell_t::sendPowerStateEvent(bool state, String cause) {
+bool SinricProDoorbell::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
   return sendEvent(eventMessage);
 }
 
-bool SinricProDoorbell_t::sendDoorbellEvent(String cause) {
+bool SinricProDoorbell::sendDoorbellEvent(String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "DoorbellPress", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = "pressed";

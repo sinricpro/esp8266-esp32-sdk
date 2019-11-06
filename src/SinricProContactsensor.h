@@ -11,9 +11,9 @@
 #include "SinricProDevice.h"
 #include <ArduinoJson.h>
 
-class SinricProContactsensor_t :  public SinricProDevice_t {
+class SinricProContactsensor :  public SinricProDevice {
   public:
-	  SinricProContactsensor_t(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProContactsensor(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
 	  typedef std::function<bool(String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
@@ -27,12 +27,11 @@ class SinricProContactsensor_t :  public SinricProDevice_t {
   private:
     PowerStateCallback powerStateCallback;
 };
-typedef SinricProContactsensor_t& SinricProContactsensor;
 
-SinricProContactsensor_t::SinricProContactsensor_t(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice_t(deviceId, eventWaitTime),
+SinricProContactsensor::SinricProContactsensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
   powerStateCallback(nullptr) {}
 
-bool SinricProContactsensor_t::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProContactsensor::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
   bool success = false;
   String actionString = String(action);
@@ -46,14 +45,14 @@ bool SinricProContactsensor_t::handleRequest(const char* deviceId, const char* a
   return success;
 }
 
-bool SinricProContactsensor_t::sendPowerStateEvent(bool state, String cause) {
+bool SinricProContactsensor::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
   return sendEvent(eventMessage);
 }
 
-bool SinricProContactsensor_t::sendContactEvent(bool state, String cause) {
+bool SinricProContactsensor::sendContactEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setContactState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"closed":"open";

@@ -11,11 +11,10 @@
 #include "SinricProDeviceInterface.h"
 #include <map>
 
-class SinricProDevice_t : public SinricProDeviceInterface {
+class SinricProDevice : public SinricProDeviceInterface {
   public:
-    SinricProDevice_t(const char* newDeviceId, unsigned long eventWaitTime=100);
-    SinricProDevice_t(const SinricProDevice_t&) = delete;
-    virtual ~SinricProDevice_t();
+    SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime=100);
+    virtual ~SinricProDevice();
     virtual bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) { return false; };
     virtual const char* getDeviceId();
     virtual void begin(SinricProInterface* eventSender);
@@ -28,33 +27,32 @@ class SinricProDevice_t : public SinricProDeviceInterface {
     unsigned long eventWaitTime;
     std::map<String, unsigned long> eventFilter;
 };
-typedef SinricProDevice_t& SinricProDevice;
 
-SinricProDevice_t::SinricProDevice_t(const char* newDeviceId, unsigned long eventWaitTime) : 
+SinricProDevice::SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime) : 
   eventSender(nullptr),
   eventWaitTime(eventWaitTime) {
   deviceId = strdup(newDeviceId);
   if (this->eventWaitTime < 100) this->eventWaitTime = 100;
 }
 
-SinricProDevice_t::~SinricProDevice_t() {
+SinricProDevice::~SinricProDevice() {
   if (deviceId) free(deviceId);
 }
 
-void SinricProDevice_t::begin(SinricProInterface* eventSender) {
+void SinricProDevice::begin(SinricProInterface* eventSender) {
   this->eventSender = eventSender;
 }
 
-const char* SinricProDevice_t::getDeviceId() {
+const char* SinricProDevice::getDeviceId() {
   return deviceId;
 }
 
-DynamicJsonDocument SinricProDevice_t::prepareEvent(const char* deviceId, const char* action, const char* cause) {
+DynamicJsonDocument SinricProDevice::prepareEvent(const char* deviceId, const char* action, const char* cause) {
   if (eventSender) return eventSender->prepareEvent(deviceId, action, cause);
   return DynamicJsonDocument(1024);
 }
 
-bool SinricProDevice_t::sendEvent(JsonDocument& event) {
+bool SinricProDevice::sendEvent(JsonDocument& event) {
   unsigned long actualMillis = millis();
   String eventName = event["payload"]["action"] | ""; // get event name
 

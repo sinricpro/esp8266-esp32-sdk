@@ -11,11 +11,9 @@
 #include "SinricProDevice.h"
 #include <ArduinoJson.h>
 
-
-class SinricProSwitch_t :  public SinricProDevice_t {
+class SinricProSwitch :  public SinricProDevice {
   public:
-    typedef SinricProSwitch_t& SinricProSwitch;
-	  SinricProSwitch_t(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProSwitch(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
 	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
     void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
@@ -28,12 +26,11 @@ class SinricProSwitch_t :  public SinricProDevice_t {
   private:
     PowerStateCallback powerStateCallback;
 };
-typedef SinricProSwitch_t& SinricProSwitch;
 
-SinricProSwitch_t::SinricProSwitch_t(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice_t(deviceId, eventWaitTime),
+SinricProSwitch::SinricProSwitch(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
   powerStateCallback(nullptr) {}
 
-bool SinricProSwitch_t::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProSwitch::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
   bool success = false;
   String actionString = String(action);
@@ -47,7 +44,7 @@ bool SinricProSwitch_t::handleRequest(const char* deviceId, const char* action, 
   return success;
 }
 
-bool SinricProSwitch_t::sendPowerStateEvent(bool state, String cause) {
+bool SinricProSwitch::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
