@@ -50,7 +50,7 @@
 #### Define callback routine(s)
 ```C++
 bool onPowerState(const String deviceId, bool &state) {
-  Serial.printf("device %s turned %s\r\n, deviceId.c_str(), state?"on":"off");
+  Serial.printf("device %s turned %s\r\n", deviceId.c_str(), state?"on":"off");
   return true; // indicate that callback handled correctly
 }
 ```
