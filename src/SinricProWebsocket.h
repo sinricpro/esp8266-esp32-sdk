@@ -111,9 +111,11 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
 {
   switch (type) {
     case WStype_DISCONNECTED:
-      _isConnected = false;
-      DEBUG_SINRIC("[SinricPro:Websocket]: disconnected\r\n");
-      if (_wsDisconnectedCb) _wsDisconnectedCb();
+      if (_isConnected) {
+        DEBUG_SINRIC("[SinricPro:Websocket]: disconnected\r\n");
+        if (_wsDisconnectedCb) _wsDisconnectedCb();
+        _isConnected = false;
+      }
       break;
     case WStype_CONNECTED:
       _isConnected = true;
