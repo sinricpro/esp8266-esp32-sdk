@@ -2,6 +2,10 @@
  * Example for how to use SinricPro Doorbell device:
  * - setup a doorbell device
  * - send event to sinricPro server if button is pressed
+ *
+ * If you encounter any issues:
+ * - open serial monitor and check whats happening
+ * - visit https://github.com/sinricpro/esp8266-esp32-sdk/issues and check for existing issues or open a new one
  */
 
 #include <Arduino.h>
@@ -17,10 +21,9 @@
 
 #define WIFI_SSID         "YOUR-WIFI-SSID"
 #define WIFI_PASS         "YOUR-WIFI-PASSWORD"
-#define APP_KEY           "YOUR-APP-KEY"
-#define APP_SECRET        "YOUR-APP-SECRET"
-
-#define DOORBELL_ID       "YOUR-DEVICE-ID"
+#define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+#define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define DOORBELL_ID       "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 
 // change this to your button PIN
 // on NodeMCU D3 / GPIO-0 is flash button PIN so you can use the builtin flash button

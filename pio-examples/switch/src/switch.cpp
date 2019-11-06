@@ -3,6 +3,10 @@
  * - setup a switch device
  * - handle request using callback (turn on/off builtin led indicating device power state)
  * - send event to sinricPro server (flash button is used to turn on/off device manually)
+ *
+ * If you encounter any issues:
+ * - open serial monitor and check whats happening
+ * - visit https://github.com/sinricpro/esp8266-esp32-sdk/issues and check for existing issues or open a new one
  */
 
 #include <Arduino.h>
@@ -16,11 +20,11 @@
 #include "SinricPro.h"
 #include "SinricProSwitch.h"
 
-#define WIFI_SSID         "YOUR-WIFI-SSID"
+#define WIFI_SSID         "YOUR-WIFI-SSID"    
 #define WIFI_PASS         "YOUR-WIFI-PASSWORD"
-#define APP_KEY           "YOUR-APP-KEY"
-#define APP_SECRET        "YOUR-APP-SECRET"
-#define SWITCH_ID         "YOUR-DEVICE-ID"
+#define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+#define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 
 #define BTN_FLASH 0
 
