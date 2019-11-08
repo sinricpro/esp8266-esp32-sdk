@@ -49,6 +49,7 @@ const char* SinricProDevice::getDeviceId() {
 
 DynamicJsonDocument SinricProDevice::prepareEvent(const char* deviceId, const char* action, const char* cause) {
   if (eventSender) return eventSender->prepareEvent(deviceId, action, cause);
+  DEBUG_SINRIC("[SinricProDevice:prepareEvent()]: Device \"%s\" isn't configured correctly! The event is not sent.\r\n", deviceId);
   return DynamicJsonDocument(1024);
 }
 
