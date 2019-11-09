@@ -90,7 +90,7 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
   this->socketAuthToken = socketAuthToken;
   this->deviceIds = deviceIds;
 
-  DEBUG_SINRIC("[SinricPro:Websocket]: Conecting to WebSocket Server (%s)\r\n", server.c_str());
+  DEBUG_SINRIC("[SinricPro:Websocket]: Connecting to WebSocket Server (%s)\r\n", server.c_str());
 
   if (_isConnected) {
     stop();
