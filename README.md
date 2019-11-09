@@ -1,6 +1,6 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
-## Version 2.2.0
+## Version 2.2.1
 ## Installation
 
 ### VS Code & PlatformIO:
@@ -9,7 +9,7 @@
 3. Install **SinricPro** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)  
 4. Use included [platformio.ini](https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/pio-examples/switch/platformio.ini) files from [examples](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples) to ensure that all dependent libraries will installed automaticly.
 
-![sinricpro library manager](https://github.com/sinricpro/images/blob/master/platformio-install-sinricpro.png)
+![sinricpro library manager](https://raw.githubusercontent.com/sinricpro/images/master/platformio-install-sinricpro.png)
 
 ### ArduinoIDE
 1. Open Library Manager (*Tools / Manage Libraries*)  
@@ -17,7 +17,7 @@
 3. Repeat step 2 for all [dependent libraries](#dependencies)!
 4. Open example in ArduinoIDE (*File / Examples / SinricPro / ...*)  
 
-![ArduinoIDE Library Manager](https://github.com/sinricpro/images/blob/master/ArduinoIDE-Library-Manager.png)
+![ArduinoIDE Library Manager](https://raw.githubusercontent.com/sinricpro/images/master/ArduinoIDE-Library-Manager.png)
 
 ---
 
@@ -74,9 +74,13 @@ bool onPowerState(const String deviceId, bool &state) {
 ## How to add a device?
 Syntax is  
 ```C++
-  DeviceType& myDevice = SinricPro.add<DeviceType>(DEVICE_ID);
+  DeviceType& myDevice = SinricPro[DEVICE_ID];
 ```
 Example  
+```C++
+  SinricProSwitch& mySwitch = SinricPro["YOUR-SWITCH-ID-HERE"];
+```
+*Example 2 (alternatively)*
 ```C++
   SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>("YOUR-SWITCH-ID-HERE");
 ```
@@ -93,7 +97,7 @@ Example 1
   myDoorbell.sendDoorbellEvent();
 ```
 
-Example 2 (alternatively)
+*Example 2 (alternatively)*
 ```C++
   SinricPro["YOUR-DOORBELL-ID-HERE"].as<SinricProDoorbell>().sendDoorbellEvent();
 ```

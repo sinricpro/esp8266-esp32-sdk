@@ -55,9 +55,26 @@ class websocketListener
     wsDisconnectedCallback _wsDisconnectedCb;
 
     void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
+    void setExtraHeaders();
     SinricProQueue_t* receiveQueue;
-
+    String deviceIds;
+    String socketAuthToken;
 };
+
+void websocketListener::setExtraHeaders() {
+  String headers  = "appkey:" + socketAuthToken + "\r\n";
+         headers += "deviceids:" + deviceIds + "\r\n";
+         headers += "restoredevicestates:" + String(restoreDeviceStates?"true":"false") + "\r\n";
+  #ifdef ESP8266
+         headers += "platform:ESP8266\r\n";
+  #endif
+  #ifdef ESP32
+         headers += "platform:ESP32\r\n";
+  #endif
+         headers += "version:" + String(SDK_VERSION);
+  DEBUG_SINRIC("[SinricPro:Websocket]: headers: \r\n%s\r\n", headers.c_str());
+  webSocket.setExtraHeaders(headers.c_str());
+}
 
 websocketListener::websocketListener() : _isConnected(false) {}
 
@@ -68,24 +85,17 @@ websocketListener::~websocketListener() {
 void websocketListener::begin(String server, String socketAuthToken, String deviceIds, SinricProQueue_t* receiveQueue) {
   if (_begin) return;
   _begin = true;
+
   this->receiveQueue = receiveQueue;
-  DEBUG_SINRIC("[SinricPro:Websocket]: Conecting to WebSocket Server (%s)\r\n", server.c_str());
+  this->socketAuthToken = socketAuthToken;
+  this->deviceIds = deviceIds;
+
+  DEBUG_SINRIC("[SinricPro:Websocket]: Connecting to WebSocket Server (%s)\r\n", server.c_str());
 
   if (_isConnected) {
     stop();
   }
-
-  String headers = "appkey:" + socketAuthToken + "\r\n" + "deviceids:" + deviceIds + "\r\n";
-  headers += "restoredevicestates:" + String(restoreDeviceStates?"true":"false") + "\r\n";
-  #ifdef ESP8266
-         headers += "platform:ESP8266\r\n";
-  #endif
-  #ifdef ESP32
-         headers += "platform:ESP32\r\n";
-  #endif
-  headers += "version:" + String(SDK_VERSION);
-  DEBUG_SINRIC("[SinricPro:Websocket]: headers: \r\n%s\r\n", headers.c_str());
-  webSocket.setExtraHeaders(headers.c_str());
+  setExtraHeaders();
   webSocket.onEvent([&](WStype_t type, uint8_t * payload, size_t length) { webSocketEvent(type, payload, length); });
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
   webSocket.begin(server, SINRICPRO_SERVER_PORT, "/"); // server address, port and URL
@@ -111,14 +121,20 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
 {
   switch (type) {
     case WStype_DISCONNECTED:
-      _isConnected = false;
-      DEBUG_SINRIC("[SinricPro:Websocket]: disconnected\r\n");
-      if (_wsDisconnectedCb) _wsDisconnectedCb();
+      if (_isConnected) {
+        DEBUG_SINRIC("[SinricPro:Websocket]: disconnected\r\n");
+        if (_wsDisconnectedCb) _wsDisconnectedCb();
+        _isConnected = false;
+      }
       break;
     case WStype_CONNECTED:
       _isConnected = true;
       DEBUG_SINRIC("[SinricPro:Websocket]: connected\r\n");
       if (_wsConnectedCb) _wsConnectedCb();
+      if (restoreDeviceStates) {
+        restoreDeviceStates=false; 
+        setExtraHeaders();
+      }
       break;
     case WStype_TEXT: {
       SinricProMessage* request = new SinricProMessage(IF_WEBSOCKET, (char*)payload);

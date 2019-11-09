@@ -27,6 +27,11 @@ class SinricProClass : public SinricProInterface {
     void handle();
     void stop();
     bool isConnected();
+
+    typedef std::function<void(void)> connectCallbackHandler;
+    void onConnected(connectCallbackHandler cb) { _websocketListener.onConnected(cb); }
+    void onDisconnected(connectCallbackHandler cb) { _websocketListener.onDisconnected(cb); }
+
     void restoreDeviceStates(bool flag) { _websocketListener.setRestoreDeviceStates(flag); }
 
     DynamicJsonDocument prepareResponse(JsonDocument& requestMessage);
@@ -58,16 +63,18 @@ class SinricProClass : public SinricProInterface {
     void disconnect();
     void reconnect();
 
-    void onConnect() { DEBUG_SINRIC("[SinricPro:onConnect()]\r\n"); }
-    void onDisconnect() { DEBUG_SINRIC("[SinricPro:onDisconnect()]\r\n"); }
+    void onConnect() { DEBUG_SINRIC("[SinricPro]: Connected to \"%s\"!]\r\n", serverURL.c_str()); }
+    void onDisconnect() { DEBUG_SINRIC("[SinricPro]: Disconnect\r\n"); }
 
-    bool checkDeviceId(String deviceId);
+    bool verifyDeviceId(const char* id);
+    bool verifyAppKey(const char* key);
+    bool verifyAppSecret(const char* secret);
     void extractTimestamp(JsonDocument &message);
 
     SinricProDeviceInterface* getDevice(String deviceId);
 
     template <typename DeviceType>
-    DeviceType& getDeviceInstance(String deviceId) { return (DeviceType&) *getDevice(deviceId); }
+    DeviceType& getDeviceInstance(String deviceId);
 
     std::vector<SinricProDeviceInterface*> devices;
     String socketAuthToken;
@@ -81,6 +88,8 @@ class SinricProClass : public SinricProInterface {
 
     unsigned long getTimestamp() { return baseTimestamp + (millis()/1000); }
     unsigned long baseTimestamp = 0;
+
+    bool _begin = false;
 };
 
 SinricProDeviceInterface* SinricProClass::getDevice(String deviceId) {
@@ -90,37 +99,86 @@ SinricProDeviceInterface* SinricProClass::getDevice(String deviceId) {
   return nullptr;
 }
 
+template <typename DeviceType>
+DeviceType& SinricProClass::getDeviceInstance(String deviceId) { 
+  DeviceType* tmp_device = (DeviceType*) getDevice(deviceId);
+  if (tmp_device) return *tmp_device;
+  
+  DEBUG_SINRIC("[SinricPro]: Device \"%s\" does not exist. Creating new device\r\n", deviceId.c_str());
+  DeviceType& tmp_deviceInstance = add<DeviceType>(deviceId.c_str());
+
+  if (isConnected()) {
+    DEBUG_SINRIC("[SinricPro]: Reconnecting to server.\r\n");
+    reconnect();
+  }
+
+  return tmp_deviceInstance;
+}
+
 void SinricProClass::begin(String socketAuthToken, String signingKey, String serverURL) {
+  bool success = true;
+  if (!verifyAppKey(socketAuthToken.c_str())) {
+    DEBUG_SINRIC("[SinricPro:begin()]: App-Key \"%s\" is invalid!! Please check your app-key!! SinricPro will not work!\r\n", socketAuthToken.c_str());
+    success = false;
+  }
+  if (!verifyAppSecret(signingKey.c_str())) {
+    DEBUG_SINRIC("[SinricPro:begin()]: App-Secret \"%s\" is invalid!! Please check your app-secret!! SinricPro will not work!\r\n", signingKey.c_str());
+    success = false;
+    return;
+  }
+
+  if(!success) {
+    _begin = false;
+    return;
+  }
+
   this->socketAuthToken = socketAuthToken;
   this->signingKey = signingKey;
   this->serverURL = serverURL;
+  _begin = true;
 }
 
 template <typename DeviceType>
 DeviceType& SinricProClass::add(const char* deviceId, unsigned long eventWaitTime) {
   DeviceType* newDevice = new DeviceType(deviceId, eventWaitTime);
-  if (checkDeviceId(String(deviceId))){
+  if (verifyDeviceId(deviceId)){
+    DEBUG_SINRIC("[SinricPro:add()]: Adding device with id \"%s\".\r\n", deviceId);
     newDevice->begin(this);
-    devices.push_back(newDevice);
+    if (verifyAppKey(socketAuthToken.c_str()) && verifyAppSecret(signingKey.c_str())) _begin = true;
+  } else {
+    DEBUG_SINRIC("[SinricPro:add()]: DeviceId \"%s\" is invalid!! Device will be ignored and will NOT WORK!\r\n", deviceId);
   }
+  devices.push_back(newDevice);
   return *newDevice;
 }
 
 __attribute__ ((deprecated("Please use DeviceType& myDevice = SinricPro.add<DeviceType>(DeviceId);")))
 void SinricProClass::add(SinricProDeviceInterface* newDevice) {
-  if (!checkDeviceId(String(newDevice->getDeviceId()))) return;
+  if (!verifyDeviceId(newDevice->getDeviceId())) return;
   newDevice->begin(this);
   devices.push_back(newDevice);
 }
 
 __attribute__ ((deprecated("Please use DeviceType& myDevice = SinricPro.add<DeviceType>(DeviceId);")))
 void SinricProClass::add(SinricProDeviceInterface& newDevice) {
-  if (!checkDeviceId(String(newDevice.getDeviceId()))) return;
+  if (!verifyDeviceId(newDevice.getDeviceId())) return;
   newDevice.begin(this);
   devices.push_back(&newDevice);
 }
 
 void SinricProClass::handle() {
+  static bool begin_error = false;
+  if (!_begin) {
+    if (!begin_error) { // print this only once!
+      DEBUG_SINRIC("[SinricPro:handle()]: ERROR! SinricPro.begin() failed or was not called prior to event handler\r\n");
+      DEBUG_SINRIC("[SinricPro:handle()]:    -Reasons include an invalid app-key, invalid app-secret or no valid deviceIds)\r\n");
+      DEBUG_SINRIC("[SinricPro:handle()]:    -SinricPro is disabled! Check earlier log messages for details.\r\n");
+      begin_error = true;
+    }
+    return;
+  }
+
+
   if (!isConnected()) connect();
   _websocketListener.handle();
   _udpListener.handle();
@@ -201,12 +259,12 @@ void SinricProClass::handleReceiveQueue() {
     String messageType = jsonMessage["payload"]["type"];
 
     if (sigMatch) { // signature is valid process message
-      DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is valid! Processing message.\r\n");
+      DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is valid. Processing message...\r\n");
       extractTimestamp(jsonMessage);
       if (messageType == "response") handleResponse(jsonMessage);
       if (messageType == "request") handleRequest(jsonMessage, rawMessage->getInterface());
     } else {
-      DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is invalid...sending messsage to [dev/null] ;)\r\n");
+      DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is invalid! Sending messsage to [dev/null] ;)\r\n");
     }
     delete rawMessage;
   }
@@ -248,12 +306,20 @@ void SinricProClass::connect() {
   String deviceList;
   int i = 0;
   for (auto& device : devices) {
-    if (i>0) deviceList += ";";
-    deviceList += String(device->getDeviceId());
-    i++;
+    const char* deviceId = device->getDeviceId();
+    if (verifyDeviceId(deviceId)) {
+      if (i>0) deviceList += ';';
+      deviceList += String(deviceId);
+      i++;
+    }
+  }
+  if (i==0) { // no device have been added! -> do not connect!
+    _begin = false;
+    DEBUG_SINRIC("[SinricPro]: ERROR! No valid devices available. Please add a valid device first!\r\n");
+    return;
   }
 
-  _websocketListener.begin(serverURL, socketAuthToken, deviceList.c_str(), &receiveQueue);
+  _websocketListener.begin(serverURL, socketAuthToken, deviceList, &receiveQueue);
 }
 
 
@@ -268,30 +334,33 @@ bool SinricProClass::isConnected() {
 
 
 void SinricProClass::reconnect() {
-  DEBUG_SINRIC("SinricProClass.reconnect(): disconnecting\r\n");
+  DEBUG_SINRIC("SinricPro:reconnect(): disconnecting\r\n");
   stop();
-  DEBUG_SINRIC("SinricProClass.reconnect(): wait 1second\r\n");
-  delay(1000);
-  DEBUG_SINRIC("SinricProClass.reconnect(): connecting\r\n");
+  DEBUG_SINRIC("SinricPro:reconnect(): connecting\r\n");
   connect();
 }
 
-bool SinricProClass::checkDeviceId(String deviceId) {
-  if (deviceId.length() != 24) {
-    DEBUG_SINRIC("[SinricPro.add()]: Invalid deviceId \"%s\"! Device will be ignored!\r\n", deviceId.c_str());
-    return false;
-  }
-
-  for (size_t i = 0; i < deviceId.length(); i++) {
-    char current = deviceId[i];
-    if (current >= '0' && current <= '9') continue;
-    if (current >= 'A' && current <= 'F') continue;
-    if (current >= 'a' && current <= 'f') continue;
-    DEBUG_SINRIC("[SinricPro.add()]: Invalid deviceId \"%s\"! Device will be ignored!\r\n", deviceId.c_str());
-    return false;
-  }
-  return true;
+bool SinricProClass::verifyDeviceId(const char* id) {
+  if (strlen(id) != 24) return false;
+  int tmp; char tmp_c;
+  return sscanf(id, "%4x%4x%4x%4x%4x%4x%c", 
+         &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp_c) == 6;
 }
+
+bool SinricProClass::verifyAppKey(const char* key) {
+  if (strlen(key) != 36) return false;
+  int tmp; char tmp_c;
+  return sscanf(key, "%4x%4x-%4x-%4x-%4x-%4x%4x%4x%c",
+         &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp_c) == 8;
+}
+
+bool SinricProClass::verifyAppSecret(const char* secret) {
+  if (strlen(secret) != 73) return false;
+  int tmp; char tmp_c;
+  return sscanf(secret, "%4x%4x-%4x-%4x-%4x-%4x%4x%4x-%4x%4x-%4x-%4x-%4x-%4x%4x%4x%c",
+         &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp, &tmp_c) == 16;
+}
+
 
 void SinricProClass::extractTimestamp(JsonDocument &message) {
   unsigned long tempTimestamp = 0;
