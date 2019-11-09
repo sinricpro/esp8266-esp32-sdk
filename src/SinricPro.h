@@ -63,8 +63,8 @@ class SinricProClass : public SinricProInterface {
     void disconnect();
     void reconnect();
 
-    void onConnect() { DEBUG_SINRIC("[SinricPro:onConnect()]\r\n"); }
-    void onDisconnect() { DEBUG_SINRIC("[SinricPro:onDisconnect()]\r\n"); }
+    void onConnect() { DEBUG_SINRIC("[SinricPro]: Connected to \"%s\"!]\r\n", serverURL.c_str()); }
+    void onDisconnect() { DEBUG_SINRIC("[SinricPro]: Disconnect\r\n"); }
 
     bool verifyDeviceId(const char* id);
     bool verifyAppKey(const char* key);
@@ -74,7 +74,7 @@ class SinricProClass : public SinricProInterface {
     SinricProDeviceInterface* getDevice(String deviceId);
     
     template <typename DeviceType>
-    DeviceType& getDeviceInstance(String deviceId) { return (DeviceType&) *getDevice(deviceId); }
+    DeviceType& getDeviceInstance(String deviceId);
 
     std::vector<SinricProDeviceInterface*> devices;
     String socketAuthToken;
@@ -97,6 +97,22 @@ SinricProDeviceInterface* SinricProClass::getDevice(String deviceId) {
     if (deviceId == String(device->getDeviceId())) return device;
   }
   return nullptr;
+}
+
+template <typename DeviceType>
+DeviceType& SinricProClass::getDeviceInstance(String deviceId) { 
+  DeviceType* tmp_device = (DeviceType*) getDevice(deviceId);
+  if (tmp_device) return *tmp_device;
+  
+  DEBUG_SINRIC("[SinricPro]: Device \"%s\" does not exist. Creating new device\r\n", deviceId.c_str());
+  DeviceType& tmp_deviceInstance = add<DeviceType>(deviceId.c_str());
+
+  if (isConnected()) {
+    DEBUG_SINRIC("[SinricPro]: Reconnecting to server.\r\n");
+    reconnect();
+  }
+
+  return tmp_deviceInstance;
 }
 
 void SinricProClass::begin(String socketAuthToken, String signingKey, String serverURL) {
@@ -126,10 +142,11 @@ template <typename DeviceType>
 DeviceType& SinricProClass::add(const char* deviceId, unsigned long eventWaitTime) {
   DeviceType* newDevice = new DeviceType(deviceId, eventWaitTime);
   if (verifyDeviceId(deviceId)){
-    DEBUG_SINRIC("[SinricPro:add(\"%s\")]: Adding device with id \"%s\".\r\n", deviceId, deviceId);
+    DEBUG_SINRIC("[SinricPro:add()]: Adding device with id \"%s\".\r\n", deviceId);
     newDevice->begin(this);
+    if (verifyAppKey(socketAuthToken.c_str()) && verifyAppSecret(signingKey.c_str())) _begin = true;
   } else {
-    DEBUG_SINRIC("[SinricPro:add(\"%s\")]: DeviceId \"%s\" is invalid!! Device will be ignored and will NOT WORK!\r\n", deviceId, deviceId);
+    DEBUG_SINRIC("[SinricPro:add()]: DeviceId \"%s\" is invalid!! Device will be ignored and will NOT WORK!\r\n", deviceId);
   }
   devices.push_back(newDevice);
   return *newDevice;
@@ -298,6 +315,7 @@ void SinricProClass::connect() {
   }
   if (i==0) { // no device have been added! -> do not connect!
     _begin = false;
+    DEBUG_SINRIC("[SinricPro]: ERROR! No valid devices available. Please add a valid device first!\r\n");
     return;
   }
 
@@ -316,11 +334,9 @@ bool SinricProClass::isConnected() {
 
 
 void SinricProClass::reconnect() {
-  DEBUG_SINRIC("SinricProClass.reconnect(): disconnecting\r\n");
+  DEBUG_SINRIC("SinricPro:reconnect(): disconnecting\r\n");
   stop();
-  DEBUG_SINRIC("SinricProClass.reconnect(): wait 1second\r\n");
-  delay(1000);
-  DEBUG_SINRIC("SinricProClass.reconnect(): connecting\r\n");
+  DEBUG_SINRIC("SinricPro:reconnect(): connecting\r\n");
   connect();
 }
 

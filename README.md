@@ -74,9 +74,13 @@ bool onPowerState(const String deviceId, bool &state) {
 ## How to add a device?
 Syntax is  
 ```C++
-  DeviceType& myDevice = SinricPro.add<DeviceType>(DEVICE_ID);
+  DeviceType& myDevice = SinricPro[DEVICE_ID];
 ```
 Example  
+```C++
+  SinricProSwitch& mySwitch = SinricPro["YOUR-SWITCH-ID-HERE"];
+```
+*Example 2 (alternatively)*
 ```C++
   SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>("YOUR-SWITCH-ID-HERE");
 ```
@@ -93,7 +97,7 @@ Example 1
   myDoorbell.sendDoorbellEvent();
 ```
 
-Example 2 (alternatively)
+*Example 2 (alternatively)*
 ```C++
   SinricPro["YOUR-DOORBELL-ID-HERE"].as<SinricProDoorbell>().sendDoorbellEvent();
 ```
