@@ -153,7 +153,9 @@ void SinricProClass::handle() {
   static bool begin_error = false;
   if (!_begin) {
     if (!begin_error) { // print this only once!
-      DEBUG_SINRIC("[SinricPro:handle()]: ERROR! SinricPro.begin() was not called before or not properly configured (invalid app-key / app-secret / no valid deviceId)\r\nSinricPro will not work! Please check your code!\r\n");
+      DEBUG_SINRIC("[SinricPro:handle()]: ERROR! SinricPro.begin() failed or was not called prior to event handler\r\n");
+      DEBUG_SINRIC("[SinricPro:handle()]:    -Reasons include an invalid app-key, invalid app-secret or no valid deviceIds)\r\n");
+      DEBUG_SINRIC("[SinricPro:handle()]:    -SinricPro is disabled! Check earlier log messages for details.\r\n");
       begin_error = true;
     }
     return;
@@ -240,12 +242,12 @@ void SinricProClass::handleReceiveQueue() {
     String messageType = jsonMessage["payload"]["type"];
 
     if (sigMatch) { // signature is valid process message
-      DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is valid! Processing message.\r\n");
+      DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is valid. Processing message...\r\n");
       extractTimestamp(jsonMessage);
       if (messageType == "response") handleResponse(jsonMessage);
       if (messageType == "request") handleRequest(jsonMessage, rawMessage->getInterface());
     } else {
-      DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is invalid...sending messsage to [dev/null] ;)\r\n");
+      DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is invalid! Sending messsage to [dev/null] ;)\r\n");
     }
     delete rawMessage;
   }
