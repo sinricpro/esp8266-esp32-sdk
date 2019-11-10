@@ -15,12 +15,10 @@ class SinricProLight :  public SinricProDevice {
   public:
     SinricProLight(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-    typedef std::function<bool(const String, bool&)> PowerStateCallback;
     typedef std::function<bool(const String, int&)> BrightnessCallback;
     typedef std::function<bool(const String, byte&, byte&, byte&)> ColorCallback;
     typedef std::function<bool(const String, int&)> ColorTemperatureCallback;
   
-    void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
     void onBrightness(BrightnessCallback cb) { brightnessCallback = cb; }
     void onAdjustBrightness(BrightnessCallback cb) { adjustBrightnessCallback = cb; }
     void onColor(ColorCallback cb) { colorCallback = cb; }
@@ -29,7 +27,6 @@ class SinricProLight :  public SinricProDevice {
     void onDecreaseColorTemperature(ColorTemperatureCallback cb) { decreaseColorTemperatureCallback = cb; }
 
     // event
-    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
     bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
     bool sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION");
     bool sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION");
@@ -37,7 +34,6 @@ class SinricProLight :  public SinricProDevice {
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
-    PowerStateCallback powerStateCallback;
     BrightnessCallback brightnessCallback;
     BrightnessCallback adjustBrightnessCallback;
     ColorCallback colorCallback;
@@ -47,7 +43,6 @@ class SinricProLight :  public SinricProDevice {
 };
 
 SinricProLight::SinricProLight(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
-  powerStateCallback(nullptr),
   brightnessCallback(nullptr),
   adjustBrightnessCallback(nullptr),
   colorCallback(nullptr),
@@ -57,15 +52,10 @@ SinricProLight::SinricProLight(const char* deviceId, unsigned long eventWaitTime
 
 bool SinricProLight::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
-  bool success = false;
-  String actionString = String(action);
+  bool success = SinricProDevice::handleRequest(deviceId, action, request_value, response_value); // call default handler
+  if (success) return success; // default handler handled request? return...
 
-  if (actionString == "setPowerState" && powerStateCallback) {
-    bool powerState = request_value["state"]=="On"?true:false;
-    success = powerStateCallback(String(deviceId), powerState);
-    response_value["state"] = powerState?"On":"Off";
-    return success;
-  }
+  String actionString = String(action);
 
   if (brightnessCallback && actionString == "setBrightness") {
     int brightness = request_value["brightness"];
@@ -110,13 +100,6 @@ bool SinricProLight::handleRequest(const char* deviceId, const char* action, Jso
   }
 
   return success;
-}
-
-bool SinricProLight::sendPowerStateEvent(bool state, String cause) {
-  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state?"On":"Off";
-  return sendEvent(eventMessage);
 }
 
 bool SinricProLight::sendBrightnessEvent(int brightness, String cause) {

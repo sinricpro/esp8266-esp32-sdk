@@ -17,8 +17,9 @@ class SinricProLock :  public SinricProDevice {
     // callback
 	  typedef std::function<bool(const String, bool&)> LockStateCallback; // void onLockState(const char* deviceId, bool& lockState);
     void onLockState(LockStateCallback cb) { lockStateCallback = cb; }
-
+    void onPowerState() = delete;  // SinricProLock has no powerState
     // event
+    bool sendPowerStateEvent() = delete; // SinricProLock has no powerState
     bool sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
 
     // handle

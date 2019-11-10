@@ -15,7 +15,6 @@ class SinricProTV :  public SinricProDevice {
   public:
 	  SinricProTV(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-	  typedef std::function<bool(const String, bool&)> PowerStateCallback; // void onPowerState(const char* deviceId, bool& powerState);
     typedef std::function<bool(const String, int&)> VolumeCallback;
     typedef std::function<bool(const String, bool&)> MuteCallback;
     typedef std::function<bool(const String, String&)> MediaControlCallback;
@@ -23,7 +22,6 @@ class SinricProTV :  public SinricProDevice {
     typedef std::function<bool(const String, String&)> ChangeChannelCallback;
     typedef std::function<bool(const String, int, String&)> SkipChannelsCallback;
 
-    void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
     void onSetVolume(VolumeCallback cb) { volumeCallback = cb; }
     void onAdjustVolume(VolumeCallback cb) { adjustVolumeCallback = cb; }
     void onMute(MuteCallback cb) { muteCallback = cb; }
@@ -33,7 +31,6 @@ class SinricProTV :  public SinricProDevice {
     void onSkipChannels(SkipChannelsCallback cb) { skipChannelsCallback = cb; }
 
     // event
-    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
     bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION");
     bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION");
     bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION");
@@ -42,7 +39,6 @@ class SinricProTV :  public SinricProDevice {
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
-    PowerStateCallback powerStateCallback;
     VolumeCallback volumeCallback;
     VolumeCallback adjustVolumeCallback; 
     MuteCallback muteCallback;
@@ -54,7 +50,6 @@ class SinricProTV :  public SinricProDevice {
 
 
 SinricProTV::SinricProTV(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
-  powerStateCallback(nullptr),
   volumeCallback(nullptr),
   adjustVolumeCallback(nullptr),
   muteCallback(nullptr),
@@ -66,15 +61,10 @@ SinricProTV::SinricProTV(const char* deviceId, unsigned long eventWaitTime) : Si
 
 bool SinricProTV::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
-  bool success = false;
-  String actionString = String(action);
+  bool success = SinricProDevice::handleRequest(deviceId, action, request_value, response_value); // call default handler
+  if (success) return success; // default handler handled request? return...
 
-  if (actionString == "setPowerState" && powerStateCallback) {
-    bool powerState = request_value["state"]=="On"?true:false;
-    success = powerStateCallback(String(deviceId), powerState);
-    response_value["state"] = powerState?"On":"Off";
-    return success;
-  }
+  String actionString = String(action);
 
   if (volumeCallback && actionString == "setVolume") {
     int volume = request_value["volume"];
@@ -129,13 +119,6 @@ bool SinricProTV::handleRequest(const char* deviceId, const char* action, JsonOb
   }
 
   return success;
-}
-
-bool SinricProTV::sendPowerStateEvent(bool state, String cause) {
-  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state?"On":"Off";
-  return sendEvent(eventMessage);
 }
 
 bool SinricProTV::sendVolumeEvent(int volume, String cause) {

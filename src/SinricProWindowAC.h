@@ -15,12 +15,10 @@ class SinricProWindowAC :  public SinricProDevice {
   public:
 	  SinricProWindowAC(const char* deviceId, unsigned long eventWaitTime=30000);
     // callback
-	  typedef std::function<bool(const String, bool&)> PowerStateCallback; 
     typedef std::function<bool(const String, int&)> RangeValueCallback;
     typedef std::function<bool(const String, float&)> TargetTemperatureCallback;
     typedef std::function<bool(const String, String&)> ThermostatModeCallback;
 
-    void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
     void onRangeValue(RangeValueCallback cb) { rangeValueCallback = cb; }
     void onAdjustRangeValue(RangeValueCallback cb) { adjustRangeValueCallback = cb; }
     void onTargetTemperatue(TargetTemperatureCallback cb) { targetTemperatureCallback = cb; }
@@ -28,7 +26,6 @@ class SinricProWindowAC :  public SinricProDevice {
     void onThermostatMode(ThermostatModeCallback cb) { thermostatModeCallback = cb; }
 
     // event
-    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
     bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION");
     void sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
     void sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION");
@@ -37,7 +34,6 @@ class SinricProWindowAC :  public SinricProDevice {
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
-    PowerStateCallback powerStateCallback;
     RangeValueCallback rangeValueCallback; 
     RangeValueCallback adjustRangeValueCallback; 
     TargetTemperatureCallback targetTemperatureCallback;
@@ -47,7 +43,6 @@ class SinricProWindowAC :  public SinricProDevice {
 };
 
 SinricProWindowAC::SinricProWindowAC(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
-  powerStateCallback(nullptr),
   rangeValueCallback(nullptr),
   adjustRangeValueCallback(nullptr),
   targetTemperatureCallback(nullptr),
@@ -56,15 +51,10 @@ SinricProWindowAC::SinricProWindowAC(const char* deviceId, unsigned long eventWa
 
 bool SinricProWindowAC::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
-  bool success = false;
-  String actionString = String(action);
+  bool success = SinricProDevice::handleRequest(deviceId, action, request_value, response_value); // call default handler
+  if (success) return success; // default handler handled request? return...
 
-  if (actionString == "setPowerState" && powerStateCallback) {
-    bool powerState = request_value["state"]=="On"?true:false;
-    success = powerStateCallback(String(deviceId), powerState);
-    response_value["state"] = powerState?"On":"Off";
-    return success;
-  }
+  String actionString = String(action);
 
   if (actionString == "setRangeValue" && rangeValueCallback) {
     int rangeValue = request_value["rangeValue"] | 0;
@@ -107,13 +97,6 @@ bool SinricProWindowAC::handleRequest(const char* deviceId, const char* action, 
   }
 
   return success;
-}
-
-bool SinricProWindowAC::sendPowerStateEvent(bool state, String cause) {
-  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state?"On":"Off";
-  return sendEvent(eventMessage);
 }
 
 bool SinricProWindowAC::sendRangeValueEvent(int rangeValue, String cause) {
