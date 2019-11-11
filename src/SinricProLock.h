@@ -9,7 +9,6 @@
 #define _SINRICLOCK_H_
 
 #include "SinricProDevice.h"
-#include <ArduinoJson.h>
 
 class SinricProLock :  public SinricProDevice {
   public:

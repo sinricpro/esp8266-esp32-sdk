@@ -9,7 +9,6 @@
 #define _SINRICCONTACTSENSOR_H_
 
 #include "SinricProDevice.h"
-#include <ArduinoJson.h>
 
 class SinricProContactsensor :  public SinricProDevice {
   public:

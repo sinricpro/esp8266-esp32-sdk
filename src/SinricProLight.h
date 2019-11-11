@@ -9,7 +9,6 @@
 #define _SINRICLIGHT_H_
 
 #include "SinricProDevice.h"
-#include <ArduinoJson.h>
 
 class SinricProLight :  public SinricProDevice {
   public:
@@ -52,9 +51,9 @@ SinricProLight::SinricProLight(const char* deviceId, unsigned long eventWaitTime
 
 bool SinricProLight::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
-  bool success = SinricProDevice::handleRequest(deviceId, action, request_value, response_value); // call default handler
-  if (success) return success; // default handler handled request? return...
+  if (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) return true;
 
+  bool success = false;
   String actionString = String(action);
 
   if (brightnessCallback && actionString == "setBrightness") {

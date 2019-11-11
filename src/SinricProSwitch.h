@@ -9,15 +9,7 @@
 #define _SINRICSWITCH_H_
 
 #include "SinricProDevice.h"
-#include <ArduinoJson.h>
-
-class SinricProSwitch :  public SinricProDevice {
-  public:
-	  SinricProSwitch(const char* deviceId, unsigned long eventWaitTime=100);
-  private:
-};
-
-SinricProSwitch::SinricProSwitch(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
+typedef SinricProDevice SinricProSwitch;
 
 #endif
 

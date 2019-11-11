@@ -9,7 +9,6 @@
 #define _SINRICDIMSWITCH_H_
 
 #include "SinricProDevice.h"
-#include <ArduinoJson.h>
 
 class SinricProDimSwitch :  public SinricProDevice {
   public:
@@ -37,10 +36,10 @@ SinricProDimSwitch::SinricProDimSwitch(const char* deviceId, unsigned long event
 
 bool SinricProDimSwitch::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
+  
+  if (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) return true;
 
-  bool success = SinricProDevice::handleRequest(deviceId, action, request_value, response_value);
-  if (success) return success;
-
+  bool success = false;
   String actionString = String(action);
 
   if (powerLevelCallback && actionString == "setPowerLevel") {

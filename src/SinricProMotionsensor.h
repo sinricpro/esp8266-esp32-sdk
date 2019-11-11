@@ -9,7 +9,6 @@
 #define _SINRICMOTIONSENSOR_H_
 
 #include "SinricProDevice.h"
-#include <ArduinoJson.h>
 
 class SinricProMotionsensor :  public SinricProDevice {
   public:

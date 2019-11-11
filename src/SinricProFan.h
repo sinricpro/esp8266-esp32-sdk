@@ -9,7 +9,6 @@
 #define _SINRICFAN_H_
 
 #include "SinricProDevice.h"
-#include <ArduinoJson.h>
 
 /*
  * SinricFan is the same deviceType like SinricDimSwitch
