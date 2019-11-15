@@ -50,6 +50,9 @@ class SinricProClass : public SinricProInterface {
 
     proxy operator[](const String deviceId) { return proxy(this, deviceId); }
 
+    // setResponseMessage is is just a workaround until verison 3.x.x will be released
+    void setResponseMessage(String &&message) { responseMessageStr = message; }
+
   private:
     void handleReceiveQueue();
     void handleSendQueue();
@@ -90,6 +93,7 @@ class SinricProClass : public SinricProInterface {
     unsigned long baseTimestamp = 0;
 
     bool _begin = false;
+    String responseMessageStr = "";
 };
 
 SinricProDeviceInterface* SinricProClass::getDevice(String deviceId) {
@@ -231,6 +235,14 @@ void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interfac
     if (strcmp(deviceId, device->getDeviceId()) == 0 && success == false) {
       success = device->handleRequest(deviceId, action, request_value, response_value);
       responseMessage["payload"]["success"] = success;
+      if (!success) {
+        if (responseMessageStr.length() > 0){
+          responseMessage["payload"]["message"] = responseMessageStr;
+          responseMessageStr = ""; 
+        } else {
+          responseMessage["payload"]["message"] = "Device returned an error while processing the request!";
+        }
+      }
     }
   }
 
