@@ -42,9 +42,9 @@
 ```
 #### Define your credentials from SinricPro-Portal (portal.sinric.pro)
 ```C++
-#define APP_KEY	    "YOUR-APP-KEY"
-#define APP_SECRET  "YOUR-APP-SECRET"
-#define SWITCH_ID   "YOUR-SWITCH-DEVICEID" // Note: This is not device name! This is device id like "5da8xxxxxxxxxxxxxxxxxxxx"
+#define APP_KEY    "YOUR-APP-KEY"    // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+#define APP_SECRET "YOUR-APP-SECRET" // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define SWITCH_ID  "YOUR-DEVICE-ID"  // Should look like "5dc1564130xxxxxxxxxxxxxx"
 ```
 
 #### Define callback routine(s)
@@ -57,7 +57,7 @@ bool onPowerState(const String deviceId, bool &state) {
 #### In setup()
 ```C++
   // create and add a switch to SinricPro
-  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>(SWITCH_ID);
+  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
   // set callback function
   mySwitch.onPowerState(onPowerState);
   // startup SinricPro
