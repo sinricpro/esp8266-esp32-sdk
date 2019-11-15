@@ -429,7 +429,8 @@ DynamicJsonDocument SinricProClass::prepareEvent(const char* deviceId, const cha
 
   JsonObject payload = eventMessage.createNestedObject("payload");
   payload["action"] = action;
-  payload["cause"] = cause;
+  payload["cause"].createNestedObject("type");
+  payload["cause"]["type"] = cause;
   payload["createdAt"] = 0;
   payload["deviceId"] = deviceId;
   payload["replyToken"] = MessageID().getID();
