@@ -12,7 +12,7 @@
 
 class SinricProThermostat :  public SinricProDevice {
   public:
-	  SinricProThermostat(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProThermostat(const char* deviceId, unsigned long eventWaitTime=60000);
     // callback
     typedef std::function<bool(const String, float&)> TargetTemperatureCallback;
     typedef std::function<bool(const String, String&)> ThermostatModeCallback;

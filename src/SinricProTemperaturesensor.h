@@ -12,7 +12,7 @@
 
 class SinricProTemperaturesensor :  public SinricProDevice {
   public:
-	  SinricProTemperaturesensor(const char* deviceId, unsigned long eventWaitTime=30000);
+	  SinricProTemperaturesensor(const char* deviceId, unsigned long eventWaitTime=60000);
 
     // event
     bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
