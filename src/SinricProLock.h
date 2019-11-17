@@ -38,7 +38,7 @@ bool SinricProLock::handleRequest(const char* deviceId, const char* action, Json
   if (actionString == "setLockState" && lockStateCallback) {
     bool lockState = request_value["state"]=="lock"?true:false;
     success = lockStateCallback(String(deviceId), lockState);
-    response_value["state"] = lockState?"LOCKED":"UNLOCKED";
+    response_value["state"] = success?lockState?"LOCKED":"UNLOCKED":"JAMMED";
     return success;
   }
   return success;
