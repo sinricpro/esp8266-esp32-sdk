@@ -43,7 +43,7 @@ void udpListener::handle() {
   if (!_udp.available()) return;
   int len = _udp.parsePacket();
   if (len) {
-
+    
     char buffer[1024];
     int n = _udp.read(buffer, 1024);
     buffer[n] = 0;
@@ -57,7 +57,23 @@ void udpListener::sendMessage(String &message) {
   _udp.beginPacket(_udp.remoteIP(), _udp.remotePort());
   _udp.print(message);
   _udp.endPacket();
+  // restart UDP??
+  #if defined ESP8266
+    _udp.beginMulticast(WiFi.localIP(), UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
+  #endif  
+  #if defined ESP32
+    _udp.beginMulticast(UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
+  #endif  
 }
+
+/*
+void udpListener::sendMessage(String &message) {
+  WiFiUDP UDPsender;
+  UDPsender.beginPacket(_udp.remoteIP(), _udp.remotePort());
+  UDPsender.print(message);
+  UDPsender.endPacket();
+}
+*/ 
 
 void udpListener::stop() {
   _udp.stop();

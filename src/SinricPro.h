@@ -140,6 +140,7 @@ void SinricProClass::begin(String socketAuthToken, String signingKey, String ser
   this->signingKey = signingKey;
   this->serverURL = serverURL;
   _begin = true;
+  _udpListener.begin(&receiveQueue);
 }
 
 template <typename DeviceType>
@@ -305,8 +306,8 @@ void SinricProClass::handleSendQueue() {
     #endif
 
     switch (rawMessage->getInterface()) {
-      case IF_WEBSOCKET: _websocketListener.sendMessage(messageStr); break;
-      case IF_UDP:       _udpListener.sendMessage(messageStr); break;
+      case IF_WEBSOCKET: DEBUG_SINRIC("[SinricPro:handleSendQueue]: Sending to websocket\r\n"); _websocketListener.sendMessage(messageStr); break;
+      case IF_UDP:       DEBUG_SINRIC("[SinricPro:handleSendQueue]: Sending to UDP\r\n");_udpListener.sendMessage(messageStr); break;
       default:           break;
     }
     delete rawMessage;
@@ -387,6 +388,7 @@ void SinricProClass::extractTimestamp(JsonDocument &message) {
   // extract timestamp from request message
   tempTimestamp = message["payload"]["createdAt"] | 0;
   if (tempTimestamp) {
+    DEBUG_SINRIC("[SinricPro:extractTimestamp(): Got Timestamp %lu\r\n", tempTimestamp);
     baseTimestamp = tempTimestamp - (millis() / 1000);
     return;
   }
