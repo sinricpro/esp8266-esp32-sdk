@@ -14,7 +14,7 @@ class SinricProFanUS :  public SinricProDevice {
   public:
 	  SinricProFanUS(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-    typedef std::function<bool(const String, int&)> RangeValueCallback;
+    typedef std::function<bool(const String&, int&)> RangeValueCallback;
     void onRangeValue(RangeValueCallback cb) { rangeValueCallback = cb; }
     void onAdjustRangeValue(RangeValueCallback cb) { adjustRangeValueCallback = cb; }
 

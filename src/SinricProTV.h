@@ -14,12 +14,12 @@ class SinricProTV :  public SinricProDevice {
   public:
 	  SinricProTV(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-    typedef std::function<bool(const String, int&)> VolumeCallback;
-    typedef std::function<bool(const String, bool&)> MuteCallback;
-    typedef std::function<bool(const String, String&)> MediaControlCallback;
-    typedef std::function<bool(const String, String&)> SelectInputCallback;
-    typedef std::function<bool(const String, String&)> ChangeChannelCallback;
-    typedef std::function<bool(const String, int, String&)> SkipChannelsCallback;
+    typedef std::function<bool(const String&, int&)> VolumeCallback;
+    typedef std::function<bool(const String&, bool&)> MuteCallback;
+    typedef std::function<bool(const String&, String&)> MediaControlCallback;
+    typedef std::function<bool(const String&, String&)> SelectInputCallback;
+    typedef std::function<bool(const String&, String&)> ChangeChannelCallback;
+    typedef std::function<bool(const String&, int, String&)> SkipChannelsCallback;
 
     void onSetVolume(VolumeCallback cb) { volumeCallback = cb; }
     void onAdjustVolume(VolumeCallback cb) { adjustVolumeCallback = cb; }

@@ -55,7 +55,7 @@ unsigned long lastBtnPress = 0;
  * return
  *  true if request should be marked as handled correctly / false if not
  */
-bool onPowerState(String deviceId, bool &state) {
+bool onPowerState(const String &deviceId, bool &state) {
   Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
   myPowerState = state;
   digitalWrite(LED_BUILTIN, myPowerState?LOW:HIGH);

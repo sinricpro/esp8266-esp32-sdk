@@ -23,7 +23,7 @@ class SinricProDevice : public SinricProDeviceInterface {
     virtual bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value);
 
     // standard callbacks
-	  typedef std::function<bool(const String, bool&)> PowerStateCallback;
+	  typedef std::function<bool(const String&, bool&)> PowerStateCallback;
     virtual void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
 
     // standard events

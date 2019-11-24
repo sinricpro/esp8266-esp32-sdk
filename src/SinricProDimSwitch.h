@@ -14,7 +14,7 @@ class SinricProDimSwitch :  public SinricProDevice {
   public:
 	  SinricProDimSwitch(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-    typedef std::function<bool(const String, int&)> PowerLevelCallback; // void onPowerLevel(const char* deviceId, int& powerLevel);
+    typedef std::function<bool(const String&, int&)> PowerLevelCallback; // void onPowerLevel(const char* deviceId, int& powerLevel);
   
     void onPowerLevel(PowerLevelCallback cb) { powerLevelCallback = cb; }
     void onAdjustPowerLevel(PowerLevelCallback cb) { adjustPowerLevelCallback = cb; }

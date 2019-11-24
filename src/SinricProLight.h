@@ -14,9 +14,9 @@ class SinricProLight :  public SinricProDevice {
   public:
     SinricProLight(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-    typedef std::function<bool(const String, int&)> BrightnessCallback;
-    typedef std::function<bool(const String, byte&, byte&, byte&)> ColorCallback;
-    typedef std::function<bool(const String, int&)> ColorTemperatureCallback;
+    typedef std::function<bool(const String&, int&)> BrightnessCallback;
+    typedef std::function<bool(const String&, byte&, byte&, byte&)> ColorCallback;
+    typedef std::function<bool(const String&, int&)> ColorTemperatureCallback;
   
     void onBrightness(BrightnessCallback cb) { brightnessCallback = cb; }
     void onAdjustBrightness(BrightnessCallback cb) { adjustBrightnessCallback = cb; }

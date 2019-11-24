@@ -49,7 +49,7 @@
 
 #### Define callback routine(s)
 ```C++
-bool onPowerState(const String deviceId, bool &state) {
+bool onPowerState(const String &deviceId, bool &state) {
   Serial.printf("device %s turned %s\r\n", deviceId.c_str(), state?"on":"off");
   return true; // indicate that callback handled correctly
 }
@@ -311,12 +311,12 @@ Events
 
 ### onAdjustBands
 ```C++
-bool onAdjustBands(const String deviceId, const String bands, int &levelDelta)
+bool onAdjustBands(const String &deviceId, const String &bands, int &levelDelta)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`bands`|`const String`| `"BASS"`, `"MIDRANGE"`, `"TREBBLE"` |---| `"BASS"` (adjust BASS band)|
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+|`bands`|`const String&`| `"BASS"`, `"MIDRANGE"`, `"TREBBLE"` |---| `"BASS"` (adjust BASS band)|
 |`levelDelta`| `int&` |`-n`..`+n`|`0`..`n`|*Input*:`-3` (lower level about 3)<br>*Output*:`2` (new level is 2)<br>(see note) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -330,11 +330,11 @@ Devices: | [Speaker](#speaker) |
 
 ### onAdjustBrightness
 ```C++
-bool onAdjustBrightness(const String deviceId, int &brightnessDelta)
+bool onAdjustBrightness(const String &deviceId, int &brightnessDelta)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` | `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` | `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`brightnessDelta`|`int&`|`-100`..`100`|`0`..`100`|Input*:`-25`(reduce brightness about 25)<br>*Output*:`50` (new brightness is 50)<br>(*see note*)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -348,11 +348,11 @@ Devices: | [Light](#light) |
 
 ### onAdjustPowerLevel
 ```C++
-bool onAdjustPowerLevel(const String deviceId, int &levelDelta)
+bool onAdjustPowerLevel(const String &deviceId, int &levelDelta)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`levelDelta`|`int&`|`-100`..`100`|`0`..`100`|*Input*:`-25`(reduce level about 25)<br>*Output*:`50` (new level is 50)<br>(*see note*)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -366,11 +366,11 @@ Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) |
 
 ### onAdjustRangeValue
 ```C++
-bool onAdjustPowerLevel(const String deviceId, int &rangeValueDelta)
+bool onAdjustPowerLevel(const String &deviceId, int &rangeValueDelta)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 | `rangeValueDelta` | `int&` | `-n`..`n` | `0`..`n` |*Input*:`-2`(reduce rangeValue about 2)<br>*Output*:`1` (new range Value is 1)<br>(*see note*)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -384,11 +384,11 @@ Devices: | [Fan (US)](#fan-us) | [Window AC Unit](#window-ac-unit) |
 
 ### onAdjustTargetTemperature
 ```C++
-bool onAdjustTargetTemperature(const String deviceId, float &temperatureDelta)
+bool onAdjustTargetTemperature(const String &deviceId, float &temperatureDelta)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 | `temperatureDelta` | `float&` | `-n`..`n` | `0`..`n` |*Input*:`-2`(reduce temperature about 2°)<br>*Output*:`1` (new temperature Value is 1)<br>(*see note*)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -402,11 +402,11 @@ Devices: | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
 ### onAdjustVolume
 ```C++
-bool onAdjustVolume(const String deviceId, int&volumeDelta)
+bool onAdjustVolume(const String &deviceId, int&volumeDelta)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`volumeDelta`|`int&`|`-100`..`100`|`0`..`100`|`-10` (*see note*)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -420,11 +420,11 @@ Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ### onBrightness
 ```C++
-bool onBrightness(const String deviceId, int &brightness)
+bool onBrightness(const String &deviceId, int &brightness)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`brightness`|`int&`|`0`..`100`|`0`..`100`|`75`|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -434,11 +434,11 @@ Devices: | [Light](#light) |
 
 ### onChangeChannel
 ```C++
-bool onChangeChannel(const String deviceId, String &channel)
+bool onChangeChannel(const String &deviceId, String &channel)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`channel` | `String&` | `channel name` | `channel name` | `"HBO"` (name of a tv channel) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -448,11 +448,11 @@ Devices: | [TV](#tv) |
 
 ### onColor
 ```C++
-bool onColor(const String deviceId, byte &r, byte &g, byte &b)
+bool onColor(const String &deviceId, byte &r, byte &g, byte &b)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 | `r`|`byte&`|`0`..`255` | `0`..`255` | `72` (red value) |
 | `g`|`byte&`|`0`..`255` | `0`..`255` | `192` (green value) |
 | `b`|`byte&`|`0`..`255` | `0`..`255` | `37` (blue value) |
@@ -465,11 +465,11 @@ Devices: | [Light](#light) |
 ### onColorTemperature
 
 ```C++
-bool onColorTemperature(const String deviceId, int &colorTemperature)
+bool onColorTemperature(const String &deviceId, int &colorTemperature)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`colorTemperature` | `int&` | `2200`,`2700`, `4000`, `5500`, `7000` | `2200`,`2700`, `4000`, `5500`, `7000` | `2700` (soft white) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -479,11 +479,11 @@ Devices: | [Light](#light) |
 
 ### onDecreaseColorTemperature
 ```C++
-bool onDecreaseColorTemperature(const String deviceId, int &colorTemperature)
+bool onDecreaseColorTemperature(const String &deviceId, int &colorTemperature)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`colorTemperature` | `int&` | ---<br>(see note) | `2200`,`2700`, `4000`, `5500`, `7000` | `2200` (warm white) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -497,11 +497,11 @@ Devices: | [Light](#light) |
 
 ### onIncreaseColorTemperature
 ```C++
-bool onIncreaseColorTemperature(const String deviceId, int &colorTemperature)
+bool onIncreaseColorTemperature(const String &deviceId, int &colorTemperature)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`colorTemperature` | `int&` | ---<br>(see note) | `2200`,`2700`, `4000`, `5500`, `7000` | `4000` (white) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -516,11 +516,11 @@ Devices: | [Light](#light) |
 ### onLockState
 
 ```C++
-bool onLockState(const String deviceId, bool &state)
+bool onLockState(const String &deviceId, bool &state)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`state`|`bool&`| `true`: lock device<br>`false`: unlock device |  `true`: device is locked<br>`false`: device is unlocked | `true` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -530,11 +530,11 @@ Devices: | [Lock](#lock) |
 
 ### onMediaControl
 ```C++
-bool onMediaControl(const String deviceId, String &control)
+bool onMediaControl(const String &deviceId, String &control)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 | `control`|  `String&` | `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"`| `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"` | `Pause`: device is paused |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -544,11 +544,11 @@ Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ### onMute
 ```C++
-bool onMute(const String deviceId, bool &mute)
+bool onMute(const String &deviceId, bool &mute)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 | `mute`|  `bool&` | `true`: mute<br>`false`: unmute | `true`: device is muted<br>`false`: device is not muted | `true` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -558,11 +558,11 @@ Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ### onPowerLevel
 ```C++
-bool onPowerLevel(const String deviceId, int &level)
+bool onPowerLevel(const String &deviceId, int &level)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`level`|`int&`|`0`..`100`|`0`..`100`|`75`|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -572,11 +572,11 @@ Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) |
 
 ### onPowerState
 ```C++
-bool onPowerState(const String deviceId, bool &state)
+bool onPowerState(const String &deviceId, bool &state)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 | `state`|  `bool&` | `true`: turn on<br>`false`: turn off | `true`: turned on<br>`false`: turned off | `true` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -586,11 +586,11 @@ Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#li
 
 ### onRangeValue
 ```C++
-bool onRangeValue(const String deviceId, int &rangeValue)
+bool onRangeValue(const String &deviceId, int &rangeValue)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`rangeValue`|`int&`| `0`..`n` | `0`..`n` | `3` (device is set to 3)
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -600,7 +600,7 @@ Devices: | [Fan (US)](#fan-us) | [Window AC Unit](#window-ac-unit) |
 
 ### onResetBands
 ```C++
-bool onResetBands(const String deviceId, const String bands, int &level)
+bool onResetBands(const String &deviceId, const String &bands, int &level)
 ```
 
 Devices: | [Speaker](#speaker) |
@@ -609,11 +609,11 @@ Devices: | [Speaker](#speaker) |
 
 ### onSelectInput
 ```C++
-bool onSelectInput(const String deviceId, String &input)
+bool onSelectInput(const String &deviceId, String &input)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`input` | `String&` | `input name` | `input name` | `"AUX 1"`, `"AUX 2"`, `"AUX 3"`, `"AUX 4"`, `"AUX 5"`, `"AUX 6"`, `"AUX 7"`, `"BLURAY"`, `"CABLE"`, `"CD"`, `"COAX 1"`,`"COAX 2"`, `"COMPOSITE 1"`, `"DVD"`, `"GAME"`, `"HD RADIO"`, `"HDMI 1"`, `"HDMI 2"`, `"HDMI 3"`, `"HDMI 4"`, `"HDMI 5"`, `"HDMI 6"`, `"HDMI 7"`, `"HDMI 8"`, `"HDMI 9"`, `"HDMI 10"`, `"HDMI ARC"`, `"INPUT 1"`, `"INPUT 2"`, `"INPUT 3"`, `"INPUT 4"`, `"INPUT 5"`, `"INPUT 6"`, `"INPUT 7"`, `"INPUT 8"`, `"INPUT 9"`, `"INPUT 10"`, `"IPOD"`, `"LINE 1"`, `"LINE 2"`, `"LINE 3"`, `"LINE 4"`, `"LINE 5"`, `"LINE 6"`, `"LINE 7"`, `"MEDIA PLAYER"`, `"OPTICAL 1"`, `"OPTICAL 2"`, `"PHONO"`, `"PLAYSTATION"`, `"PLAYSTATION 3"`, `"PLAYSTATION 4"`, `"SATELLITE"`, `"SMARTCAST"`, `"TUNER"`, `"TV"`, `"USB DAC"`, `"VIDEO 1"`, `"VIDEO 2"`, `"VIDEO 3"`, `"XBOX"` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -623,12 +623,12 @@ Devices: | [TV](#tv) |
 
 ### onSetBands
 ```C++
-bool onSetBands(const String deviceId, const String bands, int &level)
+bool onSetBands(const String &deviceId, const String &bands, int &level)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
-|`bands`|`const String`| `"BASS"`, `"MIDRANGE"`, `"TREBBLE"` |---| `"BASS"` (set bass band)|
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+|`bands`|`const String&`| `"BASS"`, `"MIDRANGE"`, `"TREBBLE"` |---| `"BASS"` (set bass band)|
 |`level`| `int&` |`0`..`n`|`0`..`n`|`5` (set level to 5) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -638,11 +638,11 @@ Devices: | [Speaker](#speaker) |
 
 ### onSetMode
 ```C++
-bool onSetMode(const String deviceId, String &mode)
+bool onSetMode(const String &deviceId, String &mode)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`mode`|`String&`| `MODE` | `MODE`| `"MOVIE"`, `"MUSIC"`, `"NIGHT"`, `"SPORT"`, `"TV"` |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -652,11 +652,11 @@ Devices: | [Speaker](#speaker) |
 
 ### onSetVolume
 ```C++
-bool onSetVolume(const String deviceId, int &volume)
+bool onSetVolume(const String &deviceId, int &volume)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`volume`|`int&`|`0`..`100`|`0`..`100`|`75`|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -666,11 +666,11 @@ Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ### onSkipChannels
 ```C++
-bool onSkipChannels(const String deviceId, const int channelCount, String &channelName)
+bool onSkipChannels(const String &deviceId, const int channelCount, String &channelName)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 | `channelCount` | `const int`| `-n`..`+n` | --- | `-5`|
 |`channelName` | `String&` | --- | `channel name` | `"HBO"` (name of the new tv channel) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
@@ -681,11 +681,11 @@ Devices: | [TV](#tv) |
 
 ### onTargetTemperature
 ```C++
-bool onTargetTemperatue(const String deviceId, float &temperature)
+bool onTargetTemperatue(const String &deviceId, float &temperature)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`temperature`|`float&`| `-n`..`+n` | `-n`..`+n`| `18.2f` (set temperature to 18.2°)<br>(see note)|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
@@ -698,11 +698,11 @@ Devices: | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
 ### onThermostatMode
 ```C++
-bool onThermostatMode(const String deviceId, String &mode)
+bool onThermostatMode(const String &deviceId, String &mode)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |
-| `deviceId` |  `const String` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`mode`|`String&`| `"COOL"`, `"HEAT"`, `"AUTO"` | `"COOL"`, `"HEAT"`,`"AUTO"`| `"AUTO"` (set mode to "automatic")|
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
