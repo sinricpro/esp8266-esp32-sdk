@@ -11,6 +11,14 @@
 #include "SinricProDeviceInterface.h"
 #include <map>
 
+#define BUCKET_SIZE 10
+#define DROP_WAIT_TIME 60000
+
+struct leackyBucket_t {
+  int dropsInBucket=0;
+  unsigned long lastDrop;
+};
+
 class SinricProDevice : public SinricProDeviceInterface {
   public:
     SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime=100);
@@ -37,7 +45,7 @@ class SinricProDevice : public SinricProDeviceInterface {
   private:
     SinricProInterface* eventSender;
     unsigned long eventWaitTime;
-    std::map<String, unsigned long> eventFilter;
+    std::map<String, leackyBucket_t> eventFilter;
 };
 
 SinricProDevice::SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime) : 
@@ -85,16 +93,44 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
   unsigned long actualMillis = millis();
   String eventName = event["payload"]["action"] | ""; // get event name
 
+  leackyBucket_t bucket;
+
+// get Bucket for eventName
+
   if (eventFilter.find(eventName) == eventFilter.end()) {  // if eventFilter is not initialized
-    eventFilter[eventName] = -eventWaitTime; // initialize eventFilter
+//    eventFilter[eventName] = -eventWaitTime; // initialize eventFilter
+    bucket.dropsInBucket = 0;
+    bucket.lastDrop = -eventWaitTime;
+    eventFilter[eventName] = bucket;
+  } else {  // if eventFilter is initialized, get bucket
+    bucket = eventFilter[eventName]; 
+  }
+  DEBUG_SINRIC("Bucket dropsInBucket: %d\r\n", bucket.dropsInBucket);
+// leack bucket...
+  int drops_to_leak = (actualMillis - bucket.lastDrop) / DROP_WAIT_TIME;
+  DEBUG_SINRIC("Bucket leaking: %d\r\n", drops_to_leak);
+  if (drops_to_leak > 0) {
+    if (bucket.dropsInBucket <= drops_to_leak) {
+      bucket.dropsInBucket = 0;
+    } else {
+      bucket.dropsInBucket -= drops_to_leak;
+    }
   }
 
-  unsigned long lastEventMillis = eventFilter[eventName] | 0; // get the last timestamp for event
-  if (actualMillis - lastEventMillis < eventWaitTime) return false; // if last event was before waitTime return...
-
-  if (eventSender) eventSender->sendMessage(event); // send event
-  eventFilter[eventName] = actualMillis; // update lastEventTime
-  return true;
+//  unsigned long lastEventMillis = eventFilter[eventName] | 0; // get the last timestamp for event
+//  if (actualMillis - lastEventMillis < eventWaitTime) return false; // if last event was before waitTime return...
+//  if (actualMillis - bucket.lastDrop < eventWaitTime) return false; 
+  if (bucket.dropsInBucket < BUCKET_SIZE) { // new drop can be placed into bucket?
+    Serial.printf("SinricProDevice::sendMessage(): %d event's left before limiting to 1 event per %d seconds\r\n", BUCKET_SIZE-bucket.dropsInBucket, DROP_WAIT_TIME / 1000);
+    bucket.dropsInBucket++; // place drop in bucket
+    bucket.lastDrop = actualMillis; // store last drop time
+    eventFilter[eventName] = bucket; // save bucket back to map
+    if (eventSender) eventSender->sendMessage(event); // send event
+    return true;
+  } else {
+    Serial.printf("SinricProDevice::sendMessage():\r\n  - WARNING! YOU SENT %d EVENTS IN %d SECONDS.\r\n  - EVENTS ARE BLOCKED FOR %lu SECONDS\r\n",BUCKET_SIZE, DROP_WAIT_TIME/1000, (DROP_WAIT_TIME-(actualMillis-bucket.lastDrop))/1000);
+  }
+  return false;
 }
 
 bool SinricProDevice::sendPowerStateEvent(bool state, String cause) {
