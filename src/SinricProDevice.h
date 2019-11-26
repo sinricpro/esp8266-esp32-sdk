@@ -11,8 +11,9 @@
 #include "SinricProDeviceInterface.h"
 #include <map>
 
-#define BUCKET_SIZE 10
-#define DROP_WAIT_TIME 60000
+#define BUCKET_SIZE 20
+#define DROP_WAIT_TIME 30000
+#define DROP_ADD_FACTOR 100
 
 struct leackyBucket_t {
   int dropsInBucket=0;
@@ -120,15 +121,17 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
 //  unsigned long lastEventMillis = eventFilter[eventName] | 0; // get the last timestamp for event
 //  if (actualMillis - lastEventMillis < eventWaitTime) return false; // if last event was before waitTime return...
 //  if (actualMillis - bucket.lastDrop < eventWaitTime) return false; 
-  if (bucket.dropsInBucket < BUCKET_SIZE) { // new drop can be placed into bucket?
-    Serial.printf("SinricProDevice::sendMessage(): %d event's left before limiting to 1 event per %d seconds\r\n", BUCKET_SIZE-bucket.dropsInBucket, DROP_WAIT_TIME / 1000);
+  if (bucket.dropsInBucket < BUCKET_SIZE && actualMillis-bucket.lastDrop > bucket.dropsInBucket * DROP_ADD_FACTOR) { // new drop can be placed into bucket?
+    Serial.printf("SinricProDevice::sendMessage(): %d event's left before limiting to 1 event per %d seconds. %lu ms until next event\r\n", BUCKET_SIZE-bucket.dropsInBucket-1, DROP_WAIT_TIME / 1000, ((bucket.dropsInBucket+1) * DROP_ADD_FACTOR));
     bucket.dropsInBucket++; // place drop in bucket
     bucket.lastDrop = actualMillis; // store last drop time
     eventFilter[eventName] = bucket; // save bucket back to map
     if (eventSender) eventSender->sendMessage(event); // send event
     return true;
-  } else {
-    Serial.printf("SinricProDevice::sendMessage():\r\n  - WARNING! YOU SENT %d EVENTS IN %d SECONDS.\r\n  - EVENTS ARE BLOCKED FOR %lu SECONDS\r\n",BUCKET_SIZE, DROP_WAIT_TIME/1000, (DROP_WAIT_TIME-(actualMillis-bucket.lastDrop))/1000);
+  }
+
+  if (bucket.dropsInBucket >= BUCKET_SIZE) {
+    Serial.printf("- WARNING: EVENTS ARE BLOCKED FOR %lu SECONDS (%lu seconds left)\r", DROP_WAIT_TIME/1000, (DROP_WAIT_TIME-(actualMillis-bucket.lastDrop))/1000);
   }
   return false;
 }
