@@ -71,7 +71,7 @@ void websocketListener::setExtraHeaders() {
   #ifdef ESP32
          headers += "platform:ESP32\r\n";
   #endif
-         headers += "version:" + String(SDK_VERSION);
+         headers += "version:" + String(SINRICPRO_VERSION);
   DEBUG_SINRIC("[SinricPro:Websocket]: headers: \r\n%s\r\n", headers.c_str());
   webSocket.setExtraHeaders(headers.c_str());
 }
