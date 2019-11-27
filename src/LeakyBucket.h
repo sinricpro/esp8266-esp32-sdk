@@ -28,15 +28,15 @@ bool LeakyBucket_t::addDrop() {
   if (dropsInBucket < BUCKET_SIZE && actualMillis-lastDrop > dropsInBucket + DROP_IN_TIME) { // new drop can be placed into bucket?
     dropsInBucket++;                                                                          // place drop in bucket
     lastDrop = actualMillis;                                                                  // store last drop time
-    if (dropsInBucket == BUCKET_SIZE && once==false) {
-      Serial.printf("[SinricPro]: WARNING: YOU SENT TOO MUCH EVENTS IN A SHORT PERIOD OF TIME!\r\n  - PLEASE CHECK YOUR CODE AND SEND EVENTS ONLY IF DEVICE STATE HAS CHANGED!\r\n");      // Print a warning when bucket is full
-      once = true;
-    }
     return true;
   }
 
   if (dropsInBucket >= BUCKET_SIZE) {
     if (actualMillis-lastWarning > 1000) {
+      if (once == false) {
+        Serial.printf("[SinricPro]: WARNING: YOU SENT TOO MUCH EVENTS IN A SHORT PERIOD OF TIME!\r\n - PLEASE CHECK YOUR CODE AND SEND EVENTS ONLY IF DEVICE STATE HAS CHANGED!\r\n");      // Print a warning when bucket is full
+        once = true;
+      }
       Serial.printf("[SinricPro]: EVENTS ARE BLOCKED FOR %lu SECONDS!\r\n",(DROP_OUT_TIME-(actualMillis-lastDrop))/1000);
       lastWarning = actualMillis;
     }
