@@ -1,6 +1,6 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
-## Version 2.2.3
+## Version 2.2.4
 ## Installation
 
 ### VS Code & PlatformIO:
