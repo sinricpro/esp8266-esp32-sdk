@@ -14,11 +14,11 @@ class SinricProSpeaker :  public SinricProDevice {
   public:
 	  SinricProSpeaker(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-    typedef std::function<bool(const String, int&)> VolumeCallback;
-    typedef std::function<bool(const String, bool&)> MuteCallback;
-    typedef std::function<bool(const String, String&)> MediaControlCallback;
-    typedef std::function<bool(const String, String, int&)> BandsCallback;
-    typedef std::function<bool(const String, String&)> ModeCallback;
+    typedef std::function<bool(const String&, int&)> VolumeCallback;
+    typedef std::function<bool(const String&, bool&)> MuteCallback;
+    typedef std::function<bool(const String&, String&)> MediaControlCallback;
+    typedef std::function<bool(const String&, const String&, int&)> BandsCallback;
+    typedef std::function<bool(const String&, String&)> ModeCallback;
 
     void onSetVolume(VolumeCallback cb) { volumeCallback = cb; }
     void onAdjustVolume(VolumeCallback cb) { adjustVolumeCallback = cb; }

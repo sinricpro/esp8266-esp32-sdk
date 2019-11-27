@@ -14,9 +14,9 @@ class SinricProWindowAC :  public SinricProDevice {
   public:
 	  SinricProWindowAC(const char* deviceId, unsigned long eventWaitTime=30000);
     // callback
-    typedef std::function<bool(const String, int&)> RangeValueCallback;
-    typedef std::function<bool(const String, float&)> TargetTemperatureCallback;
-    typedef std::function<bool(const String, String&)> ThermostatModeCallback;
+    typedef std::function<bool(const String&, int&)> RangeValueCallback;
+    typedef std::function<bool(const String&, float&)> TargetTemperatureCallback;
+    typedef std::function<bool(const String&, String&)> ThermostatModeCallback;
 
     void onRangeValue(RangeValueCallback cb) { rangeValueCallback = cb; }
     void onAdjustRangeValue(RangeValueCallback cb) { adjustRangeValueCallback = cb; }

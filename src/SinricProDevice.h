@@ -9,6 +9,8 @@
 #define _SINRICDEVICE_H_
 
 #include "SinricProDeviceInterface.h"
+#include "LeakyBucket.h"
+
 #include <map>
 
 class SinricProDevice : public SinricProDeviceInterface {
@@ -23,7 +25,7 @@ class SinricProDevice : public SinricProDeviceInterface {
     virtual bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value);
 
     // standard callbacks
-	  typedef std::function<bool(const String, bool&)> PowerStateCallback;
+	  typedef std::function<bool(const String&, bool&)> PowerStateCallback;
     virtual void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
 
     // standard events
@@ -37,7 +39,7 @@ class SinricProDevice : public SinricProDeviceInterface {
   private:
     SinricProInterface* eventSender;
     unsigned long eventWaitTime;
-    std::map<String, unsigned long> eventFilter;
+    std::map<String, LeakyBucket_t> eventFilter;
 };
 
 SinricProDevice::SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime) : 
@@ -81,21 +83,29 @@ DynamicJsonDocument SinricProDevice::prepareEvent(const char* deviceId, const ch
   return DynamicJsonDocument(1024);
 }
 
+
 bool SinricProDevice::sendEvent(JsonDocument& event) {
-  unsigned long actualMillis = millis();
   String eventName = event["payload"]["action"] | ""; // get event name
 
-  if (eventFilter.find(eventName) == eventFilter.end()) {  // if eventFilter is not initialized
-    eventFilter[eventName] = -eventWaitTime; // initialize eventFilter
+  LeakyBucket_t bucket; // leaky bucket algorithm is used to prevent flooding the server
+
+  // get leaky bucket for event from eventFilter
+  if (eventFilter.find(eventName) == eventFilter.end()) {  // if there is no bucket ...
+    eventFilter[eventName] = bucket;                       // ...add a new bucket
+  } else {  
+    bucket = eventFilter[eventName];                       // else get bucket
   }
 
-  unsigned long lastEventMillis = eventFilter[eventName] | 0; // get the last timestamp for event
-  if (actualMillis - lastEventMillis < eventWaitTime) return false; // if last event was before waitTime return...
+  if (bucket.addDrop()) {                                  // if we can add a new drop
+    if (eventSender) eventSender->sendMessage(event);      // send event
+    eventFilter[eventName] = bucket;                       // update bucket on eventFilter
+    return true;
+  }
 
-  if (eventSender) eventSender->sendMessage(event); // send event
-  eventFilter[eventName] = actualMillis; // update lastEventTime
-  return true;
+  eventFilter[eventName] = bucket;                        // update bucket on eventFilter
+  return false;
 }
+
 
 bool SinricProDevice::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());

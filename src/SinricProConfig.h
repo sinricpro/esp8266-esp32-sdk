@@ -7,20 +7,37 @@
 
 #ifndef __SINRICPRO_CONFIG_H__
 #define __SINRICPRO_CONFIG_H__
+/* 
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * !!                                                 !!
+ * !!             WARNING: DON'T TOUCH !              !!
+ * !!             ======================              !!
+ * !! PLEASE DO NOT MODIFY ANY OF THESE SETTINGS HERE !!
+ * !!     THIS IS FOR INTERNAL CONFIGURATION ONLY     !!
+ * !!   SINRIC PRO MIGHT NOT WORK IF YOU MODIFY THIS  !!
+ * !!                                                 !!
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ */
 
-#define SDK_VERSION "2.2.2"
+// Version Configuration
+#define SDK_VERSION "2.2.3"
 
+// Server Configuration
 #define SINRICPRO_SERVER_URL "ws.sinric.pro"
 #define SINRICPRO_SERVER_PORT 80
 
+// UDP Configuration
 #define UDP_MULTICAST_IP IPAddress(224,9,9,9)
 #define UDP_MULTICAST_PORT 3333
 
-// websocket sends every WEBSOCKET_PING_INTERVAL milliseconds a ping to Server
-// if there is no pong received after WEBSOCKET_PING_TIMEOUT milliseconds, retry count is incremented by one
-// if retry count reaches WEBSOCKET_RETRY_COUNT websocket connection is closed and try to reconnect server
+// WebSocket Configuration
 #define WEBSOCKET_PING_INTERVAL 300000
 #define WEBSOCKET_PING_TIMEOUT 10000
 #define WEBSOCKET_RETRY_COUNT 2
+
+// LeakyBucket Configuration
+#define BUCKET_SIZE 10
+#define DROP_OUT_TIME 60000
+#define DROP_IN_TIME 1000u
 
 #endif
