@@ -682,7 +682,7 @@ Devices: | [TV](#tv) |
 
 ### onTargetTemperature
 ```C++
-bool onTargetTemperatue(const String &deviceId, float &temperature)
+bool onTargetTemperature(const String &deviceId, float &temperature)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |

@@ -20,7 +20,7 @@ class SinricProWindowAC :  public SinricProDevice {
 
     void onRangeValue(RangeValueCallback cb) { rangeValueCallback = cb; }
     void onAdjustRangeValue(RangeValueCallback cb) { adjustRangeValueCallback = cb; }
-    void onTargetTemperatue(TargetTemperatureCallback cb) { targetTemperatureCallback = cb; }
+    void onTargetTemperature(TargetTemperatureCallback cb) { targetTemperatureCallback = cb; }
     void onAdjustTargetTemperature(TargetTemperatureCallback cb) { adjustTargetTemperatureCallback = cb; }
     void onThermostatMode(ThermostatModeCallback cb) { thermostatModeCallback = cb; }
 
