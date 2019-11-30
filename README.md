@@ -1,6 +1,6 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
-## Version 2.2.3
+## Version 2.2.4
 ## Installation
 
 ### VS Code & PlatformIO:
@@ -682,7 +682,7 @@ Devices: | [TV](#tv) |
 
 ### onTargetTemperature
 ```C++
-bool onTargetTemperatue(const String &deviceId, float &temperature)
+bool onTargetTemperature(const String &deviceId, float &temperature)
 ```
 | parameter | type|  input value | output value | example |
 |--|--|--|--|-- |

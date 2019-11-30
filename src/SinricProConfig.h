@@ -19,8 +19,14 @@
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+
 // Version Configuration
-#define SDK_VERSION "2.2.3"
+#define SINRICPRO_VERSION_MAJOR     2
+#define SINRICPRO_VERSION_MINOR     2
+#define SINRICPRO_VERSION_REVISION  4
+#define SINRICPRO_VERSION STR(SINRICPRO_VERSION_MAJOR) "." STR(SINRICPRO_VERSION_MINOR) "." STR(SINRICPRO_VERSION_REVISION)
 
 // Server Configuration
 #define SINRICPRO_SERVER_URL "ws.sinric.pro"

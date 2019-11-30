@@ -17,7 +17,7 @@ class SinricProThermostat :  public SinricProDevice {
     typedef std::function<bool(const String&, float&)> TargetTemperatureCallback;
     typedef std::function<bool(const String&, String&)> ThermostatModeCallback;
 
-    void onTargetTemperatue(TargetTemperatureCallback cb) { targetTemperatureCallback = cb; }
+    void onTargetTemperature(TargetTemperatureCallback cb) { targetTemperatureCallback = cb; }
     void onAdjustTargetTemperature(TargetTemperatureCallback cb) { adjustTargetTemperatureCallback = cb; }
     void onThermostatMode(ThermostatModeCallback cb) { thermostatModeCallback = cb; }
 
