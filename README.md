@@ -24,10 +24,11 @@
 ## Examples
 |PlatformIO|Arduino|
 |:--:|:--:|
-|[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/switch)  |[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Switch)|
-|[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/doorbell)|[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)|
-| - | [GarageDoorOpener](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/GarageDoor)|
-|[TemperatureSensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/temperaturesensor)  |[TemperatureSensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/temperaturesensor)|
+| [Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/switch) |[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Switch)|
+| [Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/doorbell)|[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)|
+| - | [Lock](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/GarageDoor)|
+| [TemperatureSensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/temperaturesensor) |[TemperatureSensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/temperaturesensor)|
+| [TV](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/tv) | [TV](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/tv)
 
 ---
 
