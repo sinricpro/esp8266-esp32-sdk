@@ -62,15 +62,6 @@ void setupChannelNumbers() {
   }
 }
 
-// SinricPro callbacks
-
-void onConnected() {
-  Serial.printf("Connected to SinricPro\r\n");
-}
-
-void onDisconnected() {
-  Serial.printf("Disconnected from SinricPro\r\n");
-}
 
 // TV device callbacks
 
@@ -176,9 +167,6 @@ void setupSinricPro() {
 
   // setup SinricPro
   SinricPro.begin(APP_KEY, APP_SECRET);
-  SinricPro.onConnected(onConnected);
-  SinricPro.onDisconnected(onDisconnected);
-  SinricPro.restoreDeviceStates(true);
 }
 
 // main setup function
