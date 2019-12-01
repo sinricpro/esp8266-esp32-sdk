@@ -102,7 +102,7 @@ bool SinricProTV::handleRequest(const char* deviceId, const char* action, JsonOb
 
   if (changeChannelCallback && actionString == "changeChannel") {
     String channelName = request_value["channel"]["name"] | "";
-    success = selectInputCallback(String(deviceId), channelName);
+    success = changeChannelCallback(String(deviceId), channelName);
     JsonObject response_channel = response_value["channel"].createNestedObject("name");
     response_channel["name"] = channelName;
     return success;
