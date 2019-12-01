@@ -109,7 +109,6 @@ bool SinricProTV::handleRequest(const char* deviceId, const char* action, JsonOb
     if (changeChannelCallback && request_value["channel"].containsKey("name")) {
       String channelName = request_value["channel"]["name"] | "";
       success = changeChannelCallback(String(deviceId), channelName);
-      JsonObject response_channel = response_value["channel"].createNestedObject("name");
       response_value["channel"]["name"] = channelName;
     }
 
@@ -117,7 +116,6 @@ bool SinricProTV::handleRequest(const char* deviceId, const char* action, JsonOb
       int channelNumber = request_value["channel"]["number"];
       String channelName("");
       success = changeChannelNumberCallback(String(deviceId), channelNumber, channelName);
-      JsonObject response_channel = response_value["channel"].createNestedObject("name");
       response_value["channel"]["name"] = channelName;
     }
     return success;
