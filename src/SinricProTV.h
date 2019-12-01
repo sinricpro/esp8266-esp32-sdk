@@ -125,8 +125,7 @@ bool SinricProTV::handleRequest(const char* deviceId, const char* action, JsonOb
     int channelCount = request_value["channelCount"] | 0;
     String channelName;
     success = skipChannelsCallback(String(deviceId), channelCount, channelName);
-    JsonObject response_channel = response_value["channel"].createNestedObject("name");
-    response_channel["name"] = channelName;
+    response_value["channel"]["name"] = channelName;
     return success;
   }
 
@@ -164,11 +163,9 @@ bool SinricProTV::sendSelectInputEvent(String input, String cause) {
 bool SinricProTV::sendChangeChannelEvent(String channelName, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "changeChannel", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
-  JsonObject event_channel = event_value["channel"].createNestedObject("name");
-  event_channel["name"] = channelName;
+  event_value["channel"]["name"] = channelName;
   return sendEvent(eventMessage);
 }
-
 
 #endif
 
