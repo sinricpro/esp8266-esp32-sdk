@@ -160,6 +160,7 @@ Defined in [SinricProTV.h](/src/SinricProTV.h)
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onChangeChannel](#onchangechannel)
+- [onChangeChannelNumber](#onchangechannelnumber)
 - [onSkipChannels](#onskipchannels)
 - [onSelectInput](#onselectinput)
 - [onSetVolume](#onsetvolume)
@@ -442,6 +443,21 @@ bool onChangeChannel(const String &deviceId, String &channel)
 |--|--|--|--|-- |
 | `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
 |`channel` | `String&` | `channel name` | `channel name` | `"HBO"` (name of a tv channel) |
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Devices: | [TV](#tv) |
+
+---
+
+### onChangeChannelNumber
+```C++
+bool onChangeChannelNumber(const String &deviceId, int channelNumber, String &channelName)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `channelNumber` | `int` | `0..n` | --- | `4` |
+|`channelName` | `String&` | --- | `channel name` | `"HBO"` (name of a tv channel) |
 | `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
 
 Devices: | [TV](#tv) |
