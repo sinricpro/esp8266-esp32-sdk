@@ -180,5 +180,4 @@ void setup() {
 
 void loop() {
   SinricPro.handle();
-  SinricPro.re
 }
