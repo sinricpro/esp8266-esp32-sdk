@@ -19,6 +19,7 @@ class SinricProTV :  public SinricProDevice {
     typedef std::function<bool(const String&, String&)> MediaControlCallback;
     typedef std::function<bool(const String&, String&)> SelectInputCallback;
     typedef std::function<bool(const String&, String&)> ChangeChannelCallback;
+    typedef std::function<bool(const String&, int, String&)> ChangeChannelNumberCallback;
     typedef std::function<bool(const String&, int, String&)> SkipChannelsCallback;
 
     void onSetVolume(VolumeCallback cb) { volumeCallback = cb; }
@@ -27,6 +28,7 @@ class SinricProTV :  public SinricProDevice {
     void onMediaControl(MediaControlCallback cb) { mediaControlCallback = cb; }
     void onSelectInput(SelectInputCallback cb) { selectInputCallback = cb; }
     void onChangeChannel(ChangeChannelCallback cb) { changeChannelCallback = cb; }
+    void onChangeChannelNumber(SkipChannelsCallback cb) { changeChannelNumberCallback = cb; }
     void onSkipChannels(SkipChannelsCallback cb) { skipChannelsCallback = cb; }
 
     // event
@@ -44,6 +46,7 @@ class SinricProTV :  public SinricProDevice {
     MediaControlCallback mediaControlCallback;
     SelectInputCallback selectInputCallback;
     ChangeChannelCallback changeChannelCallback;
+    ChangeChannelNumberCallback changeChannelNumberCallback;
     SkipChannelsCallback skipChannelsCallback;
 };
 
@@ -55,6 +58,7 @@ SinricProTV::SinricProTV(const char* deviceId, unsigned long eventWaitTime) : Si
   mediaControlCallback(nullptr),
   selectInputCallback(nullptr),
   changeChannelCallback(nullptr),
+  changeChannelNumberCallback(nullptr),
   skipChannelsCallback(nullptr) {
 }
 
@@ -100,11 +104,20 @@ bool SinricProTV::handleRequest(const char* deviceId, const char* action, JsonOb
     return success;
   }
 
-  if (changeChannelCallback && actionString == "changeChannel") {
-    String channelName = request_value["channel"]["name"] | "";
-    success = selectInputCallback(String(deviceId), channelName);
-    JsonObject response_channel = response_value["channel"].createNestedObject("name");
-    response_channel["name"] = channelName;
+  if (actionString == "changeChannel") {
+
+    if (changeChannelCallback && request_value["channel"].containsKey("name")) {
+      String channelName = request_value["channel"]["name"] | "";
+      success = changeChannelCallback(String(deviceId), channelName);
+      response_value["channel"]["name"] = channelName;
+    }
+
+    if (changeChannelNumberCallback && request_value["channel"].containsKey("number")) {
+      int channelNumber = request_value["channel"]["number"];
+      String channelName("");
+      success = changeChannelNumberCallback(String(deviceId), channelNumber, channelName);
+      response_value["channel"]["name"] = channelName;
+    }
     return success;
   }
 
@@ -112,8 +125,7 @@ bool SinricProTV::handleRequest(const char* deviceId, const char* action, JsonOb
     int channelCount = request_value["channelCount"] | 0;
     String channelName;
     success = skipChannelsCallback(String(deviceId), channelCount, channelName);
-    JsonObject response_channel = response_value["channel"].createNestedObject("name");
-    response_channel["name"] = channelName;
+    response_value["channel"]["name"] = channelName;
     return success;
   }
 
@@ -151,11 +163,9 @@ bool SinricProTV::sendSelectInputEvent(String input, String cause) {
 bool SinricProTV::sendChangeChannelEvent(String channelName, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "changeChannel", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
-  JsonObject event_channel = event_value["channel"].createNestedObject("name");
-  event_channel["name"] = channelName;
+  event_value["channel"]["name"] = channelName;
   return sendEvent(eventMessage);
 }
-
 
 #endif
 

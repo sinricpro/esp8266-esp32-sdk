@@ -110,21 +110,21 @@ void SinricProWindowAC::sendTemperatureEvent(float temperature, float humidity, 
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["humidity"] = humidity;
   event_value["temperature"] = roundf(temperature * 10)  / 10.0;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
 void SinricProWindowAC::sendTargetTemperatureEvent(float temperature, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "targetTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["temperature"] = roundf(temperature*10) / 10.0;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
 void SinricProWindowAC::sendThermostatModeEvent(String thermostatMode, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setThermostatMode", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["thermostatMode"] = thermostatMode;
-  sendEvent(eventMessage);
+  return sendEvent(eventMessage);
 }
 
 #endif

@@ -1,6 +1,6 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
-## Version 2.2.4
+## Version 2.2.5
 ## Installation
 
 ### VS Code & PlatformIO:
@@ -24,10 +24,11 @@
 ## Examples
 |PlatformIO|Arduino|
 |:--:|:--:|
-|[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/switch)  |[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Switch)|
-|[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/doorbell)|[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)|
-| - | [GarageDoorOpener](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/GarageDoor)|
-|[TemperatureSensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/temperaturesensor)  |[TemperatureSensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/temperaturesensor)|
+| [Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/switch) |[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Switch)|
+| [Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/doorbell)|[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)|
+| - | [Lock](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/GarageDoor)|
+| [TemperatureSensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/temperaturesensor) |[TemperatureSensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/temperaturesensor)|
+| [TV](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/tv) | [TV](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/tv)
 
 ---
 
@@ -160,6 +161,7 @@ Defined in [SinricProTV.h](/src/SinricProTV.h)
 Callbacks
 - [onPowerState](#onpowerstate)
 - [onChangeChannel](#onchangechannel)
+- [onChangeChannelNumber](#onchangechannelnumber)
 - [onSkipChannels](#onskipchannels)
 - [onSelectInput](#onselectinput)
 - [onSetVolume](#onsetvolume)
@@ -448,6 +450,21 @@ Devices: | [TV](#tv) |
 
 ---
 
+### onChangeChannelNumber
+```C++
+bool onChangeChannelNumber(const String &deviceId, int channelNumber, String &channelName)
+```
+| parameter | type|  input value | output value | example |
+|--|--|--|--|-- |
+| `deviceId` |  `const String&` | `deviceId` | --- | `"5d8f5ade41307b450335925d"` |
+| `channelNumber` | `int` | `0..n` | --- | `4` |
+|`channelName` | `String&` | --- | `channel name` | `"HBO"` (name of a tv channel) |
+| `[return]`|  `bool` | --- | `true`: request handled properly<br>`false`: error | `true` |
+
+Devices: | [TV](#tv) |
+
+---
+
 ### onColor
 ```C++
 bool onColor(const String &deviceId, byte &r, byte &g, byte &b)
@@ -723,6 +740,7 @@ bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTIO
 | `bands` | `String` | selected band | `"BASS"`, `"MIDRANGE"`,`"TREBBLE"` |
 | `level` | `int` | report new band level | `0`..`n` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Speaker](#speaker) |
 
@@ -730,12 +748,13 @@ Devices: | [Speaker](#speaker) |
 
 ### sendBrightnessEvent
 ```C++
-void sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION")
+bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `brightness` | `int` | brightness level | `0`..`100`|
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Light](#light) |
 
@@ -749,6 +768,7 @@ bool sendChangeChannelEvent(String channelName, String cause = "PHYSICAL_INTERAC
 |--|--|--|:--:|
 | `channelName` | `String` | report new channel | example: `"HBO"` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [TV](#tv) |
 
@@ -756,7 +776,7 @@ Devices: | [TV](#tv) |
 
 ### sendColorEvent
 ```C++
-void sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION")
+bool sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
@@ -764,6 +784,7 @@ void sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION
 | `g` | `byte` | green value | `0`..`255` |
 | `b` | `byte` | blue value | `0`..`255` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Light](#light) |
 
@@ -771,12 +792,13 @@ Devices: | [Light](#light) |
 
 ### sendColorTemperatureEvent
 ```C++
-void sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION")
+bool sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `colorTemperature` | `int` | color temperature | `2200`, `2700`, `4000`, `5500`, `7000` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Light](#light) |
 
@@ -784,12 +806,13 @@ Devices: | [Light](#light) |
 
 ### sendContactEvent
 ```C++
-void sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
+bool sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `detected` | `bool` | report contact state | `true`: contact is closed<br>`false`: contact is open |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [ContactSensor](#contactsensor) |
 
@@ -797,11 +820,12 @@ Devices: | [ContactSensor](#contactsensor) |
 
 ### sendDoorbellEvent
 ```C++
-void sendDoorbellEvent(String cause = "PHYSICAL_INTERACTION")
+bool sendDoorbellEvent(String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Doorbell](#doorbell) |
 
@@ -815,6 +839,7 @@ bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERAC
 |--|--|--|:--:|
 | `mediaControl` | `String` | report a media event | `"Play"`, `"Pause"`, `"Stop"`, `"StartOver"`, `"Previous"`, `"Next"`, `"Rewind"`, `"FastForward"` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [TV](#tv) | [Speaker](#speaker) |
 
@@ -828,6 +853,7 @@ bool sendModeEvent(String mode, String cause = "PHYSICAL_INTERACTION")
 |--|--|--|:--:|
 | `mode` | `String` | report new mode | `"MOVIE"`, `"MUSIC"`, `"NIGHT"`, `"SPORT"`, `"TV"` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Speaker](#speaker) |
 
@@ -835,12 +861,13 @@ Devices: | [Speaker](#speaker) |
 
 ### sendMotionEvent
 ```C++
-void sendMotionEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
+bool sendMotionEvent(bool detected, String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `detected` | `bool` | report motion event | `true`: motion detected<br>`false`: motion not detected (should be sent if motion not happens any longer) |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [MotionSensor](#motionsensor) |
 
@@ -854,6 +881,7 @@ bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION")
 |--|--|--|:--:|
 | `mute` | `bool` | report mute event | `true`: device is muted <br>`false`: device is unmuted |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [TV](#tv) | [Speaker](#speaker) |
 
@@ -861,12 +889,13 @@ Devices: | [TV](#tv) | [Speaker](#speaker) |
 
 ### sendPowerLevelEvent
 ```C++
-sendPowerLevelEvent(int level, String cause="PHYSICAL_INTERACTION")
+bool sendPowerLevelEvent(int level, String cause="PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `level` | `int` | device power level | `0`..`100`|
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) |
 
@@ -874,14 +903,16 @@ Devices: | [Dimmable Switch](#dimmable-switch) | [Fan (non US)](#fan-non-us) |
 
 ### sendPowerStateEvent
 ```C++
-sendPowerStateEvent(bool state, String cause="PHYSICAL_INTERACTION")
+bool sendPowerStateEvent(bool state, String cause="PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|--|
 | `state` | `bool` | device state |`true`: device is on<br>`false`: device is off |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"`
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Switch](#switch) | [Dimmable Switch](#dimmable-switch) | [Light](#light) | [TV](#tv) | [Speaker](#speaker) | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [MotionSensor](#motionsensor) | [ContactSensor](#contactsensor) | [Fan (non US)](#fan-non-us) | [Fan (US)](#fan-us) |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 ---
 
@@ -893,6 +924,7 @@ bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION")
 |--|--|--|:--:|
 | `rangeValue` | `int` | report actual range value | `0`..`n` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Fan (US)](#fan-us) | [Window AC Unit](#window-ac-unit) |
 
@@ -906,6 +938,7 @@ bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION")
 |--|--|--|:--:|
 | `input` | `String` | report actual input | `"AUX 1"`, `"AUX 2"`, `"AUX 3"`, `"AUX 4"`, `"AUX 5"`, `"AUX 6"`, `"AUX 7"`, `"BLURAY"`, `"CABLE"`, `"CD"`, `"COAX 1"`,`"COAX 2"`, `"COMPOSITE 1"`, `"DVD"`, `"GAME"`, `"HD RADIO"`, `"HDMI 1"`, `"HDMI 2"`, `"HDMI 3"`, `"HDMI 4"`, `"HDMI 5"`, `"HDMI 6"`, `"HDMI 7"`, `"HDMI 8"`, `"HDMI 9"`, `"HDMI 10"`, `"HDMI ARC"`, `"INPUT 1"`, `"INPUT 2"`, `"INPUT 3"`, `"INPUT 4"`, `"INPUT 5"`, `"INPUT 6"`, `"INPUT 7"`, `"INPUT 8"`, `"INPUT 9"`, `"INPUT 10"`, `"IPOD"`, `"LINE 1"`, `"LINE 2"`, `"LINE 3"`, `"LINE 4"`, `"LINE 5"`, `"LINE 6"`, `"LINE 7"`, `"MEDIA PLAYER"`, `"OPTICAL 1"`, `"OPTICAL 2"`, `"PHONO"`, `"PLAYSTATION"`, `"PLAYSTATION 3"`, `"PLAYSTATION 4"`, `"SATELLITE"`, `"SMARTCAST"`, `"TUNER"`, `"TV"`, `"USB DAC"`, `"VIDEO 1"`, `"VIDEO 2"`, `"VIDEO 3"`, `"XBOX"` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [TV](#tv) |
 
@@ -913,12 +946,13 @@ Devices: | [TV](#tv) |
 
 ### sendTargetTemperatureEvent
 ```C++
-void sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION")
+bool sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `temperature` | `float` | temperature | `-n`..`n` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
@@ -926,13 +960,14 @@ Devices: | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
 ### sendTemperatureEvent
 ```C++
-void sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL")
+bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `temperature` | `float` | temperature | `-n`..`n` |
 | `humidity` | `float` | (optional) humidity | `0`..`+n`<br>(`-1` if not supported) |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PERIODIC_POLL"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) | [Window AC Unit](#window-ac-unit) |
 
@@ -940,12 +975,13 @@ Devices: | [Temperaturesensor](#temperaturesensor) | [Thermostat](#thermostat) |
 
 ### sendThermostatModeEvent
 ```C++
-void sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION")
+bool sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION")
 ```
 | parameter| type | description | value |
 |--|--|--|:--:|
 | `thermostatMode` | `String` | thermostat mode | `"COOL"`, `"HEAT"`, `"AUTO"` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [Thermostat](#thermostat) |
 
@@ -959,6 +995,7 @@ bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION")
 |--|--|--|:--:|
 | `volume` | `int` | report actual volume level| `0`..`100` |
 | `cause` | `String` | (optional) describing why this is event ocours | `"PHYSICAL_INTERACTION"` |
+| [return] | `bool` | `true` = event was sent, `false` event was not sent | `true` , `false` |
 
 Devices: | [TV](#tv) | [Speaker](#speaker) |
 
