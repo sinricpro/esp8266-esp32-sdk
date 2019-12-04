@@ -9,13 +9,22 @@
 #define _SINRICFAN_H_
 
 #include "SinricProDevice.h"
+#include "SinricProDimSwitch.h"
 
 /*
- * SinricFan is the same deviceType like SinricDimSwitch
- */
-
-#include "SinricProDimSwitch.h"
 typedef SinricProDimSwitch SinricProFan;
+*/
+
+/**
+ * @class SinricProFan SinricProFan.h
+ * @brief SinricProFan device support turn on / off and power level command
+ **/
+class SinricProFan :  public SinricProDimSwitch {
+  public:
+	  SinricProFan(const char* deviceId, unsigned long eventWaitTime=100);
+};
+
+SinricProFan::SinricProFan(const char* deviceId, unsigned long eventWaitTime) : SinricProDimSwitch(deviceId, eventWaitTime) {}
 
 #endif
 

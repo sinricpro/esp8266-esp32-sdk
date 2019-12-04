@@ -13,6 +13,13 @@
 
 #include <map>
 
+/**
+ * @class SinricProDevice
+ * @brief SinricProDevice is the base class for all device types
+ * 
+ * Supporting base functions which needed by all devicetypes to work with SinricProClass
+ * Implements basic on/off functions like onPowerState and sendPowerStateEvent
+ **/
 class SinricProDevice : public SinricProDeviceInterface {
   public:
     SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime=100);
@@ -21,12 +28,33 @@ class SinricProDevice : public SinricProDeviceInterface {
     virtual void begin(SinricProInterface* eventSender);
     virtual void setEventWaitTime(unsigned long eventWaitTime) { if (eventWaitTime<100) {this->eventWaitTime=100;} else { this->eventWaitTime=eventWaitTime;} }
 
+    // callback definitions
+    /**
+     * @brief Callback definition for onPowerState function
+     * 
+     * Gets called when device receive a `setPowerState` reuqest \n
+     * @param deviceId [in] String which contains the ID of device
+     * @param state [in] `true` = device is requested to turn on \n [in] `false` = device is requested to turn off
+     * @param state [out] `true` = device has been turned on \n [out] `false` = device has been turned off
+     * @return `true` = request handled properly
+     * @return `false`= request can`t be handled properly because of some error
+     * 
+     * @section Example
+     * @code
+     * bool onPowerState(const String &deviceId, bool &state) {
+     *   Serial.printf("Device %s turned %s\r\n", state?"on":"off");
+     *   return true;
+     * }
+     * @endcode
+     **/
+    typedef std::function<bool(const String&, bool&)> PowerStateCallback;
+    
+
     // standard request handler
     virtual bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value);
 
-    // standard callbacks
-	  typedef std::function<bool(const String&, bool&)> PowerStateCallback;
-    virtual void onPowerState(PowerStateCallback cb) { powerStateCallback = cb; }
+    // standard Callbacks
+    virtual void onPowerState(PowerStateCallback cb);
 
     // standard events
     bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
@@ -106,7 +134,25 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
   return false;
 }
 
+/**
+ * @brief Set callback function for `powerState` request
+ * 
+ * @param cb Function pointer to a `PowerStateCallback` function
+ * @return void
+ * @see PowerStateCallback
+ **/
+void SinricProDevice::onPowerState(PowerStateCallback cb) { 
+  powerStateCallback = cb; 
+}
 
+/**
+ * @brief Send `setPowerState` event to SinricPro Server indicating actual power state
+ * 
+ * @param state `true` = device turned on \n `false` = device turned off
+ * @param cause `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return `true` event has been sent successfully
+ * @return `false` event has not been sent, maybe you sent to much events in a short distance of time
+ **/
 bool SinricProDevice::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];

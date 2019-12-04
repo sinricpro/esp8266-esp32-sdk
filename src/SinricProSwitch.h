@@ -9,7 +9,18 @@
 #define _SINRICSWITCH_H_
 
 #include "SinricProDevice.h"
-typedef SinricProDevice SinricProSwitch;
+
+/**
+ * @class SinricProSwitch SinricProSwitch.h
+ * @brief SinricProSwitch is a simple device which support turn on and off command
+ **/
+class SinricProSwitch :  public SinricProDevice {
+  public:
+	  SinricProSwitch(const char* deviceId, unsigned long eventWaitTime=100);
+};
+
+SinricProSwitch::SinricProSwitch(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
+
 
 #endif
 
