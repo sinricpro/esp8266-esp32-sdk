@@ -15,9 +15,9 @@
 
 /**
  * @class SinricProDevice
- * @brief SinricProDevice is the base class for all device types
+ * @brief Base class for all device types
  * 
- * Supporting base functions which needed by all devicetypes to work with SinricProClass
+ * Supporting base functions which needed by all device types to work with SinricProClass \n
  * Implements basic on/off functions like onPowerState and sendPowerStateEvent
  **/
 class SinricProDevice : public SinricProDeviceInterface {
@@ -33,13 +33,14 @@ class SinricProDevice : public SinricProDeviceInterface {
      * @brief Callback definition for onPowerState function
      * 
      * Gets called when device receive a `setPowerState` reuqest \n
-     * @param deviceId [in] String which contains the ID of device
-     * @param state [in] `true` = device is requested to turn on \n [in] `false` = device is requested to turn off
-     * @param state [out] `true` = device has been turned on \n [out] `false` = device has been turned off
-     * @return `true` = request handled properly
-     * @return `false`= request can`t be handled properly because of some error
+     * @param[in]   deviceId    String which contains the ID of device
+     * @param[in]   state       `true` = device is requested to turn on \n `false` = device is requested to turn off
+     * @param[out]  state       `true` = device has been turned on \n `false` = device has been turned off
+     * @return      the success of the request
+     * @retval      true        request handled properly
+     * @retval      false       request was not handled properly because of some error
      * 
-     * @section Example
+     * @subsubsection Example-Code
      * @code
      * bool onPowerState(const String &deviceId, bool &state) {
      *   Serial.printf("Device %s turned %s\r\n", state?"on":"off");
@@ -148,10 +149,11 @@ void SinricProDevice::onPowerState(PowerStateCallback cb) {
 /**
  * @brief Send `setPowerState` event to SinricPro Server indicating actual power state
  * 
- * @param state `true` = device turned on \n `false` = device turned off
- * @param cause `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
- * @return `true` event has been sent successfully
- * @return `false` event has not been sent, maybe you sent to much events in a short distance of time
+ * @param state   `true` = device turned on \n `false` = device turned off
+ * @param cause   (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return the success of sending the even
+ * @retval true   event has been sent successfully
+ * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
 bool SinricProDevice::sendPowerStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());

@@ -18,7 +18,7 @@
 
 /**
  * @class SinricProClass
- * @brief SinricProClass is the main class of SinricPro library, handling communication between SinricPro Server and your devices
+ * @brief The main class of this library, handling communication between SinricPro Server and your devices
  **/
 class SinricProClass : public SinricProInterface {
   public:
@@ -52,18 +52,20 @@ class SinricProClass : public SinricProInterface {
       DeviceType& as() { return ptr->getDeviceInstance<DeviceType>(deviceId); }
     };
     /**
-     * @brief operator[] is used for create and retrieve device instances to and from SinricProClass
+     * @brief operator[] is used tor create a new device instance or get an existing device instance
      * 
-     * If the device is unknown to SinricProClass it will create a new device instance (automatic device creation)
+     * If the device is unknown to SinricProClass it will create a new device instance
      * @param deviceID a String containing deviceId for device that have to been created or retreived
-     * @section Example
+     * @return returns a proxy object representing the reference to a device derrivered from SinricProDevice
+     * @subsubsection Syntax
+     * `<DeviceType> &reference = SinricPro[<DEVICE_ID>];`
+     * @subsubsection Example-Code
      * @code
      * #define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
      * ..
      *   SinricProSwitch &mySwitch = SinricPro[SWITCH_ID];
      * ..
      * @endcode
-     * @return returns a proxy object representing the reference to a device derrivered from SinricProDevice
      **/ 
     proxy operator[](const String deviceId) { return proxy(this, deviceId); }
 
@@ -141,10 +143,8 @@ DeviceType& SinricProClass::getDeviceInstance(String deviceId) {
  * 
  * @param socketAuthToken `String` containing APP_KEY (see credentials from https://sinric.pro )
  * @param signingKey `String` containing APP_SECRET (see credentials from https:://sinric.pro)
- * @param serverURL `String` containing SinricPro Server URL (default=`"ws.sinric.pro")
- * 
- * @return void
- * @section Example
+ * @param serverURL `String` containing SinricPro Server URL (default="ws.sinric.pro")
+ * @subsubsection Example-Code
  * @code
  * #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
  * #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
@@ -214,9 +214,7 @@ void SinricProClass::add(SinricProDeviceInterface& newDevice) {
  * This function has to be called as often as possible. So it must be called in your main loop() function! \n
  * 
  * For proper function, begin() must be called with valid values for 'APP_KEY' and 'APP_SECRET' \n
- * @param void
- * @return void
- * @section Example
+ * @subsubsection Example-Code
  * @code
  * void loop() {
  *   SinricPro.handle();
@@ -466,12 +464,11 @@ void SinricProClass::sendMessage(JsonDocument& jsonMessage) {
 /**
  * @brief Enable / disable restore device states function
  * 
- * If this function is activated (true), SinricProServer will send last known device states to your device directly after connection to SinricPro server has been established. \n 
+ * If this flag is enabled (`true`), SinricProServer will send last known device states to your device directly after connection to SinricPro server has been established. \n 
  * For every state the corresponding callback (like `onPowerState`) will be called \n
  * This is useful after a power failure / reboot of your device.
  * 
  * @param flag `true` = enabled \n `false`= disabled
- * @return void
  **/
 void SinricProClass::restoreDeviceStates(bool flag) { 
   _websocketListener.setRestoreDeviceStates(flag);
@@ -518,10 +515,10 @@ DynamicJsonDocument SinricProClass::prepareEvent(const char* deviceId, const cha
 #ifndef NOSINRIC_INSTANCE
 /**
  * @class SinricPro
- * @brief SinricPro is the main instance of SinricProClass
+ * @brief The main instance of SinricProClass
  * 
  * Handles communication between SinricPro Server and your device \n
- * @see SinricProClass
+  * @see SinricProClass
  **/
 SinricProClass SinricPro;
 #endif

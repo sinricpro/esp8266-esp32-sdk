@@ -11,8 +11,8 @@
 #include "SinricProDevice.h"
 
 /**
- * @class SinricProSwitch SinricProSwitch.h
- * @brief SinricProSwitch is a simple device which support turn on and off command
+ * @class SinricProSwitch
+ * @brief Device suporting basic on / off command
  **/
 class SinricProSwitch :  public SinricProDevice {
   public:

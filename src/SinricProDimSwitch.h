@@ -12,7 +12,7 @@
 
 /**
  * @class SinricProDimSwitch
- * @brief SinricProDimSwitch is a device which supports on / off and dimming commands
+ * @brief Device which supports on / off and dimming commands
  **/ 
 class SinricProDimSwitch :  public SinricProDevice {
   public:
@@ -22,11 +22,12 @@ class SinricProDimSwitch :  public SinricProDevice {
      * @brief Definition for setPowerLevel callback
      * 
      * Gets called when device receive a `setPowerLevel` reuqest \n
-     * @param deviceId [in] String which contains the ID of device
-     * @param powerLevel [in] integer `0..100` new powerlevel the device should be set to
-     * @param powerLevel [out] integer `0..100` report the powerlevel that the device have been set to
-     * @return `true` = request handled properly
-     * @return `false`= request can`t be handled properly because of some error
+     * @param[in]     deviceId        String which contains the ID of device
+     * @param[in]     powerLevel      integer `0..100` new powerlevel the device should be set to
+     * @param[out]    powerLevel      integer `0..100` report the powerlevel that the device have been set to
+     * @return        the success of the request
+     * @retval        true            request handled properly
+     * @retval        false           request was not handled properly because of some error
      * 
      * @section Example
      * @code
@@ -42,13 +43,14 @@ class SinricProDimSwitch :  public SinricProDevice {
      * @brief Definition for onAdjustPowerLevel callback
      * 
      * Gets called when device receive a `adjustPowerLevel` reuqest \n
-     * @param deviceId [in] String which contains the ID of device
-     * @param powerLevel [in] integer `-100..100` delta value which power level have to be changed
-     * @param powerLevel [out] integer `0..100` report the absolute powerlevel that the device have been set to
-     * @return `true` = request handled properly
-     * @return `false`= request can`t be handled properly because of some error
+     * @param[in]     deviceId      String which contains the ID of device
+     * @param[in]     powerLevel    integer `-100..100` delta value which power level have to be changed
+     * @param[out]    powerLevel    integer `0..100` report the absolute powerlevel that the device have been set to
+     * @return        the success of the request
+     * @retval true   request handled properly
+     * @retval false  request can`t be handled properly because of some error
      * 
-     * @section Example
+     * @subsubsection Example-Code
      * @code
      * bool onAdjustPowerLevel(const String &deviceId, int& powerLevelDelta) {
      *   Serial.printf("Device %s powerlevel adjust about %d\r\n", powerLevelDelta);
@@ -100,22 +102,20 @@ bool SinricProDimSwitch::handleRequest(const char* deviceId, const char* action,
 }
 
 /**
- * @brief Set callback function for `setPowerLevel` request
+ * @brief Set callback function for setPowerLevel request
  * 
- * @param cb Function pointer to a `SetPowerLevelCallback` function
- * @return void
- * @see SetPowerLevelCallback
+ * @param     cb    Function pointer to a SetPowerLevelCallback function
+ * @see       SetPowerLevelCallback
  **/
 void SinricProDimSwitch::onPowerLevel(SetPowerLevelCallback cb) {
    setPowerLevelCallback = cb;
 }
 
 /**
- * @brief Set callback function for `adjustPowerLevel` request
+ * @brief Set callback function for adjustPowerLevel request
  * 
- * @param cb Function pointer to a `AdjustPowerLevelCallback` function
- * @return void
- * @see AdjustPowerLevelCallback
+ * @param     cb    Function pointer to a AdjustPowerLevelCallback function
+ * @see       AdjustPowerLevelCallback
  **/
 void SinricProDimSwitch::onAdjustPowerLevel(AdjustPowerLevelCallback cb) {
   adjustPowerLevelCallback = cb;
@@ -124,10 +124,11 @@ void SinricProDimSwitch::onAdjustPowerLevel(AdjustPowerLevelCallback cb) {
 /**
  * @brief Send `setPowerLevel` event to SinricPro Server indicating actual power level
  * 
- * @param powerLevel integer `0..100` report the powerlevel that the device have been set to
- * @param cause `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
- * @return `true` event has been sent successfully
- * @return `false` event has not been sent, maybe you sent to much events in a short distance of time
+ * @param   powerLevel    integer `0..100` report the powerlevel that the device have been set to
+ * @param   cause         (optional) Reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return  the success of sending the event
+ * @retval  true          event has been sent successfully
+ * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
 bool SinricProDimSwitch::sendPowerLevelEvent(int powerLevel, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerLevel", cause.c_str());

@@ -10,6 +10,10 @@
 
 #include "SinricProDevice.h"
 
+/**
+ * @class SinricProDoorbell
+ * @brief Device to report doorbell events
+ *  */
 class SinricProDoorbell :  public SinricProDevice {
   public:
 	  SinricProDoorbell(const char* deviceId, unsigned long eventWaitTime=100);
@@ -20,6 +24,14 @@ class SinricProDoorbell :  public SinricProDevice {
 
 SinricProDoorbell::SinricProDoorbell(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
 
+/**
+ * @brief Send Doorbell event to SinricPro Server indicating someone pressed the doorbell button
+ * 
+ * @param   cause         (optional) Reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return  the success of sending the event
+ * @retval  true          event has been sent successfully
+ * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
+ **/
 bool SinricProDoorbell::sendDoorbellEvent(String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "DoorbellPress", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];

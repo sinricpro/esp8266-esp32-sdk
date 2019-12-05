@@ -11,13 +11,9 @@
 #include "SinricProDevice.h"
 #include "SinricProDimSwitch.h"
 
-/*
-typedef SinricProDimSwitch SinricProFan;
-*/
-
 /**
- * @class SinricProFan SinricProFan.h
- * @brief SinricProFan device support turn on / off and power level command
+ * @class SinricProFan
+ * @brief Device to turn on / off a fan and change it's speed by using powerlevel
  **/
 class SinricProFan :  public SinricProDimSwitch {
   public:

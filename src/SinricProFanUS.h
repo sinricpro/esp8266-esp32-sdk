@@ -10,13 +10,64 @@
 
 #include "SinricProDevice.h"
 
+/**
+ * @class SinricProFanUS
+ * @brief Device to control a fan with on / off commands and its speed by a range value
+ */
 class SinricProFanUS :  public SinricProDevice {
   public:
 	  SinricProFanUS(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
-    typedef std::function<bool(const String&, int&)> RangeValueCallback;
-    void onRangeValue(RangeValueCallback cb) { rangeValueCallback = cb; }
-    void onAdjustRangeValue(RangeValueCallback cb) { adjustRangeValueCallback = cb; }
+
+    /**
+     * @brief Callback definition for onRangeValue function
+     * 
+     * Gets called when device receive a `setRangeValue` reuqest \n
+     * @param[in]   deviceId    String which contains the ID of device
+     * @param[in]   rangeValue  Integer 0..n for range value device has to be set
+     * @param[out]  rangeValue  Integer 0..n returning the current range value
+     * @return      the success of the request
+     * @retval      true        request handled properly
+     * @retval      false       request was not handled properly because of some error
+     * 
+     * @subsubsection Example-Code
+     * @code
+     * bool onRangeValue(const String &deviceId, int &rangeValue) {
+     *   Serial.printf("Device %s has been set to %d\r\n", rangeValue);
+     *   return true;
+     * }
+     * @endcode
+     **/
+    typedef std::function<bool(const String&, int&)> SetRangeValueCallback;
+
+    /**
+     * @brief Callback definition for onAdjustRangeValue function
+     * 
+     * Gets called when device receive a `adjustRangeValue` reuqest \n
+     * @param[in]   deviceId    String which contains the ID of device
+     * @param[in]   rangeValue  Integer -n..n delta value for range value have to change
+     * @param[out]  rangeValue  Integer 0..n returning the absolute range value 
+     * @return      the success of the request
+     * @retval      true        request handled properly
+     * @retval      false       request was not handled properly because of some error
+     * 
+     * @subsubsection Example-Code
+     * @code
+     * int globalRangeValue; // stores the rangevalue for device
+     * 
+     * bool onAdjustRangeValue(const String &deviceId, int &rangeValueDelta) {
+     *   globalRangeValue += rangeValueDelta; // change globalRangeValue about rangeValueDelta
+     *   Serial.printf("Range value changed about %i to %d\r\n", rangeValueDelta, globalRangeValue);
+     *   rangeValueDelta = globalRangeValue; // report current (absolute) range value back to SinricPro server
+     *   return true;
+     * }
+     * @endcode
+     **/
+    typedef std::function<bool(const String&, int&)> AdjustRangeValueCallback;
+
+    void onRangeValue(SetRangeValueCallback cb);
+
+    void onAdjustRangeValue(AdjustRangeValueCallback cb);
 
     // event
     bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION");
@@ -24,12 +75,12 @@ class SinricProFanUS :  public SinricProDevice {
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
-    RangeValueCallback rangeValueCallback; 
-    RangeValueCallback adjustRangeValueCallback;
+    SetRangeValueCallback setRangeValueCallback; 
+    AdjustRangeValueCallback adjustRangeValueCallback;
 };
 
 SinricProFanUS::SinricProFanUS(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
-  rangeValueCallback(nullptr) {}
+  setRangeValueCallback(nullptr) {}
 
 bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
   if (strcmp(deviceId, this->deviceId) != 0) return false;
@@ -38,9 +89,9 @@ bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, Jso
   bool success = false;
   String actionString = String(action);
 
-  if (actionString == "setRangeValue" && rangeValueCallback) {
+  if (actionString == "setRangeValue" && setRangeValueCallback) {
     int rangeValue = request_value["rangeValue"] | 0;
-    success = rangeValueCallback(String(deviceId), rangeValue);
+    success = setRangeValueCallback(String(deviceId), rangeValue);
     response_value["rangeValue"] = rangeValue;
     return success;
   }
@@ -55,6 +106,35 @@ bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, Jso
   return success;
 }
 
+/**
+ * @brief Set callback function for `setRangeValue` request
+ * 
+ * @param cb Function pointer to a `SetRangeValueCallback` function
+ * @see SetRangeValueCallback
+ */
+void SinricProFanUS::onRangeValue(SetRangeValueCallback cb) { 
+  setRangeValueCallback = cb;
+}
+
+/**
+ * @brief Set callback function for `adjustRangeValue` request
+ * 
+ * @param cb Function pointer to a `AdjustRangeValueCallback` function
+ * @see AdjustRangeValueCallback
+ */
+void SinricProFanUS::onAdjustRangeValue(AdjustRangeValueCallback cb) { 
+  adjustRangeValueCallback = cb; 
+}
+
+/**
+ * @brief Send `rangeValue` event to report curent rangeValue to SinricPro server
+ * 
+ * @param   rangeValue  Value between 0..n
+ * @param   cause       (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return  the success of sending the even
+ * @retval  true        event has been sent successfully
+ * @retval  false       event has not been sent, maybe you sent to much events in a short distance of time
+ */
 bool SinricProFanUS::sendRangeValueEvent(int rangeValue, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setRangeValue", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];

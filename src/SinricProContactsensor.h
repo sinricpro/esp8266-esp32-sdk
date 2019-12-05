@@ -12,7 +12,7 @@
 
 /**
  * @class SinricProContactsensor
- * @brief SinricProContactsensor is a device to report state of a contact sensor (open or closed)
+ * @brief Device to report contact sensor events
  **/
 class SinricProContactsensor :  public SinricProDevice {
   public:
