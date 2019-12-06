@@ -26,9 +26,9 @@ class SinricProWindowAC :  public SinricProDevice {
 
     // event
     bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION");
-    void sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
-    void sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION");
-    void sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION");
+    bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
+    bool sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION");
+    bool sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION");
 
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
@@ -105,7 +105,7 @@ bool SinricProWindowAC::sendRangeValueEvent(int rangeValue, String cause) {
   return sendEvent(eventMessage);
 }
 
-void SinricProWindowAC::sendTemperatureEvent(float temperature, float humidity, String cause) {
+bool SinricProWindowAC::sendTemperatureEvent(float temperature, float humidity, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "currentTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["humidity"] = humidity;
@@ -113,14 +113,14 @@ void SinricProWindowAC::sendTemperatureEvent(float temperature, float humidity, 
   return sendEvent(eventMessage);
 }
 
-void SinricProWindowAC::sendTargetTemperatureEvent(float temperature, String cause) {
+bool SinricProWindowAC::sendTargetTemperatureEvent(float temperature, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "targetTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["temperature"] = roundf(temperature*10) / 10.0;
   return sendEvent(eventMessage);
 }
 
-void SinricProWindowAC::sendThermostatModeEvent(String thermostatMode, String cause) {
+bool SinricProWindowAC::sendThermostatModeEvent(String thermostatMode, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setThermostatMode", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["thermostatMode"] = thermostatMode;
