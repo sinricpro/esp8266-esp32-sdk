@@ -15,15 +15,18 @@ class SinricProLight :  public SinricProDevice {
     SinricProLight(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
     typedef std::function<bool(const String&, int&)> BrightnessCallback;
+    typedef std::function<bool(const String&, int&)> AdjustBrightnessCallback;
     typedef std::function<bool(const String&, byte&, byte&, byte&)> ColorCallback;
     typedef std::function<bool(const String&, int&)> ColorTemperatureCallback;
+    typedef std::function<bool(const String&, int&)> IncreaseColorTemperatureCallback;
+    typedef std::function<bool(const String&, int&)> DecreaseColorTemperatureCallback;
   
     void onBrightness(BrightnessCallback cb) { brightnessCallback = cb; }
-    void onAdjustBrightness(BrightnessCallback cb) { adjustBrightnessCallback = cb; }
+    void onAdjustBrightness(AdjustBrightnessCallback cb) { adjustBrightnessCallback = cb; }
     void onColor(ColorCallback cb) { colorCallback = cb; }
     void onColorTemperature(ColorTemperatureCallback cb) { colorTemperatureCallback = cb; }
-    void onIncreaseColorTemperature(ColorTemperatureCallback cb) { increaseColorTemperatureCallback = cb; }
-    void onDecreaseColorTemperature(ColorTemperatureCallback cb) { decreaseColorTemperatureCallback = cb; }
+    void onIncreaseColorTemperature(IncreaseColorTemperatureCallback cb) { increaseColorTemperatureCallback = cb; }
+    void onDecreaseColorTemperature(DecreaseColorTemperatureCallback cb) { decreaseColorTemperatureCallback = cb; }
 
     // event
     bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
@@ -34,11 +37,11 @@ class SinricProLight :  public SinricProDevice {
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
     BrightnessCallback brightnessCallback;
-    BrightnessCallback adjustBrightnessCallback;
+    AdjustBrightnessCallback adjustBrightnessCallback;
     ColorCallback colorCallback;
     ColorTemperatureCallback colorTemperatureCallback;
-    ColorTemperatureCallback increaseColorTemperatureCallback;
-    ColorTemperatureCallback decreaseColorTemperatureCallback;
+    IncreaseColorTemperatureCallback increaseColorTemperatureCallback;
+    DecreaseColorTemperatureCallback decreaseColorTemperatureCallback;
 };
 
 SinricProLight::SinricProLight(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
