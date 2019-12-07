@@ -131,3 +131,98 @@ bool onThermostatMode(const String& deviceId, String& mode) {
   return true; // request handled properly
 }
 //! [onThermostatMode]
+
+
+//! [onSetVolume]
+bool onSetVolume(const String &deviceId, int &volume) {
+  Serial.printf("Device %s volume set to %d\r\n", deviceId.c_str(), volume);
+  return true; // request handled properly
+}
+//! [onSetVolume]
+
+//! [onAdjustVolume]
+int absoluteVolume;
+
+bool onAdjustVolume(const String &deviceId, int &volumeDelta) {
+  absoluteVolume += volumeDelta;  // calculate absolute volume
+  Serial.printf("Device %s volume changed about %i to %d\r\n", deviceId.c_str(), volumeDelta, absoluteVolume);
+  volumeDelta = absoluteVolume; // return absolute volume
+  return true; // request handled properly
+}
+//! [onAdjustVolume]
+
+//! [onMute]
+bool onMute(const String &deviceId, bool &mute) {
+  Serial.printf("Device %s is %s\r\n", deviceId.c_str(), mute?"muted":"unmuted");
+  return true; // request handled properly
+}
+//! [onMute]
+
+//! [onMediaControl]
+bool onMediaControl(const String &deviceId, String &control) {
+  Serial.printf("Device %s: %s\r\n", deviceId.c_str(), control);
+  return true; // request handled properly
+}
+//! [onMediaControl]
+
+//! [onSetBands]
+bool onSetBands(const String &deviceId, String &bands, int &level) {
+  Serial.printf("Device %s bands %s set to %d\r\n", deviceId.c_str(), bands.c_str(), level);
+  return true; // request handled properly
+}
+//! [onSetBands]
+
+//! [onAdjustBands]
+int globalBass;
+int globalMidrange;
+int globalTrebble;
+
+bool onAdjustBands(const String &deviceId, String &bands, int &levelDelta) {
+  if (bands == "BASS") {
+    globalBass += levelDelta; // calculate absolute bass level
+    levelDelta = globalBass; // return absolute bass level
+  }
+  if (bands == "MIDRANGE") {
+    globalMidrange += levelDelta; // calculate absolute midrange level
+    levelDelta = globalMidrange; // return absolute midrange level
+  }
+  if (bands == "TREBBLE") {
+    globalMidrange += levelDelta; // calculate absolute trebble level
+    levelDelta = globalMidrange; // return absolute trebble level
+  }
+  Serial.printf("Device %s bands set to\r\n - BASS: %d\r\n - MIDRANGE: %d\r\n - TREBBLE: %d\r\n", deviceId.c_str(), globalBass, globalMidrange, globalTrebble);
+  return true; // request handled properly
+}
+//! [onAdjustBands]
+
+
+//! [onResetBands]
+int globalBass;
+int globalMidrange;
+int globalTrebble;
+
+bool onAdjustBands(const String &deviceId, String &bands, int &level) {
+  if (bands == "BASS") {
+    globalBass = 0; // reset bass level to 0
+    level = globalBass; // return bass level
+  }
+  if (bands == "MIDRANGE") {
+    globalMidrange = 0; // reset midrange level to 0
+    level = globalMidrange; // return midrange level
+  }
+  if (bands == "TREBBLE") {
+    globalMidrange = 0; // reset trebble level to 0
+    level = globalMidrange; // return trebble level
+  }
+  Serial.printf("Device %s bands reset to\r\n - BASS: %d\r\n - MIDRANGE: %d\r\n - TREBBLE: %d\r\n", deviceId.c_str(), globalBass, globalMidrange, globalTrebble);
+  return true; // request handled properly
+}
+//! [onResetBands]
+
+
+//! [onSetMode]
+bool onSetMode(const String &deviceId, String &mode) {
+  Serial.printf("Device %s is set to mode %s\r\n", deviceId.c_str(), mode);
+  return true; // request handled properly
+}
+//! [onSetMode]

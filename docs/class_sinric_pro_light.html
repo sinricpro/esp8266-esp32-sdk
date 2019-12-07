@@ -207,8 +207,8 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="AdjustBrightnessCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> absoluteBrightness;</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a0633e5fa2981189f4a093bab00a8c7f1">onAdjustBrightness</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;brightnessDelta) {</div>
@@ -250,8 +250,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="BrightnessCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#abbaab3067b1fcdcc5928451b818a4420">onBrightness</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;brightness) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s brightness %d\r\n&quot;</span>, deviceId.c_str(), brightness);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
@@ -293,8 +293,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="ColorCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a059ff103149869b7c49cdb8911875b7b">onColor</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">byte</span> &amp;r, <span class="keywordtype">byte</span> &amp;g, <span class="keywordtype">byte</span> &amp;b) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s color is set to red=%d, green=%d, blue=%d\r\n&quot;</span>, deviceId.c_str(), r, g, b);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
@@ -332,8 +332,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="ColorTemperatureCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a8535c44fd2517ed09ebe6a203cc25b67">onColorTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;colorTemperature) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s colorTemperature is set to %i\r\n&quot;</span>, deviceId.c_str(), colorTemperature);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
@@ -371,8 +371,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="DecreaseColorTemperatureCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> globalColorTemperature; </div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a7468976e7fffeee14cc869b7236cbb50">onDecreaseColorTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;colorTemperature) {</div>
@@ -414,8 +414,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="IncreaseColorTemperatureCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> globalColorTemperature; </div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a7ea9fd9861a5668a41d06267bfbec82a">onIncreaseColorTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;colorTemperature) {</div>
@@ -467,8 +467,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="PowerStateCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>

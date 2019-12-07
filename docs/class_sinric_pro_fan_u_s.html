@@ -171,8 +171,8 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="AdjustRangeValueCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> globalRangeValue;</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_fan_u_s.html#ae85696d55112ae7343f9807faee6e064">onAdjustRangeValue</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;rangeValueDelta) {</div>
@@ -224,8 +224,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="PowerStateCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
@@ -263,8 +263,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="SetRangeValueCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_fan_u_s.html#a94adbcdf6ce61cb6552a5f9915e705ae">onRangeValue</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;rangeValue) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s range value has been set to %d\r\n&quot;</span>, rangeValue);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>

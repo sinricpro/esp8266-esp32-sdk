@@ -180,8 +180,8 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="AdjustPowerLevelCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> absolutePowerLevel;</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96">onAdjustPowerLevel</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;powerDelta) {</div>
@@ -233,8 +233,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="PowerStateCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
@@ -280,8 +280,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="SetPowerLevelCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">onPowerLevel</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;powerLevel) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s powerlevel %d\r\n&quot;</span>, deviceId.c_str(), powerLevel);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>

@@ -189,8 +189,8 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="AdjustTargetTemperatureCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">float</span> globalTargetTemp; </div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_thermostat.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4">onAdjustTargetTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">float</span> &amp;tempDelta) {</div>
@@ -242,8 +242,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="PowerStateCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
@@ -281,8 +281,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="TargetTemperatureCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_thermostat.html#a0edee7a05f49591c3022034115eb0dc4">onTargetTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">float</span> &amp;targetTemp) { </div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s target temperature set to %f\r\n&quot;</span>, deviceId.c_str(), targetTemp);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
@@ -320,8 +320,8 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h3><a class="anchor" id="Example-Code"></a>
-Example-Code</h3>
+<h1><a class="anchor" id="ThermostatModeCallback"></a>
+Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_thermostat.html#a2ef31536973b20815dd6c80a28e19c9f">onThermostatMode</a>(<span class="keyword">const</span> String&amp; deviceId, String&amp; mode) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Deivce %s thermostat mode set to %s\r\n&quot;</span>, deviceId.c_str(), mode);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
