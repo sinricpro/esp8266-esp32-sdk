@@ -30,7 +30,7 @@ class SinricProFanUS :  public SinricProDevice {
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
      * 
-     * @subsubsection Example-Code
+     * @section SetRangeValueCallback Example-Code
      * @snippet callbacks.cpp onRangeValue
      **/
     typedef std::function<bool(const String&, int&)> SetRangeValueCallback;
@@ -46,7 +46,7 @@ class SinricProFanUS :  public SinricProDevice {
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
      * 
-     * @subsubsection Example-Code
+     * @section AdjustRangeValueCallback Example-Code
      * @snippet callbacks.cpp onAdjustRangeValue
      **/
     typedef std::function<bool(const String&, int&)> AdjustRangeValueCallback;

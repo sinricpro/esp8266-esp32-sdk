@@ -34,7 +34,7 @@ class SinricProLock :  public SinricProDevice {
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
      * 
-     * @subsubsection Example-Code
+     * @section LockStateCallback Example-Code
      * @code
      * bool onLockState(const String &deviceId, bool &lockState) {
      *   Serial.printf("Device is %s\r\n", lockState?"locked":"unlocked");

@@ -57,9 +57,9 @@ class SinricProClass : public SinricProInterface {
      * If the device is unknown to SinricProClass it will create a new device instance
      * @param deviceId a String containing deviceId for device that have to been created or retreived
      * @return returns a proxy object representing the reference to a device derrivered from SinricProDevice
-     * @subsubsection Syntax
+     * @section Syntax
      * `<DeviceType> &reference = SinricPro[<DEVICE_ID>];`
-     * @subsubsection Example-Code
+     * @section operator[] Example-Code
      * @code
      * #define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
      * ..
@@ -144,7 +144,7 @@ DeviceType& SinricProClass::getDeviceInstance(String deviceId) {
  * @param socketAuthToken `String` containing APP_KEY (see credentials from https://sinric.pro )
  * @param signingKey `String` containing APP_SECRET (see credentials from https:://sinric.pro)
  * @param serverURL `String` containing SinricPro Server URL (default="ws.sinric.pro")
- * @subsubsection Example-Code
+ * @section Example-Code
  * @code
  * #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
  * #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
@@ -214,7 +214,7 @@ void SinricProClass::add(SinricProDeviceInterface& newDevice) {
  * This function has to be called as often as possible. So it must be called in your main loop() function! \n
  * 
  * For proper function, begin() must be called with valid values for 'APP_KEY' and 'APP_SECRET' \n
- * @subsubsection Example-Code
+ * @section handle Example-Code
  * @code
  * void loop() {
  *   SinricPro.handle();

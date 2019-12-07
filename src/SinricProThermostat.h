@@ -36,7 +36,7 @@ class SinricProThermostat :  public SinricProDevice {
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
      * 
-     * @subsubsection Example-Code
+     * @section TargetTemperatureCallback Example-Code
      * @snippet callbacks.cpp onTargetTemperature
      **/
     typedef std::function<bool(const String&, float&)> TargetTemperatureCallback;
@@ -52,7 +52,7 @@ class SinricProThermostat :  public SinricProDevice {
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
      * 
-     * @subsubsection Example-Code
+     * @section AdjustTargetTemperatureCallback Example-Code
      * @snippet callbacks.cpp onAdjustTargetTemperature
      **/
     typedef std::function<bool(const String&, float&)> AdjustTargetTemperatureCallback;
@@ -68,7 +68,7 @@ class SinricProThermostat :  public SinricProDevice {
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
      * 
-     * @subsubsection Example-Code
+     * @section ThermostatModeCallback Example-Code
      * @snippet callbacks.cpp onThermostatMode
      **/
     typedef std::function<bool(const String&, String&)> ThermostatModeCallback;

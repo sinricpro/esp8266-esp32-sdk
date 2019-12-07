@@ -29,7 +29,7 @@ class SinricProDimSwitch :  public SinricProDevice {
      * @retval        true            request handled properly
      * @retval        false           request was not handled properly because of some error
      * 
-     * @subsubsection Example-Code
+     * @section SetPowerLevelCallback Example-Code
      * @snippet callbacks.cpp onPowerLevel
      **/
     typedef std::function<bool(const String&, int&)> SetPowerLevelCallback;
@@ -45,7 +45,7 @@ class SinricProDimSwitch :  public SinricProDevice {
      * @retval true   request handled properly
      * @retval false  request can`t be handled properly because of some error
      * 
-     * @subsubsection Example-Code
+     * @section AdjustPowerLevelCallback Example-Code
      * @snippet callbacks.cpp onAdjustPowerLevel
      **/
     typedef std::function<bool(const String&, int&)> AdjustPowerLevelCallback;
