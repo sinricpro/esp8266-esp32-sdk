@@ -55,7 +55,7 @@ class SinricProClass : public SinricProInterface {
      * @brief operator[] is used tor create a new device instance or get an existing device instance
      * 
      * If the device is unknown to SinricProClass it will create a new device instance
-     * @param deviceID a String containing deviceId for device that have to been created or retreived
+     * @param deviceId a String containing deviceId for device that have to been created or retreived
      * @return returns a proxy object representing the reference to a device derrivered from SinricProDevice
      * @subsubsection Syntax
      * `<DeviceType> &reference = SinricPro[<DEVICE_ID>];`
