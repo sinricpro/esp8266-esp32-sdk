@@ -39,14 +39,8 @@ class SinricProDevice : public SinricProDeviceInterface {
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
-     * 
      * @subsubsection Example-Code
-     * @code
-     * bool onPowerState(const String &deviceId, bool &state) {
-     *   Serial.printf("Device %s turned %s\r\n", state?"on":"off");
-     *   return true;
-     * }
-     * @endcode
+     * @snippet callbacks.cpp onPowerState
      **/
     typedef std::function<bool(const String&, bool&)> PowerStateCallback;
     

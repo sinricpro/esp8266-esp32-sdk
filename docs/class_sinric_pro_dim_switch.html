@@ -174,13 +174,15 @@ Public Member Functions</h2></td></tr>
 </dl>
 <h3><a class="anchor" id="Example-Code"></a>
 Example-Code</h3>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96">onAdjustPowerLevel</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span>&amp; powerLevelDelta) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s powerlevel adjust about %d\r\n&quot;</span>, powerLevelDelta);</div>
-<div class="line">  globalPowerLevel += powerLevelDelta; <span class="comment">//change globalPowerLevel about the amount of powerLevelDelta</span></div>
-<div class="line">  powerLevelDelta = globalPowerLevel; <span class="comment">// return the absolute powerLevel (stored in global variable `globalPowerLevel`)</span></div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> absolutePowerLevel;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96">onAdjustPowerLevel</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;powerDelta) {</div>
+<div class="line">  absolutePowerLevel += powerDelta;  <span class="comment">// calculate absolute power level</span></div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s brightness changed about %i to %d\r\n&quot;</span>, deviceId.c_str(), powerDelta, absolutePowerLevel);</div>
+<div class="line">  powerDelta = absolutePowerLevel; <span class="comment">// return absolute power level</span></div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-</div><!-- fragment --> 
+</div><!-- fragment -->
 </div>
 </div>
 <a id="aa9db92ebe40a0df6deb43eba70d3dea3"></a>
@@ -219,17 +221,17 @@ Example-Code</h3>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
   </table>
   </dd>
 </dl>
 <h3><a class="anchor" id="Example-Code"></a>
 Example-Code</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-</div><!-- fragment --> 
+</div><!-- fragment -->
 </div>
 </div>
 <a id="afbdda289acfd7d72c03bab3b69b42afd"></a>
@@ -262,13 +264,13 @@ Example-Code</h3>
   </table>
   </dd>
 </dl>
-<h1><a class="anchor" id="Example"></a>
-Example</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">onPowerLevel</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span>&amp; powerLevel) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s set powerlevel to %d\r\n&quot;</span>, powerLevel);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<h3><a class="anchor" id="Example-Code"></a>
+Example-Code</h3>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">onPowerLevel</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;powerLevel) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s powerlevel %d\r\n&quot;</span>, deviceId.c_str(), powerLevel);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-</div><!-- fragment --> 
+</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -463,9 +465,9 @@ Example</h1>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_sinric_pro_dim_switch_html_a0685d34694badb4442fed6b69b69b366"><div class="ttname"><a href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">SinricProDimSwitch::onPowerLevel</a></div><div class="ttdeci">void onPowerLevel(SetPowerLevelCallback cb)</div><div class="ttdoc">Set callback function for setPowerLevel request.</div><div class="ttdef"><b>Definition:</b> SinricProDimSwitch.h:110</div></div>
-<div class="ttc" id="aclass_sinric_pro_dim_switch_html_a13b10bdb1844babe4de320fff9172d96"><div class="ttname"><a href="class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96">SinricProDimSwitch::onAdjustPowerLevel</a></div><div class="ttdeci">void onAdjustPowerLevel(AdjustPowerLevelCallback cb)</div><div class="ttdoc">Set callback function for adjustPowerLevel request.</div><div class="ttdef"><b>Definition:</b> SinricProDimSwitch.h:120</div></div>
-<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:145</div></div>
+<div class="ttc" id="aclass_sinric_pro_dim_switch_html_a0685d34694badb4442fed6b69b69b366"><div class="ttname"><a href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">SinricProDimSwitch::onPowerLevel</a></div><div class="ttdeci">void onPowerLevel(SetPowerLevelCallback cb)</div><div class="ttdoc">Set callback function for setPowerLevel request.</div><div class="ttdef"><b>Definition:</b> SinricProDimSwitch.h:98</div></div>
+<div class="ttc" id="aclass_sinric_pro_dim_switch_html_a13b10bdb1844babe4de320fff9172d96"><div class="ttname"><a href="class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96">SinricProDimSwitch::onAdjustPowerLevel</a></div><div class="ttdeci">void onAdjustPowerLevel(AdjustPowerLevelCallback cb)</div><div class="ttdoc">Set callback function for adjustPowerLevel request.</div><div class="ttdef"><b>Definition:</b> SinricProDimSwitch.h:108</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:139</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

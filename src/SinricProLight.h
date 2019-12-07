@@ -35,6 +35,8 @@ class SinricProLight :  public SinricProDevice {
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
+     * @subsubsection Example-Code
+     * @snippet callbacks.cpp onBrightness
      **/
     typedef std::function<bool(const String&, int&)> BrightnessCallback;
 
@@ -48,6 +50,8 @@ class SinricProLight :  public SinricProDevice {
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
+     * @subsubsection Example-Code
+     * @snippet callbacks.cpp onAdjustBrightness
      **/
     typedef std::function<bool(const String&, int&)> AdjustBrightnessCallback;
 
@@ -65,6 +69,8 @@ class SinricProLight :  public SinricProDevice {
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
+     * @subsubsection Example-Code
+     * @snippet callbacks.cpp onColor
      **/
     typedef std::function<bool(const String&, byte&, byte&, byte&)> ColorCallback;
 
@@ -78,6 +84,8 @@ class SinricProLight :  public SinricProDevice {
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
+     * @subsubsection Example-Code
+     * @snippet callbacks.cpp onColorTemperature
      **/
     typedef std::function<bool(const String&, int&)> ColorTemperatureCallback;
 
@@ -91,6 +99,8 @@ class SinricProLight :  public SinricProDevice {
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
+     * @subsubsection Example-Code
+     * @snippet callbacks.cpp onIncreaseColorTemperature
      **/
     typedef std::function<bool(const String&, int&)> IncreaseColorTemperatureCallback;
     
@@ -104,6 +114,8 @@ class SinricProLight :  public SinricProDevice {
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
+     * @subsubsection Example-Code
+     * @snippet callbacks.cpp onDecreaseColorTemperature
      **/
     typedef std::function<bool(const String&, int&)> DecreaseColorTemperatureCallback;
   

@@ -112,18 +112,18 @@ $(document).ready(function(){initNavTree('_sinric_pro_motionsensor_8h_source.htm
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;SinricProMotionsensor::SinricProMotionsensor(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId, eventWaitTime) {}</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_sinric_pro_motionsensor.html#ab28a28a17768a38eea033ba700095672">   36</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_motionsensor.html#ab28a28a17768a38eea033ba700095672">SinricProMotionsensor::sendMotionEvent</a>(<span class="keywordtype">bool</span> state, String cause) {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  DynamicJsonDocument eventMessage = prepareEvent(deviceId, <span class="stringliteral">&quot;motion&quot;</span>, cause.c_str());</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  event_value[<span class="stringliteral">&quot;state&quot;</span>] = state?<span class="stringliteral">&quot;detected&quot;</span>:<span class="stringliteral">&quot;notDetected&quot;</span>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordflow">return</span> sendEvent(eventMessage);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_sinric_pro_motionsensor.html#ab28a28a17768a38eea033ba700095672">   37</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_motionsensor.html#ab28a28a17768a38eea033ba700095672">SinricProMotionsensor::sendMotionEvent</a>(<span class="keywordtype">bool</span> state, String cause) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  DynamicJsonDocument eventMessage = prepareEvent(deviceId, <span class="stringliteral">&quot;motion&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  event_value[<span class="stringliteral">&quot;state&quot;</span>] = state?<span class="stringliteral">&quot;detected&quot;</span>:<span class="stringliteral">&quot;notDetected&quot;</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">return</span> sendEvent(eventMessage);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_sinric_pro_motionsensor_html_ab28a28a17768a38eea033ba700095672"><div class="ttname"><a href="class_sinric_pro_motionsensor.html#ab28a28a17768a38eea033ba700095672">SinricProMotionsensor::sendMotionEvent</a></div><div class="ttdeci">bool sendMotionEvent(bool detected, String cause=&quot;PHYSICAL_INTERACTION&quot;)</div><div class="ttdoc">Sending motion detection state to SinricPro server.</div><div class="ttdef"><b>Definition:</b> SinricProMotionsensor.h:36</div></div>
+<div class="ttc" id="aclass_sinric_pro_motionsensor_html_ab28a28a17768a38eea033ba700095672"><div class="ttname"><a href="class_sinric_pro_motionsensor.html#ab28a28a17768a38eea033ba700095672">SinricProMotionsensor::sendMotionEvent</a></div><div class="ttdeci">bool sendMotionEvent(bool detected, String cause=&quot;PHYSICAL_INTERACTION&quot;)</div><div class="ttdoc">Sending motion detection state to SinricPro server.</div><div class="ttdef"><b>Definition:</b> SinricProMotionsensor.h:37</div></div>
 <div class="ttc" id="aclass_sinric_pro_motionsensor_html"><div class="ttname"><a href="class_sinric_pro_motionsensor.html">SinricProMotionsensor</a></div><div class="ttdoc">Device to report motion detection events.</div><div class="ttdef"><b>Definition:</b> SinricProMotionsensor.h:17</div></div>
 <div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:23</div></div>
 <!-- start footer part -->

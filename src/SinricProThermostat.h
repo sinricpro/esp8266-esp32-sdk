@@ -37,12 +37,7 @@ class SinricProThermostat :  public SinricProDevice {
      * @retval      false       request was not handled properly because of some error
      * 
      * @subsubsection Example-Code
-     * @code
-     * bool onTargetTemperature(const String &deviceId, float &targetTemp) { 
-     *   Serial.printf("Target temperature set to %f turned %s\r\n", targetTemp);
-     *   return true;
-     * }
-     * @endcode
+     * @snippet callbacks.cpp onTargetTemperature
      **/
     typedef std::function<bool(const String&, float&)> TargetTemperatureCallback;
 
@@ -58,17 +53,7 @@ class SinricProThermostat :  public SinricProDevice {
      * @retval      false       request was not handled properly because of some error
      * 
      * @subsubsection Example-Code
-     * @code
-     * ..
-     * float globalTargetTemp; 
-     * ..
-     * bool onAdjustTargetTemperature(const String &deviceId, float &tempDelta) 
-     *   globalTargetTemp += tempDelta; // change global target temperature about tempDelta
-     *   Serial.printf("Target temperature changed about %f to %f\r\n", tempDelta, globalTargetTemp);
-     *   tempDelta = globalTargetTemp; // return absolute target temperature
-     *   return true;
-     * }
-     * @endcode
+     * @snippet callbacks.cpp onAdjustTargetTemperature
      **/
     typedef std::function<bool(const String&, float&)> AdjustTargetTemperatureCallback;
 
@@ -84,12 +69,7 @@ class SinricProThermostat :  public SinricProDevice {
      * @retval      false       request was not handled properly because of some error
      * 
      * @subsubsection Example-Code
-     * @code
-     * bool onThermostatMode(const String& deviceId, String& mode) {
-     *   Serial.printf("Thermostat mode set to %s\r\n", mode);
-     *   return true;
-     * }
-     * @endcode
+     * @snippet callbacks.cpp onThermostatMode
      **/
     typedef std::function<bool(const String&, String&)> ThermostatModeCallback;
 
@@ -187,7 +167,7 @@ void SinricProThermostat::onThermostatMode(ThermostatModeCallback cb) {
 /**
  * @brief Send `currentTemperature` event to report actual temperature (measured by a sensor)
  * 
- * @param   temperture    Float with actual temperature measured by a sensor
+ * @param   temperature   Float with actual temperature measured by a sensor
  * @param   humidity      (optional) Float with actual humidity measured by a sensor (default=-1.0f means not supported)
  * @param   cause         (optional) `String` reason why event is sent (default = `"PERIODIC_POLL"`)
  * @return  the success of sending the even
@@ -205,7 +185,7 @@ bool SinricProThermostat::sendTemperatureEvent(float temperature, float humidity
 /**
  * @brief Send `targetTemperature` event to report target temperature change
  * 
- * @param   temperture    Float with actual target temperature the device is set to
+ * @param   temperature   Float with actual target temperature the device is set to
  * @param   cause         (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
  * @return  the success of sending the even
  * @retval  true          event has been sent successfully
@@ -221,11 +201,11 @@ bool SinricProThermostat::sendTargetTemperatureEvent(float temperature, String c
 /**
  * @brief Send `thermostatMode` event to report a the new mode the device has been set to
  * 
- * @param   mode          String with actual mode (`AUTO`, `COOL`, `HEAT`) the device is set to
- * @param   cause         (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @param   thermostatMode  String with actual mode (`AUTO`, `COOL`, `HEAT`) the device is set to
+ * @param   cause           (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
  * @return  the success of sending the even
- * @retval  true          event has been sent successfully
- * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
+ * @retval  true            event has been sent successfully
+ * @retval  false           event has not been sent, maybe you sent to much events in a short distance of time
  **/
 bool SinricProThermostat::sendThermostatModeEvent(String thermostatMode, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setThermostatMode", cause.c_str());

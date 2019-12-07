@@ -207,7 +207,17 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<h3><a class="anchor" id="Example-Code"></a>
+Example-Code</h3>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> absoluteBrightness;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a0633e5fa2981189f4a093bab00a8c7f1">onAdjustBrightness</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;brightnessDelta) {</div>
+<div class="line">  absoluteBrightness += brightnessDelta; <span class="comment">// calculate absolute brigthness</span></div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s brightness changed about %i to %d\r\n&quot;</span>, deviceId.c_str(), brightnessDelta, absoluteBrightness);</div>
+<div class="line">  brightnessDelta = absoluteBrightness; <span class="comment">// return absolute brightness</span></div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a1bf03bd01ae1f4ddf164260435dc2026"></a>
@@ -240,7 +250,13 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<h3><a class="anchor" id="Example-Code"></a>
+Example-Code</h3>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#abbaab3067b1fcdcc5928451b818a4420">onBrightness</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;brightness) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s brightness %d\r\n&quot;</span>, deviceId.c_str(), brightness);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a916ceb3c8ef5094cc578f739b2d9edca"></a>
@@ -277,7 +293,13 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<h3><a class="anchor" id="Example-Code"></a>
+Example-Code</h3>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a059ff103149869b7c49cdb8911875b7b">onColor</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">byte</span> &amp;r, <span class="keywordtype">byte</span> &amp;g, <span class="keywordtype">byte</span> &amp;b) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s color is set to red=%d, green=%d, blue=%d\r\n&quot;</span>, deviceId.c_str(), r, g, b);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="ac46e0327976c2cb38b6e97110763de5f"></a>
@@ -310,7 +332,13 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<h3><a class="anchor" id="Example-Code"></a>
+Example-Code</h3>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a8535c44fd2517ed09ebe6a203cc25b67">onColorTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;colorTemperature) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s colorTemperature is set to %i\r\n&quot;</span>, deviceId.c_str(), colorTemperature);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a8fce91e931713aa452fb7bd0805e3c81"></a>
@@ -343,7 +371,17 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<h3><a class="anchor" id="Example-Code"></a>
+Example-Code</h3>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> globalColorTemperature; </div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a7468976e7fffeee14cc869b7236cbb50">onDecreaseColorTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;colorTemperature) {</div>
+<div class="line">  globalColorTemperature -= 1000; <span class="comment">// decrease globalColorTemperature about 1000;</span></div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s colorTemperature changed %i\r\n&quot;</span>, deviceId.c_str(), colorTemperature);</div>
+<div class="line">  colorTemperature = globalColorTemperature; <span class="comment">// return new colorTemperature</span></div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="ac29cb175180abefcc181191de6be6c9f"></a>
@@ -376,7 +414,17 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<h3><a class="anchor" id="Example-Code"></a>
+Example-Code</h3>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> globalColorTemperature; </div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a7ea9fd9861a5668a41d06267bfbec82a">onIncreaseColorTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;colorTemperature) {</div>
+<div class="line">  globalColorTemperature += 1000; <span class="comment">// increase globalColorTemperature about 1000;</span></div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s colorTemperature changed to %i\r\n&quot;</span>, deviceId.c_str(), colorTemperature);</div>
+<div class="line">  colorTemperature = globalColorTemperature; <span class="comment">// return new colorTemperature</span></div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="aa9db92ebe40a0df6deb43eba70d3dea3"></a>
@@ -415,17 +463,17 @@ Public Member Functions</h2></td></tr>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
   </table>
   </dd>
 </dl>
 <h3><a class="anchor" id="Example-Code"></a>
 Example-Code</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-</div><!-- fragment --> 
+</div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -838,7 +886,13 @@ Example-Code</h3>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:145</div></div>
+<div class="ttc" id="aclass_sinric_pro_light_html_a7ea9fd9861a5668a41d06267bfbec82a"><div class="ttname"><a href="class_sinric_pro_light.html#a7ea9fd9861a5668a41d06267bfbec82a">SinricProLight::onIncreaseColorTemperature</a></div><div class="ttdeci">void onIncreaseColorTemperature(IncreaseColorTemperatureCallback cb)</div><div class="ttdoc">Set callback function for increaseColorTemperature request.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:256</div></div>
+<div class="ttc" id="aclass_sinric_pro_light_html_a7468976e7fffeee14cc869b7236cbb50"><div class="ttname"><a href="class_sinric_pro_light.html#a7468976e7fffeee14cc869b7236cbb50">SinricProLight::onDecreaseColorTemperature</a></div><div class="ttdeci">void onDecreaseColorTemperature(DecreaseColorTemperatureCallback cb)</div><div class="ttdoc">Set callback function for decreaseColorTemperature request.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:267</div></div>
+<div class="ttc" id="aclass_sinric_pro_light_html_a8535c44fd2517ed09ebe6a203cc25b67"><div class="ttname"><a href="class_sinric_pro_light.html#a8535c44fd2517ed09ebe6a203cc25b67">SinricProLight::onColorTemperature</a></div><div class="ttdeci">void onColorTemperature(ColorTemperatureCallback cb)</div><div class="ttdoc">Set callback function for setColorTemperature request.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:245</div></div>
+<div class="ttc" id="aclass_sinric_pro_light_html_a059ff103149869b7c49cdb8911875b7b"><div class="ttname"><a href="class_sinric_pro_light.html#a059ff103149869b7c49cdb8911875b7b">SinricProLight::onColor</a></div><div class="ttdeci">void onColor(ColorCallback cb)</div><div class="ttdoc">Set callback function for setColor request.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:234</div></div>
+<div class="ttc" id="aclass_sinric_pro_light_html_a0633e5fa2981189f4a093bab00a8c7f1"><div class="ttname"><a href="class_sinric_pro_light.html#a0633e5fa2981189f4a093bab00a8c7f1">SinricProLight::onAdjustBrightness</a></div><div class="ttdeci">void onAdjustBrightness(AdjustBrightnessCallback cb)</div><div class="ttdoc">Set callback function for adjustBrightness request.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:223</div></div>
+<div class="ttc" id="aclass_sinric_pro_light_html_abbaab3067b1fcdcc5928451b818a4420"><div class="ttname"><a href="class_sinric_pro_light.html#abbaab3067b1fcdcc5928451b818a4420">SinricProLight::onBrightness</a></div><div class="ttdeci">void onBrightness(BrightnessCallback cb)</div><div class="ttdoc">Set callback function for setBrightness request.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:212</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:139</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

@@ -30,7 +30,7 @@ SinricProTemperaturesensor::SinricProTemperaturesensor(const char* deviceId, uns
  * @brief Sending current temperature and humidity to SinricPro server
  * 
  * @param   temperature   float representing current temperature
- * @param   humidty       (optional) float representing current humidity (default = `-1` meaning not supported)
+ * @param   humidity      (optional) float representing current humidity (default = `-1` meaning not supported)
  * @param   cause         (optional) `String` reason why event is sent (default = `"PERIODIC_POLL"`)
  * @return  the success of sending the event
  * @retval  true          event has been sent successfully

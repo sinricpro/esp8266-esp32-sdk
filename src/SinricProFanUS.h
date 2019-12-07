@@ -31,12 +31,7 @@ class SinricProFanUS :  public SinricProDevice {
      * @retval      false       request was not handled properly because of some error
      * 
      * @subsubsection Example-Code
-     * @code
-     * bool onRangeValue(const String &deviceId, int &rangeValue) {
-     *   Serial.printf("Device %s has been set to %d\r\n", rangeValue);
-     *   return true;
-     * }
-     * @endcode
+     * @snippet callbacks.cpp onRangeValue
      **/
     typedef std::function<bool(const String&, int&)> SetRangeValueCallback;
 
@@ -52,16 +47,7 @@ class SinricProFanUS :  public SinricProDevice {
      * @retval      false       request was not handled properly because of some error
      * 
      * @subsubsection Example-Code
-     * @code
-     * int globalRangeValue; // stores the rangevalue for device
-     * 
-     * bool onAdjustRangeValue(const String &deviceId, int &rangeValueDelta) {
-     *   globalRangeValue += rangeValueDelta; // change globalRangeValue about rangeValueDelta
-     *   Serial.printf("Range value changed about %i to %d\r\n", rangeValueDelta, globalRangeValue);
-     *   rangeValueDelta = globalRangeValue; // report current (absolute) range value back to SinricPro server
-     *   return true;
-     * }
-     * @endcode
+     * @snippet callbacks.cpp onAdjustRangeValue
      **/
     typedef std::function<bool(const String&, int&)> AdjustRangeValueCallback;
 

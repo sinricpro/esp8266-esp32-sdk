@@ -29,13 +29,8 @@ class SinricProDimSwitch :  public SinricProDevice {
      * @retval        true            request handled properly
      * @retval        false           request was not handled properly because of some error
      * 
-     * @section Example
-     * @code
-     * bool onPowerLevel(const String &deviceId, int& powerLevel) {
-     *   Serial.printf("Device %s set powerlevel to %d\r\n", powerLevel);
-     *   return true;
-     * }
-     * @endcode
+     * @subsubsection Example-Code
+     * @snippet callbacks.cpp onPowerLevel
      **/
     typedef std::function<bool(const String&, int&)> SetPowerLevelCallback;
 
@@ -51,14 +46,7 @@ class SinricProDimSwitch :  public SinricProDevice {
      * @retval false  request can`t be handled properly because of some error
      * 
      * @subsubsection Example-Code
-     * @code
-     * bool onAdjustPowerLevel(const String &deviceId, int& powerLevelDelta) {
-     *   Serial.printf("Device %s powerlevel adjust about %d\r\n", powerLevelDelta);
-     *   globalPowerLevel += powerLevelDelta; //change globalPowerLevel about the amount of powerLevelDelta
-     *   powerLevelDelta = globalPowerLevel; // return the absolute powerLevel (stored in global variable `globalPowerLevel`)
-     *   return true;
-     * }
-     * @endcode
+     * @snippet callbacks.cpp onAdjustPowerLevel
      **/
     typedef std::function<bool(const String&, int&)> AdjustPowerLevelCallback;
   
