@@ -1,23 +1,4 @@
 var searchData=
 [
-  ['sendcontactevent_12',['sendContactEvent',['../class_sinric_pro_contactsensor.html#a0b4b9006c0be003c615848bcc2b690fd',1,'SinricProContactsensor']]],
-  ['senddoorbellevent_13',['sendDoorbellEvent',['../class_sinric_pro_doorbell.html#a084a5475db7127784c452deb3a080f62',1,'SinricProDoorbell']]],
-  ['sendmotionevent_14',['sendMotionEvent',['../class_sinric_pro_motionsensor.html#ab28a28a17768a38eea033ba700095672',1,'SinricProMotionsensor']]],
-  ['sendpowerlevelevent_15',['sendPowerLevelEvent',['../class_sinric_pro_dim_switch.html#aaf81884c1f690ff2dd8862e192b8bbfa',1,'SinricProDimSwitch']]],
-  ['sendpowerstateevent_16',['sendPowerStateEvent',['../class_sinric_pro_device.html#a8006e256414deac0f9a4e28774b47773',1,'SinricProDevice']]],
-  ['sendrangevalueevent_17',['sendRangeValueEvent',['../class_sinric_pro_fan_u_s.html#af676bb2b419c4321d0a678cf9446da0c',1,'SinricProFanUS']]],
-  ['sendtemperatureevent_18',['sendTemperatureEvent',['../class_sinric_pro_temperaturesensor.html#a9545808dacd9efc40a05f16e09d79b4e',1,'SinricProTemperaturesensor']]],
-  ['setpowerlevelcallback_19',['SetPowerLevelCallback',['../class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd',1,'SinricProDimSwitch']]],
-  ['setrangevaluecallback_20',['SetRangeValueCallback',['../class_sinric_pro_fan_u_s.html#ad2be7dbd98eae8443f8c76721cbffead',1,'SinricProFanUS']]],
-  ['sinricpro_21',['SinricPro',['../class_sinric_pro.html',1,'']]],
-  ['sinricproclass_22',['SinricProClass',['../class_sinric_pro_class.html',1,'']]],
-  ['sinricprocontactsensor_23',['SinricProContactsensor',['../class_sinric_pro_contactsensor.html',1,'']]],
-  ['sinricprodevice_24',['SinricProDevice',['../class_sinric_pro_device.html',1,'']]],
-  ['sinricprodimswitch_25',['SinricProDimSwitch',['../class_sinric_pro_dim_switch.html',1,'']]],
-  ['sinricprodoorbell_26',['SinricProDoorbell',['../class_sinric_pro_doorbell.html',1,'']]],
-  ['sinricprofan_27',['SinricProFan',['../class_sinric_pro_fan.html',1,'']]],
-  ['sinricprofanus_28',['SinricProFanUS',['../class_sinric_pro_fan_u_s.html',1,'']]],
-  ['sinricpromotionsensor_29',['SinricProMotionsensor',['../class_sinric_pro_motionsensor.html',1,'']]],
-  ['sinricproswitch_30',['SinricProSwitch',['../class_sinric_pro_switch.html',1,'']]],
-  ['sinricprotemperaturesensor_31',['SinricProTemperaturesensor',['../class_sinric_pro_temperaturesensor.html',1,'']]]
+  ['lockstatecallback_11',['LockStateCallback',['../class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8',1,'SinricProLock']]]
 ];

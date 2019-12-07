@@ -1,9 +1,19 @@
 var searchData=
 [
-  ['onadjustpowerlevel_45',['onAdjustPowerLevel',['../class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96',1,'SinricProDimSwitch']]],
-  ['onadjustrangevalue_46',['onAdjustRangeValue',['../class_sinric_pro_fan_u_s.html#ae85696d55112ae7343f9807faee6e064',1,'SinricProFanUS']]],
-  ['onpowerlevel_47',['onPowerLevel',['../class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366',1,'SinricProDimSwitch']]],
-  ['onpowerstate_48',['onPowerState',['../class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf',1,'SinricProDevice']]],
-  ['onrangevalue_49',['onRangeValue',['../class_sinric_pro_fan_u_s.html#a94adbcdf6ce61cb6552a5f9915e705ae',1,'SinricProFanUS']]],
-  ['operator_5b_5d_50',['operator[]',['../class_sinric_pro_class.html#a5df2137b8d06e894c917fd28c35c31a4',1,'SinricProClass']]]
+  ['onadjustbrightness_77',['onAdjustBrightness',['../class_sinric_pro_light.html#a0633e5fa2981189f4a093bab00a8c7f1',1,'SinricProLight']]],
+  ['onadjustpowerlevel_78',['onAdjustPowerLevel',['../class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96',1,'SinricProDimSwitch']]],
+  ['onadjustrangevalue_79',['onAdjustRangeValue',['../class_sinric_pro_fan_u_s.html#ae85696d55112ae7343f9807faee6e064',1,'SinricProFanUS']]],
+  ['onadjusttargettemperature_80',['onAdjustTargetTemperature',['../class_sinric_pro_thermostat.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4',1,'SinricProThermostat']]],
+  ['onbrightness_81',['onBrightness',['../class_sinric_pro_light.html#abbaab3067b1fcdcc5928451b818a4420',1,'SinricProLight']]],
+  ['oncolor_82',['onColor',['../class_sinric_pro_light.html#a059ff103149869b7c49cdb8911875b7b',1,'SinricProLight']]],
+  ['oncolortemperature_83',['onColorTemperature',['../class_sinric_pro_light.html#a8535c44fd2517ed09ebe6a203cc25b67',1,'SinricProLight']]],
+  ['ondecreasecolortemperature_84',['onDecreaseColorTemperature',['../class_sinric_pro_light.html#a7468976e7fffeee14cc869b7236cbb50',1,'SinricProLight']]],
+  ['onincreasecolortemperature_85',['onIncreaseColorTemperature',['../class_sinric_pro_light.html#a7ea9fd9861a5668a41d06267bfbec82a',1,'SinricProLight']]],
+  ['onlockstate_86',['onLockState',['../class_sinric_pro_lock.html#aee42cc397234a454fd353ca6bc12a859',1,'SinricProLock']]],
+  ['onpowerlevel_87',['onPowerLevel',['../class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366',1,'SinricProDimSwitch']]],
+  ['onpowerstate_88',['onPowerState',['../class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf',1,'SinricProDevice']]],
+  ['onrangevalue_89',['onRangeValue',['../class_sinric_pro_fan_u_s.html#a94adbcdf6ce61cb6552a5f9915e705ae',1,'SinricProFanUS']]],
+  ['ontargettemperature_90',['onTargetTemperature',['../class_sinric_pro_thermostat.html#a0edee7a05f49591c3022034115eb0dc4',1,'SinricProThermostat']]],
+  ['onthermostatmode_91',['onThermostatMode',['../class_sinric_pro_thermostat.html#a2ef31536973b20815dd6c80a28e19c9f',1,'SinricProThermostat']]],
+  ['operator_5b_5d_92',['operator[]',['../class_sinric_pro_class.html#a5df2137b8d06e894c917fd28c35c31a4',1,'SinricProClass']]]
 ];

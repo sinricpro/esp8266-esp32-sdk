@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['handle_3',['handle',['../class_sinric_pro_class.html#a37c2d0658e498b1bf878f8a3d9a7c5b4',1,'SinricProClass']]]
+  ['colorcallback_6',['ColorCallback',['../class_sinric_pro_light.html#a916ceb3c8ef5094cc578f739b2d9edca',1,'SinricProLight']]],
+  ['colortemperaturecallback_7',['ColorTemperatureCallback',['../class_sinric_pro_light.html#ac46e0327976c2cb38b6e97110763de5f',1,'SinricProLight']]]
 ];

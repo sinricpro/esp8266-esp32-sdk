@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['powerstatecallback_61',['PowerStateCallback',['../class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3',1,'SinricProDevice']]]
+  ['brightnesscallback_111',['BrightnessCallback',['../class_sinric_pro_light.html#a1bf03bd01ae1f4ddf164260435dc2026',1,'SinricProLight']]]
 ];

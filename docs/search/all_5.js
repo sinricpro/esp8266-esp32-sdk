@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['restoredevicestates_11',['restoreDeviceStates',['../class_sinric_pro_class.html#a27a9bb7f1e8bde0f39398649493b6f93',1,'SinricProClass']]]
+  ['increasecolortemperaturecallback_10',['IncreaseColorTemperatureCallback',['../class_sinric_pro_light.html#ac29cb175180abefcc181191de6be6c9f',1,'SinricProLight']]]
 ];

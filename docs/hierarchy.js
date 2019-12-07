@@ -9,8 +9,11 @@ var hierarchy =
       ] ],
       [ "SinricProDoorbell", "class_sinric_pro_doorbell.html", null ],
       [ "SinricProFanUS", "class_sinric_pro_fan_u_s.html", null ],
+      [ "SinricProLight", "class_sinric_pro_light.html", null ],
+      [ "SinricProLock", "class_sinric_pro_lock.html", null ],
       [ "SinricProMotionsensor", "class_sinric_pro_motionsensor.html", null ],
       [ "SinricProSwitch", "class_sinric_pro_switch.html", null ],
-      [ "SinricProTemperaturesensor", "class_sinric_pro_temperaturesensor.html", null ]
+      [ "SinricProTemperaturesensor", "class_sinric_pro_temperaturesensor.html", null ],
+      [ "SinricProThermostat", "class_sinric_pro_thermostat.html", null ]
     ] ]
 ];
