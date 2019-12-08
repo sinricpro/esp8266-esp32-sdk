@@ -10,6 +10,10 @@
 
 #include "SinricProDevice.h"
 
+/**
+ * @class SinricProContactsensor
+ * @brief Device to report contact sensor events
+ **/
 class SinricProContactsensor :  public SinricProDevice {
   public:
 	  SinricProContactsensor(const char* deviceId, unsigned long eventWaitTime=100);
@@ -22,6 +26,14 @@ class SinricProContactsensor :  public SinricProDevice {
 
 SinricProContactsensor::SinricProContactsensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
 
+/**
+ * \brief Send `setContactState` event to SinricPro Server indicating actual power state
+ * 
+ * @param state [in] `true` = contact is closed \n [in] `false` = contact is open
+ * @param cause [in] `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return `true` event has been sent successfully
+ * @return `false` event has not been sent, maybe you sent to much events in a short distance of time
+ **/
 bool SinricProContactsensor::sendContactEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setContactState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];

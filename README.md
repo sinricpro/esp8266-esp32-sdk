@@ -1,6 +1,6 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
-## Version 2.2.5
+## Version 2.2.6
 ## Installation
 
 ### VS Code & PlatformIO:
@@ -21,6 +21,12 @@
 
 ---
 
+## Dependencies
+[ArduinoJson](https://github.com/bblanchon/ArduinoJson) (Version 6.12.0)   
+[WebSocketsClient](https://github.com/Links2004/arduinoWebSockets) (Version 2.2.0)  
+
+---
+
 ## Examples
 |PlatformIO|Arduino|
 |:--:|:--:|
@@ -32,11 +38,6 @@
 
 ---
 
-## Dependencies
-[ArduinoJson](https://github.com/bblanchon/ArduinoJson) (Version 6.12.0)   
-[WebSocketsClient](https://github.com/Links2004/arduinoWebSockets) (Version 2.2.0)  
-
----
 ## Usage
 #### Include SinricPro-Library (SinricPro.h) and SinricPro-Device-Libraries (eg. SinricProSwitch.h)
 ```C++

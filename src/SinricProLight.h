@@ -10,20 +10,121 @@
 
 #include "SinricProDevice.h"
 
+/**
+ * @class SinricProLight
+ * @brief Device to control a light 
+ * 
+ * Supporting 
+ * * On / Off
+ * * Brightness (0..100)
+ * * Color (RGB)
+ * * Color temperature
+ **/
 class SinricProLight :  public SinricProDevice {
   public:
     SinricProLight(const char* deviceId, unsigned long eventWaitTime=100);
     // callback
+
+    /**
+     * @brief Callback definition for onBrightness function
+     * 
+     * Gets called when device receive a `setBrightness` request \n
+     * @param[in]   deviceId      String which contains the ID of device
+     * @param[in]   brightness    Absolute integer value the device should set its brightness to
+     * @param[out]  brightness    Absolute integer value with new brightness the device is set to
+     * @return      the success of the request
+     * @retval      true        request handled properly
+     * @retval      false       request was not handled properly because of some error
+     * @section BrightnessCallback Example-Code
+     * @snippet callbacks.cpp onBrightness
+     **/
     typedef std::function<bool(const String&, int&)> BrightnessCallback;
+
+    /**
+     * @brief Callback definition for onAdjustBrightness function
+     * 
+     * Gets called when device receive a `adjustBrightness` request \n
+     * @param[in]   deviceId      String which contains the ID of device
+     * @param[in]   brightness    Relative integer value the device should change the brightness about
+     * @param[out]  brightness    Absolute integer value with new brightness the device is set to
+     * @return      the success of the request
+     * @retval      true        request handled properly
+     * @retval      false       request was not handled properly because of some error
+     * @section AdjustBrightnessCallback Example-Code
+     * @snippet callbacks.cpp onAdjustBrightness
+     **/
+    typedef std::function<bool(const String&, int&)> AdjustBrightnessCallback;
+
+    /**
+     * @brief Callback definition for onColor function
+     * 
+     * Gets called when device receive a `setColor` request \n
+     * @param[in]   deviceId    String which contains the ID of device
+     * @param[in]   r           Byte value for red
+     * @param[in]   g           Byte value for green
+     * @param[in]   b           Byte value for blue
+     * @param[out]  r           Byte value for red
+     * @param[out]  g           Byte value for green
+     * @param[out]  b           Byte value for blue
+     * @return      the success of the request
+     * @retval      true        request handled properly
+     * @retval      false       request was not handled properly because of some error
+     * @section ColorCallback Example-Code
+     * @snippet callbacks.cpp onColor
+     **/
     typedef std::function<bool(const String&, byte&, byte&, byte&)> ColorCallback;
+
+    /**
+     * @brief Callback definition for onColorTemperature function
+     * 
+     * Gets called when device receive a `setColorTemperature` request \n
+     * @param[in]   deviceId          String which contains the ID of device
+     * @param[in]   colorTemperature  Integer value with color temperature the device should set to \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
+     * @param[out]  colorTemperature  Integer value with color temperature the device is set to \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
+     * @return      the success of the request
+     * @retval      true        request handled properly
+     * @retval      false       request was not handled properly because of some error
+     * @section ColorTemperatureCallback Example-Code
+     * @snippet callbacks.cpp onColorTemperature
+     **/
     typedef std::function<bool(const String&, int&)> ColorTemperatureCallback;
+
+    /**
+     * @brief Callback definition for onIncreaseColorTemperature function
+     * 
+     * Gets called when device receive a `increaseColorTemperature` request \n
+     * @param[in]   deviceId          String which contains the ID of device
+     * @param[in]   colorTemperature  Integer value `1` = Device should increase color temperature
+     * @param[out]  colorTemperature  Integer value return the new color temperarature \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
+     * @return      the success of the request
+     * @retval      true        request handled properly
+     * @retval      false       request was not handled properly because of some error
+     * @section IncreaseColorTemperatureCallback Example-Code
+     * @snippet callbacks.cpp onIncreaseColorTemperature
+     **/
+    typedef std::function<bool(const String&, int&)> IncreaseColorTemperatureCallback;
+    
+    /**
+     * @brief Callback definition for onDecreaseColorTemperature function
+     * 
+     * Gets called when device receive a `decreaseColorTemperature` request \n
+     * @param[in]   deviceId          String which contains the ID of device
+     * @param[in]   colorTemperature  Integer value `-1` = Device should decrease color temperature
+     * @param[out]  colorTemperature  Integer value return the new color temperarature \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
+     * @return      the success of the request
+     * @retval      true        request handled properly
+     * @retval      false       request was not handled properly because of some error
+     * @section DecreaseColorTemperatureCallback Example-Code
+     * @snippet callbacks.cpp onDecreaseColorTemperature
+     **/
+    typedef std::function<bool(const String&, int&)> DecreaseColorTemperatureCallback;
   
-    void onBrightness(BrightnessCallback cb) { brightnessCallback = cb; }
-    void onAdjustBrightness(BrightnessCallback cb) { adjustBrightnessCallback = cb; }
-    void onColor(ColorCallback cb) { colorCallback = cb; }
-    void onColorTemperature(ColorTemperatureCallback cb) { colorTemperatureCallback = cb; }
-    void onIncreaseColorTemperature(ColorTemperatureCallback cb) { increaseColorTemperatureCallback = cb; }
-    void onDecreaseColorTemperature(ColorTemperatureCallback cb) { decreaseColorTemperatureCallback = cb; }
+    void onBrightness(BrightnessCallback cb);
+    void onAdjustBrightness(AdjustBrightnessCallback cb);
+    void onColor(ColorCallback cb);
+    void onColorTemperature(ColorTemperatureCallback cb);
+    void onIncreaseColorTemperature(IncreaseColorTemperatureCallback cb);
+    void onDecreaseColorTemperature(DecreaseColorTemperatureCallback cb);
 
     // event
     bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
@@ -34,11 +135,11 @@ class SinricProLight :  public SinricProDevice {
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
     BrightnessCallback brightnessCallback;
-    BrightnessCallback adjustBrightnessCallback;
+    AdjustBrightnessCallback adjustBrightnessCallback;
     ColorCallback colorCallback;
     ColorTemperatureCallback colorTemperatureCallback;
-    ColorTemperatureCallback increaseColorTemperatureCallback;
-    ColorTemperatureCallback decreaseColorTemperatureCallback;
+    IncreaseColorTemperatureCallback increaseColorTemperatureCallback;
+    DecreaseColorTemperatureCallback decreaseColorTemperatureCallback;
 };
 
 SinricProLight::SinricProLight(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
@@ -101,6 +202,81 @@ bool SinricProLight::handleRequest(const char* deviceId, const char* action, Jso
   return success;
 }
 
+/**
+ * @brief Set callback function for `setBrightness` request
+ * 
+ * @param cb Function pointer to a `BrightnessCallback` function
+ * @return void
+ * @see BrightnessCallback
+ **/
+void SinricProLight::onBrightness(BrightnessCallback cb) { 
+  brightnessCallback = cb;
+}
+
+/**
+ * @brief Set callback function for `adjustBrightness` request
+ * 
+ * @param cb Function pointer to a `AdjustBrightnessCallback` function
+ * @return void
+ * @see AdjustBrightnessCallback
+ **/
+void SinricProLight::onAdjustBrightness(AdjustBrightnessCallback cb) { 
+  adjustBrightnessCallback = cb; 
+}
+
+/**
+ * @brief Set callback function for `setColor` request
+ * 
+ * @param cb Function pointer to a `ColorCallback` function
+ * @return void
+ * @see ColorCallback
+ **/
+void SinricProLight::onColor(ColorCallback cb) { 
+  colorCallback = cb; 
+}
+
+/**
+ * @brief Set callback function for `setColorTemperature` request
+ * 
+ * @param cb Function pointer to a `ColorTemperatureCallback` function
+ * @return void
+ * @see ColorTemperatureCallback
+ **/
+void SinricProLight::onColorTemperature(ColorTemperatureCallback cb) { 
+  colorTemperatureCallback = cb; 
+}
+
+/**
+ * @brief Set callback function for `increaseColorTemperature` request
+ * 
+ * @param cb Function pointer to a `IncreaseColorTemperatureCallback` function
+ * @return void
+ * @see IncreaseColorTemperatureCallback
+ **/
+void SinricProLight::onIncreaseColorTemperature(IncreaseColorTemperatureCallback cb) { 
+  increaseColorTemperatureCallback = cb; 
+}
+
+/**
+ * @brief Set callback function for `decreaseColorTemperature` request
+ * 
+ * @param cb Function pointer to a `DecreaseColorTemperatureCallback` function
+ * @return void
+ * @see DecreaseColorTemperatureCallback
+ **/
+void SinricProLight::onDecreaseColorTemperature(DecreaseColorTemperatureCallback cb) {
+  decreaseColorTemperatureCallback = cb;
+}
+
+/**
+ * @brief Send `setBrightness` event to SinricPro Server indicating actual brightness
+ * 
+ * @param brightness    Integer value with actual brightness the device is set to
+ * @param cause   (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return the success of sending the even
+ * @retval true   event has been sent successfully
+ * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
+ **/
 bool SinricProLight::sendBrightnessEvent(int brightness, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setBrightness", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
@@ -108,6 +284,17 @@ bool SinricProLight::sendBrightnessEvent(int brightness, String cause) {
   return sendEvent(eventMessage);
 }
 
+/**
+ * @brief Send `setColor` event to SinricPro Server indicating actual color
+ * 
+ * @param r       Byte value for red
+ * @param g       Byte value for green
+ * @param b       Byte value for blue
+ * @param cause   (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return the success of sending the even
+ * @retval true   event has been sent successfully
+ * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
+ **/
 bool SinricProLight::sendColorEvent(byte r, byte g, byte b, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setColor", cause.c_str());
   JsonObject event_color = eventMessage["payload"]["value"].createNestedObject("color");
@@ -117,6 +304,15 @@ bool SinricProLight::sendColorEvent(byte r, byte g, byte b, String cause) {
   return sendEvent(eventMessage);
 }
 
+/**
+ * @brief Send `setColorTemperature` event to SinricPro Server indicating actual color temperature
+ * 
+ * @param colorTemperature Integer with new color temperature the device is set to \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
+ * @param cause   (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return the success of sending the even
+ * @retval true   event has been sent successfully
+ * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
+ **/
 bool SinricProLight::sendColorTemperatureEvent(int colorTemperature, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setColorTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];

@@ -10,6 +10,10 @@
 
 #include "SinricProDevice.h"
 
+/**
+ * @class SinricProTemperaturesensor
+ * @brief Device to report actual temperature and humidity
+ */
 class SinricProTemperaturesensor :  public SinricProDevice {
   public:
 	  SinricProTemperaturesensor(const char* deviceId, unsigned long eventWaitTime=60000);
@@ -22,6 +26,16 @@ class SinricProTemperaturesensor :  public SinricProDevice {
 
 SinricProTemperaturesensor::SinricProTemperaturesensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
 
+/**
+ * @brief Sending current temperature and humidity to SinricPro server
+ * 
+ * @param   temperature   float representing current temperature
+ * @param   humidity      (optional) float representing current humidity (default = `-1` meaning not supported)
+ * @param   cause         (optional) `String` reason why event is sent (default = `"PERIODIC_POLL"`)
+ * @return  the success of sending the event
+ * @retval  true          event has been sent successfully
+ * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
+ **/
 bool SinricProTemperaturesensor::sendTemperatureEvent(float temperature, float humidity, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "currentTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];

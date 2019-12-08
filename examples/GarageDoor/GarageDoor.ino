@@ -1,11 +1,15 @@
 /*
+ * Example for how to use Lock device as garage door opener
  * This example needs SinricPro 2.2.2
  * 
  * If you encounter any issues:
- * - enable serial debug (see section below)
+ * - check the readme.md at https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md
+ * - ensure all dependent libraries are installed
+ *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#arduinoide
+ *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#dependencies
  * - open serial monitor and check whats happening
  * - visit https://github.com/sinricpro/esp8266-esp32-sdk/issues and check for existing issues or open a new one
-*/
+ */
 
 // Uncomment the following line to enable serial debug output
 //#define ENABLE_DEBUG

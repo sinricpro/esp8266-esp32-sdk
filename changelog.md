@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 2.2.6
+
+New:
+- User Documentation using Doxygen
+
+Fixed: 
+- Some sendEvent functions didn't return `true`/`false`
+- Arduino TV example
+
 ## Version 2.2.5
 
 New:

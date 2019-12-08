@@ -16,6 +16,10 @@
 #include "SinricProMessageid.h"
 #include "SinricProQueue.h"
 
+/**
+ * @class SinricProClass
+ * @brief The main class of this library, handling communication between SinricPro Server and your devices
+ **/
 class SinricProClass : public SinricProInterface {
   public:
     void begin(String socketAuthToken, String signingKey, String serverURL = SINRICPRO_SERVER_URL);
@@ -28,11 +32,11 @@ class SinricProClass : public SinricProInterface {
     void stop();
     bool isConnected();
 
-    typedef std::function<void(void)> connectCallbackHandler;
-    void onConnected(connectCallbackHandler cb) { _websocketListener.onConnected(cb); }
-    void onDisconnected(connectCallbackHandler cb) { _websocketListener.onDisconnected(cb); }
+    typedef std::function<void(void)> ConnectCallbackHandler;
+    void onConnected(ConnectCallbackHandler cb);
+    void onDisconnected(ConnectCallbackHandler cb);
 
-    void restoreDeviceStates(bool flag) { _websocketListener.setRestoreDeviceStates(flag); }
+    void restoreDeviceStates(bool flag);
 
     DynamicJsonDocument prepareResponse(JsonDocument& requestMessage);
     DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause) override;
@@ -47,7 +51,22 @@ class SinricProClass : public SinricProInterface {
       template <typename DeviceType>
       DeviceType& as() { return ptr->getDeviceInstance<DeviceType>(deviceId); }
     };
-
+    /**
+     * @brief operator[] is used tor create a new device instance or get an existing device instance
+     * 
+     * If the device is unknown to SinricProClass it will create a new device instance
+     * @param deviceId a String containing deviceId for device that have to been created or retreived
+     * @return returns a proxy object representing the reference to a device derrivered from SinricProDevice
+     * @section Syntax
+     * `<DeviceType> &reference = SinricPro[<DEVICE_ID>];`
+     * @section operator[] Example-Code
+     * @code
+     * #define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
+     * ..
+     *   SinricProSwitch &mySwitch = SinricPro[SWITCH_ID];
+     * ..
+     * @endcode
+     **/ 
     proxy operator[](const String deviceId) { return proxy(this, deviceId); }
 
     // setResponseMessage is is just a workaround until verison 3.x.x will be released
@@ -119,6 +138,22 @@ DeviceType& SinricProClass::getDeviceInstance(String deviceId) {
   return tmp_deviceInstance;
 }
 
+/**
+ * @brief Initializing SinricProClass to be able to connect to SinricPro Server
+ * 
+ * @param socketAuthToken `String` containing APP_KEY (see credentials from https://sinric.pro )
+ * @param signingKey `String` containing APP_SECRET (see credentials from https:://sinric.pro)
+ * @param serverURL `String` containing SinricPro Server URL (default="ws.sinric.pro")
+ * @section Example-Code
+ * @code
+ * #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+ * #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+ * 
+ * void setup() {
+ *   SinricPro.begin(APP_KEY, APP_SECRET);
+ * }
+ * @endcode
+ **/
 void SinricProClass::begin(String socketAuthToken, String signingKey, String serverURL) {
   bool success = true;
   if (!verifyAppKey(socketAuthToken.c_str())) {
@@ -171,6 +206,21 @@ void SinricProClass::add(SinricProDeviceInterface& newDevice) {
   devices.push_back(&newDevice);
 }
 
+/**
+ * @brief Handles communication between device and SinricPro Server
+ * 
+ * This is the absolute main function which handles communication between your device and SinricPro Server. \n
+ * It is responsible for connect, disconnect to SinricPro Server, handling requests, responses and events. \n
+ * This function has to be called as often as possible. So it must be called in your main loop() function! \n
+ * 
+ * For proper function, begin() must be called with valid values for 'APP_KEY' and 'APP_SECRET' \n
+ * @section handle Example-Code
+ * @code
+ * void loop() {
+ *   SinricPro.handle();
+ * }
+ * @endcode
+ **/
 void SinricProClass::handle() {
   static bool begin_error = false;
   if (!_begin) {
@@ -346,6 +396,15 @@ bool SinricProClass::isConnected() {
 };
 
 
+void SinricProClass::onConnected(ConnectCallbackHandler cb) {
+  _websocketListener.onConnected(cb);
+}
+
+void SinricProClass::onDisconnected(ConnectCallbackHandler cb) {
+  _websocketListener.onDisconnected(cb);
+}
+
+
 void SinricProClass::reconnect() {
   DEBUG_SINRIC("SinricPro:reconnect(): disconnecting\r\n");
   stop();
@@ -402,6 +461,18 @@ void SinricProClass::sendMessage(JsonDocument& jsonMessage) {
   sendQueue.push(new SinricProMessage(IF_WEBSOCKET, messageString.c_str()));
 }
 
+/**
+ * @brief Enable / disable restore device states function
+ * 
+ * If this flag is enabled (`true`), SinricProServer will send last known device states to your device directly after connection to SinricPro server has been established. \n 
+ * For every state the corresponding callback (like `onPowerState`) will be called \n
+ * This is useful after a power failure / reboot of your device.
+ * 
+ * @param flag `true` = enabled \n `false`= disabled
+ **/
+void SinricProClass::restoreDeviceStates(bool flag) { 
+  _websocketListener.setRestoreDeviceStates(flag);
+}
 
 DynamicJsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage) {
   DynamicJsonDocument responseMessage(1024);
@@ -442,6 +513,13 @@ DynamicJsonDocument SinricProClass::prepareEvent(const char* deviceId, const cha
 }
 
 #ifndef NOSINRIC_INSTANCE
+/**
+ * @class SinricPro
+ * @brief The main instance of SinricProClass
+ * 
+ * Handles communication between SinricPro Server and your device \n
+  * @see SinricProClass
+ **/
 SinricProClass SinricPro;
 #endif
 
