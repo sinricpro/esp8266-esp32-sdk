@@ -226,3 +226,145 @@ bool onSetMode(const String &deviceId, String &mode) {
   return true; // request handled properly
 }
 //! [onSetMode]
+
+//! [onChangeChannel]
+// channelNames used to convert channelNumber into channelName
+// please put in your TV channel names
+// channel numbers starts counting from 0!
+// so "ZDF" is channel 2
+const char* channelNames[] = {
+  "A/V",
+  "ard", 
+  "ZDF", 
+  "n. d. r.", 
+  "kabel eins", 
+  "VOX", 
+  "Sat.1", 
+  "ProSieben", 
+  "rtl", 
+  "RTL II", 
+  "SUPER RTL", 
+  "KiKA"
+};
+
+int tvChannel; // current channel selected
+
+#define MAX_CHANNELS sizeof(channelNames) / sizeof(channelNames[0])  // just to determine how many channels are in channelNames array
+
+// map channelNumbers used to convert channelName into channelNumber
+// This map is initialized in "setupChannelNumbers()" function by using the "channelNames" array
+std::map<String, unsigned int> channelNumbers;
+
+void setupChannelNumbers() {
+  for (unsigned int i=0; i < MAX_CHANNELS; i++) {
+    channelNumbers[channelNames[i]] = i;
+  }
+}
+
+bool onChangeChannel(const String &deviceId, String &channel) {
+  tvChannel = channelNumbers[channel]; // save new channelNumber in tvChannel variable
+  Serial.printf("Change channel to \"%s\" (channel number %d)\r\n", channel.c_str(), tvChannel);
+  return true;
+}
+//! [onChangeChannel]
+
+//! [onChangeChannelNumber]
+// channelNames used to convert channelNumber into channelName
+// please put in your TV channel names
+// channel numbers starts counting from 0!
+// so "ZDF" is channel 2
+const char* channelNames[] = {
+  "A/V",
+  "ard", 
+  "ZDF", 
+  "n. d. r.", 
+  "kabel eins", 
+  "VOX", 
+  "Sat.1", 
+  "ProSieben", 
+  "rtl", 
+  "RTL II", 
+  "SUPER RTL", 
+  "KiKA"
+};
+
+int tvChannel; // current channel selected
+
+#define MAX_CHANNELS sizeof(channelNames) / sizeof(channelNames[0])  // just to determine how many channels are in channelNames array
+
+// map channelNumbers used to convert channelName into channelNumber
+// This map is initialized in "setupChannelNumbers()" function by using the "channelNames" array
+std::map<String, unsigned int> channelNumbers;
+
+void setupChannelNumbers() {
+  for (unsigned int i=0; i < MAX_CHANNELS; i++) {
+    channelNumbers[channelNames[i]] = i;
+  }
+}
+
+bool onChangeChannelNumber(const String& deviceId, int channelNumber, String& channelName) {
+  tvChannel = channelNumber; // update tvChannel to new channel number
+  if (tvChannel < 0) tvChannel = 0;
+  if (tvChannel > MAX_CHANNELS-1) tvChannel = MAX_CHANNELS-1;
+
+  channelName = channelNames[tvChannel]; // return the channelName
+
+  Serial.printf("Change to channel to %d (channel name \"%s\")\r\n", tvChannel, channelName.c_str());
+  return true;
+}
+//! [onChangeChannelNumber]
+
+
+//! [onSkipChannels]
+// channelNames used to convert channelNumber into channelName
+// please put in your TV channel names
+// channel numbers starts counting from 0!
+// so "ZDF" is channel 2
+const char* channelNames[] = {
+  "A/V",
+  "ard", 
+  "ZDF", 
+  "n. d. r.", 
+  "kabel eins", 
+  "VOX", 
+  "Sat.1", 
+  "ProSieben", 
+  "rtl", 
+  "RTL II", 
+  "SUPER RTL", 
+  "KiKA"
+};
+
+int tvChannel; // current channel selected
+
+#define MAX_CHANNELS sizeof(channelNames) / sizeof(channelNames[0])  // just to determine how many channels are in channelNames array
+
+// map channelNumbers used to convert channelName into channelNumber
+// This map is initialized in "setupChannelNumbers()" function by using the "channelNames" array
+std::map<String, unsigned int> channelNumbers;
+
+void setupChannelNumbers() {
+  for (unsigned int i=0; i < MAX_CHANNELS; i++) {
+    channelNumbers[channelNames[i]] = i;
+  }
+}
+
+bool onSkipChannels(const String &deviceId, const int channelCount, String &channelName) {
+  tvChannel += channelCount; // calculate new channel number
+  if (tvChannel < 0) tvChannel = 0;
+  if (tvChannel > MAX_CHANNELS-1) tvChannel = MAX_CHANNELS-1;
+  channelName = String(channelNames[tvChannel]); // return channel name
+
+  Serial.printf("Skip channel: %i (number: %i / name: \"%s\")\r\n", channelCount, tvChannel, channelName.c_str());
+
+  return true;
+}
+//! [onSkipChannels]
+
+
+//! [onSelectInput]
+bool onSelectInput(const String &deviceId, String &input) {
+  Serial.printf("Device %s input changed to %s\r\n", deviceId.c_str(), input.c_str());
+  return true;
+}
+//! [onSelectInput]

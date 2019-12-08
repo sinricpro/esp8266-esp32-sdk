@@ -1,0 +1,27 @@
+var class_sinric_pro_t_v =
+[
+    [ "AdjustVolumeCallback", "class_sinric_pro_t_v.html#a1dfe43a4f99caf28ad07a2ff84708f94", null ],
+    [ "ChangeChannelCallback", "class_sinric_pro_t_v.html#a276a4a418aa341936a2e8870cac15e79", null ],
+    [ "ChangeChannelNumberCallback", "class_sinric_pro_t_v.html#aed91a90de7d42e34af4a0d995e8b525b", null ],
+    [ "MediaControlCallback", "class_sinric_pro_t_v.html#a19062c8b2786a85d53129d572ec55bbd", null ],
+    [ "MuteCallback", "class_sinric_pro_t_v.html#a24d0844497c30b03f3c7ec9e30fcb33b", null ],
+    [ "PowerStateCallback", "class_sinric_pro_t_v.html#aa9db92ebe40a0df6deb43eba70d3dea3", null ],
+    [ "SelectInputCallback", "class_sinric_pro_t_v.html#a047ecacb194f2ad747fa2ab7e1117a88", null ],
+    [ "SetVolumeCallback", "class_sinric_pro_t_v.html#aa495b90d483782760303ab45494deb7e", null ],
+    [ "SkipChannelsCallback", "class_sinric_pro_t_v.html#a955957998e893135fb04aa077304d3d6", null ],
+    [ "onAdjustVolume", "class_sinric_pro_t_v.html#a2c868c87f96e3924c8b309e1bcfb507e", null ],
+    [ "onChangeChannel", "class_sinric_pro_t_v.html#a92f3b83744b5bb82d32628eef39c1eb9", null ],
+    [ "onChangeChannelNumber", "class_sinric_pro_t_v.html#afd8aee20590bfadec181c6ee515125ec", null ],
+    [ "onMediaControl", "class_sinric_pro_t_v.html#afc2620621377fff928737b5a8a537020", null ],
+    [ "onMute", "class_sinric_pro_t_v.html#ab5fc79cc8903c3ccc1c106abf61d7cfd", null ],
+    [ "onPowerState", "class_sinric_pro_t_v.html#a32f3257da431a1035f23a265ff0cc4cf", null ],
+    [ "onSelectInput", "class_sinric_pro_t_v.html#a18f8f71ecf0d7292a63d9486f94e5180", null ],
+    [ "onSetVolume", "class_sinric_pro_t_v.html#a5db8c85f222debbece54c794015f9402", null ],
+    [ "onSkipChannels", "class_sinric_pro_t_v.html#ab1123d03d471fad4896eb2960ed41855", null ],
+    [ "sendChangeChannelEvent", "class_sinric_pro_t_v.html#aa85e049284116b157e34159624680ae1", null ],
+    [ "sendMediaControlEvent", "class_sinric_pro_t_v.html#af69dc08522c75d484deab14beafcd176", null ],
+    [ "sendMuteEvent", "class_sinric_pro_t_v.html#abc47e827f33ac8bcc43ed204c7c4b8fd", null ],
+    [ "sendPowerStateEvent", "class_sinric_pro_t_v.html#a8006e256414deac0f9a4e28774b47773", null ],
+    [ "sendSelectInputEvent", "class_sinric_pro_t_v.html#a8d79220a3a06331442d36524ceac1db3", null ],
+    [ "sendVolumeEvent", "class_sinric_pro_t_v.html#a0f301accc58742f867de88c66a5eb3c5", null ]
+];

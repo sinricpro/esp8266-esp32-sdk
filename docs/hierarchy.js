@@ -16,6 +16,7 @@ var hierarchy =
       [ "SinricProSwitch", "class_sinric_pro_switch.html", null ],
       [ "SinricProTemperaturesensor", "class_sinric_pro_temperaturesensor.html", null ],
       [ "SinricProThermostat", "class_sinric_pro_thermostat.html", null ],
+      [ "SinricProTV", "class_sinric_pro_t_v.html", null ],
       [ "SinricProWindowAC", "class_sinric_pro_window_a_c.html", null ]
     ] ]
 ];

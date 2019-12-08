@@ -15,5 +15,6 @@ var annotated_dup =
     [ "SinricProSwitch", "class_sinric_pro_switch.html", "class_sinric_pro_switch" ],
     [ "SinricProTemperaturesensor", "class_sinric_pro_temperaturesensor.html", "class_sinric_pro_temperaturesensor" ],
     [ "SinricProThermostat", "class_sinric_pro_thermostat.html", "class_sinric_pro_thermostat" ],
+    [ "SinricProTV", "class_sinric_pro_t_v.html", "class_sinric_pro_t_v" ],
     [ "SinricProWindowAC", "class_sinric_pro_window_a_c.html", "class_sinric_pro_window_a_c" ]
 ];

@@ -5,5 +5,5 @@ var searchData=
   ['adjustpowerlevelcallback_2',['AdjustPowerLevelCallback',['../class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a',1,'SinricProDimSwitch']]],
   ['adjustrangevaluecallback_3',['AdjustRangeValueCallback',['../class_sinric_pro_fan_u_s.html#a8977055ae213732aaa3ef430259208f4',1,'SinricProFanUS::AdjustRangeValueCallback()'],['../class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4',1,'SinricProWindowAC::AdjustRangeValueCallback()']]],
   ['adjusttargettemperaturecallback_4',['AdjustTargetTemperatureCallback',['../class_sinric_pro_thermostat.html#aeae1f9b5872cf8dcba7efc2548a671fa',1,'SinricProThermostat::AdjustTargetTemperatureCallback()'],['../class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa',1,'SinricProWindowAC::AdjustTargetTemperatureCallback()']]],
-  ['adjustvolumecallback_5',['AdjustVolumeCallback',['../class_sinric_pro_speaker.html#a1dfe43a4f99caf28ad07a2ff84708f94',1,'SinricProSpeaker']]]
+  ['adjustvolumecallback_5',['AdjustVolumeCallback',['../class_sinric_pro_speaker.html#a1dfe43a4f99caf28ad07a2ff84708f94',1,'SinricProSpeaker::AdjustVolumeCallback()'],['../class_sinric_pro_t_v.html#a1dfe43a4f99caf28ad07a2ff84708f94',1,'SinricProTV::AdjustVolumeCallback()']]]
 ];
