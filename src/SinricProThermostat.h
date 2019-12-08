@@ -39,7 +39,7 @@ class SinricProThermostat :  public SinricProDevice {
      * @section TargetTemperatureCallback Example-Code
      * @snippet callbacks.cpp onTargetTemperature
      **/
-    typedef std::function<bool(const String&, float&)> TargetTemperatureCallback;
+    typedef std::function<bool(const String&, float&)> SetTargetTemperatureCallback;
 
    /**
      * @brief Callback definition for onAdjustTargetTemperature function
@@ -73,7 +73,7 @@ class SinricProThermostat :  public SinricProDevice {
      **/
     typedef std::function<bool(const String&, String&)> ThermostatModeCallback;
 
-    void onTargetTemperature(TargetTemperatureCallback cb);
+    void onTargetTemperature(SetTargetTemperatureCallback cb);
     void onAdjustTargetTemperature(AdjustTargetTemperatureCallback cb);
     void onThermostatMode(ThermostatModeCallback cb);
 
@@ -85,7 +85,7 @@ class SinricProThermostat :  public SinricProDevice {
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
-    TargetTemperatureCallback targetTemperatureCallback;
+    SetTargetTemperatureCallback targetTemperatureCallback;
     AdjustTargetTemperatureCallback adjustTargetTemperatureCallback;
     ThermostatModeCallback thermostatModeCallback;
 };
@@ -134,11 +134,11 @@ bool SinricProThermostat::handleRequest(const char* deviceId, const char* action
 /**
  * @brief Set callback function for `targetTemperature` request
  * 
- * @param cb Function pointer to a `TargetTemperatureCallback` function
+ * @param cb Function pointer to a `SetTargetTemperatureCallback` function
  * @return void
- * @see TargetTemperatureCallback
+ * @see SetTargetTemperatureCallback
  **/
-void SinricProThermostat::onTargetTemperature(TargetTemperatureCallback cb) { 
+void SinricProThermostat::onTargetTemperature(SetTargetTemperatureCallback cb) { 
   targetTemperatureCallback = cb; 
 }
 

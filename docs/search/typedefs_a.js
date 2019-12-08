@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['targettemperaturecallback_164',['TargetTemperatureCallback',['../class_sinric_pro_thermostat.html#ab35e16954555e2737f5b071f5587f226',1,'SinricProThermostat']]],
-  ['thermostatmodecallback_165',['ThermostatModeCallback',['../class_sinric_pro_thermostat.html#abe5ced42c285b52c2414e788dc8b63b3',1,'SinricProThermostat']]]
+  ['thermostatmodecallback_167',['ThermostatModeCallback',['../class_sinric_pro_thermostat.html#abe5ced42c285b52c2414e788dc8b63b3',1,'SinricProThermostat::ThermostatModeCallback()'],['../class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3',1,'SinricProWindowAC::ThermostatModeCallback()']]]
 ];

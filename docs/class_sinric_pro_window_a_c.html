@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SinricPro Library: SinricProThermostat</title>
+<title>SinricPro Library: SinricProWindowAC</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -91,7 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('class_sinric_pro_thermostat.html','');});
+$(document).ready(function(){initNavTree('class_sinric_pro_window_a_c.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -113,34 +113,40 @@ $(document).ready(function(){initNavTree('class_sinric_pro_thermostat.html','');
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="class_sinric_pro_thermostat-members.html">List of all members</a>  </div>
+<a href="class_sinric_pro_window_a_c-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SinricProThermostat</div>  </div>
+<div class="title">SinricProWindowAC</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Device to control Thermostat.  
- <a href="class_sinric_pro_thermostat.html#details">More...</a></p>
+<p>Device to control Window Air Conditioner.  
+ <a href="class_sinric_pro_window_a_c.html#details">More...</a></p>
 <div class="dynheader">
-Inheritance diagram for SinricProThermostat:</div>
+Inheritance diagram for SinricProWindowAC:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="class_sinric_pro_thermostat.png" usemap="#SinricProThermostat_map" alt=""/>
-  <map id="SinricProThermostat_map" name="SinricProThermostat_map">
-<area href="class_sinric_pro_device.html" title="Base class for all device types." alt="SinricProDevice" shape="rect" coords="0,0,126,24"/>
+  <img src="class_sinric_pro_window_a_c.png" usemap="#SinricProWindowAC_map" alt=""/>
+  <map id="SinricProWindowAC_map" name="SinricProWindowAC_map">
+<area href="class_sinric_pro_device.html" title="Base class for all device types." alt="SinricProDevice" shape="rect" coords="0,0,127,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a345ea0fb9b4069b8c540b17009272f65"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, float &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_thermostat.html#a345ea0fb9b4069b8c540b17009272f65">SetTargetTemperatureCallback</a></td></tr>
-<tr class="memdesc:a345ea0fb9b4069b8c540b17009272f65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onTargetTemperature function.  <a href="class_sinric_pro_thermostat.html#a345ea0fb9b4069b8c540b17009272f65">More...</a><br /></td></tr>
+<tr class="memitem:ad2be7dbd98eae8443f8c76721cbffead"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, int &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a></td></tr>
+<tr class="memdesc:ad2be7dbd98eae8443f8c76721cbffead"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onRangeValue function.  <a href="class_sinric_pro_window_a_c.html#ad2be7dbd98eae8443f8c76721cbffead">More...</a><br /></td></tr>
+<tr class="separator:ad2be7dbd98eae8443f8c76721cbffead"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8977055ae213732aaa3ef430259208f4"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, int &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4">AdjustRangeValueCallback</a></td></tr>
+<tr class="memdesc:a8977055ae213732aaa3ef430259208f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onAdjustRangeValue function.  <a href="class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4">More...</a><br /></td></tr>
+<tr class="separator:a8977055ae213732aaa3ef430259208f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a345ea0fb9b4069b8c540b17009272f65"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, float &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#a345ea0fb9b4069b8c540b17009272f65">SetTargetTemperatureCallback</a></td></tr>
+<tr class="memdesc:a345ea0fb9b4069b8c540b17009272f65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onTargetTemperature function.  <a href="class_sinric_pro_window_a_c.html#a345ea0fb9b4069b8c540b17009272f65">More...</a><br /></td></tr>
 <tr class="separator:a345ea0fb9b4069b8c540b17009272f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeae1f9b5872cf8dcba7efc2548a671fa"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, float &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_thermostat.html#aeae1f9b5872cf8dcba7efc2548a671fa">AdjustTargetTemperatureCallback</a></td></tr>
-<tr class="memdesc:aeae1f9b5872cf8dcba7efc2548a671fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onAdjustTargetTemperature function.  <a href="class_sinric_pro_thermostat.html#aeae1f9b5872cf8dcba7efc2548a671fa">More...</a><br /></td></tr>
+<tr class="memitem:aeae1f9b5872cf8dcba7efc2548a671fa"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, float &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa">AdjustTargetTemperatureCallback</a></td></tr>
+<tr class="memdesc:aeae1f9b5872cf8dcba7efc2548a671fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onAdjustTargetTemperature function.  <a href="class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa">More...</a><br /></td></tr>
 <tr class="separator:aeae1f9b5872cf8dcba7efc2548a671fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe5ced42c285b52c2414e788dc8b63b3"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, String &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_thermostat.html#abe5ced42c285b52c2414e788dc8b63b3">ThermostatModeCallback</a></td></tr>
-<tr class="memdesc:abe5ced42c285b52c2414e788dc8b63b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onThermostatMode function.  <a href="class_sinric_pro_thermostat.html#abe5ced42c285b52c2414e788dc8b63b3">More...</a><br /></td></tr>
+<tr class="memitem:abe5ced42c285b52c2414e788dc8b63b3"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, String &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3">ThermostatModeCallback</a></td></tr>
+<tr class="memdesc:abe5ced42c285b52c2414e788dc8b63b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onThermostatMode function.  <a href="class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3">More...</a><br /></td></tr>
 <tr class="separator:abe5ced42c285b52c2414e788dc8b63b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, bool &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a></td></tr>
 <tr class="memdesc:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onPowerState function.  <a href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">More...</a><br /></td></tr>
@@ -148,23 +154,32 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1c73725f1f3fbb1c5b72208aae5c2bf2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_thermostat.html#a1c73725f1f3fbb1c5b72208aae5c2bf2">onTargetTemperature</a> (<a class="el" href="class_sinric_pro_thermostat.html#a345ea0fb9b4069b8c540b17009272f65">SetTargetTemperatureCallback</a> cb)</td></tr>
-<tr class="memdesc:a1c73725f1f3fbb1c5b72208aae5c2bf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>targetTemperature</code> request.  <a href="class_sinric_pro_thermostat.html#a1c73725f1f3fbb1c5b72208aae5c2bf2">More...</a><br /></td></tr>
+<tr class="memitem:a94adbcdf6ce61cb6552a5f9915e705ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#a94adbcdf6ce61cb6552a5f9915e705ae">onRangeValue</a> (<a class="el" href="class_sinric_pro_window_a_c.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a> cb)</td></tr>
+<tr class="memdesc:a94adbcdf6ce61cb6552a5f9915e705ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>setRangeValue</code> request.  <a href="class_sinric_pro_window_a_c.html#a94adbcdf6ce61cb6552a5f9915e705ae">More...</a><br /></td></tr>
+<tr class="separator:a94adbcdf6ce61cb6552a5f9915e705ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae85696d55112ae7343f9807faee6e064"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#ae85696d55112ae7343f9807faee6e064">onAdjustRangeValue</a> (<a class="el" href="class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4">AdjustRangeValueCallback</a> cb)</td></tr>
+<tr class="memdesc:ae85696d55112ae7343f9807faee6e064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>adjustRangeValue</code> request.  <a href="class_sinric_pro_window_a_c.html#ae85696d55112ae7343f9807faee6e064">More...</a><br /></td></tr>
+<tr class="separator:ae85696d55112ae7343f9807faee6e064"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c73725f1f3fbb1c5b72208aae5c2bf2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#a1c73725f1f3fbb1c5b72208aae5c2bf2">onTargetTemperature</a> (<a class="el" href="class_sinric_pro_window_a_c.html#a345ea0fb9b4069b8c540b17009272f65">SetTargetTemperatureCallback</a> cb)</td></tr>
+<tr class="memdesc:a1c73725f1f3fbb1c5b72208aae5c2bf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>targetTemperature</code> request.  <a href="class_sinric_pro_window_a_c.html#a1c73725f1f3fbb1c5b72208aae5c2bf2">More...</a><br /></td></tr>
 <tr class="separator:a1c73725f1f3fbb1c5b72208aae5c2bf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac51f6fecfdf4c7bc8e0712e2da47bbf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_thermostat.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4">onAdjustTargetTemperature</a> (<a class="el" href="class_sinric_pro_thermostat.html#aeae1f9b5872cf8dcba7efc2548a671fa">AdjustTargetTemperatureCallback</a> cb)</td></tr>
-<tr class="memdesc:ac51f6fecfdf4c7bc8e0712e2da47bbf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>adjustTargetTemperature</code> request.  <a href="class_sinric_pro_thermostat.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4">More...</a><br /></td></tr>
+<tr class="memitem:ac51f6fecfdf4c7bc8e0712e2da47bbf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4">onAdjustTargetTemperature</a> (<a class="el" href="class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa">AdjustTargetTemperatureCallback</a> cb)</td></tr>
+<tr class="memdesc:ac51f6fecfdf4c7bc8e0712e2da47bbf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>adjustTargetTemperature</code> request.  <a href="class_sinric_pro_window_a_c.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4">More...</a><br /></td></tr>
 <tr class="separator:ac51f6fecfdf4c7bc8e0712e2da47bbf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ef31536973b20815dd6c80a28e19c9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_thermostat.html#a2ef31536973b20815dd6c80a28e19c9f">onThermostatMode</a> (<a class="el" href="class_sinric_pro_thermostat.html#abe5ced42c285b52c2414e788dc8b63b3">ThermostatModeCallback</a> cb)</td></tr>
-<tr class="memdesc:a2ef31536973b20815dd6c80a28e19c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>setThermostatMode</code> request.  <a href="class_sinric_pro_thermostat.html#a2ef31536973b20815dd6c80a28e19c9f">More...</a><br /></td></tr>
+<tr class="memitem:a2ef31536973b20815dd6c80a28e19c9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#a2ef31536973b20815dd6c80a28e19c9f">onThermostatMode</a> (<a class="el" href="class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3">ThermostatModeCallback</a> cb)</td></tr>
+<tr class="memdesc:a2ef31536973b20815dd6c80a28e19c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>setThermostatMode</code> request.  <a href="class_sinric_pro_window_a_c.html#a2ef31536973b20815dd6c80a28e19c9f">More...</a><br /></td></tr>
 <tr class="separator:a2ef31536973b20815dd6c80a28e19c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9545808dacd9efc40a05f16e09d79b4e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_thermostat.html#a9545808dacd9efc40a05f16e09d79b4e">sendTemperatureEvent</a> (float temperature, float humidity=-1, String cause=&quot;PERIODIC_POLL&quot;)</td></tr>
-<tr class="memdesc:a9545808dacd9efc40a05f16e09d79b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>currentTemperature</code> event to report actual temperature (measured by a sensor)  <a href="class_sinric_pro_thermostat.html#a9545808dacd9efc40a05f16e09d79b4e">More...</a><br /></td></tr>
+<tr class="memitem:af676bb2b419c4321d0a678cf9446da0c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#af676bb2b419c4321d0a678cf9446da0c">sendRangeValueEvent</a> (int rangeValue, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
+<tr class="memdesc:af676bb2b419c4321d0a678cf9446da0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>rangeValue</code> event to report curent rangeValue to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server.  <a href="class_sinric_pro_window_a_c.html#af676bb2b419c4321d0a678cf9446da0c">More...</a><br /></td></tr>
+<tr class="separator:af676bb2b419c4321d0a678cf9446da0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9545808dacd9efc40a05f16e09d79b4e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#a9545808dacd9efc40a05f16e09d79b4e">sendTemperatureEvent</a> (float temperature, float humidity=-1, String cause=&quot;PERIODIC_POLL&quot;)</td></tr>
+<tr class="memdesc:a9545808dacd9efc40a05f16e09d79b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>currentTemperature</code> event to report actual temperature (measured by a sensor)  <a href="class_sinric_pro_window_a_c.html#a9545808dacd9efc40a05f16e09d79b4e">More...</a><br /></td></tr>
 <tr class="separator:a9545808dacd9efc40a05f16e09d79b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07632bca425003b4ad559cb46fabca8c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_thermostat.html#a07632bca425003b4ad559cb46fabca8c">sendTargetTemperatureEvent</a> (float temperature, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
-<tr class="memdesc:a07632bca425003b4ad559cb46fabca8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>targetTemperature</code> event to report target temperature change.  <a href="class_sinric_pro_thermostat.html#a07632bca425003b4ad559cb46fabca8c">More...</a><br /></td></tr>
+<tr class="memitem:a07632bca425003b4ad559cb46fabca8c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#a07632bca425003b4ad559cb46fabca8c">sendTargetTemperatureEvent</a> (float temperature, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
+<tr class="memdesc:a07632bca425003b4ad559cb46fabca8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>targetTemperature</code> event to report target temperature change.  <a href="class_sinric_pro_window_a_c.html#a07632bca425003b4ad559cb46fabca8c">More...</a><br /></td></tr>
 <tr class="separator:a07632bca425003b4ad559cb46fabca8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd81e847a7f1029163729574c3d3971d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_thermostat.html#acd81e847a7f1029163729574c3d3971d">sendThermostatModeEvent</a> (String thermostatMode, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
-<tr class="memdesc:acd81e847a7f1029163729574c3d3971d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>thermostatMode</code> event to report a the new mode the device has been set to.  <a href="class_sinric_pro_thermostat.html#acd81e847a7f1029163729574c3d3971d">More...</a><br /></td></tr>
+<tr class="memitem:acd81e847a7f1029163729574c3d3971d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_window_a_c.html#acd81e847a7f1029163729574c3d3971d">sendThermostatModeEvent</a> (String thermostatMode, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
+<tr class="memdesc:acd81e847a7f1029163729574c3d3971d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>thermostatMode</code> event to report a the new mode the device has been set to.  <a href="class_sinric_pro_window_a_c.html#acd81e847a7f1029163729574c3d3971d">More...</a><br /></td></tr>
 <tr class="separator:acd81e847a7f1029163729574c3d3971d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32f3257da431a1035f23a265ff0cc4cf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a> (<a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a> cb)</td></tr>
 <tr class="memdesc:a32f3257da431a1035f23a265ff0cc4cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>powerState</code> request.  <a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">More...</a><br /></td></tr>
@@ -174,14 +189,58 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8006e256414deac0f9a4e28774b47773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Device to control Thermostat. </p>
+<div class="textblock"><p>Device to control Window Air Conditioner. </p>
 <p>Support</p><ul>
 <li>Set / adjust target temperature</li>
+<li>Set mode <code>AUTO</code>, <code>COOL</code>, <code>HEAT</code></li>
+<li>Set range value</li>
 <li>Report target temperature</li>
-<li>Report actual temperature</li>
-<li>Set thermostat mode <code>AUTO</code>, <code>COOL</code>, <code>HEAT</code> </li>
+<li>Report actual temperature </li>
 </ul>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a8977055ae213732aaa3ef430259208f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8977055ae213732aaa3ef430259208f4">&#9670;&nbsp;</a></span>AdjustRangeValueCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4">AdjustRangeValueCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onAdjustRangeValue function. </p>
+<p>Gets called when device receive a <code>adjustRangeValue</code> reuqest <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rangeValue</td><td>Integer -n..n delta value for range value have to change </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rangeValue</td><td>Integer 0..n returning the absolute range value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="AdjustRangeValueCallback_WAC"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> globalRangeValue;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#ae85696d55112ae7343f9807faee6e064">onAdjustRangeValue</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;rangeValueDelta) {</div>
+<div class="line">  globalRangeValue += rangeValue; <span class="comment">// calculate absolute rangeValue</span></div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s range value has been changed about %i to %d\r\n&quot;</span>, rangeValueDelta, globalRangeValue);</div>
+<div class="line">  rangeValueDelta = globalRangeValue; <span class="comment">// return absolute rangeValue</span></div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="aeae1f9b5872cf8dcba7efc2548a671fa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeae1f9b5872cf8dcba7efc2548a671fa">&#9670;&nbsp;</a></span>AdjustTargetTemperatureCallback</h2>
 
@@ -189,7 +248,7 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, float&amp;)&gt; <a class="el" href="class_sinric_pro_thermostat.html#aeae1f9b5872cf8dcba7efc2548a671fa">AdjustTargetTemperatureCallback</a></td>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, float&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa">AdjustTargetTemperatureCallback</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -212,11 +271,11 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<h1><a class="anchor" id="AdjustTargetTemperatureCallback"></a>
+<h1><a class="anchor" id="AdjustTargetTemperatureCallback_WAC"></a>
 Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">float</span> globalTargetTemp; </div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_thermostat.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4">onAdjustTargetTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">float</span> &amp;tempDelta) {</div>
+<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4">onAdjustTargetTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">float</span> &amp;tempDelta) {</div>
 <div class="line">  globalTargetTemp += tempDelta; <span class="comment">// change global target temperature about tempDelta</span></div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s target temperature changed about %f to %f\r\n&quot;</span>, deviceId.c_str(), tempDelta, globalTargetTemp);</div>
 <div class="line">  tempDelta = globalTargetTemp; <span class="comment">// return absolute target temperature</span></div>
@@ -274,6 +333,45 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="ad2be7dbd98eae8443f8c76721cbffead"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2be7dbd98eae8443f8c76721cbffead">&#9670;&nbsp;</a></span>SetRangeValueCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onRangeValue function. </p>
+<p>Gets called when device receive a <code>setRangeValue</code> reuqest <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rangeValue</td><td>Integer 0..n for range value device has to be set </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rangeValue</td><td>Integer 0..n returning the current range value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="SetRangeValueCallback_WAC"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#a94adbcdf6ce61cb6552a5f9915e705ae">onRangeValue</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;rangeValue) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s range value has been set to %d\r\n&quot;</span>, rangeValue);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a345ea0fb9b4069b8c540b17009272f65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a345ea0fb9b4069b8c540b17009272f65">&#9670;&nbsp;</a></span>SetTargetTemperatureCallback</h2>
 
@@ -281,7 +379,7 @@ Example-Code</h1>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, float&amp;)&gt; <a class="el" href="class_sinric_pro_thermostat.html#a345ea0fb9b4069b8c540b17009272f65">SetTargetTemperatureCallback</a></td>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, float&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#a345ea0fb9b4069b8c540b17009272f65">SetTargetTemperatureCallback</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -304,9 +402,9 @@ Example-Code</h1>
   </table>
   </dd>
 </dl>
-<h1><a class="anchor" id="TargetTemperatureCallback"></a>
+<h1><a class="anchor" id="TargetTemperatureCallback_WAC"></a>
 Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_thermostat.html#a1c73725f1f3fbb1c5b72208aae5c2bf2">onTargetTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">float</span> &amp;targetTemp) { </div>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#a1c73725f1f3fbb1c5b72208aae5c2bf2">onTargetTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">float</span> &amp;targetTemp) { </div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s target temperature set to %f\r\n&quot;</span>, deviceId.c_str(), targetTemp);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
@@ -320,7 +418,7 @@ Example-Code</h1>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, String&amp;)&gt; <a class="el" href="class_sinric_pro_thermostat.html#abe5ced42c285b52c2414e788dc8b63b3">ThermostatModeCallback</a></td>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, String&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3">ThermostatModeCallback</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -343,9 +441,9 @@ Example-Code</h1>
   </table>
   </dd>
 </dl>
-<h1><a class="anchor" id="ThermostatModeCallback"></a>
+<h1><a class="anchor" id="ThermostatModeCallback_WAC"></a>
 Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_thermostat.html#a2ef31536973b20815dd6c80a28e19c9f">onThermostatMode</a>(<span class="keyword">const</span> String&amp; deviceId, String&amp; mode) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#a2ef31536973b20815dd6c80a28e19c9f">onThermostatMode</a>(<span class="keyword">const</span> String&amp; deviceId, String&amp; mode) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Deivce %s thermostat mode set to %s\r\n&quot;</span>, deviceId.c_str(), mode);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
@@ -353,6 +451,33 @@ Example-Code</h1>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae85696d55112ae7343f9807faee6e064"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae85696d55112ae7343f9807faee6e064">&#9670;&nbsp;</a></span>onAdjustRangeValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onAdjustRangeValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4">AdjustRangeValueCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>adjustRangeValue</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>AdjustRangeValueCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4" title="Callback definition for onAdjustRangeValue function.">AdjustRangeValueCallback</a> </dd></dl>
+
+</div>
+</div>
 <a id="ac51f6fecfdf4c7bc8e0712e2da47bbf4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac51f6fecfdf4c7bc8e0712e2da47bbf4">&#9670;&nbsp;</a></span>onAdjustTargetTemperature()</h2>
 
@@ -362,7 +487,7 @@ Example-Code</h1>
         <tr>
           <td class="memname">void onAdjustTargetTemperature </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_thermostat.html#aeae1f9b5872cf8dcba7efc2548a671fa">AdjustTargetTemperatureCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa">AdjustTargetTemperatureCallback</a>&#160;</td>
           <td class="paramname"><em>cb</em></td><td>)</td>
           <td></td>
         </tr>
@@ -377,7 +502,7 @@ Example-Code</h1>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_thermostat.html#aeae1f9b5872cf8dcba7efc2548a671fa" title="Callback definition for onAdjustTargetTemperature function.">AdjustTargetTemperatureCallback</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa" title="Callback definition for onAdjustTargetTemperature function.">AdjustTargetTemperatureCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -417,6 +542,33 @@ Example-Code</h1>
 
 </div>
 </div>
+<a id="a94adbcdf6ce61cb6552a5f9915e705ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94adbcdf6ce61cb6552a5f9915e705ae">&#9670;&nbsp;</a></span>onRangeValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onRangeValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_window_a_c.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>setRangeValue</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SetRangeValueCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#ad2be7dbd98eae8443f8c76721cbffead" title="Callback definition for onRangeValue function.">SetRangeValueCallback</a> </dd></dl>
+
+</div>
+</div>
 <a id="a1c73725f1f3fbb1c5b72208aae5c2bf2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c73725f1f3fbb1c5b72208aae5c2bf2">&#9670;&nbsp;</a></span>onTargetTemperature()</h2>
 
@@ -426,7 +578,7 @@ Example-Code</h1>
         <tr>
           <td class="memname">void onTargetTemperature </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_thermostat.html#a345ea0fb9b4069b8c540b17009272f65">SetTargetTemperatureCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_window_a_c.html#a345ea0fb9b4069b8c540b17009272f65">SetTargetTemperatureCallback</a>&#160;</td>
           <td class="paramname"><em>cb</em></td><td>)</td>
           <td></td>
         </tr>
@@ -441,7 +593,7 @@ Example-Code</h1>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_thermostat.html#a345ea0fb9b4069b8c540b17009272f65" title="Callback definition for onTargetTemperature function.">SetTargetTemperatureCallback</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#a345ea0fb9b4069b8c540b17009272f65" title="Callback definition for onTargetTemperature function.">SetTargetTemperatureCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -454,7 +606,7 @@ Example-Code</h1>
         <tr>
           <td class="memname">void onThermostatMode </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_thermostat.html#abe5ced42c285b52c2414e788dc8b63b3">ThermostatModeCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3">ThermostatModeCallback</a>&#160;</td>
           <td class="paramname"><em>cb</em></td><td>)</td>
           <td></td>
         </tr>
@@ -469,7 +621,7 @@ Example-Code</h1>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_thermostat.html#abe5ced42c285b52c2414e788dc8b63b3" title="Callback definition for onThermostatMode function.">ThermostatModeCallback</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3" title="Callback definition for onThermostatMode function.">ThermostatModeCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -512,6 +664,51 @@ Example-Code</h1>
   <table class="params">
     <tr><td class="paramname">state</td><td><code>true</code> = device turned on <br  />
  <code>false</code> = device turned off </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
+    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af676bb2b419c4321d0a678cf9446da0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af676bb2b419c4321d0a678cf9446da0c">&#9670;&nbsp;</a></span>sendRangeValueEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendRangeValueEvent </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rangeValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send <code>rangeValue</code> event to report curent rangeValue to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rangeValue</td><td>Value between 0..n </td></tr>
     <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>
   </dd>
@@ -671,14 +868,16 @@ Example-Code</h1>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_sinric_pro_thermostat_html_ac51f6fecfdf4c7bc8e0712e2da47bbf4"><div class="ttname"><a href="class_sinric_pro_thermostat.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4">SinricProThermostat::onAdjustTargetTemperature</a></div><div class="ttdeci">void onAdjustTargetTemperature(AdjustTargetTemperatureCallback cb)</div><div class="ttdoc">Set callback function for adjustTargetTemperature request.</div><div class="ttdef"><b>Definition:</b> SinricProThermostat.h:152</div></div>
-<div class="ttc" id="aclass_sinric_pro_thermostat_html_a2ef31536973b20815dd6c80a28e19c9f"><div class="ttname"><a href="class_sinric_pro_thermostat.html#a2ef31536973b20815dd6c80a28e19c9f">SinricProThermostat::onThermostatMode</a></div><div class="ttdeci">void onThermostatMode(ThermostatModeCallback cb)</div><div class="ttdoc">Set callback function for setThermostatMode request.</div><div class="ttdef"><b>Definition:</b> SinricProThermostat.h:163</div></div>
-<div class="ttc" id="aclass_sinric_pro_thermostat_html_a1c73725f1f3fbb1c5b72208aae5c2bf2"><div class="ttname"><a href="class_sinric_pro_thermostat.html#a1c73725f1f3fbb1c5b72208aae5c2bf2">SinricProThermostat::onTargetTemperature</a></div><div class="ttdeci">void onTargetTemperature(SetTargetTemperatureCallback cb)</div><div class="ttdoc">Set callback function for targetTemperature request.</div><div class="ttdef"><b>Definition:</b> SinricProThermostat.h:141</div></div>
+<div class="ttc" id="aclass_sinric_pro_window_a_c_html_ac51f6fecfdf4c7bc8e0712e2da47bbf4"><div class="ttname"><a href="class_sinric_pro_window_a_c.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4">SinricProWindowAC::onAdjustTargetTemperature</a></div><div class="ttdeci">void onAdjustTargetTemperature(AdjustTargetTemperatureCallback cb)</div><div class="ttdoc">Set callback function for adjustTargetTemperature request.</div><div class="ttdef"><b>Definition:</b> SinricProWindowAC.h:221</div></div>
+<div class="ttc" id="aclass_sinric_pro_window_a_c_html_a1c73725f1f3fbb1c5b72208aae5c2bf2"><div class="ttname"><a href="class_sinric_pro_window_a_c.html#a1c73725f1f3fbb1c5b72208aae5c2bf2">SinricProWindowAC::onTargetTemperature</a></div><div class="ttdeci">void onTargetTemperature(SetTargetTemperatureCallback cb)</div><div class="ttdoc">Set callback function for targetTemperature request.</div><div class="ttdef"><b>Definition:</b> SinricProWindowAC.h:212</div></div>
+<div class="ttc" id="aclass_sinric_pro_window_a_c_html_a94adbcdf6ce61cb6552a5f9915e705ae"><div class="ttname"><a href="class_sinric_pro_window_a_c.html#a94adbcdf6ce61cb6552a5f9915e705ae">SinricProWindowAC::onRangeValue</a></div><div class="ttdeci">void onRangeValue(SetRangeValueCallback cb)</div><div class="ttdoc">Set callback function for setRangeValue request.</div><div class="ttdef"><b>Definition:</b> SinricProWindowAC.h:195</div></div>
+<div class="ttc" id="aclass_sinric_pro_window_a_c_html_a2ef31536973b20815dd6c80a28e19c9f"><div class="ttname"><a href="class_sinric_pro_window_a_c.html#a2ef31536973b20815dd6c80a28e19c9f">SinricProWindowAC::onThermostatMode</a></div><div class="ttdeci">void onThermostatMode(ThermostatModeCallback cb)</div><div class="ttdoc">Set callback function for setThermostatMode request.</div><div class="ttdef"><b>Definition:</b> SinricProWindowAC.h:230</div></div>
+<div class="ttc" id="aclass_sinric_pro_window_a_c_html_ae85696d55112ae7343f9807faee6e064"><div class="ttname"><a href="class_sinric_pro_window_a_c.html#ae85696d55112ae7343f9807faee6e064">SinricProWindowAC::onAdjustRangeValue</a></div><div class="ttdeci">void onAdjustRangeValue(AdjustRangeValueCallback cb)</div><div class="ttdoc">Set callback function for adjustRangeValue request.</div><div class="ttdef"><b>Definition:</b> SinricProWindowAC.h:203</div></div>
 <div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:139</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="class_sinric_pro_thermostat.html">SinricProThermostat</a></li>
+    <li class="navelem"><a class="el" href="class_sinric_pro_window_a_c.html">SinricProWindowAC</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>
