@@ -156,8 +156,8 @@ class SinricProSpeaker :  public SinricProDevice {
      * 
      * Gets called when device receive a `setBands` request \n
      * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   mode        String device mode should set to \n `TV`, `MOVIE`
-     * @param[out]  mode        String devices mode is set to \n `TV`, `MOVIE`
+     * @param[in]   mode        String device mode should set to \n `MOVIE`, `MUSIC`, `NIGHT`, `SPORT`, `TV`
+     * @param[out]  mode        String devices mode is set to \n `MOVIE`, `MUSIC`, `NIGHT`, `SPORT`, `TV`
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
@@ -421,7 +421,7 @@ bool SinricProSpeaker::sendMediaControlEvent(String mediaControl, String cause) 
 /**
  * @brief Send `setMode` event to SinricPro Server indicating the mode has changed
  * 
- * @param mode    String with actual mode device is set to \n `TV`, `MOVIE`
+ * @param mode    String with actual mode device is set to \n `MOVIE`, `MUSIC`, `NIGHT`, `SPORT`, `TV`
  * @param cause   (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
  * @return the success of sending the even
  * @retval true   event has been sent successfully

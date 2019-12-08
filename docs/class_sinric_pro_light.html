@@ -319,8 +319,18 @@ Example-Code</h1>
 </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">colorTemperature</td><td>Integer value with color temperature the device should set to </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">colorTemperature</td><td>Integer value with color temperature the device is set to </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">colorTemperature</td><td>Integer value with color temperature the device should set to <br  />
+ <code>2200</code> = warm white <br  />
+ <code>2700</code> = soft white <br  />
+ <code>4000</code> = white <br  />
+ <code>5500</code> = daylight white <br  />
+ <code>7000</code> = cool white </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">colorTemperature</td><td>Integer value with color temperature the device is set to <br  />
+ <code>2200</code> = warm white <br  />
+ <code>2700</code> = soft white <br  />
+ <code>4000</code> = white <br  />
+ <code>5500</code> = daylight white <br  />
+ <code>7000</code> = cool white </td></tr>
   </table>
   </dd>
 </dl>
@@ -359,7 +369,12 @@ Example-Code</h1>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">colorTemperature</td><td>Integer value <code>-1</code> = Device should decrease color temperature </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">colorTemperature</td><td>Integer value return the new color temperarature </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">colorTemperature</td><td>Integer value return the new color temperarature <br  />
+ <code>2200</code> = warm white <br  />
+ <code>2700</code> = soft white <br  />
+ <code>4000</code> = white <br  />
+ <code>5500</code> = daylight white <br  />
+ <code>7000</code> = cool white </td></tr>
   </table>
   </dd>
 </dl>
@@ -402,7 +417,12 @@ Example-Code</h1>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">colorTemperature</td><td>Integer value <code>1</code> = Device should increase color temperature </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">colorTemperature</td><td>Integer value return the new color temperarature </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">colorTemperature</td><td>Integer value return the new color temperarature <br  />
+ <code>2200</code> = warm white <br  />
+ <code>2700</code> = soft white <br  />
+ <code>4000</code> = white <br  />
+ <code>5500</code> = daylight white <br  />
+ <code>7000</code> = cool white </td></tr>
   </table>
   </dd>
 </dl>
@@ -814,7 +834,12 @@ Example-Code</h1>
 <p>Send <code>setColorTemperature</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual color temperature. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">colorTemperature</td><td>Integer with new color temperature the device is set to </td></tr>
+    <tr><td class="paramname">colorTemperature</td><td>Integer with new color temperature the device is set to <br  />
+ <code>2200</code> = warm white <br  />
+ <code>2700</code> = soft white <br  />
+ <code>4000</code> = white <br  />
+ <code>5500</code> = daylight white <br  />
+ <code>7000</code> = cool white </td></tr>
     <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>
   </dd>

@@ -79,8 +79,8 @@ class SinricProLight :  public SinricProDevice {
      * 
      * Gets called when device receive a `setColorTemperature` request \n
      * @param[in]   deviceId          String which contains the ID of device
-     * @param[in]   colorTemperature  Integer value with color temperature the device should set to
-     * @param[out]  colorTemperature  Integer value with color temperature the device is set to
+     * @param[in]   colorTemperature  Integer value with color temperature the device should set to \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
+     * @param[out]  colorTemperature  Integer value with color temperature the device is set to \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
@@ -95,7 +95,7 @@ class SinricProLight :  public SinricProDevice {
      * Gets called when device receive a `increaseColorTemperature` request \n
      * @param[in]   deviceId          String which contains the ID of device
      * @param[in]   colorTemperature  Integer value `1` = Device should increase color temperature
-     * @param[out]  colorTemperature  Integer value return the new color temperarature
+     * @param[out]  colorTemperature  Integer value return the new color temperarature \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
@@ -110,7 +110,7 @@ class SinricProLight :  public SinricProDevice {
      * Gets called when device receive a `decreaseColorTemperature` request \n
      * @param[in]   deviceId          String which contains the ID of device
      * @param[in]   colorTemperature  Integer value `-1` = Device should decrease color temperature
-     * @param[out]  colorTemperature  Integer value return the new color temperarature
+     * @param[out]  colorTemperature  Integer value return the new color temperarature \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
@@ -307,7 +307,7 @@ bool SinricProLight::sendColorEvent(byte r, byte g, byte b, String cause) {
 /**
  * @brief Send `setColorTemperature` event to SinricPro Server indicating actual color temperature
  * 
- * @param colorTemperature Integer with new color temperature the device is set to
+ * @param colorTemperature Integer with new color temperature the device is set to \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
  * @param cause   (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
  * @return the success of sending the even
  * @retval true   event has been sent successfully
