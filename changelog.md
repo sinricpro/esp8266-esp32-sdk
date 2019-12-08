@@ -3,7 +3,7 @@
 ## Version 2.2.6
 
 New:
-- User Documentation using Doxygen
+- User Documentation using Doxygen available at https://sinricpro.github.io/esp8266-esp32-sdk
 
 Fixed: 
 - Some sendEvent functions didn't return `true`/`false`
