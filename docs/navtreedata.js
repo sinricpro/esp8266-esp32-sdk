@@ -23,6 +23,20 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "SinricPro Library", "index.html", [
+    [ "SinricPro (ESP8266 / ESP32 SDK)", "index.html", [
+      [ "Version 2.2.6", "index.html#autotoc_md1", null ],
+      [ "Installation", "index.html#autotoc_md2", [
+        [ "VS Code & PlatformIO:", "index.html#autotoc_md3", null ],
+        [ "ArduinoIDE", "index.html#autotoc_md4", null ]
+      ] ],
+      [ "Dependencies", "index.html#autotoc_md6", null ],
+      [ "Examples", "index.html#autotoc_md8", null ],
+      [ "Usage", "index.html#autotoc_md10", null ],
+      [ "How to add a device?", "index.html#autotoc_md17", null ],
+      [ "How to retrieve a device for sending an event?", "index.html#autotoc_md19", null ],
+      [ "Devices", "index.html#autotoc_md21", null ],
+      [ "Full user documentation", "index.html#autotoc_md23", null ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
