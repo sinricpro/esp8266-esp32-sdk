@@ -127,5 +127,5 @@ Example 1
 ---
 
 # Full user documentation
-Please see full user documentation here https://sinricpro.github.io/esp8266-esp32-sdk
+Please see here for [full user documentation](https://sinricpro.github.io/esp8266-esp32-sdk)
 
