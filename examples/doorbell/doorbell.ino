@@ -83,6 +83,8 @@ void setupSinricPro() {
   // add doorbell device to SinricPro
   SinricPro.add<SinricProDoorbell>(DOORBELL_ID);
   // setup SinricPro
+  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
@@ -90,7 +92,7 @@ void setupSinricPro() {
 void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP); // BUTTIN_PIN as INPUT
 
-  Serial.begin(9600);
+  Serial.begin(BAUD_RATE);
   setupWiFi();
   setupSinricPro();
 }

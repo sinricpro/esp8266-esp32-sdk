@@ -102,12 +102,15 @@ void setupWiFi() {
 // setup function for SinricPro
 void setupSinricPro() {
   // add device to SinricPro
-  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>(SWITCH_ID);
+  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
 
   // set callback function to device
   mySwitch.onPowerState(onPowerState);
 
   // setup SinricPro
+  // setup SinricPro
+  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 

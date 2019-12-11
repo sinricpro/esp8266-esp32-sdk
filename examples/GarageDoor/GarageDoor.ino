@@ -165,6 +165,9 @@ void setupSinricPro() {
   SinricProLock &garageDoor = SinricPro[GARAGEDOOR_ID];
   garageDoor.onLockState(onLockState);
 
+  // setup SinricPro
+  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 

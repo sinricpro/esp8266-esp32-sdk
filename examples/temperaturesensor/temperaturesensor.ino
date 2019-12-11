@@ -139,6 +139,8 @@ void setupSinricPro() {
   mySensor.onPowerState(onPowerState);
 
   // setup SinricPro
+  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
   SinricPro.restoreDeviceStates(true); // get latest known deviceState from server (is device turned on?)
 }
