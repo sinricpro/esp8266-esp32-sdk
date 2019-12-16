@@ -172,11 +172,12 @@ void setupSinricPro() {
 }
 
 void setup() {
-  Serial.begin(BAUD_RATE);
   pinMode(RELAY, OUTPUT); 
   pinMode(ENDSTOP_OPEN, INPUT); 
   pinMode(ENDSTOP_CLOSED, INPUT);
   lastDoorState = getDoorState();
+
+  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

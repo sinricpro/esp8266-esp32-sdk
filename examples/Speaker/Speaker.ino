@@ -171,7 +171,7 @@ void setupSinricPro() {
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE);
+  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

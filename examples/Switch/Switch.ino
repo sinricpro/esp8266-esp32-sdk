@@ -108,7 +108,6 @@ void setupSinricPro() {
   mySwitch.onPowerState(onPowerState);
 
   // setup SinricPro
-  // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
@@ -120,7 +119,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT); // define LED GPIO as output
   digitalWrite(LED_BUILTIN, HIGH); // turn off LED on bootup
 
-  Serial.begin(BAUD_RATE);
+  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

@@ -54,6 +54,7 @@ void checkButtonPress() {
 
   if (actualMillis-lastBtnPress > 500) {
     if (digitalRead(BUTTON_PIN)==LOW) {
+      Serial.printf("Ding dong...\r\n");
       lastBtnPress = actualMillis;
 
       // get Doorbell device back
@@ -92,7 +93,7 @@ void setupSinricPro() {
 void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP); // BUTTIN_PIN as INPUT
 
-  Serial.begin(BAUD_RATE);
+  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }
