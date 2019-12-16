@@ -10,6 +10,7 @@
  *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#arduinoide
  *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#dependencies
  * - open serial monitor and check whats happening
+ * - check full user documentation at https://sinricpro.github.io/esp8266-esp32-sdk
  * - visit https://github.com/sinricpro/esp8266-esp32-sdk/issues and check for existing issues or open a new one
  */
 
@@ -101,12 +102,14 @@ void setupWiFi() {
 // setup function for SinricPro
 void setupSinricPro() {
   // add device to SinricPro
-  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>(SWITCH_ID);
+  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
 
   // set callback function to device
   mySwitch.onPowerState(onPowerState);
 
   // setup SinricPro
+  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
@@ -116,7 +119,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT); // define LED GPIO as output
   digitalWrite(LED_BUILTIN, HIGH); // turn off LED on bootup
 
-  Serial.begin(BAUD_RATE);
+  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

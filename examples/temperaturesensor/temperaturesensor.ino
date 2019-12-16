@@ -13,6 +13,7 @@
  *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#arduinoide
  *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#dependencies
  * - open serial monitor and check whats happening
+ * - check full user documentation at https://sinricpro.github.io/esp8266-esp32-sdk
  * - visit https://github.com/sinricpro/esp8266-esp32-sdk/issues and check for existing issues or open a new one
  */
 
@@ -138,13 +139,15 @@ void setupSinricPro() {
   mySensor.onPowerState(onPowerState);
 
   // setup SinricPro
+  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
   SinricPro.restoreDeviceStates(true); // get latest known deviceState from server (is device turned on?)
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE);
+  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   dht.setup(DHT_PIN);
 
   setupWiFi();

@@ -111,6 +111,7 @@ $(document).ready(function(){initNavTree('class_sinric_pro_class.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_sinric_pro_class-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -123,6 +124,15 @@ $(document).ready(function(){initNavTree('class_sinric_pro_class.html','');});
 
 <p>Inherits SinricProInterface.</p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a4d7d8547a83d53c20cbd9aa7768e99f5"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(void)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_class.html#a4d7d8547a83d53c20cbd9aa7768e99f5">ConnectedCallbackHandler</a></td></tr>
+<tr class="memdesc:a4d7d8547a83d53c20cbd9aa7768e99f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onConnected function.  <a href="class_sinric_pro_class.html#a4d7d8547a83d53c20cbd9aa7768e99f5">More...</a><br /></td></tr>
+<tr class="separator:a4d7d8547a83d53c20cbd9aa7768e99f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad84930f3c26ac3692cc885be197d39c7"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(void)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_class.html#ad84930f3c26ac3692cc885be197d39c7">DisconnectedCallbackHandler</a></td></tr>
+<tr class="memdesc:ad84930f3c26ac3692cc885be197d39c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onDisconnected function.  <a href="class_sinric_pro_class.html#ad84930f3c26ac3692cc885be197d39c7">More...</a><br /></td></tr>
+<tr class="separator:ad84930f3c26ac3692cc885be197d39c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a57722dec8f1f987f57c8fff9eed66765"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_class.html#a57722dec8f1f987f57c8fff9eed66765">begin</a> (String socketAuthToken, String signingKey, String serverURL=SINRICPRO_SERVER_URL)</td></tr>
@@ -131,6 +141,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a37c2d0658e498b1bf878f8a3d9a7c5b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_class.html#a37c2d0658e498b1bf878f8a3d9a7c5b4">handle</a> ()</td></tr>
 <tr class="memdesc:a37c2d0658e498b1bf878f8a3d9a7c5b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles communication between device and <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server.  <a href="class_sinric_pro_class.html#a37c2d0658e498b1bf878f8a3d9a7c5b4">More...</a><br /></td></tr>
 <tr class="separator:a37c2d0658e498b1bf878f8a3d9a7c5b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac33a355adfc413d4ff36974d735115bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_class.html#ac33a355adfc413d4ff36974d735115bd">onConnected</a> (<a class="el" href="class_sinric_pro_class.html#a4d7d8547a83d53c20cbd9aa7768e99f5">ConnectedCallbackHandler</a> cb)</td></tr>
+<tr class="memdesc:ac33a355adfc413d4ff36974d735115bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for websocket connected event.  <a href="class_sinric_pro_class.html#ac33a355adfc413d4ff36974d735115bd">More...</a><br /></td></tr>
+<tr class="separator:ac33a355adfc413d4ff36974d735115bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a654bb017ca55b448d55bb36e0346f38a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_class.html#a654bb017ca55b448d55bb36e0346f38a">onDisconnected</a> (<a class="el" href="class_sinric_pro_class.html#ad84930f3c26ac3692cc885be197d39c7">DisconnectedCallbackHandler</a> cb)</td></tr>
+<tr class="memdesc:a654bb017ca55b448d55bb36e0346f38a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for websocket disconnected event.  <a href="class_sinric_pro_class.html#a654bb017ca55b448d55bb36e0346f38a">More...</a><br /></td></tr>
+<tr class="separator:a654bb017ca55b448d55bb36e0346f38a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27a9bb7f1e8bde0f39398649493b6f93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_class.html#a27a9bb7f1e8bde0f39398649493b6f93">restoreDeviceStates</a> (bool flag)</td></tr>
 <tr class="memdesc:a27a9bb7f1e8bde0f39398649493b6f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable / disable restore device states function.  <a href="class_sinric_pro_class.html#a27a9bb7f1e8bde0f39398649493b6f93">More...</a><br /></td></tr>
 <tr class="separator:a27a9bb7f1e8bde0f39398649493b6f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,7 +156,54 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The main class of this library, handling communication between <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server and your devices. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a4d7d8547a83d53c20cbd9aa7768e99f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d7d8547a83d53c20cbd9aa7768e99f5">&#9670;&nbsp;</a></span>ConnectedCallbackHandler</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;void(void)&gt; <a class="el" href="class_sinric_pro_class.html#a4d7d8547a83d53c20cbd9aa7768e99f5">ConnectedCallbackHandler</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onConnected function. </p>
+<p>Gets called when device is connected to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">void</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a id="ad84930f3c26ac3692cc885be197d39c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad84930f3c26ac3692cc885be197d39c7">&#9670;&nbsp;</a></span>DisconnectedCallbackHandler</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;void(void)&gt; <a class="el" href="class_sinric_pro_class.html#ad84930f3c26ac3692cc885be197d39c7">DisconnectedCallbackHandler</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onDisconnected function. </p>
+<p>Gets called when device is disconnected from <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">void</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a57722dec8f1f987f57c8fff9eed66765"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57722dec8f1f987f57c8fff9eed66765">&#9670;&nbsp;</a></span>begin()</h2>
 
@@ -220,6 +283,68 @@ Example-Code</h1>
 <div class="line">  <a class="code" href="class_sinric_pro.html">SinricPro</a>.handle();</div>
 <div class="line">}</div>
 </div><!-- fragment --> 
+</div>
+</div>
+<a id="ac33a355adfc413d4ff36974d735115bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac33a355adfc413d4ff36974d735115bd">&#9670;&nbsp;</a></span>onConnected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onConnected </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_class.html#a4d7d8547a83d53c20cbd9aa7768e99f5">ConnectedCallbackHandler</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for websocket connected event. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>ConnectedCallbackHandler</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_class.html#a4d7d8547a83d53c20cbd9aa7768e99f5" title="Callback definition for onConnected function.">ConnectedCallbackHandler</a> </dd></dl>
+<h1><a class="anchor" id="onConnected"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line">  <a class="code" href="class_sinric_pro.html">SinricPro</a>.onConnected([](){ Serial.printf(<span class="stringliteral">&quot;Connected to SinricPro\r\n&quot;</span>); }); </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a654bb017ca55b448d55bb36e0346f38a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a654bb017ca55b448d55bb36e0346f38a">&#9670;&nbsp;</a></span>onDisconnected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onDisconnected </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_class.html#ad84930f3c26ac3692cc885be197d39c7">DisconnectedCallbackHandler</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for websocket disconnected event. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>DisconnectedCallbackHandler</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_class.html#ad84930f3c26ac3692cc885be197d39c7" title="Callback definition for onDisconnected function.">DisconnectedCallbackHandler</a> </dd></dl>
+<h1><a class="anchor" id="onDisconnected"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line">  <a class="code" href="class_sinric_pro.html">SinricPro</a>.onDisconnected([](){ Serial.printf(<span class="stringliteral">&quot;Disconnected from SinricPro\r\n&quot;</span>); });</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a5df2137b8d06e894c917fd28c35c31a4"></a>

@@ -9,6 +9,7 @@
  *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#arduinoide
  *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#dependencies
  * - open serial monitor and check whats happening
+ * - check full user documentation at https://sinricpro.github.io/esp8266-esp32-sdk
  * - visit https://github.com/sinricpro/esp8266-esp32-sdk/issues and check for existing issues or open a new one
  */
 
@@ -169,12 +170,14 @@ void setupSinricPro() {
   myTV.onSkipChannels(onSkipChannels);
 
   // setup SinricPro
+  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE);
+  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   Serial.printf("%d channels configured\r\n", MAX_CHANNELS);
 
   setupWiFi();

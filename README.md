@@ -1,13 +1,13 @@
 
 # SinricPro (ESP8266 / ESP32 SDK)
-## Version 2.2.6
+## Version 2.2.7
 ## Installation
 
 ### VS Code & PlatformIO:
 1. Install [VS Code](https://code.visualstudio.com/)  
 2. Install [PlatformIO](https://platformio.org/platformio-ide)  
 3. Install **SinricPro** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)  
-4. Use included [platformio.ini](https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/pio-examples/switch/platformio.ini) files from [examples](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples) to ensure that all dependent libraries will installed automaticly.
+4. Use included [platformio.ini](examples/platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automaticly.
 
 ![sinricpro library manager](https://raw.githubusercontent.com/sinricpro/images/master/platformio-install-sinricpro.png)
 
@@ -28,13 +28,7 @@
 ---
 
 ## Examples
-|PlatformIO|Arduino|
-|:--:|:--:|
-| [Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/switch) |[Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Switch)|
-| [Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/doorbell)|[Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)|
-| - | [Lock](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/GarageDoor)|
-| [TemperatureSensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/temperaturesensor) |[TemperatureSensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/temperaturesensor)|
-| [TV](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/pio-examples/tv) | [TV](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/tv)
+See [examples](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples) on GitHub
 
 ---
 
@@ -127,5 +121,5 @@ Example 1
 ---
 
 # Full user documentation
-Please see full user documentation here https://sinricpro.github.io/esp8266-esp32-sdk
+Please see here for [full user documentation](https://sinricpro.github.io/esp8266-esp32-sdk)
 

@@ -8,6 +8,7 @@
  *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#arduinoide
  *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#dependencies
  * - open serial monitor and check whats happening
+ * - check full user documentation at https://sinricpro.github.io/esp8266-esp32-sdk
  * - visit https://github.com/sinricpro/esp8266-esp32-sdk/issues and check for existing issues or open a new one
  */
 
@@ -164,15 +165,19 @@ void setupSinricPro() {
   SinricProLock &garageDoor = SinricPro[GARAGEDOOR_ID];
   garageDoor.onLockState(onLockState);
 
+  // setup SinricPro
+  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 void setup() {
-  Serial.begin(BAUD_RATE);
   pinMode(RELAY, OUTPUT); 
   pinMode(ENDSTOP_OPEN, INPUT); 
   pinMode(ENDSTOP_CLOSED, INPUT);
   lastDoorState = getDoorState();
+
+  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

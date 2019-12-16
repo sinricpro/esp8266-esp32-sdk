@@ -32,9 +32,24 @@ class SinricProClass : public SinricProInterface {
     void stop();
     bool isConnected();
 
-    typedef std::function<void(void)> ConnectCallbackHandler;
-    void onConnected(ConnectCallbackHandler cb);
-    void onDisconnected(ConnectCallbackHandler cb);
+    /**
+     * @brief Callback definition for onConnected function
+     * 
+     * Gets called when device is connected to SinricPro server
+     * @param void
+     * @return void
+     */
+    typedef std::function<void(void)> ConnectedCallbackHandler;
+    /**
+     * @brief Callback definition for onDisconnected function
+     * 
+     * Gets called when device is disconnected from SinricPro server
+     * @param void
+     * @return void
+     */
+    typedef std::function<void(void)> DisconnectedCallbackHandler;
+    void onConnected(ConnectedCallbackHandler cb);
+    void onDisconnected(DisconnectedCallbackHandler cb);
 
     void restoreDeviceStates(bool flag);
 
@@ -395,12 +410,29 @@ bool SinricProClass::isConnected() {
   return _websocketListener.isConnected();
 };
 
-
-void SinricProClass::onConnected(ConnectCallbackHandler cb) {
+/**
+ * @brief Set callback function for websocket connected event
+ * 
+ * @param cb Function pointer to a `ConnectedCallbackHandler` function
+ * @return void
+ * @see ConnectedCallbackHandler
+ * @section onConnected Example-Code
+ * @snippet callbacks.cpp onConnected
+ **/
+void SinricProClass::onConnected(ConnectedCallbackHandler cb) {
   _websocketListener.onConnected(cb);
 }
 
-void SinricProClass::onDisconnected(ConnectCallbackHandler cb) {
+/**
+ * @brief Set callback function for websocket disconnected event
+ * 
+ * @param cb Function pointer to a `DisconnectedCallbackHandler` function
+ * @return void
+ * @see DisconnectedCallbackHandler
+ * @section onDisconnected Example-Code
+ * @snippet callbacks.cpp onDisconnected
+ **/
+void SinricProClass::onDisconnected(DisconnectedCallbackHandler cb) {
   _websocketListener.onDisconnected(cb);
 }
 

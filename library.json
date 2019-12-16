@@ -13,17 +13,14 @@
       "maintainer": true
     }
   ],
-  "version": "2.2.6",
+  "version": "2.2.7",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",
     "espressif32"
   ],
   "examples":[
-    "pio-examples/switch/src/switch.cpp",
-    "pio-examples/doorbell/src/doorbell.cpp",
-    "pio-examples/temperaturesensor/src/temperaturesensor.cpp",
-    "pio-examples/tv/src/tv.cpp"
+    "examples/*/*.ino"
   ],
   "license": "CC-BY-SA-4.0"
 }

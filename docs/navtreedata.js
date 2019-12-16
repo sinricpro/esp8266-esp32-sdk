@@ -24,7 +24,7 @@ var NAVTREE =
 [
   [ "SinricPro Library", "index.html", [
     [ "SinricPro (ESP8266 / ESP32 SDK)", "index.html", [
-      [ "Version 2.2.6", "index.html#autotoc_md1", null ],
+      [ "Version 2.2.7", "index.html#autotoc_md1", null ],
       [ "Installation", "index.html#autotoc_md2", [
         [ "VS Code & PlatformIO:", "index.html#autotoc_md3", null ],
         [ "ArduinoIDE", "index.html#autotoc_md4", null ]

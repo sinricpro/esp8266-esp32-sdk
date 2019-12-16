@@ -368,3 +368,11 @@ bool onSelectInput(const String &deviceId, String &input) {
   return true;
 }
 //! [onSelectInput]
+
+//! [onConnected]
+  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
+//! [onConnected]
+
+//! [onDisconnected]
+  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+//! [onDisconnected]
