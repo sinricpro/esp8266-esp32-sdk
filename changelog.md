@@ -1,5 +1,21 @@
 # Changelog
 
+## Version 2.2.7
+
+New:
+- Examples
+  - Dimmable Switch
+  - Light
+  - Speaker
+
+Updated:
+- User documentation
+  - added SinricPro.onConnected() / SinricPro.onDisconnected()
+
+Fixed:
+- Examples
+  - Some examples didn't use BAUD_RATE
+
 ## Version 2.2.6
 
 New:
