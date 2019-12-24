@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['increasecolortemperaturecallback_184',['IncreaseColorTemperatureCallback',['../class_sinric_pro_light.html#ac29cb175180abefcc181191de6be6c9f',1,'SinricProLight']]]
+  ['increasecolortemperaturecallback_203',['IncreaseColorTemperatureCallback',['../class_sinric_pro_light.html#ac29cb175180abefcc181191de6be6c9f',1,'SinricProLight']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SinricPro Library: SinricProLock</title>
+<title>SinricPro Library: SinricProBlinds</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -91,7 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('class_sinric_pro_lock.html','');});
+$(document).ready(function(){initNavTree('class_sinric_pro_blinds.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -113,41 +113,47 @@ $(document).ready(function(){initNavTree('class_sinric_pro_lock.html','');});
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="class_sinric_pro_lock-members.html">List of all members</a>  </div>
+<a href="class_sinric_pro_blinds-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SinricProLock</div>  </div>
+<div class="title">SinricProBlinds</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Device to control a smart lock.  
- <a href="class_sinric_pro_lock.html#details">More...</a></p>
+<p>Device to control interior blinds.  
+ <a href="class_sinric_pro_blinds.html#details">More...</a></p>
 <div class="dynheader">
-Inheritance diagram for SinricProLock:</div>
+Inheritance diagram for SinricProBlinds:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="class_sinric_pro_lock.png" usemap="#SinricProLock_map" alt=""/>
-  <map id="SinricProLock_map" name="SinricProLock_map">
+  <img src="class_sinric_pro_blinds.png" usemap="#SinricProBlinds_map" alt=""/>
+  <map id="SinricProBlinds_map" name="SinricProBlinds_map">
 <area href="class_sinric_pro_device.html" title="Base class for all device types." alt="SinricProDevice" shape="rect" coords="0,0,105,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a2e4171a3cfcd3a87584fc114782ed4d8"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, bool &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8">LockStateCallback</a></td></tr>
-<tr class="memdesc:a2e4171a3cfcd3a87584fc114782ed4d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onLockState function.  <a href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8">More...</a><br /></td></tr>
-<tr class="separator:a2e4171a3cfcd3a87584fc114782ed4d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a191ba7fd2f28b1892bc8ba7374089285"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, int &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285">SetPositionCallback</a></td></tr>
+<tr class="memdesc:a191ba7fd2f28b1892bc8ba7374089285"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onSetPosition function.  <a href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285">More...</a><br /></td></tr>
+<tr class="separator:a191ba7fd2f28b1892bc8ba7374089285"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f6fdf591b948dc44154c33df5b8fb97"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, int &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_blinds.html#a4f6fdf591b948dc44154c33df5b8fb97">AdjustPositionCallback</a></td></tr>
+<tr class="memdesc:a4f6fdf591b948dc44154c33df5b8fb97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onAdjustPosition function.  <a href="class_sinric_pro_blinds.html#a4f6fdf591b948dc44154c33df5b8fb97">More...</a><br /></td></tr>
+<tr class="separator:a4f6fdf591b948dc44154c33df5b8fb97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, bool &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a></td></tr>
 <tr class="memdesc:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onPowerState function.  <a href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">More...</a><br /></td></tr>
 <tr class="separator:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aee42cc397234a454fd353ca6bc12a859"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_lock.html#aee42cc397234a454fd353ca6bc12a859">onLockState</a> (<a class="el" href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8">LockStateCallback</a> cb)</td></tr>
-<tr class="memdesc:aee42cc397234a454fd353ca6bc12a859"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>setLockState</code> request.  <a href="class_sinric_pro_lock.html#aee42cc397234a454fd353ca6bc12a859">More...</a><br /></td></tr>
-<tr class="separator:aee42cc397234a454fd353ca6bc12a859"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3795d2fa1b8474239f46493915e70f1c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_lock.html#a3795d2fa1b8474239f46493915e70f1c">sendLockStateEvent</a> (bool state, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
-<tr class="memdesc:a3795d2fa1b8474239f46493915e70f1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>lockState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual lock state.  <a href="class_sinric_pro_lock.html#a3795d2fa1b8474239f46493915e70f1c">More...</a><br /></td></tr>
-<tr class="separator:a3795d2fa1b8474239f46493915e70f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e67c0c58e46d4e0ad1b811df1119cde"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_blinds.html#a5e67c0c58e46d4e0ad1b811df1119cde">onSetPosition</a> (<a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285">SetPositionCallback</a> cb)</td></tr>
+<tr class="memdesc:a5e67c0c58e46d4e0ad1b811df1119cde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>setPosition</code> request.  <a href="class_sinric_pro_blinds.html#a5e67c0c58e46d4e0ad1b811df1119cde">More...</a><br /></td></tr>
+<tr class="separator:a5e67c0c58e46d4e0ad1b811df1119cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02b6fde78fad6ca77d5b14286199bad9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_blinds.html#a02b6fde78fad6ca77d5b14286199bad9">onAdjustPosition</a> (<a class="el" href="class_sinric_pro_blinds.html#a4f6fdf591b948dc44154c33df5b8fb97">AdjustPositionCallback</a> cb)</td></tr>
+<tr class="memdesc:a02b6fde78fad6ca77d5b14286199bad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>adjustPosition</code> request.  <a href="class_sinric_pro_blinds.html#a02b6fde78fad6ca77d5b14286199bad9">More...</a><br /></td></tr>
+<tr class="separator:a02b6fde78fad6ca77d5b14286199bad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd759f3d5859aee024c587a596378f46"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_blinds.html#afd759f3d5859aee024c587a596378f46">sendPositionEvent</a> (int position, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
+<tr class="memdesc:afd759f3d5859aee024c587a596378f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>setPosition</code> event to update actual position on <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server.  <a href="class_sinric_pro_blinds.html#afd759f3d5859aee024c587a596378f46">More...</a><br /></td></tr>
+<tr class="separator:afd759f3d5859aee024c587a596378f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32f3257da431a1035f23a265ff0cc4cf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a> (<a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a> cb)</td></tr>
 <tr class="memdesc:a32f3257da431a1035f23a265ff0cc4cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>powerState</code> request.  <a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">More...</a><br /></td></tr>
 <tr class="separator:a32f3257da431a1035f23a265ff0cc4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,33 +162,71 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8006e256414deac0f9a4e28774b47773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Device to control a smart lock. </p>
+<div class="textblock"><p>Device to control interior blinds. </p>
 <p>Supporting</p><ul>
-<li>on / off</li>
-<li>lock / unlock </li>
+<li>On / Off</li>
+<li>Position (0..100)</li>
+<li>open / close </li>
 </ul>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a2e4171a3cfcd3a87584fc114782ed4d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e4171a3cfcd3a87584fc114782ed4d8">&#9670;&nbsp;</a></span>LockStateCallback</h2>
+<a id="a191ba7fd2f28b1892bc8ba7374089285"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a191ba7fd2f28b1892bc8ba7374089285">&#9670;&nbsp;</a></span>SetPositionCallback</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, bool&amp;)&gt; <a class="el" href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8">LockStateCallback</a></td>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285">SetPositionCallback</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Callback definition for onLockState function. </p>
-<p>Gets called when device receive a <code>setLockState</code> request <br  />
+<p>Callback definition for onSetPosition function. </p>
+<p>Gets called when device receive a <code>setPosition</code> request <br  />
 </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td><code>true</code> = device is requested to lock <br  />
- <code>false</code> = device is requested to unlock </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">state</td><td><code>true</code> = device has been locked <br  />
- <code>false</code> = device has been unlocked </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>Absolute integer value with desired blinds position </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>Absolute integer value with actual blinds position </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="SetPositionCallback"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_blinds.html#a5e67c0c58e46d4e0ad1b811df1119cde">onSetPosition</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;position) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s set position to %d\r\n&quot;</span>, deviceId.c_str(), position);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a4f6fdf591b948dc44154c33df5b8fb97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f6fdf591b948dc44154c33df5b8fb97">&#9670;&nbsp;</a></span>AdjustPositionCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_blinds.html#a4f6fdf591b948dc44154c33df5b8fb97">AdjustPositionCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onAdjustPosition function. </p>
+<p>Gets called when device receive a <code>setPowerState</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">positionDelta</td><td>Relative integer value the device should change the position of the blinds about (-100..+100) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">positionDelta</td><td>Absolute integer value with the new blinds position (0..100) </td></tr>
   </table>
   </dd>
 </dl>
@@ -194,13 +238,17 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<h1><a class="anchor" id="LockStateCallback"></a>
+<h1><a class="anchor" id="AdjustPositionCallback"></a>
 Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_lock.html#aee42cc397234a454fd353ca6bc12a859">onLockState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;lockState) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device is %s\r\n&quot;</span>, lockState?<span class="stringliteral">&quot;locked&quot;</span>:<span class="stringliteral">&quot;unlocked&quot;</span>);</div>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> blindsPosition;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_blinds.html#a02b6fde78fad6ca77d5b14286199bad9">onAdjustPosition</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;positionDelta) {</div>
+<div class="line">  blindsPosition += positionDelta;</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s position changed about %i to %d\r\n&quot;</span>, deviceId.c_str(), positionDelta, blindsPosition);</div>
+<div class="line">  positionDelta = blindsPosition;</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
-</div><!-- fragment --> 
+</div><!-- fragment -->
 </div>
 </div>
 <a id="aa9db92ebe40a0df6deb43eba70d3dea3"></a>
@@ -245,7 +293,7 @@ Example-Code</h1>
 </dl>
 <h1><a class="anchor" id="PowerStateCallback"></a>
 Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> onPowerState(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
@@ -253,45 +301,73 @@ Example-Code</h1>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aee42cc397234a454fd353ca6bc12a859"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee42cc397234a454fd353ca6bc12a859">&#9670;&nbsp;</a></span>onLockState()</h2>
+<a id="a5e67c0c58e46d4e0ad1b811df1119cde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e67c0c58e46d4e0ad1b811df1119cde">&#9670;&nbsp;</a></span>onSetPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void onLockState </td>
+          <td class="memname">void onSetPosition </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8">LockStateCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285">SetPositionCallback</a>&#160;</td>
           <td class="paramname"><em>cb</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set callback function for <code>setLockState</code> request. </p>
+<p>Set callback function for <code>setPosition</code> request. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>LockStateCallback</code> function </td></tr>
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SetPositionCallback</code> function </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8" title="Callback definition for onLockState function.">LockStateCallback</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285" title="Callback definition for onSetPosition function.">SetPositionCallback</a> </dd></dl>
 
 </div>
 </div>
-<a id="a3795d2fa1b8474239f46493915e70f1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3795d2fa1b8474239f46493915e70f1c">&#9670;&nbsp;</a></span>sendLockStateEvent()</h2>
+<a id="a02b6fde78fad6ca77d5b14286199bad9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02b6fde78fad6ca77d5b14286199bad9">&#9670;&nbsp;</a></span>onAdjustPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sendLockStateEvent </td>
+          <td class="memname">void onAdjustPosition </td>
           <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>state</em>, </td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_blinds.html#a4f6fdf591b948dc44154c33df5b8fb97">AdjustPositionCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>adjustPosition</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>AdjustPositionCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_blinds.html#a4f6fdf591b948dc44154c33df5b8fb97" title="Callback definition for onAdjustPosition function.">AdjustPositionCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="afd759f3d5859aee024c587a596378f46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd759f3d5859aee024c587a596378f46">&#9670;&nbsp;</a></span>sendPositionEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendPositionEvent </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -307,11 +383,11 @@ Example-Code</h1>
       </table>
 </div><div class="memdoc">
 
-<p>Send <code>lockState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual lock state. </p>
+<p>Send <code>setPosition</code> event to update actual position on <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td><code>true</code> = device is locked <br  />
- <code>false</code> = device is unlocked </td></tr>
+    <tr><td class="paramname">position</td><td><code>0</code> = blinds are closed <br  />
+ <code>100</code> = blinds are open </td></tr>
     <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>
   </dd>
@@ -319,8 +395,7 @@ Example-Code</h1>
 <dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
-    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
-    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+    <tr><td class="paramname">0..100</td><td>actual blinds position </td></tr>
   </table>
   </dd>
 </dl>
@@ -419,11 +494,13 @@ Example-Code</h1>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_sinric_pro_lock_html_aee42cc397234a454fd353ca6bc12a859"><div class="ttname"><a href="class_sinric_pro_lock.html#aee42cc397234a454fd353ca6bc12a859">SinricProLock::onLockState</a></div><div class="ttdeci">void onLockState(LockStateCallback cb)</div><div class="ttdoc">Set callback function for setLockState request.</div><div class="ttdef"><b>Definition:</b> SinricProLock.h:83</div></div>
+<div class="ttc" id="aclass_sinric_pro_blinds_html_a5e67c0c58e46d4e0ad1b811df1119cde"><div class="ttname"><a href="class_sinric_pro_blinds.html#a5e67c0c58e46d4e0ad1b811df1119cde">SinricProBlinds::onSetPosition</a></div><div class="ttdeci">void onSetPosition(SetPositionCallback cb)</div><div class="ttdoc">Set callback function for setPosition request.</div><div class="ttdef"><b>Definition:</b> SinricProBlinds.h:105</div></div>
+<div class="ttc" id="aclass_sinric_pro_blinds_html_a02b6fde78fad6ca77d5b14286199bad9"><div class="ttname"><a href="class_sinric_pro_blinds.html#a02b6fde78fad6ca77d5b14286199bad9">SinricProBlinds::onAdjustPosition</a></div><div class="ttdeci">void onAdjustPosition(AdjustPositionCallback cb)</div><div class="ttdoc">Set callback function for adjustPosition request.</div><div class="ttdef"><b>Definition:</b> SinricProBlinds.h:116</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:139</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="class_sinric_pro_lock.html">SinricProLock</a></li>
+    <li class="navelem"><a class="el" href="class_sinric_pro_blinds.html">SinricProBlinds</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>

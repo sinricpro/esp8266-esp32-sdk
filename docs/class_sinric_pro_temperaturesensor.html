@@ -202,6 +202,58 @@ Example-Code</h1>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9545808dacd9efc40a05f16e09d79b4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9545808dacd9efc40a05f16e09d79b4e">&#9670;&nbsp;</a></span>sendTemperatureEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendTemperatureEvent </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>temperature</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>humidity</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PERIODIC_POLL&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sending current temperature and humidity to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">temperature</td><td>float representing current temperature </td></tr>
+    <tr><td class="paramname">humidity</td><td>(optional) float representing current humidity (default = <code>-1</code> meaning not supported) </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PERIODIC_POLL"</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of sending the event </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
+    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
 
@@ -282,58 +334,6 @@ Example-Code</h1>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
-    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a9545808dacd9efc40a05f16e09d79b4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9545808dacd9efc40a05f16e09d79b4e">&#9670;&nbsp;</a></span>sendTemperatureEvent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sendTemperatureEvent </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>temperature</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>humidity</em> = <code>-1</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>cause</em> = <code>&quot;PERIODIC_POLL&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sending current temperature and humidity to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">temperature</td><td>float representing current temperature </td></tr>
-    <tr><td class="paramname">humidity</td><td>(optional) float representing current humidity (default = <code>-1</code> meaning not supported) </td></tr>
-    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PERIODIC_POLL"</code>) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of sending the event </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>

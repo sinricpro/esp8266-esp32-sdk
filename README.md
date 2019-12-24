@@ -1,5 +1,5 @@
 
-# SinricPro (ESP8266 / ESP32 SDK)
+# SinricPro (ESP8266 / ESP32 SDK) {#mainpage}
 
 ## Installation
 
@@ -117,6 +117,8 @@ Example 1
 * Motionsensor
 * Contactsensor
 * Windows Air Conditioner
+* Interior Blinds
+* Garage Door
 
 ---
 

@@ -165,6 +165,45 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Device which supports on / off and dimming commands. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="afbdda289acfd7d72c03bab3b69b42afd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbdda289acfd7d72c03bab3b69b42afd">&#9670;&nbsp;</a></span>SetPowerLevelCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd">SetPowerLevelCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition for setPowerLevel callback. </p>
+<p>Gets called when device receive a <code>setPowerLevel</code> reuqest <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">powerLevel</td><td>integer <code>0..100</code> new powerlevel the device should be set to </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">powerLevel</td><td>integer <code>0..100</code> report the powerlevel that the device have been set to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="SetPowerLevelCallback"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">onPowerLevel</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;powerLevel) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s powerlevel %d\r\n&quot;</span>, deviceId.c_str(), powerLevel);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a014ffde9f69bdc85629806073ee1ab7a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a014ffde9f69bdc85629806073ee1ab7a">&#9670;&nbsp;</a></span>AdjustPowerLevelCallback</h2>
 
@@ -257,73 +296,7 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="afbdda289acfd7d72c03bab3b69b42afd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbdda289acfd7d72c03bab3b69b42afd">&#9670;&nbsp;</a></span>SetPowerLevelCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd">SetPowerLevelCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition for setPowerLevel callback. </p>
-<p>Gets called when device receive a <code>setPowerLevel</code> reuqest <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">powerLevel</td><td>integer <code>0..100</code> new powerlevel the device should be set to </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">powerLevel</td><td>integer <code>0..100</code> report the powerlevel that the device have been set to </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="SetPowerLevelCallback"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">onPowerLevel</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;powerLevel) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s powerlevel %d\r\n&quot;</span>, deviceId.c_str(), powerLevel);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a13b10bdb1844babe4de320fff9172d96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13b10bdb1844babe4de320fff9172d96">&#9670;&nbsp;</a></span>onAdjustPowerLevel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onAdjustPowerLevel </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a">AdjustPowerLevelCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set callback function for adjustPowerLevel request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a AdjustPowerLevelCallback function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a" title="Definition for onAdjustPowerLevel callback.">AdjustPowerLevelCallback</a> </dd></dl>
-
-</div>
-</div>
 <a id="a0685d34694badb4442fed6b69b69b366"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0685d34694badb4442fed6b69b69b366">&#9670;&nbsp;</a></span>onPowerLevel()</h2>
 
@@ -351,39 +324,30 @@ Example-Code</h1>
 
 </div>
 </div>
-<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
+<a id="a13b10bdb1844babe4de320fff9172d96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13b10bdb1844babe4de320fff9172d96">&#9670;&nbsp;</a></span>onAdjustPowerLevel()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void onPowerState </td>
+          <td class="memname">void onAdjustPowerLevel </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a">AdjustPowerLevelCallback</a>&#160;</td>
           <td class="paramname"><em>cb</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Set callback function for <code>powerState</code> request. </p>
+<p>Set callback function for adjustPowerLevel request. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
+    <tr><td class="paramname">cb</td><td>Function pointer to a AdjustPowerLevelCallback function </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a" title="Definition for onAdjustPowerLevel callback.">AdjustPowerLevelCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -429,6 +393,42 @@ Example-Code</h1>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onPowerState </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>powerState</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
 
 </div>
 </div>

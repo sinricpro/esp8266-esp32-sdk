@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SinricPro Library: SinricProLock</title>
+<title>SinricPro Library: SinricProGarageDoor</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -91,7 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('class_sinric_pro_lock.html','');});
+$(document).ready(function(){initNavTree('class_sinric_pro_garage_door.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -113,41 +113,41 @@ $(document).ready(function(){initNavTree('class_sinric_pro_lock.html','');});
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="class_sinric_pro_lock-members.html">List of all members</a>  </div>
+<a href="class_sinric_pro_garage_door-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SinricProLock</div>  </div>
+<div class="title">SinricProGarageDoor</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Device to control a smart lock.  
- <a href="class_sinric_pro_lock.html#details">More...</a></p>
+<p>Device to control a garage door.  
+ <a href="class_sinric_pro_garage_door.html#details">More...</a></p>
 <div class="dynheader">
-Inheritance diagram for SinricProLock:</div>
+Inheritance diagram for SinricProGarageDoor:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="class_sinric_pro_lock.png" usemap="#SinricProLock_map" alt=""/>
-  <map id="SinricProLock_map" name="SinricProLock_map">
-<area href="class_sinric_pro_device.html" title="Base class for all device types." alt="SinricProDevice" shape="rect" coords="0,0,105,24"/>
+  <img src="class_sinric_pro_garage_door.png" usemap="#SinricProGarageDoor_map" alt=""/>
+  <map id="SinricProGarageDoor_map" name="SinricProGarageDoor_map">
+<area href="class_sinric_pro_device.html" title="Base class for all device types." alt="SinricProDevice" shape="rect" coords="0,0,135,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a2e4171a3cfcd3a87584fc114782ed4d8"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, bool &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8">LockStateCallback</a></td></tr>
-<tr class="memdesc:a2e4171a3cfcd3a87584fc114782ed4d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onLockState function.  <a href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8">More...</a><br /></td></tr>
-<tr class="separator:a2e4171a3cfcd3a87584fc114782ed4d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8524794a3d38942734bde01accfda35"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, bool &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_garage_door.html#ad8524794a3d38942734bde01accfda35">DoorStateCallback</a></td></tr>
+<tr class="memdesc:ad8524794a3d38942734bde01accfda35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onDoorState function.  <a href="class_sinric_pro_garage_door.html#ad8524794a3d38942734bde01accfda35">More...</a><br /></td></tr>
+<tr class="separator:ad8524794a3d38942734bde01accfda35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, bool &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a></td></tr>
 <tr class="memdesc:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onPowerState function.  <a href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">More...</a><br /></td></tr>
 <tr class="separator:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aee42cc397234a454fd353ca6bc12a859"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_lock.html#aee42cc397234a454fd353ca6bc12a859">onLockState</a> (<a class="el" href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8">LockStateCallback</a> cb)</td></tr>
-<tr class="memdesc:aee42cc397234a454fd353ca6bc12a859"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>setLockState</code> request.  <a href="class_sinric_pro_lock.html#aee42cc397234a454fd353ca6bc12a859">More...</a><br /></td></tr>
-<tr class="separator:aee42cc397234a454fd353ca6bc12a859"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3795d2fa1b8474239f46493915e70f1c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_lock.html#a3795d2fa1b8474239f46493915e70f1c">sendLockStateEvent</a> (bool state, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
-<tr class="memdesc:a3795d2fa1b8474239f46493915e70f1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>lockState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual lock state.  <a href="class_sinric_pro_lock.html#a3795d2fa1b8474239f46493915e70f1c">More...</a><br /></td></tr>
-<tr class="separator:a3795d2fa1b8474239f46493915e70f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59356168d81599b360924cd65c8cc4c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_garage_door.html#a59356168d81599b360924cd65c8cc4c1">onDoorState</a> (<a class="el" href="class_sinric_pro_garage_door.html#ad8524794a3d38942734bde01accfda35">DoorStateCallback</a> cb)</td></tr>
+<tr class="memdesc:a59356168d81599b360924cd65c8cc4c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>onDoorState</code> request.  <a href="class_sinric_pro_garage_door.html#a59356168d81599b360924cd65c8cc4c1">More...</a><br /></td></tr>
+<tr class="separator:a59356168d81599b360924cd65c8cc4c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7b3691937fdc92779cee8a4baab739f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_garage_door.html#ab7b3691937fdc92779cee8a4baab739f">sendDoorStateEvent</a> (bool mode, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
+<tr class="memdesc:ab7b3691937fdc92779cee8a4baab739f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>DoorState</code> event to update actual door state on <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server.  <a href="class_sinric_pro_garage_door.html#ab7b3691937fdc92779cee8a4baab739f">More...</a><br /></td></tr>
+<tr class="separator:ab7b3691937fdc92779cee8a4baab739f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32f3257da431a1035f23a265ff0cc4cf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a> (<a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a> cb)</td></tr>
 <tr class="memdesc:a32f3257da431a1035f23a265ff0cc4cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>powerState</code> request.  <a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">More...</a><br /></td></tr>
 <tr class="separator:a32f3257da431a1035f23a265ff0cc4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,33 +156,31 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8006e256414deac0f9a4e28774b47773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Device to control a smart lock. </p>
+<div class="textblock"><p>Device to control a garage door. </p>
 <p>Supporting</p><ul>
-<li>on / off</li>
-<li>lock / unlock </li>
+<li>open / close </li>
 </ul>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a2e4171a3cfcd3a87584fc114782ed4d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e4171a3cfcd3a87584fc114782ed4d8">&#9670;&nbsp;</a></span>LockStateCallback</h2>
+<a id="ad8524794a3d38942734bde01accfda35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8524794a3d38942734bde01accfda35">&#9670;&nbsp;</a></span>DoorStateCallback</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, bool&amp;)&gt; <a class="el" href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8">LockStateCallback</a></td>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, bool&amp;)&gt; <a class="el" href="class_sinric_pro_garage_door.html#ad8524794a3d38942734bde01accfda35">DoorStateCallback</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Callback definition for onLockState function. </p>
-<p>Gets called when device receive a <code>setLockState</code> request <br  />
+<p>Callback definition for onDoorState function. </p>
+<p>Gets called when device receive a <code>open</code> or <code>close</code> request <br  />
 </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td><code>true</code> = device is requested to lock <br  />
- <code>false</code> = device is requested to unlock </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">state</td><td><code>true</code> = device has been locked <br  />
- <code>false</code> = device has been unlocked </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">doorState</td><td><code>false</code> = open, device is requested to open the garage door <br  />
+<code>true</code> = close, device is requested to close the garage door </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">doorState</td><td>bool with actual state <code>false</code> = open, <code>true</code> = closed </td></tr>
   </table>
   </dd>
 </dl>
@@ -190,17 +188,17 @@ Public Member Functions</h2></td></tr>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
   </table>
   </dd>
 </dl>
-<h1><a class="anchor" id="LockStateCallback"></a>
+<h1><a class="anchor" id="DoorStateCallback"></a>
 Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_lock.html#aee42cc397234a454fd353ca6bc12a859">onLockState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;lockState) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device is %s\r\n&quot;</span>, lockState?<span class="stringliteral">&quot;locked&quot;</span>:<span class="stringliteral">&quot;unlocked&quot;</span>);</div>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_garage_door.html#a59356168d81599b360924cd65c8cc4c1">onDoorState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;doorState) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s garage door is now %s\r\n&quot;</span>, deviceId.c_str(), doorState?<span class="stringliteral">&quot;closed&quot;</span>:<span class="stringliteral">&quot;open&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
-</div><!-- fragment --> 
+</div><!-- fragment -->
 </div>
 </div>
 <a id="aa9db92ebe40a0df6deb43eba70d3dea3"></a>
@@ -253,42 +251,42 @@ Example-Code</h1>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aee42cc397234a454fd353ca6bc12a859"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee42cc397234a454fd353ca6bc12a859">&#9670;&nbsp;</a></span>onLockState()</h2>
+<a id="a59356168d81599b360924cd65c8cc4c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59356168d81599b360924cd65c8cc4c1">&#9670;&nbsp;</a></span>onDoorState()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void onLockState </td>
+          <td class="memname">void onDoorState </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8">LockStateCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_garage_door.html#ad8524794a3d38942734bde01accfda35">DoorStateCallback</a>&#160;</td>
           <td class="paramname"><em>cb</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set callback function for <code>setLockState</code> request. </p>
+<p>Set callback function for <code>onDoorState</code> request. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>LockStateCallback</code> function </td></tr>
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>onDoorState</code> function </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8" title="Callback definition for onLockState function.">LockStateCallback</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_garage_door.html#ad8524794a3d38942734bde01accfda35" title="Callback definition for onDoorState function.">DoorStateCallback</a> </dd></dl>
 
 </div>
 </div>
-<a id="a3795d2fa1b8474239f46493915e70f1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3795d2fa1b8474239f46493915e70f1c">&#9670;&nbsp;</a></span>sendLockStateEvent()</h2>
+<a id="ab7b3691937fdc92779cee8a4baab739f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7b3691937fdc92779cee8a4baab739f">&#9670;&nbsp;</a></span>sendDoorStateEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sendLockStateEvent </td>
+          <td class="memname">bool sendDoorStateEvent </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>state</em>, </td>
@@ -307,11 +305,11 @@ Example-Code</h1>
       </table>
 </div><div class="memdoc">
 
-<p>Send <code>lockState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual lock state. </p>
+<p>Send <code>DoorState</code> event to update actual door state on <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td><code>true</code> = device is locked <br  />
- <code>false</code> = device is unlocked </td></tr>
+    <tr><td class="paramname">state</td><td>bool <code>true</code> = close <br  />
+ <code>false</code> = open </td></tr>
     <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>
   </dd>
@@ -419,11 +417,11 @@ Example-Code</h1>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_sinric_pro_lock_html_aee42cc397234a454fd353ca6bc12a859"><div class="ttname"><a href="class_sinric_pro_lock.html#aee42cc397234a454fd353ca6bc12a859">SinricProLock::onLockState</a></div><div class="ttdeci">void onLockState(LockStateCallback cb)</div><div class="ttdoc">Set callback function for setLockState request.</div><div class="ttdef"><b>Definition:</b> SinricProLock.h:83</div></div>
+<div class="ttc" id="aclass_sinric_pro_garage_door_html_a59356168d81599b360924cd65c8cc4c1"><div class="ttname"><a href="class_sinric_pro_garage_door.html#a59356168d81599b360924cd65c8cc4c1">SinricProGarageDoor::onDoorState</a></div><div class="ttdeci">void onDoorState(DoorStateCallback cb)</div><div class="ttdoc">Set callback function for onDoorState request.</div><div class="ttdef"><b>Definition:</b> SinricProGarageDoor.h:84</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="class_sinric_pro_lock.html">SinricProLock</a></li>
+    <li class="navelem"><a class="el" href="class_sinric_pro_garage_door.html">SinricProGarageDoor</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>

@@ -200,6 +200,45 @@ Public Member Functions</h2></td></tr>
 <li>Color temperature </li>
 </ul>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a1bf03bd01ae1f4ddf164260435dc2026"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bf03bd01ae1f4ddf164260435dc2026">&#9670;&nbsp;</a></span>BrightnessCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_light.html#a1bf03bd01ae1f4ddf164260435dc2026">BrightnessCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onBrightness function. </p>
+<p>Gets called when device receive a <code>setBrightness</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">brightness</td><td>Absolute integer value the device should set its brightness to </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">brightness</td><td>Absolute integer value with new brightness the device is set to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="BrightnessCallback"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#abbaab3067b1fcdcc5928451b818a4420">onBrightness</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;brightness) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s brightness %d\r\n&quot;</span>, deviceId.c_str(), brightness);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="ab2267f4b655928122371dcc0bc960e88"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2267f4b655928122371dcc0bc960e88">&#9670;&nbsp;</a></span>AdjustBrightnessCallback</h2>
 
@@ -238,45 +277,6 @@ Example-Code</h1>
 <div class="line">  absoluteBrightness += brightnessDelta; <span class="comment">// calculate absolute brigthness</span></div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s brightness changed about %i to %d\r\n&quot;</span>, deviceId.c_str(), brightnessDelta, absoluteBrightness);</div>
 <div class="line">  brightnessDelta = absoluteBrightness; <span class="comment">// return absolute brightness</span></div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a1bf03bd01ae1f4ddf164260435dc2026"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1bf03bd01ae1f4ddf164260435dc2026">&#9670;&nbsp;</a></span>BrightnessCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_light.html#a1bf03bd01ae1f4ddf164260435dc2026">BrightnessCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback definition for onBrightness function. </p>
-<p>Gets called when device receive a <code>setBrightness</code> request <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">brightness</td><td>Absolute integer value the device should set its brightness to </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">brightness</td><td>Absolute integer value with new brightness the device is set to </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="BrightnessCallback"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#abbaab3067b1fcdcc5928451b818a4420">onBrightness</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;brightness) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s brightness %d\r\n&quot;</span>, deviceId.c_str(), brightness);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
 </div><!-- fragment -->
@@ -374,54 +374,6 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a8fce91e931713aa452fb7bd0805e3c81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fce91e931713aa452fb7bd0805e3c81">&#9670;&nbsp;</a></span>DecreaseColorTemperatureCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_light.html#a8fce91e931713aa452fb7bd0805e3c81">DecreaseColorTemperatureCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback definition for onDecreaseColorTemperature function. </p>
-<p>Gets called when device receive a <code>decreaseColorTemperature</code> request <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">colorTemperature</td><td>Integer value <code>-1</code> = Device should decrease color temperature </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">colorTemperature</td><td>Integer value return the new color temperarature <br  />
- <code>2200</code> = warm white <br  />
- <code>2700</code> = soft white <br  />
- <code>4000</code> = white <br  />
- <code>5500</code> = daylight white <br  />
- <code>7000</code> = cool white </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="DecreaseColorTemperatureCallback"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">int</span> globalColorTemperature; </div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a7468976e7fffeee14cc869b7236cbb50">onDecreaseColorTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;colorTemperature) {</div>
-<div class="line">  globalColorTemperature -= 1000; <span class="comment">// decrease globalColorTemperature about 1000;</span></div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s colorTemperature changed %i\r\n&quot;</span>, deviceId.c_str(), colorTemperature);</div>
-<div class="line">  colorTemperature = globalColorTemperature; <span class="comment">// return new colorTemperature</span></div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="ac29cb175180abefcc181191de6be6c9f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac29cb175180abefcc181191de6be6c9f">&#9670;&nbsp;</a></span>IncreaseColorTemperatureCallback</h2>
 
@@ -464,6 +416,54 @@ Example-Code</h1>
 <div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a7ea9fd9861a5668a41d06267bfbec82a">onIncreaseColorTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;colorTemperature) {</div>
 <div class="line">  globalColorTemperature += 1000; <span class="comment">// increase globalColorTemperature about 1000;</span></div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s colorTemperature changed to %i\r\n&quot;</span>, deviceId.c_str(), colorTemperature);</div>
+<div class="line">  colorTemperature = globalColorTemperature; <span class="comment">// return new colorTemperature</span></div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a8fce91e931713aa452fb7bd0805e3c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fce91e931713aa452fb7bd0805e3c81">&#9670;&nbsp;</a></span>DecreaseColorTemperatureCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_light.html#a8fce91e931713aa452fb7bd0805e3c81">DecreaseColorTemperatureCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onDecreaseColorTemperature function. </p>
+<p>Gets called when device receive a <code>decreaseColorTemperature</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">colorTemperature</td><td>Integer value <code>-1</code> = Device should decrease color temperature </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">colorTemperature</td><td>Integer value return the new color temperarature <br  />
+ <code>2200</code> = warm white <br  />
+ <code>2700</code> = soft white <br  />
+ <code>4000</code> = white <br  />
+ <code>5500</code> = daylight white <br  />
+ <code>7000</code> = cool white </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="DecreaseColorTemperatureCallback"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> globalColorTemperature; </div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a7468976e7fffeee14cc869b7236cbb50">onDecreaseColorTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;colorTemperature) {</div>
+<div class="line">  globalColorTemperature -= 1000; <span class="comment">// decrease globalColorTemperature about 1000;</span></div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s colorTemperature changed %i\r\n&quot;</span>, deviceId.c_str(), colorTemperature);</div>
 <div class="line">  colorTemperature = globalColorTemperature; <span class="comment">// return new colorTemperature</span></div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
@@ -520,34 +520,6 @@ Example-Code</h1>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0633e5fa2981189f4a093bab00a8c7f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0633e5fa2981189f4a093bab00a8c7f1">&#9670;&nbsp;</a></span>onAdjustBrightness()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onAdjustBrightness </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_light.html#ab2267f4b655928122371dcc0bc960e88">AdjustBrightnessCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>adjustBrightness</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>AdjustBrightnessCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_light.html#ab2267f4b655928122371dcc0bc960e88" title="Callback definition for onAdjustBrightness function.">AdjustBrightnessCallback</a> </dd></dl>
-
-</div>
-</div>
 <a id="abbaab3067b1fcdcc5928451b818a4420"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abbaab3067b1fcdcc5928451b818a4420">&#9670;&nbsp;</a></span>onBrightness()</h2>
 
@@ -573,6 +545,34 @@ Example-Code</h1>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_light.html#a1bf03bd01ae1f4ddf164260435dc2026" title="Callback definition for onBrightness function.">BrightnessCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0633e5fa2981189f4a093bab00a8c7f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0633e5fa2981189f4a093bab00a8c7f1">&#9670;&nbsp;</a></span>onAdjustBrightness()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onAdjustBrightness </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_light.html#ab2267f4b655928122371dcc0bc960e88">AdjustBrightnessCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>adjustBrightness</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>AdjustBrightnessCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_light.html#ab2267f4b655928122371dcc0bc960e88" title="Callback definition for onAdjustBrightness function.">AdjustBrightnessCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -632,34 +632,6 @@ Example-Code</h1>
 
 </div>
 </div>
-<a id="a7468976e7fffeee14cc869b7236cbb50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7468976e7fffeee14cc869b7236cbb50">&#9670;&nbsp;</a></span>onDecreaseColorTemperature()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onDecreaseColorTemperature </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_light.html#a8fce91e931713aa452fb7bd0805e3c81">DecreaseColorTemperatureCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>decreaseColorTemperature</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>DecreaseColorTemperatureCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_light.html#a8fce91e931713aa452fb7bd0805e3c81" title="Callback definition for onDecreaseColorTemperature function.">DecreaseColorTemperatureCallback</a> </dd></dl>
-
-</div>
-</div>
 <a id="a7ea9fd9861a5668a41d06267bfbec82a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ea9fd9861a5668a41d06267bfbec82a">&#9670;&nbsp;</a></span>onIncreaseColorTemperature()</h2>
 
@@ -688,39 +660,31 @@ Example-Code</h1>
 
 </div>
 </div>
-<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
+<a id="a7468976e7fffeee14cc869b7236cbb50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7468976e7fffeee14cc869b7236cbb50">&#9670;&nbsp;</a></span>onDecreaseColorTemperature()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void onPowerState </td>
+          <td class="memname">void onDecreaseColorTemperature </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_light.html#a8fce91e931713aa452fb7bd0805e3c81">DecreaseColorTemperatureCallback</a>&#160;</td>
           <td class="paramname"><em>cb</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Set callback function for <code>powerState</code> request. </p>
+<p>Set callback function for <code>decreaseColorTemperature</code> request. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>DecreaseColorTemperatureCallback</code> function </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_light.html#a8fce91e931713aa452fb7bd0805e3c81" title="Callback definition for onDecreaseColorTemperature function.">DecreaseColorTemperatureCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -875,6 +839,42 @@ Example-Code</h1>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onPowerState </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>powerState</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
 
 </div>
 </div>

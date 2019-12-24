@@ -198,6 +198,45 @@ Public Member Functions</h2></td></tr>
 <li>Report actual temperature </li>
 </ul>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ad2be7dbd98eae8443f8c76721cbffead"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2be7dbd98eae8443f8c76721cbffead">&#9670;&nbsp;</a></span>SetRangeValueCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onRangeValue function. </p>
+<p>Gets called when device receive a <code>setRangeValue</code> reuqest <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rangeValue</td><td>Integer 0..n for range value device has to be set </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rangeValue</td><td>Integer 0..n returning the current range value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="SetRangeValueCallback_WAC"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#a94adbcdf6ce61cb6552a5f9915e705ae">onRangeValue</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;rangeValue) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s range value has been set to %d\r\n&quot;</span>, rangeValue);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a8977055ae213732aaa3ef430259208f4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8977055ae213732aaa3ef430259208f4">&#9670;&nbsp;</a></span>AdjustRangeValueCallback</h2>
 
@@ -241,6 +280,45 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a345ea0fb9b4069b8c540b17009272f65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a345ea0fb9b4069b8c540b17009272f65">&#9670;&nbsp;</a></span>SetTargetTemperatureCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, float&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#a345ea0fb9b4069b8c540b17009272f65">SetTargetTemperatureCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onTargetTemperature function. </p>
+<p>Gets called when device receive a <code>targetTemperature</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">temperature</td><td>Float device is requested to set the target temperature to </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">temperature</td><td>Float target temperature temperature device is set to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="TargetTemperatureCallback_WAC"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#a1c73725f1f3fbb1c5b72208aae5c2bf2">onTargetTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">float</span> &amp;targetTemp) { </div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s target temperature set to %f\r\n&quot;</span>, deviceId.c_str(), targetTemp);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="aeae1f9b5872cf8dcba7efc2548a671fa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeae1f9b5872cf8dcba7efc2548a671fa">&#9670;&nbsp;</a></span>AdjustTargetTemperatureCallback</h2>
 
@@ -279,6 +357,45 @@ Example-Code</h1>
 <div class="line">  globalTargetTemp += tempDelta; <span class="comment">// change global target temperature about tempDelta</span></div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s target temperature changed about %f to %f\r\n&quot;</span>, deviceId.c_str(), tempDelta, globalTargetTemp);</div>
 <div class="line">  tempDelta = globalTargetTemp; <span class="comment">// return absolute target temperature</span></div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="abe5ced42c285b52c2414e788dc8b63b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe5ced42c285b52c2414e788dc8b63b3">&#9670;&nbsp;</a></span>ThermostatModeCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, String&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3">ThermostatModeCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onThermostatMode function. </p>
+<p>Gets called when device receive a <code>setThermostatMode</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>String with mode device should set to </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mode</td><td>String device mode is set to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="ThermostatModeCallback_WAC"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#a2ef31536973b20815dd6c80a28e19c9f">onThermostatMode</a>(<span class="keyword">const</span> String&amp; deviceId, String&amp; mode) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Deivce %s thermostat mode set to %s\r\n&quot;</span>, deviceId.c_str(), mode);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
 </div><!-- fragment -->
@@ -333,215 +450,7 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ad2be7dbd98eae8443f8c76721cbffead"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2be7dbd98eae8443f8c76721cbffead">&#9670;&nbsp;</a></span>SetRangeValueCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback definition for onRangeValue function. </p>
-<p>Gets called when device receive a <code>setRangeValue</code> reuqest <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rangeValue</td><td>Integer 0..n for range value device has to be set </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">rangeValue</td><td>Integer 0..n returning the current range value </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="SetRangeValueCallback_WAC"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#a94adbcdf6ce61cb6552a5f9915e705ae">onRangeValue</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;rangeValue) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s range value has been set to %d\r\n&quot;</span>, rangeValue);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a345ea0fb9b4069b8c540b17009272f65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a345ea0fb9b4069b8c540b17009272f65">&#9670;&nbsp;</a></span>SetTargetTemperatureCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, float&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#a345ea0fb9b4069b8c540b17009272f65">SetTargetTemperatureCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback definition for onTargetTemperature function. </p>
-<p>Gets called when device receive a <code>targetTemperature</code> request <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">temperature</td><td>Float device is requested to set the target temperature to </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">temperature</td><td>Float target temperature temperature device is set to </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="TargetTemperatureCallback_WAC"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#a1c73725f1f3fbb1c5b72208aae5c2bf2">onTargetTemperature</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">float</span> &amp;targetTemp) { </div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s target temperature set to %f\r\n&quot;</span>, deviceId.c_str(), targetTemp);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="abe5ced42c285b52c2414e788dc8b63b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe5ced42c285b52c2414e788dc8b63b3">&#9670;&nbsp;</a></span>ThermostatModeCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, String&amp;)&gt; <a class="el" href="class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3">ThermostatModeCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback definition for onThermostatMode function. </p>
-<p>Gets called when device receive a <code>setThermostatMode</code> request <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>String with mode device should set to </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">mode</td><td>String device mode is set to </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="ThermostatModeCallback_WAC"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_window_a_c.html#a2ef31536973b20815dd6c80a28e19c9f">onThermostatMode</a>(<span class="keyword">const</span> String&amp; deviceId, String&amp; mode) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Deivce %s thermostat mode set to %s\r\n&quot;</span>, deviceId.c_str(), mode);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae85696d55112ae7343f9807faee6e064"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae85696d55112ae7343f9807faee6e064">&#9670;&nbsp;</a></span>onAdjustRangeValue()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onAdjustRangeValue </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4">AdjustRangeValueCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>adjustRangeValue</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>AdjustRangeValueCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4" title="Callback definition for onAdjustRangeValue function.">AdjustRangeValueCallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="ac51f6fecfdf4c7bc8e0712e2da47bbf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac51f6fecfdf4c7bc8e0712e2da47bbf4">&#9670;&nbsp;</a></span>onAdjustTargetTemperature()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onAdjustTargetTemperature </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa">AdjustTargetTemperatureCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>adjustTargetTemperature</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>AdjustTargetTemperatureCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa" title="Callback definition for onAdjustTargetTemperature function.">AdjustTargetTemperatureCallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onPowerState </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>powerState</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
-
-</div>
-</div>
 <a id="a94adbcdf6ce61cb6552a5f9915e705ae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a94adbcdf6ce61cb6552a5f9915e705ae">&#9670;&nbsp;</a></span>onRangeValue()</h2>
 
@@ -566,6 +475,33 @@ Example-Code</h1>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#ad2be7dbd98eae8443f8c76721cbffead" title="Callback definition for onRangeValue function.">SetRangeValueCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae85696d55112ae7343f9807faee6e064"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae85696d55112ae7343f9807faee6e064">&#9670;&nbsp;</a></span>onAdjustRangeValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onAdjustRangeValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4">AdjustRangeValueCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>adjustRangeValue</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>AdjustRangeValueCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4" title="Callback definition for onAdjustRangeValue function.">AdjustRangeValueCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -597,6 +533,34 @@ Example-Code</h1>
 
 </div>
 </div>
+<a id="ac51f6fecfdf4c7bc8e0712e2da47bbf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac51f6fecfdf4c7bc8e0712e2da47bbf4">&#9670;&nbsp;</a></span>onAdjustTargetTemperature()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onAdjustTargetTemperature </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa">AdjustTargetTemperatureCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>adjustTargetTemperature</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>AdjustTargetTemperatureCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa" title="Callback definition for onAdjustTargetTemperature function.">AdjustTargetTemperatureCallback</a> </dd></dl>
+
+</div>
+</div>
 <a id="a2ef31536973b20815dd6c80a28e19c9f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2ef31536973b20815dd6c80a28e19c9f">&#9670;&nbsp;</a></span>onThermostatMode()</h2>
 
@@ -622,60 +586,6 @@ Example-Code</h1>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3" title="Callback definition for onThermostatMode function.">ThermostatModeCallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="a8006e256414deac0f9a4e28774b47773"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8006e256414deac0f9a4e28774b47773">&#9670;&nbsp;</a></span>sendPowerStateEvent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sendPowerStateEvent </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>state</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Send <code>setPowerState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">state</td><td><code>true</code> = device turned on <br  />
- <code>false</code> = device turned off </td></tr>
-    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
-    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -709,51 +619,6 @@ Example-Code</h1>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rangeValue</td><td>Value between 0..n </td></tr>
-    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
-    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a07632bca425003b4ad559cb46fabca8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07632bca425003b4ad559cb46fabca8c">&#9670;&nbsp;</a></span>sendTargetTemperatureEvent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sendTargetTemperatureEvent </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>temperature</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Send <code>targetTemperature</code> event to report target temperature change. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">temperature</td><td>Float with actual target temperature the device is set to </td></tr>
     <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>
   </dd>
@@ -821,6 +686,51 @@ Example-Code</h1>
 
 </div>
 </div>
+<a id="a07632bca425003b4ad559cb46fabca8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07632bca425003b4ad559cb46fabca8c">&#9670;&nbsp;</a></span>sendTargetTemperatureEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendTargetTemperatureEvent </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>temperature</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send <code>targetTemperature</code> event to report target temperature change. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">temperature</td><td>Float with actual target temperature the device is set to </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
+    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="acd81e847a7f1029163729574c3d3971d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd81e847a7f1029163729574c3d3971d">&#9670;&nbsp;</a></span>sendThermostatModeEvent()</h2>
 
@@ -851,6 +761,96 @@ Example-Code</h1>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">thermostatMode</td><td>String with actual mode (<code>AUTO</code>, <code>COOL</code>, <code>HEAT</code>) the device is set to </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
+    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onPowerState </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>powerState</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8006e256414deac0f9a4e28774b47773"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8006e256414deac0f9a4e28774b47773">&#9670;&nbsp;</a></span>sendPowerStateEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendPowerStateEvent </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Send <code>setPowerState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td><code>true</code> = device turned on <br  />
+ <code>false</code> = device turned off </td></tr>
     <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>
   </dd>

@@ -164,6 +164,45 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Device to control a fan with on / off commands and its speed by a range value. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ad2be7dbd98eae8443f8c76721cbffead"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2be7dbd98eae8443f8c76721cbffead">&#9670;&nbsp;</a></span>SetRangeValueCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_fan_u_s.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onRangeValue function. </p>
+<p>Gets called when device receive a <code>setRangeValue</code> reuqest <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rangeValue</td><td>Integer 0..n for range value device has to be set </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rangeValue</td><td>Integer 0..n returning the current range value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="SetRangeValueCallback"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_fan_u_s.html#a94adbcdf6ce61cb6552a5f9915e705ae">onRangeValue</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;rangeValue) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s range value has been set to %d\r\n&quot;</span>, rangeValue);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a8977055ae213732aaa3ef430259208f4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8977055ae213732aaa3ef430259208f4">&#9670;&nbsp;</a></span>AdjustRangeValueCallback</h2>
 
@@ -256,46 +295,34 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ad2be7dbd98eae8443f8c76721cbffead"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2be7dbd98eae8443f8c76721cbffead">&#9670;&nbsp;</a></span>SetRangeValueCallback</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a94adbcdf6ce61cb6552a5f9915e705ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94adbcdf6ce61cb6552a5f9915e705ae">&#9670;&nbsp;</a></span>onRangeValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_fan_u_s.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a></td>
+          <td class="memname">void onRangeValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_fan_u_s.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Callback definition for onRangeValue function. </p>
-<p>Gets called when device receive a <code>setRangeValue</code> reuqest <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
+<p>Set callback function for <code>setRangeValue</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rangeValue</td><td>Integer 0..n for range value device has to be set </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">rangeValue</td><td>Integer 0..n returning the current range value </td></tr>
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SetRangeValueCallback</code> function </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="SetRangeValueCallback"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_fan_u_s.html#a94adbcdf6ce61cb6552a5f9915e705ae">onRangeValue</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;rangeValue) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s range value has been set to %d\r\n&quot;</span>, rangeValue);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_fan_u_s.html#ad2be7dbd98eae8443f8c76721cbffead" title="Callback definition for onRangeValue function.">SetRangeValueCallback</a> </dd></dl>
+
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae85696d55112ae7343f9807faee6e064"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae85696d55112ae7343f9807faee6e064">&#9670;&nbsp;</a></span>onAdjustRangeValue()</h2>
 
@@ -320,6 +347,51 @@ Example-Code</h1>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_fan_u_s.html#a8977055ae213732aaa3ef430259208f4" title="Callback definition for onAdjustRangeValue function.">AdjustRangeValueCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="af676bb2b419c4321d0a678cf9446da0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af676bb2b419c4321d0a678cf9446da0c">&#9670;&nbsp;</a></span>sendRangeValueEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendRangeValueEvent </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rangeValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send <code>rangeValue</code> event to report curent rangeValue to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rangeValue</td><td>Value between 0..n </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
+    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -356,33 +428,6 @@ Example-Code</h1>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="a94adbcdf6ce61cb6552a5f9915e705ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94adbcdf6ce61cb6552a5f9915e705ae">&#9670;&nbsp;</a></span>onRangeValue()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onRangeValue </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_fan_u_s.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>setRangeValue</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SetRangeValueCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_fan_u_s.html#ad2be7dbd98eae8443f8c76721cbffead" title="Callback definition for onRangeValue function.">SetRangeValueCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -425,51 +470,6 @@ Example-Code</h1>
   <table class="params">
     <tr><td class="paramname">state</td><td><code>true</code> = device turned on <br  />
  <code>false</code> = device turned off </td></tr>
-    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
-    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="af676bb2b419c4321d0a678cf9446da0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af676bb2b419c4321d0a678cf9446da0c">&#9670;&nbsp;</a></span>sendRangeValueEvent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sendRangeValueEvent </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>rangeValue</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Send <code>rangeValue</code> event to report curent rangeValue to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rangeValue</td><td>Value between 0..n </td></tr>
     <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>
   </dd>
