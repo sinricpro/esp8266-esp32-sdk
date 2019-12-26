@@ -63,12 +63,12 @@ bool SinricProGarageDoor::handleRequest(const char* deviceId, const char* action
   if (actionString == "setMode" && doorStateCallback) {
     String modeStr = request_value["mode"] | "";
     bool mode;
-    if (modeStr == "open") mode = false;
-    if (modeStr == "close") mode = true;
+    if (modeStr == "Open") mode = false;
+    if (modeStr == "Close") mode = true;
     success = doorStateCallback(String(deviceId), mode);
-    if (mode == false) modeStr = "open";
-    if (mode == true) modeStr = "close";
-    response_value["mode"] = mode;
+    if (mode == false) modeStr = "Open";
+    if (mode == true) modeStr = "Close";
+    response_value["mode"] = modeStr;
     return success;
   }
   return success;
