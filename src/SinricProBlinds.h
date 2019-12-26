@@ -85,8 +85,8 @@ bool SinricProBlinds::handleRequest(const char* deviceId, const char* action, Js
     return success;
   }
 
-  if (actionString == "rangeValue" && adjustPositionCallback) {
-    int positionDelta = request_value["rangeValue"] | 0;
+  if (actionString == "adjustRangeValue" && adjustPositionCallback) {
+    int positionDelta = request_value["rangeValueDelta"] | 0;
     success = adjustPositionCallback(String(deviceId), positionDelta);
     response_value["rangeValue"] = positionDelta;
     return success;
