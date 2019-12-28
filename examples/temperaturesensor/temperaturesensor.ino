@@ -37,7 +37,7 @@
 
 #include "SinricPro.h"
 #include "SinricProTemperaturesensor.h"
-#include "DHT.h"
+#include "DHT.h" // https://github.com/markruys/arduino-DHT
 
 #define WIFI_SSID         "YOUR-WIFI-SSID"    
 #define WIFI_PASS         "YOUR-WIFI-PASSWORD"
