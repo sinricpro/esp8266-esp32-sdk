@@ -227,45 +227,6 @@ Public Member Functions</h2></td></tr>
 <li>Skip channels </li>
 </ul>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aa495b90d483782760303ab45494deb7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa495b90d483782760303ab45494deb7e">&#9670;&nbsp;</a></span>SetVolumeCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_t_v.html#aa495b90d483782760303ab45494deb7e">SetVolumeCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback definition for onSetVolume function. </p>
-<p>Gets called when device receive a <code>setVolume</code> request <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">volume</td><td>Integer with volume device should set to </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">volume</td><td>Integer with volume device has been set to </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="SetVolumeCallback_TV"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_t_v.html#a5db8c85f222debbece54c794015f9402">onSetVolume</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;volume) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s volume set to %d\r\n&quot;</span>, deviceId.c_str(), volume);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="a1dfe43a4f99caf28ad07a2ff84708f94"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1dfe43a4f99caf28ad07a2ff84708f94">&#9670;&nbsp;</a></span>AdjustVolumeCallback</h2>
 
@@ -305,129 +266,6 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s volume changed about %i to %d\r\n&quot;</span>, deviceId.c_str(), volumeDelta, absoluteVolume);</div>
 <div class="line">  volumeDelta = absoluteVolume; <span class="comment">// return absolute volume</span></div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a24d0844497c30b03f3c7ec9e30fcb33b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24d0844497c30b03f3c7ec9e30fcb33b">&#9670;&nbsp;</a></span>MuteCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, bool&amp;)&gt; <a class="el" href="class_sinric_pro_t_v.html#a24d0844497c30b03f3c7ec9e30fcb33b">MuteCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback definition for onMute function. </p>
-<p>Gets called when device receive a <code>setMute</code> request <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">mute</td><td><code>true</code> mute device <br  />
- <code>false</code> unmute device </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">mute</td><td><code>true</code> device is muted <br  />
- <code>false</code> device is unmuted </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="MuteCallback_TV"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_t_v.html#ab5fc79cc8903c3ccc1c106abf61d7cfd">onMute</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;mute) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s is %s\r\n&quot;</span>, deviceId.c_str(), mute?<span class="stringliteral">&quot;muted&quot;</span>:<span class="stringliteral">&quot;unmuted&quot;</span>);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a19062c8b2786a85d53129d572ec55bbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19062c8b2786a85d53129d572ec55bbd">&#9670;&nbsp;</a></span>MediaControlCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, String&amp;)&gt; <a class="el" href="class_sinric_pro_t_v.html#a19062c8b2786a85d53129d572ec55bbd">MediaControlCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback definition for onMediaControl function. </p>
-<p>Gets called when device receive a <code>mediaControl</code> request <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">control</td><td>String with requested control <br  />
- <code>FastForward</code>, <code>Next</code>, <code>Pause</code>, <code>Play</code>, <code>Previous</code>, <code>Rewind</code>, <code>StartOver</code>, <code>Stop</code> </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">control</td><td>String with control <br  />
- <code>FastForward</code>, <code>Next</code>, <code>Pause</code>, <code>Play</code>, <code>Previous</code>, <code>Rewind</code>, <code>StartOver</code>, <code>Stop</code> </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="MediaControlCallback_TV"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_t_v.html#afc2620621377fff928737b5a8a537020">onMediaControl</a>(<span class="keyword">const</span> String &amp;deviceId, String &amp;control) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s: %s\r\n&quot;</span>, deviceId.c_str(), control);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a047ecacb194f2ad747fa2ab7e1117a88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a047ecacb194f2ad747fa2ab7e1117a88">&#9670;&nbsp;</a></span>SelectInputCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, String&amp;)&gt; <a class="el" href="class_sinric_pro_t_v.html#a047ecacb194f2ad747fa2ab7e1117a88">SelectInputCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback definition for onSelectInput function. </p>
-<p>Gets called when device receive a <code>selectInput</code> request <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>String with input name device is requested to switch to <br  />
- <code>AUX 1</code>..<code>AUX 7</code>, <code>BLURAY</code>, <code>CABLE</code>, <code>CD</code>, <code>COAX 1</code>,<code>COAX 2</code>, <code>COMPOSITE 1</code>, <code>DVD</code>, <code>GAME</code>, <code>HD RADIO</code>, <code>HDMI 1</code>.. <code>HDMI 10</code>, <code>HDMI ARC</code>, <code>INPUT 1</code>..<code>INPUT 10</code>, <code>IPOD</code>, <code>LINE 1</code>..<code>LINE 7</code>, <code>MEDIA PLAYER</code>, <code>OPTICAL 1</code>, <code>OPTICAL 2</code>, <code>PHONO</code>, <code>PLAYSTATION</code>, <code>PLAYSTATION 3</code>, <code>PLAYSTATION 4</code>, <code>SATELLITE</code>, <code>SMARTCAST</code>, <code>TUNER</code>, <code>TV</code>, <code>USB DAC</code>, <code>VIDEO 1</code>..<code>VIDEO 3</code>, <code>XBOX</code> </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">input</td><td>String with input name device has switchted to <br  />
- <code>AUX 1</code>..<code>AUX 7</code>, <code>BLURAY</code>, <code>CABLE</code>, <code>CD</code>, <code>COAX 1</code>,<code>COAX 2</code>, <code>COMPOSITE 1</code>, <code>DVD</code>, <code>GAME</code>, <code>HD RADIO</code>, <code>HDMI 1</code>.. <code>HDMI 10</code>, <code>HDMI ARC</code>, <code>INPUT 1</code>..<code>INPUT 10</code>, <code>IPOD</code>, <code>LINE 1</code>..<code>LINE 7</code>, <code>MEDIA PLAYER</code>, <code>OPTICAL 1</code>, <code>OPTICAL 2</code>, <code>PHONO</code>, <code>PLAYSTATION</code>, <code>PLAYSTATION 3</code>, <code>PLAYSTATION 4</code>, <code>SATELLITE</code>, <code>SMARTCAST</code>, <code>TUNER</code>, <code>TV</code>, <code>USB DAC</code>, <code>VIDEO 1</code>..<code>VIDEO 3</code>, <code>XBOX</code> </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="SelectInput"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_t_v.html#a18f8f71ecf0d7292a63d9486f94e5180">onSelectInput</a>(<span class="keyword">const</span> String &amp;deviceId, String &amp;input) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s input changed to %s\r\n&quot;</span>, deviceId.c_str(), input.c_str());</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
 </div><!-- fragment -->
 </div>
@@ -581,6 +419,217 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a19062c8b2786a85d53129d572ec55bbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19062c8b2786a85d53129d572ec55bbd">&#9670;&nbsp;</a></span>MediaControlCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, String&amp;)&gt; <a class="el" href="class_sinric_pro_t_v.html#a19062c8b2786a85d53129d572ec55bbd">MediaControlCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onMediaControl function. </p>
+<p>Gets called when device receive a <code>mediaControl</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">control</td><td>String with requested control <br  />
+ <code>FastForward</code>, <code>Next</code>, <code>Pause</code>, <code>Play</code>, <code>Previous</code>, <code>Rewind</code>, <code>StartOver</code>, <code>Stop</code> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">control</td><td>String with control <br  />
+ <code>FastForward</code>, <code>Next</code>, <code>Pause</code>, <code>Play</code>, <code>Previous</code>, <code>Rewind</code>, <code>StartOver</code>, <code>Stop</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="MediaControlCallback_TV"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_t_v.html#afc2620621377fff928737b5a8a537020">onMediaControl</a>(<span class="keyword">const</span> String &amp;deviceId, String &amp;control) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s: %s\r\n&quot;</span>, deviceId.c_str(), control);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a24d0844497c30b03f3c7ec9e30fcb33b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24d0844497c30b03f3c7ec9e30fcb33b">&#9670;&nbsp;</a></span>MuteCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, bool&amp;)&gt; <a class="el" href="class_sinric_pro_t_v.html#a24d0844497c30b03f3c7ec9e30fcb33b">MuteCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onMute function. </p>
+<p>Gets called when device receive a <code>setMute</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mute</td><td><code>true</code> mute device <br  />
+ <code>false</code> unmute device </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mute</td><td><code>true</code> device is muted <br  />
+ <code>false</code> device is unmuted </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="MuteCallback_TV"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_t_v.html#ab5fc79cc8903c3ccc1c106abf61d7cfd">onMute</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;mute) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s is %s\r\n&quot;</span>, deviceId.c_str(), mute?<span class="stringliteral">&quot;muted&quot;</span>:<span class="stringliteral">&quot;unmuted&quot;</span>);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa9db92ebe40a0df6deb43eba70d3dea3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9db92ebe40a0df6deb43eba70d3dea3">&#9670;&nbsp;</a></span>PowerStateCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, bool&amp;)&gt; <a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Callback definition for onPowerState function. </p>
+<p>Gets called when device receive a <code>setPowerState</code> reuqest <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td><code>true</code> = device is requested to turn on <br  />
+ <code>false</code> = device is requested to turn off </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">state</td><td><code>true</code> = device has been turned on <br  />
+ <code>false</code> = device has been turned off </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="PowerStateCallback"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a047ecacb194f2ad747fa2ab7e1117a88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a047ecacb194f2ad747fa2ab7e1117a88">&#9670;&nbsp;</a></span>SelectInputCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, String&amp;)&gt; <a class="el" href="class_sinric_pro_t_v.html#a047ecacb194f2ad747fa2ab7e1117a88">SelectInputCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onSelectInput function. </p>
+<p>Gets called when device receive a <code>selectInput</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>String with input name device is requested to switch to <br  />
+ <code>AUX 1</code>..<code>AUX 7</code>, <code>BLURAY</code>, <code>CABLE</code>, <code>CD</code>, <code>COAX 1</code>,<code>COAX 2</code>, <code>COMPOSITE 1</code>, <code>DVD</code>, <code>GAME</code>, <code>HD RADIO</code>, <code>HDMI 1</code>.. <code>HDMI 10</code>, <code>HDMI ARC</code>, <code>INPUT 1</code>..<code>INPUT 10</code>, <code>IPOD</code>, <code>LINE 1</code>..<code>LINE 7</code>, <code>MEDIA PLAYER</code>, <code>OPTICAL 1</code>, <code>OPTICAL 2</code>, <code>PHONO</code>, <code>PLAYSTATION</code>, <code>PLAYSTATION 3</code>, <code>PLAYSTATION 4</code>, <code>SATELLITE</code>, <code>SMARTCAST</code>, <code>TUNER</code>, <code>TV</code>, <code>USB DAC</code>, <code>VIDEO 1</code>..<code>VIDEO 3</code>, <code>XBOX</code> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">input</td><td>String with input name device has switchted to <br  />
+ <code>AUX 1</code>..<code>AUX 7</code>, <code>BLURAY</code>, <code>CABLE</code>, <code>CD</code>, <code>COAX 1</code>,<code>COAX 2</code>, <code>COMPOSITE 1</code>, <code>DVD</code>, <code>GAME</code>, <code>HD RADIO</code>, <code>HDMI 1</code>.. <code>HDMI 10</code>, <code>HDMI ARC</code>, <code>INPUT 1</code>..<code>INPUT 10</code>, <code>IPOD</code>, <code>LINE 1</code>..<code>LINE 7</code>, <code>MEDIA PLAYER</code>, <code>OPTICAL 1</code>, <code>OPTICAL 2</code>, <code>PHONO</code>, <code>PLAYSTATION</code>, <code>PLAYSTATION 3</code>, <code>PLAYSTATION 4</code>, <code>SATELLITE</code>, <code>SMARTCAST</code>, <code>TUNER</code>, <code>TV</code>, <code>USB DAC</code>, <code>VIDEO 1</code>..<code>VIDEO 3</code>, <code>XBOX</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="SelectInput"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_t_v.html#a18f8f71ecf0d7292a63d9486f94e5180">onSelectInput</a>(<span class="keyword">const</span> String &amp;deviceId, String &amp;input) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s input changed to %s\r\n&quot;</span>, deviceId.c_str(), input.c_str());</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa495b90d483782760303ab45494deb7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa495b90d483782760303ab45494deb7e">&#9670;&nbsp;</a></span>SetVolumeCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_t_v.html#aa495b90d483782760303ab45494deb7e">SetVolumeCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onSetVolume function. </p>
+<p>Gets called when device receive a <code>setVolume</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">volume</td><td>Integer with volume device should set to </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">volume</td><td>Integer with volume device has been set to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="SetVolumeCallback_TV"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_t_v.html#a5db8c85f222debbece54c794015f9402">onSetVolume</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;volume) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s volume set to %d\r\n&quot;</span>, deviceId.c_str(), volume);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a955957998e893135fb04aa077304d3d6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a955957998e893135fb04aa077304d3d6">&#9670;&nbsp;</a></span>SkipChannelsCallback</h2>
 
@@ -658,84 +707,7 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="aa9db92ebe40a0df6deb43eba70d3dea3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9db92ebe40a0df6deb43eba70d3dea3">&#9670;&nbsp;</a></span>PowerStateCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, bool&amp;)&gt; <a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Callback definition for onPowerState function. </p>
-<p>Gets called when device receive a <code>setPowerState</code> reuqest <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td><code>true</code> = device is requested to turn on <br  />
- <code>false</code> = device is requested to turn off </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">state</td><td><code>true</code> = device has been turned on <br  />
- <code>false</code> = device has been turned off </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="PowerStateCallback"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5db8c85f222debbece54c794015f9402"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5db8c85f222debbece54c794015f9402">&#9670;&nbsp;</a></span>onSetVolume()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onSetVolume </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_t_v.html#aa495b90d483782760303ab45494deb7e">SetVolumeCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>setVolume</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SetVolumeCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_t_v.html#aa495b90d483782760303ab45494deb7e" title="Callback definition for onSetVolume function.">SetVolumeCallback</a> </dd></dl>
-
-</div>
-</div>
 <a id="a2c868c87f96e3924c8b309e1bcfb507e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2c868c87f96e3924c8b309e1bcfb507e">&#9670;&nbsp;</a></span>onAdjustVolume()</h2>
 
@@ -761,90 +733,6 @@ Example-Code</h1>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_t_v.html#a1dfe43a4f99caf28ad07a2ff84708f94" title="Callback definition for onAdjustVolume function.">AdjustVolumeCallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="ab5fc79cc8903c3ccc1c106abf61d7cfd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5fc79cc8903c3ccc1c106abf61d7cfd">&#9670;&nbsp;</a></span>onMute()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onMute </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_t_v.html#a24d0844497c30b03f3c7ec9e30fcb33b">MuteCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>setMute</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>MuteCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_t_v.html#a24d0844497c30b03f3c7ec9e30fcb33b" title="Callback definition for onMute function.">MuteCallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="afc2620621377fff928737b5a8a537020"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc2620621377fff928737b5a8a537020">&#9670;&nbsp;</a></span>onMediaControl()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onMediaControl </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_t_v.html#a19062c8b2786a85d53129d572ec55bbd">MediaControlCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>mediaControl</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>MediaControlCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_t_v.html#a19062c8b2786a85d53129d572ec55bbd" title="Callback definition for onMediaControl function.">MediaControlCallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="a18f8f71ecf0d7292a63d9486f94e5180"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18f8f71ecf0d7292a63d9486f94e5180">&#9670;&nbsp;</a></span>onSelectInput()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onSelectInput </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_t_v.html#a047ecacb194f2ad747fa2ab7e1117a88">SelectInputCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>selectInput</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SelectInputCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_t_v.html#a047ecacb194f2ad747fa2ab7e1117a88" title="Callback definition for onSelectInput function.">SelectInputCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -904,6 +792,154 @@ Example-Code</h1>
 
 </div>
 </div>
+<a id="afc2620621377fff928737b5a8a537020"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc2620621377fff928737b5a8a537020">&#9670;&nbsp;</a></span>onMediaControl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onMediaControl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_t_v.html#a19062c8b2786a85d53129d572ec55bbd">MediaControlCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>mediaControl</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>MediaControlCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_t_v.html#a19062c8b2786a85d53129d572ec55bbd" title="Callback definition for onMediaControl function.">MediaControlCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab5fc79cc8903c3ccc1c106abf61d7cfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5fc79cc8903c3ccc1c106abf61d7cfd">&#9670;&nbsp;</a></span>onMute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onMute </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_t_v.html#a24d0844497c30b03f3c7ec9e30fcb33b">MuteCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>setMute</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>MuteCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_t_v.html#a24d0844497c30b03f3c7ec9e30fcb33b" title="Callback definition for onMute function.">MuteCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onPowerState </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>powerState</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="a18f8f71ecf0d7292a63d9486f94e5180"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18f8f71ecf0d7292a63d9486f94e5180">&#9670;&nbsp;</a></span>onSelectInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onSelectInput </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_t_v.html#a047ecacb194f2ad747fa2ab7e1117a88">SelectInputCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>selectInput</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SelectInputCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_t_v.html#a047ecacb194f2ad747fa2ab7e1117a88" title="Callback definition for onSelectInput function.">SelectInputCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5db8c85f222debbece54c794015f9402"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db8c85f222debbece54c794015f9402">&#9670;&nbsp;</a></span>onSetVolume()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onSetVolume </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_t_v.html#aa495b90d483782760303ab45494deb7e">SetVolumeCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>setVolume</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SetVolumeCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_t_v.html#aa495b90d483782760303ab45494deb7e" title="Callback definition for onSetVolume function.">SetVolumeCallback</a> </dd></dl>
+
+</div>
+</div>
 <a id="ab1123d03d471fad4896eb2960ed41855"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab1123d03d471fad4896eb2960ed41855">&#9670;&nbsp;</a></span>onSkipChannels()</h2>
 
@@ -932,17 +968,17 @@ Example-Code</h1>
 
 </div>
 </div>
-<a id="a0f301accc58742f867de88c66a5eb3c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f301accc58742f867de88c66a5eb3c5">&#9670;&nbsp;</a></span>sendVolumeEvent()</h2>
+<a id="aa85e049284116b157e34159624680ae1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa85e049284116b157e34159624680ae1">&#9670;&nbsp;</a></span>sendChangeChannelEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sendVolumeEvent </td>
+          <td class="memname">bool sendChangeChannelEvent </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>volume</em>, </td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>channelName</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -958,56 +994,10 @@ Example-Code</h1>
       </table>
 </div><div class="memdoc">
 
-<p>Send <code>setVolume</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual volume has changed. </p>
+<p>Send <code>changeChannel</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server to report selected channel. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">volume</td><td>Integer reporting the volume that the device have been set to </td></tr>
-    <tr><td class="paramname">cause</td><td>(optional) Reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of sending the event </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
-    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="abc47e827f33ac8bcc43ed204c7c4b8fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc47e827f33ac8bcc43ed204c7c4b8fd">&#9670;&nbsp;</a></span>sendMuteEvent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sendMuteEvent </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>mute</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Send <code>setMute</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual mute state. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mute</td><td><code>true</code> = device is muted on <br  />
- <code>false</code> = device is unmuted </td></tr>
+    <tr><td class="paramname">channelName</td><td>String with actual channel </td></tr>
     <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>
   </dd>
@@ -1069,17 +1059,17 @@ Example-Code</h1>
 
 </div>
 </div>
-<a id="a8d79220a3a06331442d36524ceac1db3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d79220a3a06331442d36524ceac1db3">&#9670;&nbsp;</a></span>sendSelectInputEvent()</h2>
+<a id="abc47e827f33ac8bcc43ed204c7c4b8fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc47e827f33ac8bcc43ed204c7c4b8fd">&#9670;&nbsp;</a></span>sendMuteEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool sendSelectInputEvent </td>
+          <td class="memname">bool sendMuteEvent </td>
           <td>(</td>
-          <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>input</em>, </td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>mute</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1095,11 +1085,11 @@ Example-Code</h1>
       </table>
 </div><div class="memdoc">
 
-<p>Send <code>selectInput</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server to report selected input. </p>
+<p>Send <code>setMute</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual mute state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">input</td><td>String with actual media control <br  />
- <code>AUX 1</code>..<code>AUX 7</code>, <code>BLURAY</code>, <code>CABLE</code>, <code>CD</code>, <code>COAX 1</code>,<code>COAX 2</code>, <code>COMPOSITE 1</code>, <code>DVD</code>, <code>GAME</code>, <code>HD RADIO</code>, <code>HDMI 1</code>.. <code>HDMI 10</code>, <code>HDMI ARC</code>, <code>INPUT 1</code>..<code>INPUT 10</code>, <code>IPOD</code>, <code>LINE 1</code>..<code>LINE 7</code>, <code>MEDIA PLAYER</code>, <code>OPTICAL 1</code>, <code>OPTICAL 2</code>, <code>PHONO</code>, <code>PLAYSTATION</code>, <code>PLAYSTATION 3</code>, <code>PLAYSTATION 4</code>, <code>SATELLITE</code>, <code>SMARTCAST</code>, <code>TUNER</code>, <code>TV</code>, <code>USB DAC</code>, <code>VIDEO 1</code>..<code>VIDEO 3</code>, <code>XBOX</code> </td></tr>
+    <tr><td class="paramname">mute</td><td><code>true</code> = device is muted on <br  />
+ <code>false</code> = device is unmuted </td></tr>
     <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>
   </dd>
@@ -1112,87 +1102,6 @@ Example-Code</h1>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="aa85e049284116b157e34159624680ae1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa85e049284116b157e34159624680ae1">&#9670;&nbsp;</a></span>sendChangeChannelEvent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sendChangeChannelEvent </td>
-          <td>(</td>
-          <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>channelName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Send <code>changeChannel</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server to report selected channel. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">channelName</td><td>String with actual channel </td></tr>
-    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
-    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onPowerState </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>powerState</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -1240,6 +1149,97 @@ Example-Code</h1>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
+    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8d79220a3a06331442d36524ceac1db3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d79220a3a06331442d36524ceac1db3">&#9670;&nbsp;</a></span>sendSelectInputEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendSelectInputEvent </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send <code>selectInput</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server to report selected input. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td>String with actual media control <br  />
+ <code>AUX 1</code>..<code>AUX 7</code>, <code>BLURAY</code>, <code>CABLE</code>, <code>CD</code>, <code>COAX 1</code>,<code>COAX 2</code>, <code>COMPOSITE 1</code>, <code>DVD</code>, <code>GAME</code>, <code>HD RADIO</code>, <code>HDMI 1</code>.. <code>HDMI 10</code>, <code>HDMI ARC</code>, <code>INPUT 1</code>..<code>INPUT 10</code>, <code>IPOD</code>, <code>LINE 1</code>..<code>LINE 7</code>, <code>MEDIA PLAYER</code>, <code>OPTICAL 1</code>, <code>OPTICAL 2</code>, <code>PHONO</code>, <code>PLAYSTATION</code>, <code>PLAYSTATION 3</code>, <code>PLAYSTATION 4</code>, <code>SATELLITE</code>, <code>SMARTCAST</code>, <code>TUNER</code>, <code>TV</code>, <code>USB DAC</code>, <code>VIDEO 1</code>..<code>VIDEO 3</code>, <code>XBOX</code> </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
+    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0f301accc58742f867de88c66a5eb3c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f301accc58742f867de88c66a5eb3c5">&#9670;&nbsp;</a></span>sendVolumeEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendVolumeEvent </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>volume</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send <code>setVolume</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual volume has changed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">volume</td><td>Integer reporting the volume that the device have been set to </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) Reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of sending the event </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>

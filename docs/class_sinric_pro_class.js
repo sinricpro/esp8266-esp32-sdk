@@ -6,6 +6,6 @@ var class_sinric_pro_class =
     [ "handle", "class_sinric_pro_class.html#a37c2d0658e498b1bf878f8a3d9a7c5b4", null ],
     [ "onConnected", "class_sinric_pro_class.html#ac33a355adfc413d4ff36974d735115bd", null ],
     [ "onDisconnected", "class_sinric_pro_class.html#a654bb017ca55b448d55bb36e0346f38a", null ],
-    [ "restoreDeviceStates", "class_sinric_pro_class.html#a27a9bb7f1e8bde0f39398649493b6f93", null ],
-    [ "operator[]", "class_sinric_pro_class.html#a5df2137b8d06e894c917fd28c35c31a4", null ]
+    [ "operator[]", "class_sinric_pro_class.html#a5df2137b8d06e894c917fd28c35c31a4", null ],
+    [ "restoreDeviceStates", "class_sinric_pro_class.html#a27a9bb7f1e8bde0f39398649493b6f93", null ]
 ];

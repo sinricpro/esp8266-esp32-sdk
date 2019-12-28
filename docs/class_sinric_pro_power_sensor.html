@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SinricPro Library: SinricProFan</title>
+<title>SinricPro Library: SinricProPowerSensor</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -91,7 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('class_sinric_pro_fan.html','');});
+$(document).ready(function(){initNavTree('class_sinric_pro_power_sensor.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -113,48 +113,35 @@ $(document).ready(function(){initNavTree('class_sinric_pro_fan.html','');});
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="class_sinric_pro_fan-members.html">List of all members</a>  </div>
+<a href="class_sinric_pro_power_sensor-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SinricProFan</div>  </div>
+<div class="title">SinricProPowerSensor</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Device to turn on / off a fan and change it's speed by using powerlevel.  
- <a href="class_sinric_pro_fan.html#details">More...</a></p>
+<p>Device to report power usage.  
+ <a href="class_sinric_pro_power_sensor.html#details">More...</a></p>
 <div class="dynheader">
-Inheritance diagram for SinricProFan:</div>
+Inheritance diagram for SinricProPowerSensor:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="class_sinric_pro_fan.png" usemap="#SinricProFan_map" alt=""/>
-  <map id="SinricProFan_map" name="SinricProFan_map">
-<area href="class_sinric_pro_dim_switch.html" title="Device which supports on / off and dimming commands." alt="SinricProDimSwitch" shape="rect" coords="0,56,123,80"/>
-<area href="class_sinric_pro_device.html" title="Base class for all device types." alt="SinricProDevice" shape="rect" coords="0,0,123,24"/>
+  <img src="class_sinric_pro_power_sensor.png" usemap="#SinricProPowerSensor_map" alt=""/>
+  <map id="SinricProPowerSensor_map" name="SinricProPowerSensor_map">
+<area href="class_sinric_pro_device.html" title="Base class for all device types." alt="SinricProDevice" shape="rect" coords="0,0,141,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:afbdda289acfd7d72c03bab3b69b42afd"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, int &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd">SetPowerLevelCallback</a></td></tr>
-<tr class="memdesc:afbdda289acfd7d72c03bab3b69b42afd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition for setPowerLevel callback.  <a href="class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd">More...</a><br /></td></tr>
-<tr class="separator:afbdda289acfd7d72c03bab3b69b42afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a014ffde9f69bdc85629806073ee1ab7a"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, int &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a">AdjustPowerLevelCallback</a></td></tr>
-<tr class="memdesc:a014ffde9f69bdc85629806073ee1ab7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition for onAdjustPowerLevel callback.  <a href="class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a">More...</a><br /></td></tr>
-<tr class="separator:a014ffde9f69bdc85629806073ee1ab7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, bool &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a></td></tr>
 <tr class="memdesc:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onPowerState function.  <a href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">More...</a><br /></td></tr>
 <tr class="separator:aa9db92ebe40a0df6deb43eba70d3dea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0685d34694badb4442fed6b69b69b366"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">onPowerLevel</a> (<a class="el" href="class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd">SetPowerLevelCallback</a> cb)</td></tr>
-<tr class="memdesc:a0685d34694badb4442fed6b69b69b366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for setPowerLevel request.  <a href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">More...</a><br /></td></tr>
-<tr class="separator:a0685d34694badb4442fed6b69b69b366"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13b10bdb1844babe4de320fff9172d96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96">onAdjustPowerLevel</a> (<a class="el" href="class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a">AdjustPowerLevelCallback</a> cb)</td></tr>
-<tr class="memdesc:a13b10bdb1844babe4de320fff9172d96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for adjustPowerLevel request.  <a href="class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96">More...</a><br /></td></tr>
-<tr class="separator:a13b10bdb1844babe4de320fff9172d96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf81884c1f690ff2dd8862e192b8bbfa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_dim_switch.html#aaf81884c1f690ff2dd8862e192b8bbfa">sendPowerLevelEvent</a> (int powerLevel, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
-<tr class="memdesc:aaf81884c1f690ff2dd8862e192b8bbfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>setPowerLevel</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power level.  <a href="class_sinric_pro_dim_switch.html#aaf81884c1f690ff2dd8862e192b8bbfa">More...</a><br /></td></tr>
-<tr class="separator:aaf81884c1f690ff2dd8862e192b8bbfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15776ac1a6e2077230d77a69fc670453"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_power_sensor.html#a15776ac1a6e2077230d77a69fc670453">sendPowerSensorEvent</a> (float voltage, float current, float power=-1.0f, float apparentPower=-1.0f, float reactivePower=-1.0f, float factor=-1.0f, String cause=&quot;PERIODIC_POLL&quot;)</td></tr>
+<tr class="memdesc:a15776ac1a6e2077230d77a69fc670453"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send PowerSensor event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server.  <a href="class_sinric_pro_power_sensor.html#a15776ac1a6e2077230d77a69fc670453">More...</a><br /></td></tr>
+<tr class="separator:a15776ac1a6e2077230d77a69fc670453"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32f3257da431a1035f23a265ff0cc4cf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a> (<a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a> cb)</td></tr>
 <tr class="memdesc:a32f3257da431a1035f23a265ff0cc4cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>powerState</code> request.  <a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">More...</a><br /></td></tr>
 <tr class="separator:a32f3257da431a1035f23a265ff0cc4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,59 +150,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8006e256414deac0f9a4e28774b47773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Device to turn on / off a fan and change it's speed by using powerlevel. </p>
+<div class="textblock"><p>Device to report power usage. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a014ffde9f69bdc85629806073ee1ab7a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a014ffde9f69bdc85629806073ee1ab7a">&#9670;&nbsp;</a></span>AdjustPowerLevelCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a">AdjustPowerLevelCallback</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition for onAdjustPowerLevel callback. </p>
-<p>Gets called when device receive a <code>adjustPowerLevel</code> reuqest <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">powerLevel</td><td>integer <code>-100..100</code> delta value which power level have to be changed </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">powerLevel</td><td>integer <code>0..100</code> report the absolute powerlevel that the device have been set to </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request can`t be handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="AdjustPowerLevelCallback"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">int</span> absolutePowerLevel;</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96">onAdjustPowerLevel</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;powerDelta) {</div>
-<div class="line">  absolutePowerLevel += powerDelta;  <span class="comment">// calculate absolute power level</span></div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s brightness changed about %i to %d\r\n&quot;</span>, deviceId.c_str(), powerDelta, absolutePowerLevel);</div>
-<div class="line">  powerDelta = absolutePowerLevel; <span class="comment">// return absolute power level</span></div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="aa9db92ebe40a0df6deb43eba70d3dea3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa9db92ebe40a0df6deb43eba70d3dea3">&#9670;&nbsp;</a></span>PowerStateCallback</h2>
 
@@ -265,124 +201,7 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="afbdda289acfd7d72c03bab3b69b42afd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbdda289acfd7d72c03bab3b69b42afd">&#9670;&nbsp;</a></span>SetPowerLevelCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd">SetPowerLevelCallback</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition for setPowerLevel callback. </p>
-<p>Gets called when device receive a <code>setPowerLevel</code> reuqest <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">powerLevel</td><td>integer <code>0..100</code> new powerlevel the device should be set to </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">powerLevel</td><td>integer <code>0..100</code> report the powerlevel that the device have been set to </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="SetPowerLevelCallback"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">onPowerLevel</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;powerLevel) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s powerlevel %d\r\n&quot;</span>, deviceId.c_str(), powerLevel);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a13b10bdb1844babe4de320fff9172d96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13b10bdb1844babe4de320fff9172d96">&#9670;&nbsp;</a></span>onAdjustPowerLevel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onAdjustPowerLevel </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a">AdjustPowerLevelCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set callback function for adjustPowerLevel request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a AdjustPowerLevelCallback function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a" title="Definition for onAdjustPowerLevel callback.">AdjustPowerLevelCallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="a0685d34694badb4442fed6b69b69b366"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0685d34694badb4442fed6b69b69b366">&#9670;&nbsp;</a></span>onPowerLevel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onPowerLevel </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd">SetPowerLevelCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set callback function for setPowerLevel request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a SetPowerLevelCallback function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd" title="Definition for setPowerLevel callback.">SetPowerLevelCallback</a> </dd></dl>
-
-</div>
-</div>
 <a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
 
@@ -419,26 +238,53 @@ Example-Code</h1>
 
 </div>
 </div>
-<a id="aaf81884c1f690ff2dd8862e192b8bbfa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf81884c1f690ff2dd8862e192b8bbfa">&#9670;&nbsp;</a></span>sendPowerLevelEvent()</h2>
+<a id="a15776ac1a6e2077230d77a69fc670453"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15776ac1a6e2077230d77a69fc670453">&#9670;&nbsp;</a></span>sendPowerSensorEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool sendPowerLevelEvent </td>
+          <td class="memname">bool sendPowerSensorEvent </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>powerLevel</em>, </td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>voltage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>current</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>power</em> = <code>-1.0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>apparentPower</em> = <code>-1.0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>reactivePower</em> = <code>-1.0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>factor</em> = <code>-1.0f</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PERIODIC_POLL&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -446,18 +292,19 @@ Example-Code</h1>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Send <code>setPowerLevel</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power level. </p>
+<p>Send PowerSensor event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">powerLevel</td><td>integer <code>0..100</code> report the powerlevel that the device have been set to </td></tr>
-    <tr><td class="paramname">cause</td><td>(optional) Reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
+    <tr><td class="paramname">voltage</td><td>voltage </td></tr>
+    <tr><td class="paramname">current</td><td>current </td></tr>
+    <tr><td class="paramname">power</td><td>(optional) if not provided, it is calculated automaticly (power = voltage * current) </td></tr>
+    <tr><td class="paramname">apparentPower</td><td>(optional) if not provided it is set to -1 </td></tr>
+    <tr><td class="paramname">reactivePower</td><td>(optional) if not provided it is set to -1 </td></tr>
+    <tr><td class="paramname">factor</td><td>(optional) if not provided it is set to -1 <br  />
+ if apparentPower is provided, factor is calculated automaticly (factor = power / apparentPower) </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) Reason why event is sent (default = <code>"PERIODIC_POLL"</code>) </td></tr>
   </table>
   </dd>
 </dl>
@@ -528,13 +375,11 @@ Example-Code</h1>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_sinric_pro_dim_switch_html_a0685d34694badb4442fed6b69b69b366"><div class="ttname"><a href="class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366">SinricProDimSwitch::onPowerLevel</a></div><div class="ttdeci">void onPowerLevel(SetPowerLevelCallback cb)</div><div class="ttdoc">Set callback function for setPowerLevel request.</div><div class="ttdef"><b>Definition:</b> SinricProDimSwitch.h:98</div></div>
-<div class="ttc" id="aclass_sinric_pro_dim_switch_html_a13b10bdb1844babe4de320fff9172d96"><div class="ttname"><a href="class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96">SinricProDimSwitch::onAdjustPowerLevel</a></div><div class="ttdeci">void onAdjustPowerLevel(AdjustPowerLevelCallback cb)</div><div class="ttdoc">Set callback function for adjustPowerLevel request.</div><div class="ttdef"><b>Definition:</b> SinricProDimSwitch.h:108</div></div>
 <div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:139</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="class_sinric_pro_fan.html">SinricProFan</a></li>
+    <li class="navelem"><a class="el" href="class_sinric_pro_power_sensor.html">SinricProPowerSensor</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>

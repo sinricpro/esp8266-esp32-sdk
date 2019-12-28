@@ -151,12 +151,12 @@ $(document).ready(function(){initNavTree('_sinric_pro_garage_door_8h_source.html
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">if</span> (actionString == <span class="stringliteral">&quot;setMode&quot;</span> &amp;&amp; doorStateCallback) {</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    String modeStr = request_value[<span class="stringliteral">&quot;mode&quot;</span>] | <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">bool</span> mode;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">if</span> (modeStr == <span class="stringliteral">&quot;open&quot;</span>) mode = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">if</span> (modeStr == <span class="stringliteral">&quot;close&quot;</span>) mode = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">if</span> (modeStr == <span class="stringliteral">&quot;Open&quot;</span>) mode = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">if</span> (modeStr == <span class="stringliteral">&quot;Close&quot;</span>) mode = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    success = doorStateCallback(String(deviceId), mode);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span> (mode == <span class="keyword">false</span>) modeStr = <span class="stringliteral">&quot;open&quot;</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">if</span> (mode == <span class="keyword">true</span>) modeStr = <span class="stringliteral">&quot;close&quot;</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    response_value[<span class="stringliteral">&quot;mode&quot;</span>] = mode;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span> (mode == <span class="keyword">false</span>) modeStr = <span class="stringliteral">&quot;Open&quot;</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">if</span> (mode == <span class="keyword">true</span>) modeStr = <span class="stringliteral">&quot;Close&quot;</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    response_value[<span class="stringliteral">&quot;mode&quot;</span>] = modeStr;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">return</span> success;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  }</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">return</span> success;</div>

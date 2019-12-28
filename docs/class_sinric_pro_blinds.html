@@ -169,45 +169,6 @@ Public Member Functions</h2></td></tr>
 <li>open / close </li>
 </ul>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a191ba7fd2f28b1892bc8ba7374089285"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a191ba7fd2f28b1892bc8ba7374089285">&#9670;&nbsp;</a></span>SetPositionCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285">SetPositionCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback definition for onSetPosition function. </p>
-<p>Gets called when device receive a <code>setPosition</code> request <br  />
-</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>Absolute integer value with desired blinds position </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>Absolute integer value with actual blinds position </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
-    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
-  </table>
-  </dd>
-</dl>
-<h1><a class="anchor" id="SetPositionCallback"></a>
-Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_blinds.html#a5e67c0c58e46d4e0ad1b811df1119cde">onSetPosition</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;position) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s set position to %d\r\n&quot;</span>, deviceId.c_str(), position);</div>
-<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="a4f6fdf591b948dc44154c33df5b8fb97"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4f6fdf591b948dc44154c33df5b8fb97">&#9670;&nbsp;</a></span>AdjustPositionCallback</h2>
 
@@ -300,35 +261,46 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5e67c0c58e46d4e0ad1b811df1119cde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e67c0c58e46d4e0ad1b811df1119cde">&#9670;&nbsp;</a></span>onSetPosition()</h2>
+<a id="a191ba7fd2f28b1892bc8ba7374089285"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a191ba7fd2f28b1892bc8ba7374089285">&#9670;&nbsp;</a></span>SetPositionCallback</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void onSetPosition </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285">SetPositionCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, int&amp;)&gt; <a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285">SetPositionCallback</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set callback function for <code>setPosition</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Callback definition for onSetPosition function. </p>
+<p>Gets called when device receive a <code>setPosition</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SetPositionCallback</code> function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>Absolute integer value with desired blinds position </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>Absolute integer value with actual blinds position </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285" title="Callback definition for onSetPosition function.">SetPositionCallback</a> </dd></dl>
-
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="SetPositionCallback"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_blinds.html#a5e67c0c58e46d4e0ad1b811df1119cde">onSetPosition</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;position) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s set position to %d\r\n&quot;</span>, deviceId.c_str(), position);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a02b6fde78fad6ca77d5b14286199bad9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a02b6fde78fad6ca77d5b14286199bad9">&#9670;&nbsp;</a></span>onAdjustPosition()</h2>
 
@@ -354,6 +326,70 @@ Example-Code</h1>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_blinds.html#a4f6fdf591b948dc44154c33df5b8fb97" title="Callback definition for onAdjustPosition function.">AdjustPositionCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onPowerState </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>powerState</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5e67c0c58e46d4e0ad1b811df1119cde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e67c0c58e46d4e0ad1b811df1119cde">&#9670;&nbsp;</a></span>onSetPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onSetPosition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285">SetPositionCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>setPosition</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SetPositionCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285" title="Callback definition for onSetPosition function.">SetPositionCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -399,42 +435,6 @@ Example-Code</h1>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onPowerState </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3">PowerStateCallback</a>&#160;</td>
-          <td class="paramname"><em>cb</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set callback function for <code>powerState</code> request. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
 
 </div>
 </div>

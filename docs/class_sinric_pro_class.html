@@ -347,36 +347,6 @@ Example-Code</h1>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a27a9bb7f1e8bde0f39398649493b6f93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27a9bb7f1e8bde0f39398649493b6f93">&#9670;&nbsp;</a></span>restoreDeviceStates()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void restoreDeviceStates </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>flag</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Enable / disable restore device states function. </p>
-<p>If this flag is enabled (<code>true</code>), SinricProServer will send last known device states to your device directly after connection to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server has been established. <br  />
- For every state the corresponding callback (like <code>onPowerState</code>) will be called <br  />
-This is useful after a power failure / reboot of your device.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">flag</td><td><code>true</code> = enabled <br  />
- <code>false</code>= disabled </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a5df2137b8d06e894c917fd28c35c31a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5df2137b8d06e894c917fd28c35c31a4">&#9670;&nbsp;</a></span>operator[]()</h2>
 
@@ -419,6 +389,36 @@ Syntax</h1>
 <div class="line">  <a class="code" href="class_sinric_pro_switch.html">SinricProSwitch</a> &amp;mySwitch = <a class="code" href="class_sinric_pro.html">SinricPro</a>[SWITCH_ID];</div>
 <div class="line">..</div>
 </div><!-- fragment --> 
+</div>
+</div>
+<a id="a27a9bb7f1e8bde0f39398649493b6f93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27a9bb7f1e8bde0f39398649493b6f93">&#9670;&nbsp;</a></span>restoreDeviceStates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void restoreDeviceStates </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>flag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable / disable restore device states function. </p>
+<p>If this flag is enabled (<code>true</code>), SinricProServer will send last known device states to your device directly after connection to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server has been established. <br  />
+ For every state the corresponding callback (like <code>onPowerState</code>) will be called <br  />
+This is useful after a power failure / reboot of your device.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flag</td><td><code>true</code> = enabled <br  />
+ <code>false</code>= disabled </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 </div><!-- contents -->
