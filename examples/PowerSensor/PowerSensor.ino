@@ -7,6 +7,10 @@
  * - open serial monitor and check whats happening
  * - check full user documentation at https://sinricpro.github.io/esp8266-esp32-sdk
  * - visit https://github.com/sinricpro/esp8266-esp32-sdk/issues and check for existing issues or open a new one
+ * 
+ * How this example works:
+ * - if this device is turned on, it makes a power measurement
+ * - after SAMPLE_EVERY_SEC seconds, this data is sent to SinricPro server and a new mesurement is taken (this step repeats until device is turned off)
  */
 
 // Uncomment the following line to enable serial debug output
