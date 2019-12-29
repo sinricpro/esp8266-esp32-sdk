@@ -37,32 +37,53 @@
 #define BAUD_RATE         9600                // Change baudrate to your need (used for serial monitor)
 #define SAMPLE_EVERY_SEC  60                  // Send every 60 seconds new data to server
 
-bool powerState = true;
+
+bool powerState = false;
+
+// struct to store measurement from powersensor
+struct {
+  unsigned long startTime;
+  float voltage;
+  float current;
+  float power;
+  float apparentPower;
+  float reactivePower;
+  float factor;
+} powerMeasure;
+
+// this is where you read from power sensor
+// in this example, random values are used
+void doPowerMeasure() {
+  powerMeasure.startTime = SinricPro.getTimestamp(); // note the timestamp of sampling
+  powerMeasure.voltage = random(2200,2300) / 10.0f;
+  powerMeasure.current = random(1,20) / 10.0f;
+  powerMeasure.power = powerMeasure.voltage * powerMeasure.current;
+  powerMeasure.apparentPower = powerMeasure.power + (random(10,20)/10.0f);
+}
 
 bool onPowerState(const String &deviceId, bool &state) {
   Serial.printf("Device %s power turned %s \r\n", deviceId.c_str(), state?"on":"off");
   powerState = state;
+  if (powerState) doPowerMeasure(); // start a measurement when device is turned on
   return true; // request handled properly
 }
 
 bool sendPowerSensorData() {
-  if (!powerState) return false; // just send data if device is turned on
+  // dont send data if device is turned off
+  if (!powerState) return false;
 
   // limit data rate to SAMPLE_EVERY_SEC
-  static unsigned long lastEvent = -(SAMPLE_EVERY_SEC * 1000);
+  static unsigned long lastEvent = 0;
   unsigned long actualMillis = millis();
   if (actualMillis - lastEvent < (SAMPLE_EVERY_SEC * 1000)) return false;
   lastEvent = actualMillis;
 
-  // use some random data
-  float voltage = random(2200,2300) / 10.0f;
-  float current = random(1,20) / 10.0f;
-  float power = voltage * current;
-  float apparentPower = power - (random(10,20)/10.0f);
-
-  // get sensor device and send data
+  // send measured data
   SinricProPowerSensor &myPowerSensor = SinricPro[POWERSENSOR_ID];
-  return myPowerSensor.sendPowerSensorEvent(voltage, current, power, apparentPower);
+  bool success = myPowerSensor.sendPowerSensorEvent(powerMeasure.startTime, powerMeasure.voltage, powerMeasure.current, powerMeasure.power, powerMeasure.apparentPower);
+  // if measured data was sent do a new measure
+  if (success) doPowerMeasure();
+  return success;
 }
 
 void setupWiFi() {
@@ -84,9 +105,10 @@ void setupSinricPro() {
   myPowerSensor.onPowerState(onPowerState);
 
   // setup SinricPro
+  SinricPro.restoreDeviceStates(true);
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
-  SinricPro.begin(APP_KEY, APP_SECRET, "testws.sinric.pro");
+  SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
@@ -95,8 +117,6 @@ void setup() {
   setupWiFi();
   setupSinricPro();
 }
-
-
 
 void loop() {
   SinricPro.handle();
