@@ -87,6 +87,12 @@ class SinricProClass : public SinricProInterface {
     // setResponseMessage is is just a workaround until verison 3.x.x will be released
     void setResponseMessage(String &&message) { responseMessageStr = message; }
 
+    /**
+     * @brief Get the current timestamp
+     * 
+     * @return unsigned long current timestamp (unix epoch time)
+     */
+    unsigned long getTimestamp() { return baseTimestamp + (millis()/1000); }
   private:
     void handleReceiveQueue();
     void handleSendQueue();
@@ -123,7 +129,6 @@ class SinricProClass : public SinricProInterface {
     SinricProQueue_t receiveQueue;
     SinricProQueue_t sendQueue;
 
-    unsigned long getTimestamp() { return baseTimestamp + (millis()/1000); }
     unsigned long baseTimestamp = 0;
 
     bool _begin = false;
