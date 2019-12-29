@@ -18,7 +18,7 @@ class SinricProPowerSensor :  public SinricProDevice {
   public:
 	  SinricProPowerSensor(const char* deviceId, unsigned long eventWaitTime=100);
     // event
-    bool sendPowerSensorEvent(float voltage, float current, float power=-1.0f, float apparentPower=-1.0f, float reactivePower=-1.0f, float factor=-1.0f, String cause = "PERIODIC_POLL");
+    bool sendPowerSensorEvent(unsigned long startTime, float voltage, float current, float power=-1.0f, float apparentPower=-1.0f, float reactivePower=-1.0f, float factor=-1.0f, String cause = "PERIODIC_POLL");
   private:
 };
 
@@ -37,11 +37,12 @@ SinricProPowerSensor::SinricProPowerSensor(const char* deviceId, unsigned long e
  * @retval  true          event has been sent successfully
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool SinricProPowerSensor::sendPowerSensorEvent(float voltage, float current, float power, float apparentPower, float reactivePower, float factor, String cause) {
+bool SinricProPowerSensor::sendPowerSensorEvent(unsigned long startTime, float voltage, float current, float power, float apparentPower, float reactivePower, float factor, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "devicePowerUsage", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   if (power == -1) power = voltage * current;
   if (apparentPower != -1) factor = power / apparentPower;
+  event_value["startTime"]     = startTime;
   event_value["voltage"]       = voltage;
   event_value["current"]       = current;
   event_value["power"]         = power;
