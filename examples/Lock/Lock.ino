@@ -1,5 +1,5 @@
 /*
- * Example for how to use Lock device as garage door opener
+ * Example for smart lock
  * 
  * If you encounter any issues:
  * - check the readme.md at https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md
