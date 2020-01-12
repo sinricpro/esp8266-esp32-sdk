@@ -27,6 +27,11 @@
 
 ---
 
+## Full user documentation
+Please see here for [full user documentation](https://sinricpro.github.io/esp8266-esp32-sdk)
+
+---
+
 ## Examples
 See [examples](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples) on GitHub
 
@@ -121,7 +126,4 @@ Example 1
 * Garage Door
 
 ---
-
-# Full user documentation
-Please see here for [full user documentation](https://sinricpro.github.io/esp8266-esp32-sdk)
 

@@ -7,6 +7,7 @@ New:
   - GarageDoor
 
 - Examples
+  - Thermostat
   - Blinds
   - GarageDoor
 
