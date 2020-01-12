@@ -14,7 +14,6 @@ var hierarchy =
       [ "SinricProLight", "class_sinric_pro_light.html", null ],
       [ "SinricProLock", "class_sinric_pro_lock.html", null ],
       [ "SinricProMotionsensor", "class_sinric_pro_motionsensor.html", null ],
-      [ "SinricProPowerSensor", "class_sinric_pro_power_sensor.html", null ],
       [ "SinricProSpeaker", "class_sinric_pro_speaker.html", null ],
       [ "SinricProSwitch", "class_sinric_pro_switch.html", null ],
       [ "SinricProTemperaturesensor", "class_sinric_pro_temperaturesensor.html", null ],
