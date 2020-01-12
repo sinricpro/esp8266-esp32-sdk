@@ -1,6 +1,6 @@
 
-# SinricPro (ESP8266 / ESP32 SDK)
-## Version 2.2.7
+# SinricPro (ESP8266 / ESP32 SDK) {#mainpage}
+
 ## Installation
 
 ### VS Code & PlatformIO:
@@ -24,6 +24,11 @@
 ## Dependencies
 [ArduinoJson](https://github.com/bblanchon/ArduinoJson) (Version 6.12.0)   
 [WebSocketsClient](https://github.com/Links2004/arduinoWebSockets) (Version 2.2.0)  
+
+---
+
+## Full user documentation
+Please see here for [full user documentation](https://sinricpro.github.io/esp8266-esp32-sdk)
 
 ---
 
@@ -117,9 +122,8 @@ Example 1
 * Motionsensor
 * Contactsensor
 * Windows Air Conditioner
+* Interior Blinds
+* Garage Door
 
 ---
-
-# Full user documentation
-Please see here for [full user documentation](https://sinricpro.github.io/esp8266-esp32-sdk)
 

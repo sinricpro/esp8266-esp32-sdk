@@ -153,6 +153,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5df2137b8d06e894c917fd28c35c31a4"><td class="memItemLeft" align="right" valign="top">proxy&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_class.html#a5df2137b8d06e894c917fd28c35c31a4">operator[]</a> (const String deviceId)</td></tr>
 <tr class="memdesc:a5df2137b8d06e894c917fd28c35c31a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">operator[] is used tor create a new device instance or get an existing device instance  <a href="class_sinric_pro_class.html#a5df2137b8d06e894c917fd28c35c31a4">More...</a><br /></td></tr>
 <tr class="separator:a5df2137b8d06e894c917fd28c35c31a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a346ead912467405403ad23bad8da1e60"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_class.html#a346ead912467405403ad23bad8da1e60">getTimestamp</a> ()</td></tr>
+<tr class="memdesc:a346ead912467405403ad23bad8da1e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current timestamp.  <a href="class_sinric_pro_class.html#a346ead912467405403ad23bad8da1e60">More...</a><br /></td></tr>
+<tr class="separator:a346ead912467405403ad23bad8da1e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The main class of this library, handling communication between <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server and your devices. </p>
@@ -254,6 +257,34 @@ Example-Code</h1>
 <div class="line">  <a class="code" href="class_sinric_pro.html">SinricPro</a>.begin(APP_KEY, APP_SECRET);</div>
 <div class="line">}</div>
 </div><!-- fragment --> 
+</div>
+</div>
+<a id="a346ead912467405403ad23bad8da1e60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a346ead912467405403ad23bad8da1e60">&#9670;&nbsp;</a></span>getTimestamp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long getTimestamp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the current timestamp. </p>
+<dl class="section return"><dt>Returns</dt><dd>unsigned long current timestamp (unix epoch time) </dd></dl>
+
 </div>
 </div>
 <a id="a37c2d0658e498b1bf878f8a3d9a7c5b4"></a>

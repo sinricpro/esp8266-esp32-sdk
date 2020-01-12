@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['resetbandscallback_52',['ResetBandsCallback',['../class_sinric_pro_speaker.html#ae1ec62ffbf9d7f00df9760819305782e',1,'SinricProSpeaker']]],
-  ['restoredevicestates_53',['restoreDeviceStates',['../class_sinric_pro_class.html#a27a9bb7f1e8bde0f39398649493b6f93',1,'SinricProClass']]]
+  ['powerstatecallback_57',['PowerStateCallback',['../class_sinric_pro_device.html#aa9db92ebe40a0df6deb43eba70d3dea3',1,'SinricProDevice']]]
 ];

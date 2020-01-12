@@ -37,7 +37,7 @@
 
 #include "SinricPro.h"
 #include "SinricProTemperaturesensor.h"
-#include "DHT.h"
+#include "DHT.h" // https://github.com/markruys/arduino-DHT
 
 #define WIFI_SSID         "YOUR-WIFI-SSID"    
 #define WIFI_PASS         "YOUR-WIFI-PASSWORD"
@@ -95,7 +95,8 @@ void handleTemperaturesensor() {
   unsigned long actualMillis = millis();
   if (actualMillis - lastEvent < EVENT_WAIT_TIME) return; //only check every EVENT_WAIT_TIME milliseconds
 
-  temperature = dht.getTemperature();          // get actual temperature
+  temperature = dht.getTemperature();          // get actual temperature in °C
+//  temperature = dht.getTemperature() * 1.8f + 32;  // get actual temperature in °F
   humidity = dht.getHumidity();                // get actual humidity
 
   if (isnan(temperature) || isnan(humidity)) { // reading failed... 

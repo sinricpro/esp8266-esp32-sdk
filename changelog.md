@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 2.3.0
+New:
+- Devices
+  - Blinds
+  - GarageDoor
+
+- Examples
+  - Thermostat
+  - Blinds
+  - GarageDoor
+
 ## Version 2.2.7
 
 New:

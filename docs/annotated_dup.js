@@ -1,6 +1,7 @@
 var annotated_dup =
 [
     [ "SinricPro", "class_sinric_pro.html", null ],
+    [ "SinricProBlinds", "class_sinric_pro_blinds.html", "class_sinric_pro_blinds" ],
     [ "SinricProClass", "class_sinric_pro_class.html", "class_sinric_pro_class" ],
     [ "SinricProContactsensor", "class_sinric_pro_contactsensor.html", "class_sinric_pro_contactsensor" ],
     [ "SinricProDevice", "class_sinric_pro_device.html", "class_sinric_pro_device" ],
@@ -8,6 +9,7 @@ var annotated_dup =
     [ "SinricProDoorbell", "class_sinric_pro_doorbell.html", "class_sinric_pro_doorbell" ],
     [ "SinricProFan", "class_sinric_pro_fan.html", "class_sinric_pro_fan" ],
     [ "SinricProFanUS", "class_sinric_pro_fan_u_s.html", "class_sinric_pro_fan_u_s" ],
+    [ "SinricProGarageDoor", "class_sinric_pro_garage_door.html", "class_sinric_pro_garage_door" ],
     [ "SinricProLight", "class_sinric_pro_light.html", "class_sinric_pro_light" ],
     [ "SinricProLock", "class_sinric_pro_lock.html", "class_sinric_pro_lock" ],
     [ "SinricProMotionsensor", "class_sinric_pro_motionsensor.html", "class_sinric_pro_motionsensor" ],

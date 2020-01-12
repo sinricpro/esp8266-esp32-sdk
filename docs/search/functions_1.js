@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['handle_118',['handle',['../class_sinric_pro_class.html#a37c2d0658e498b1bf878f8a3d9a7c5b4',1,'SinricProClass']]]
+  ['gettimestamp_131',['getTimestamp',['../class_sinric_pro_class.html#a346ead912467405403ad23bad8da1e60',1,'SinricProClass']]]
 ];

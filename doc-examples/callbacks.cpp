@@ -376,3 +376,29 @@ bool onSelectInput(const String &deviceId, String &input) {
 //! [onDisconnected]
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
 //! [onDisconnected]
+
+//! [onSetPosition]
+bool onSetPosition(const String &deviceId, int &position) {
+  Serial.printf("Device %s set position to %d\r\n", deviceId.c_str(), position);
+  return true;
+}
+//! [onSetPosition]
+
+//! [onAdjustPosition]
+int blindsPosition;
+
+bool onAdjustPosition(const String &deviceId, int &positionDelta) {
+  blindsPosition += positionDelta;
+  Serial.printf("Device %s position changed about %i to %d\r\n", deviceId.c_str(), positionDelta, blindsPosition);
+  positionDelta = blindsPosition;
+  return true;
+}
+//! [onAdjustPosition]
+
+//! [onDoorState]
+bool onDoorState(const String &deviceId, bool &doorState) {
+  Serial.printf("Device %s garage door is now %s\r\n", deviceId.c_str(), doorState?"closed":"open");
+  return true;
+}
+//! [onDoorState]
+
