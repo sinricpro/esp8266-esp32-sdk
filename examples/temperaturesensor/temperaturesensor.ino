@@ -95,7 +95,8 @@ void handleTemperaturesensor() {
   unsigned long actualMillis = millis();
   if (actualMillis - lastEvent < EVENT_WAIT_TIME) return; //only check every EVENT_WAIT_TIME milliseconds
 
-  temperature = dht.getTemperature();          // get actual temperature
+  temperature = dht.getTemperature();          // get actual temperature in °C
+//  temperature = dht.getTemperature() * 1.8f + 32;  // get actual temperature in °F
   humidity = dht.getHumidity();                // get actual humidity
 
   if (isnan(temperature) || isnan(humidity)) { // reading failed... 
