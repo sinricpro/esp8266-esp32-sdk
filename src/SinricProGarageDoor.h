@@ -97,7 +97,7 @@ void SinricProGarageDoor::onDoorState(DoorStateCallback cb) {
 bool SinricProGarageDoor::sendDoorStateEvent(bool state, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setMode", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
-  state ? event_value["mode"] = "close" : event_value["mode"] = "open";
+  state ? event_value["mode"] = "Close" : event_value["mode"] = "Open";
   return sendEvent(eventMessage);
 }
 
