@@ -48,7 +48,7 @@
 #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
 
-// uncomment the following line if you use a toggle switches instead of tactile button
+// comment the following line if you use a toggle switches instead of tactile buttons
 #define TACTILE_BUTTON 1
 
 #define BAUD_RATE   9600
