@@ -1,6 +1,6 @@
 /*
- * Simple example for how to use multiple SinricPro Switch device:
- * - setup 4 switch devices
+ * Simple example for how to use multiple SinricPro Switch devices:
+ * - setup 4 switch devices using an array
  * - handle request using single callback
  * 
  * If you encounter any issues:
@@ -37,16 +37,22 @@
 #define WIFI_PASS         "YOUR-WIFI-PASSWORD"
 #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-
-#define SWITCH_ID_1       "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
-#define SWITCH_ID_2       "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
-#define SWITCH_ID_3       "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
-#define SWITCH_ID_4       "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
-
 #define BAUD_RATE         9600                // Change baudrate to your need
 
+#define DEVICES           4                   // define how much devices are in SWITCH_IDs array
+String SWITCH_IDs[DEVICES] = {                // define deviceIds in an array
+  "YOUR_DEVICE_ID_1",
+  "YOUR_DEVICE_ID_2",
+  "YOUR_DEVICE_ID_3",
+  "YOUR_DEVICE_ID_4"
+};
+
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
+  for (int i=0; i < DEVICES; i++) {     // go through the devices
+    if (deviceId == SWITCH_IDs[i]) {    // if deviceId matches
+      Serial.printf("Device number %i turned %s\r\n", i, state?"on":"off");   // print power state for device
+    }
+  }
   return true; // request handled properly
 }
 
@@ -66,19 +72,10 @@ void setupWiFi() {
 // setup function for SinricPro
 void setupSinricPro() {
   // add devices to SinricPro and set callback function
-  SinricProSwitch& mySwitch1 = SinricPro[SWITCH_ID_1];
-  mySwitch1.onPowerState(onPowerState);
-
-  SinricProSwitch& mySwitch2 = SinricPro[SWITCH_ID_2];
-  mySwitch2.onPowerState(onPowerState);
-
-  SinricProSwitch& mySwitch3 = SinricPro[SWITCH_ID_3];
-  mySwitch3.onPowerState(onPowerState);
-
-  SinricProSwitch& mySwitch4 = SinricPro[SWITCH_ID_4];
-  mySwitch4.onPowerState(onPowerState);
-
-  // set callback function to device
+  for (int i = 0; i < DEVICES; i++) {
+    SinricProSwitch& mySwitch = SinricPro[SWITCH_IDs[i]];
+    mySwitch.onPowerState(onPowerState);
+  }
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
