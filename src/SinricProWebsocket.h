@@ -98,7 +98,13 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
   setExtraHeaders();
   webSocket.onEvent([&](WStype_t type, uint8_t * payload, size_t length) { webSocketEvent(type, payload, length); });
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
+#ifdef WEBSOCKET_SSL
+  #pragma message ( "Using SECURE WEBSOCKET" )
+  webSocket.beginSSL(server, SINRICPRO_SERVER_PORT, "/");
+#else
+  #pragma message ( "Using standard WEBSOCKET" )
   webSocket.begin(server, SINRICPRO_SERVER_PORT, "/"); // server address, port and URL
+#endif
 }
 
 void websocketListener::handle() {
