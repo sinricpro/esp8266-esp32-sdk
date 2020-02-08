@@ -90,7 +90,11 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
   this->socketAuthToken = socketAuthToken;
   this->deviceIds = deviceIds;
 
+#ifdef WEBSOCKET_SSL
+  DEBUG_SINRIC("[SinricPro:Websocket]: Connecting to WebSocket Server using SSL (%s)\r\n", server.c_str());
+#else
   DEBUG_SINRIC("[SinricPro:Websocket]: Connecting to WebSocket Server (%s)\r\n", server.c_str());
+#endif
 
   if (_isConnected) {
     stop();
@@ -100,7 +104,9 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
 #ifdef WEBSOCKET_SSL
   #pragma message ( "Using SECURE WEBSOCKET" )
-  webSocket.beginSSL(server, SINRICPRO_SERVER_PORT, "/");
+//  webSocket.beginSSL(server, SINRICPRO_SERVER_SSL_PORT, "/");
+  webSocket.beginSSL(server, SINRICPRO_SERVER_SSL_PORT);
+
 #else
   #pragma message ( "Using standard WEBSOCKET" )
   webSocket.begin(server, SINRICPRO_SERVER_PORT, "/"); // server address, port and URL
