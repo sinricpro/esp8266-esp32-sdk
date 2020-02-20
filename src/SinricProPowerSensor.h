@@ -18,8 +18,12 @@ class SinricProPowerSensor :  public SinricProDevice {
   public:
 	  SinricProPowerSensor(const char* deviceId, unsigned long eventWaitTime=100);
     // event
-    bool sendPowerSensorEvent(unsigned long startTime, float voltage, float current, float power=-1.0f, float apparentPower=-1.0f, float reactivePower=-1.0f, float factor=-1.0f, String cause = "PERIODIC_POLL");
+    bool sendPowerSensorEvent(float voltage, float current, float power=-1.0f, float apparentPower=-1.0f, float reactivePower=-1.0f, float factor=-1.0f, String cause = "PERIODIC_POLL");
   private:
+    unsigned long startTime = 0;
+    unsigned long lastPower = 0;
+  protected:
+    float getWattHours(unsigned long currentTimestamp);
 };
 
 SinricProPowerSensor::SinricProPowerSensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
@@ -37,11 +41,14 @@ SinricProPowerSensor::SinricProPowerSensor(const char* deviceId, unsigned long e
  * @retval  true          event has been sent successfully
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool SinricProPowerSensor::sendPowerSensorEvent(unsigned long startTime, float voltage, float current, float power, float apparentPower, float reactivePower, float factor, String cause) {
+bool SinricProPowerSensor::sendPowerSensorEvent(float voltage, float current, float power, float apparentPower, float reactivePower, float factor, String cause) {
   DynamicJsonDocument eventMessage = prepareEvent(deviceId, "powerUsage", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   if (power == -1) power = voltage * current;
   if (apparentPower != -1) factor = power / apparentPower;
+
+  unsigned long currentTimestamp = getTimestamp();
+
   event_value["startTime"]     = startTime;
   event_value["voltage"]       = voltage;
   event_value["current"]       = current;
@@ -49,7 +56,16 @@ bool SinricProPowerSensor::sendPowerSensorEvent(unsigned long startTime, float v
   event_value["apparentPower"] = apparentPower;
   event_value["reactivePower"] = reactivePower;
   event_value["factor"]        = factor;
+  event_value["wattHours"]      = getWattHours(currentTimestamp);
+
+  startTime = currentTimestamp;
+  lastPower = power;
   return sendEvent(eventMessage);
+}
+
+float SinricProPowerSensor::getWattHours(unsigned long currentTimestamp) {
+  if (startTime) return (currentTimestamp-startTime) * lastPower / 3600.0f;
+  return 0;
 }
 
 #endif
