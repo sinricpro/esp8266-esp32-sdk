@@ -92,7 +92,7 @@ class SinricProClass : public SinricProInterface {
      * 
      * @return unsigned long current timestamp (unix epoch time)
      */
-    unsigned long getTimestamp() { return baseTimestamp + (millis()/1000); }
+    unsigned long getTimestamp() override { return baseTimestamp + (millis()/1000); }
   private:
     void handleReceiveQueue();
     void handleSendQueue();
