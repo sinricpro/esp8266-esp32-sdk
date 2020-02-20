@@ -37,7 +37,7 @@
 #define WIFI_PASS         "YOUR-WIFI-PASSWORD"
 #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define TEMP_SENSOR_ID    "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
+#define POWERSENSOR_ID    "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                // Change baudrate to your need (used for serial monitor)
 #define SAMPLE_EVERY_SEC  60                  // Send every 60 seconds new data to server
 
@@ -46,7 +46,6 @@ bool powerState = false;
 
 // struct to store measurement from powersensor
 struct {
-  unsigned long startTime;
   float voltage;
   float current;
   float power;
@@ -58,7 +57,6 @@ struct {
 // this is where you read from power sensor
 // in this example, random values are used
 void doPowerMeasure() {
-  powerMeasure.startTime = SinricPro.getTimestamp(); // note the timestamp of sampling
   powerMeasure.voltage = random(2200,2300) / 10.0f;
   powerMeasure.current = random(1,20) / 10.0f;
   powerMeasure.power = powerMeasure.voltage * powerMeasure.current;
@@ -84,7 +82,7 @@ bool sendPowerSensorData() {
 
   // send measured data
   SinricProPowerSensor &myPowerSensor = SinricPro[POWERSENSOR_ID];
-  bool success = myPowerSensor.sendPowerSensorEvent(powerMeasure.startTime, powerMeasure.voltage, powerMeasure.current, powerMeasure.power, powerMeasure.apparentPower);
+  bool success = myPowerSensor.sendPowerSensorEvent(powerMeasure.voltage, powerMeasure.current, powerMeasure.power, powerMeasure.apparentPower);
   // if measured data was sent do a new measure
   if (success) doPowerMeasure();
   return success;
