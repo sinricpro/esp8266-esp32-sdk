@@ -27,7 +27,7 @@
 #endif
 
 #include "SinricPro.h"
-#include "SinricProFan.h"
+#include "SinricProFanUS.h"
 
 #define WIFI_SSID         "YOUR-WIFI-SSID"    
 #define WIFI_PASS         "YOUR-WIFI-PASSWORD"
@@ -37,10 +37,10 @@
 #define BAUD_RATE         9600                // Change baudrate to your need
 
 // we use a struct to store all states and values for our fan
-// powerLevel is used for fan speed (0..100)
+// fanSpeed (1..3)
 struct {
   bool powerState = false;
-  int powerLevel = 0;
+  int fanSpeed = 1;
 } device_state;
 
 bool onPowerState(const String &deviceId, bool &state) {
@@ -49,16 +49,21 @@ bool onPowerState(const String &deviceId, bool &state) {
   return true; // request handled properly
 }
 
-bool onPowerLevel(const String &deviceId, int &powerLevel) {
-  device_state.powerLevel = powerLevel;
-  Serial.printf("Fan speed changed to %d\r\n", device_state.powerLevel);
+// Fan rangeValue is from 1..3
+bool onRangeValue(const String &deviceId, int &rangeValue) {
+  device_state.fanSpeed = rangeValue;
+  Serial.printf("Fan speed changed to %d\r\n", device_state.fanSpeed);
   return true;
 }
 
-bool onAdjustPowerLevel(const String &deviceId, int levelDelta) {
-  device_state.powerLevel += levelDelta;
-  Serial.printf("Fan speed changed about %i to %d\r\n", levelDelta, device_state.powerLevel);
-  levelDelta = device_state.powerLevel;
+// Fan rangeValueDelta is from -3..+3
+bool onAdjustRangeValue(const String &deviceId, int rangeValueDelta) {
+  device_state.fanSpeed += rangeValueDelta;
+  if (device_state.fanSpeed < 1) device_state.fanSpeed = 1;
+  if (device_state.fanSpeed > 3) device_state.fanSpeed = 3;
+  Serial.printf("Fan speed changed about %i to %d\r\n", rangeValueDelta, device_state.fanSpeed);
+
+  rangeValueDelta = device_state.fanSpeed; // return absolute fan speed
   return true;
 }
 
@@ -74,12 +79,12 @@ void setupWiFi() {
 }
 
 void setupSinricPro() {
-  SinricProFan &myFan = SinricPro[FAN_ID];
+  SinricProFanUS &myFan = SinricPro[FAN_ID];
 
   // set callback function to device
   myFan.onPowerState(onPowerState);
-  myFan.onPowerLevel(onPowerLevel);
-  myFan.onAdjustPowerLevel(onAdjustPowerLevel);
+  myFan.onRangeValue(onRangeValue);
+  myFan.onAdjustRangeValue(onAdjustRangeValue);
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
