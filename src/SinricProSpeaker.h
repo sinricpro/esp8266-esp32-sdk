@@ -32,6 +32,7 @@
 class SinricProSpeaker :  public SinricProDevice {
   public:
 	  SinricProSpeaker(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("SPEAKER"); }
     // callbacks
 
     /**

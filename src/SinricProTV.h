@@ -28,6 +28,7 @@
 class SinricProTV :  public SinricProDevice {
   public:
 	  SinricProTV(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("TV"); }    
     // callback
 
     /**

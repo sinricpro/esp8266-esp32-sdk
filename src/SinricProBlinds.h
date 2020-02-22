@@ -22,6 +22,7 @@
 class SinricProBlinds :  public SinricProDevice {
   public:
 	  SinricProBlinds(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("BLIND"); }
 
     /**
      * @brief Callback definition for onSetPosition function
@@ -58,7 +59,6 @@ class SinricProBlinds :  public SinricProDevice {
     void onAdjustPosition(AdjustPositionCallback cb);
 
     bool sendPositionEvent(int position, String cause = "PHYSICAL_INTERACTION");
-
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:

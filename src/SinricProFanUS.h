@@ -17,6 +17,7 @@
 class SinricProFanUS :  public SinricProDevice {
   public:
 	  SinricProFanUS(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("FAN"); }
     // callback
 
     /**
@@ -57,7 +58,6 @@ class SinricProFanUS :  public SinricProDevice {
 
     // event
     bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION");
-
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:

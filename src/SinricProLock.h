@@ -21,6 +21,7 @@
 class SinricProLock :  public SinricProDevice {
   public:
 	  SinricProLock(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("SMARTLOCK"); }
     // callback
 
     /**
@@ -49,7 +50,6 @@ class SinricProLock :  public SinricProDevice {
     // event
     bool sendPowerStateEvent() = delete; // SinricProLock has no powerState
     bool sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
-
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:

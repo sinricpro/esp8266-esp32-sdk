@@ -17,6 +17,8 @@
 class SinricProPowerSensor :  public SinricProDevice {
   public:
 	  SinricProPowerSensor(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("POWER_SENSOR"); }
+
     // event
     bool sendPowerSensorEvent(float voltage, float current, float power=-1.0f, float apparentPower=-1.0f, float reactivePower=-1.0f, float factor=-1.0f, String cause = "PERIODIC_POLL");
   private:

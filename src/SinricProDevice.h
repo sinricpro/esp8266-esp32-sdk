@@ -25,6 +25,7 @@ class SinricProDevice : public SinricProDeviceInterface {
     SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime=100);
     virtual ~SinricProDevice();
     virtual const char* getDeviceId();
+    virtual String getProductType();
     virtual void begin(SinricProInterface* eventSender);
     virtual void setEventWaitTime(unsigned long eventWaitTime) { if (eventWaitTime<100) {this->eventWaitTime=100;} else { this->eventWaitTime=eventWaitTime;} }
 
@@ -160,6 +161,10 @@ bool SinricProDevice::sendPowerStateEvent(bool state, String cause) {
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
   return sendEvent(eventMessage);
+}
+
+String SinricProDevice::getProductType()  { 
+  return String("sinric.device.type."); 
 }
 
 #endif

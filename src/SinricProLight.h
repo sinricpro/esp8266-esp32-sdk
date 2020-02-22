@@ -23,6 +23,7 @@
 class SinricProLight :  public SinricProDevice {
   public:
     SinricProLight(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("LIGHT"); }
     // callback
 
     /**
@@ -130,7 +131,6 @@ class SinricProLight :  public SinricProDevice {
     bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
     bool sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION");
     bool sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION");
-
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:

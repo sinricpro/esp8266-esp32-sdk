@@ -23,6 +23,7 @@
 class SinricProThermostat :  public SinricProDevice {
   public:
 	  SinricProThermostat(const char* deviceId, unsigned long eventWaitTime=60000);
+    String getProductType() { return SinricProDevice::getProductType() + String("THERMOSTAT"); }
     // callback
 
    /**
@@ -81,7 +82,6 @@ class SinricProThermostat :  public SinricProDevice {
     bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
     bool sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION");
     bool sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION");
-
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:

@@ -17,10 +17,10 @@
 class SinricProTemperaturesensor :  public SinricProDevice {
   public:
 	  SinricProTemperaturesensor(const char* deviceId, unsigned long eventWaitTime=60000);
+    String getProductType() { return SinricProDevice::getProductType() + String("TEMPERATURESENSOR"); }
 
     // event
     bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
-
   private:
 };
 
