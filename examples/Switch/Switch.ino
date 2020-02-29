@@ -96,8 +96,7 @@ void setupWiFi() {
     Serial.printf(".");
     delay(250);
   }
-  IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
 // setup function for SinricPro
