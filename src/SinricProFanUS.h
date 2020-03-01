@@ -78,6 +78,8 @@ bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, Jso
   if (actionString == "setRangeValue" && setRangeValueCallback) {
     int rangeValue = request_value["rangeValue"] | 0;
     success = setRangeValueCallback(String(deviceId), rangeValue);
+    if (rangeValue < 1) rangeValue = 1;
+    if (rangeValue > 3) rangeValue = 3;
     response_value["rangeValue"] = rangeValue;
     return success;
   }
@@ -85,6 +87,8 @@ bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, Jso
   if (actionString == "adjustRangeValue" && adjustRangeValueCallback) {
     int rangeValueDelta = request_value["rangeValueDelta"] | 0;
     success = adjustRangeValueCallback(String(deviceId), rangeValueDelta);
+    if (rangeValueDelta < 1) rangeValueDelta = 1;
+    if (rangeValueDelta > 3) rangeValueDelta = 3;
     response_value["rangeValue"] = rangeValueDelta;
     return success;
   }
