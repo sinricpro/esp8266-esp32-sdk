@@ -140,30 +140,34 @@ Dependencies</h1>
 </p>
 <hr  />
 <h1><a class="anchor" id="autotoc_md6"></a>
+Full user documentation</h1>
+<p>Please see here for <a href="https://sinricpro.github.io/esp8266-esp32-sdk">full user documentation</a></p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md8"></a>
 Examples</h1>
 <p>See <a href="https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples">examples</a> on GitHub</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 Usage</h1>
-<h3><a class="anchor" id="autotoc_md9"></a>
+<h3><a class="anchor" id="autotoc_md11"></a>
 Include SinricPro-Library (SinricPro.h) and SinricPro-Device-Libraries (eg. SinricProSwitch.h)</h3>
 <div class="fragment"><div class="line"> {C++}</div>
 <div class="line">#include &lt;SinricPro.h&gt;</div>
 <div class="line">#include &lt;SinricProSwitch.h&gt;</div>
-</div><!-- fragment --> <h3><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --> <h3><a class="anchor" id="autotoc_md12"></a>
 Define your credentials from SinricPro-Portal (portal.sinric.pro)</h3>
 <div class="fragment"><div class="line"> {C++}</div>
 <div class="line">#define APP_KEY    &quot;YOUR-APP-KEY&quot;    // Should look like &quot;de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx&quot;</div>
 <div class="line">#define APP_SECRET &quot;YOUR-APP-SECRET&quot; // Should look like &quot;5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx&quot;</div>
 <div class="line">#define SWITCH_ID  &quot;YOUR-DEVICE-ID&quot;  // Should look like &quot;5dc1564130xxxxxxxxxxxxxx&quot;</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md13"></a>
 Define callback routine(s)</h3>
 <div class="fragment"><div class="line"> {C++}</div>
 <div class="line">bool onPowerState(const String &amp;deviceId, bool &amp;state) {</div>
 <div class="line">  Serial.printf(&quot;device %s turned %s\r\n&quot;, deviceId.c_str(), state?&quot;on&quot;:&quot;off&quot;);</div>
 <div class="line">  return true; // indicate that callback handled correctly</div>
 <div class="line">}</div>
-</div><!-- fragment --> <h3><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --> <h3><a class="anchor" id="autotoc_md14"></a>
 In setup()</h3>
 <div class="fragment"><div class="line">{C++}</div>
 <div class="line"> // create and add a switch to SinricPro</div>
@@ -172,12 +176,12 @@ In setup()</h3>
 <div class="line"> mySwitch.onPowerState(onPowerState);</div>
 <div class="line"> // startup SinricPro</div>
 <div class="line"> SinricPro.begin(APP_KEY, APP_SECRET);</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md13"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md15"></a>
 In loop()</h3>
 <div class="fragment"><div class="line">{C++}</div>
 <div class="line"> SinricPro.handle();</div>
 </div><!-- fragment --><hr  />
- <h1><a class="anchor" id="autotoc_md15"></a>
+ <h1><a class="anchor" id="autotoc_md17"></a>
 How to add a device?</h1>
 <p>Syntax is <br  />
  </p><div class="fragment"><div class="line">{C++}</div>
@@ -188,7 +192,7 @@ How to add a device?</h1>
 </div><!-- fragment --><p> <em>Example 2 (alternatively)</em> </p><div class="fragment"><div class="line">{C++}</div>
 <div class="line"> SinricProSwitch&amp; mySwitch = SinricPro.add&lt;SinricProSwitch&gt;(&quot;YOUR-SWITCH-ID-HERE&quot;);</div>
 </div><!-- fragment --><hr  />
- <h1><a class="anchor" id="autotoc_md17"></a>
+ <h1><a class="anchor" id="autotoc_md19"></a>
 How to retrieve a device for sending an event?</h1>
 <p>Syntax is <br  />
  </p><div class="fragment"><div class="line">{C++}</div>
@@ -199,7 +203,7 @@ How to retrieve a device for sending an event?</h1>
 </div><!-- fragment --><p><em>Example 2 (alternatively)</em> </p><div class="fragment"><div class="line">{C++}</div>
 <div class="line"> SinricPro[&quot;YOUR-DOORBELL-ID-HERE&quot;].as&lt;SinricProDoorbell&gt;().sendDoorbellEvent();</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Devices</h1>
 <ul>
 <li>Switch</li>
@@ -219,10 +223,7 @@ Devices</h1>
 <li>Garage Door</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md21"></a>
-Full user documentation</h1>
-<p>Please see here for <a href="https://sinricpro.github.io/esp8266-esp32-sdk">full user documentation</a> </p>
-</div></div><!-- PageDoc -->
+ </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
