@@ -90,7 +90,11 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
   this->socketAuthToken = socketAuthToken;
   this->deviceIds = deviceIds;
 
+#ifdef WEBSOCKET_SSL
+  DEBUG_SINRIC("[SinricPro:Websocket]: Connecting to WebSocket Server using SSL (%s)\r\n", server.c_str());
+#else
   DEBUG_SINRIC("[SinricPro:Websocket]: Connecting to WebSocket Server (%s)\r\n", server.c_str());
+#endif
 
   if (_isConnected) {
     stop();
@@ -98,7 +102,12 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
   setExtraHeaders();
   webSocket.onEvent([&](WStype_t type, uint8_t * payload, size_t length) { webSocketEvent(type, payload, length); });
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
+#ifdef WEBSOCKET_SSL
+  // To get this working, WebSocketsClient.h needs to be fixed. See https://github.com/Links2004/arduinoWebSockets/issues/492
+  webSocket.beginSSL(server, SINRICPRO_SERVER_SSL_PORT, "/");
+#else
   webSocket.begin(server, SINRICPRO_SERVER_PORT, "/"); // server address, port and URL
+#endif
 }
 
 void websocketListener::handle() {

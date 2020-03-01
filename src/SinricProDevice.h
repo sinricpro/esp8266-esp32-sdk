@@ -57,6 +57,7 @@ class SinricProDevice : public SinricProDeviceInterface {
   protected:
     virtual bool sendEvent(JsonDocument& event);
     virtual DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause);
+    unsigned long getTimestamp();
     char* deviceId;
     PowerStateCallback powerStateCallback;
   private:
@@ -127,6 +128,11 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
 
   eventFilter[eventName] = bucket;                        // update bucket on eventFilter
   return false;
+}
+
+unsigned long SinricProDevice::getTimestamp() {
+  if (eventSender) return eventSender->getTimestamp();
+  return 0;
 }
 
 /**

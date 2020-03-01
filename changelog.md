@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 2.4.0
+New:
+- Devices
+  - PowerSensor
+
+- Examples
+  -  PowerSensor
+
 ## Version 2.3.0
 New:
 - Devices

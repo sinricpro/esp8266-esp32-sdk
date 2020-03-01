@@ -24,8 +24,8 @@ class SinricProFanUS :  public SinricProDevice {
      * 
      * Gets called when device receive a `setRangeValue` reuqest \n
      * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   rangeValue  Integer 0..n for range value device has to be set
-     * @param[out]  rangeValue  Integer 0..n returning the current range value
+     * @param[in]   rangeValue  Integer 0..3 for range value device has to be set
+     * @param[out]  rangeValue  Integer 0..3 returning the current range value
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
@@ -40,8 +40,8 @@ class SinricProFanUS :  public SinricProDevice {
      * 
      * Gets called when device receive a `adjustRangeValue` reuqest \n
      * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   rangeValue  Integer -n..n delta value for range value have to change
-     * @param[out]  rangeValue  Integer 0..n returning the absolute range value 
+     * @param[in]   rangeValue  Integer -3..3 delta value for range value have to change
+     * @param[out]  rangeValue  Integer 3..3 returning the absolute range value 
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
@@ -78,6 +78,8 @@ bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, Jso
   if (actionString == "setRangeValue" && setRangeValueCallback) {
     int rangeValue = request_value["rangeValue"] | 0;
     success = setRangeValueCallback(String(deviceId), rangeValue);
+    if (rangeValue < 1) rangeValue = 1;
+    if (rangeValue > 3) rangeValue = 3;
     response_value["rangeValue"] = rangeValue;
     return success;
   }
@@ -85,6 +87,8 @@ bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, Jso
   if (actionString == "adjustRangeValue" && adjustRangeValueCallback) {
     int rangeValueDelta = request_value["rangeValueDelta"] | 0;
     success = adjustRangeValueCallback(String(deviceId), rangeValueDelta);
+    if (rangeValueDelta < 1) rangeValueDelta = 1;
+    if (rangeValueDelta > 3) rangeValueDelta = 3;
     response_value["rangeValue"] = rangeValueDelta;
     return success;
   }
@@ -115,7 +119,7 @@ void SinricProFanUS::onAdjustRangeValue(AdjustRangeValueCallback cb) {
 /**
  * @brief Send `rangeValue` event to report curent rangeValue to SinricPro server
  * 
- * @param   rangeValue  Value between 0..n
+ * @param   rangeValue  Value between 0..3
  * @param   cause       (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
  * @return  the success of sending the even
  * @retval  true        event has been sent successfully
