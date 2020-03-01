@@ -59,8 +59,6 @@ bool onRangeValue(const String &deviceId, int &rangeValue) {
 // Fan rangeValueDelta is from -3..+3
 bool onAdjustRangeValue(const String &deviceId, int rangeValueDelta) {
   device_state.fanSpeed += rangeValueDelta;
-  if (device_state.fanSpeed < 1) device_state.fanSpeed = 1;
-  if (device_state.fanSpeed > 3) device_state.fanSpeed = 3;
   Serial.printf("Fan speed changed about %i to %d\r\n", rangeValueDelta, device_state.fanSpeed);
 
   rangeValueDelta = device_state.fanSpeed; // return absolute fan speed
