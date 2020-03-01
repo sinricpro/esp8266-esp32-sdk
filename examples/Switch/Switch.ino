@@ -41,7 +41,8 @@
 #define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                // Change baudrate to your need
 
-#define BTN_FLASH 0
+#define BUTTON_PIN 0   // GPIO for BUTTON (inverted: LOW = pressed, HIGH = released)
+#define LED_PIN   2   // GPIO for LED (inverted)
 
 bool myPowerState = false;
 unsigned long lastBtnPress = 0;
@@ -62,19 +63,19 @@ unsigned long lastBtnPress = 0;
 bool onPowerState(const String &deviceId, bool &state) {
   Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
   myPowerState = state;
-  digitalWrite(LED_BUILTIN, myPowerState?LOW:HIGH);
+  digitalWrite(LED_PIN, myPowerState?LOW:HIGH);
   return true; // request handled properly
 }
 
 void handleButtonPress() {
   unsigned long actualMillis = millis(); // get actual millis() and keep it in variable actualMillis
-  if (digitalRead(BTN_FLASH) == LOW && actualMillis - lastBtnPress > 1000)  { // is button pressed (inverted logic! button pressed = LOW) and debounced?
+  if (digitalRead(BUTTON_PIN) == LOW && actualMillis - lastBtnPress > 1000)  { // is button pressed (inverted logic! button pressed = LOW) and debounced?
     if (myPowerState) {     // flip myPowerState: if it was true, set it to false, vice versa
       myPowerState = false;
     } else {
       myPowerState = true;
     }
-    digitalWrite(LED_BUILTIN, myPowerState?LOW:HIGH); // if myPowerState indicates device turned on: turn on led (builtin led uses inverted logic: LOW = LED ON / HIGH = LED OFF)
+    digitalWrite(LED_PIN, myPowerState?LOW:HIGH); // if myPowerState indicates device turned on: turn on led (builtin led uses inverted logic: LOW = LED ON / HIGH = LED OFF)
 
     // get Switch device back
     SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
@@ -95,8 +96,7 @@ void setupWiFi() {
     Serial.printf(".");
     delay(250);
   }
-  IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
 // setup function for SinricPro
@@ -115,9 +115,9 @@ void setupSinricPro() {
 
 // main setup function
 void setup() {
-  pinMode(BTN_FLASH, INPUT_PULLUP); // GPIO 0 as input, pulled high
-  pinMode(LED_BUILTIN, OUTPUT); // define LED GPIO as output
-  digitalWrite(LED_BUILTIN, HIGH); // turn off LED on bootup
+  pinMode(BUTTON_PIN, INPUT_PULLUP); // GPIO 0 as input, pulled high
+  pinMode(LED_PIN, OUTPUT); // define LED GPIO as output
+  digitalWrite(LED_PIN, HIGH); // turn off LED on bootup
 
   Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   setupWiFi();
