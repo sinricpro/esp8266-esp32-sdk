@@ -29,12 +29,12 @@ var NAVTREE =
         [ "ArduinoIDE", "index.html#autotoc_md2", null ]
       ] ],
       [ "Dependencies", "index.html#autotoc_md4", null ],
-      [ "Examples", "index.html#autotoc_md6", null ],
-      [ "Usage", "index.html#autotoc_md8", null ],
-      [ "How to add a device?", "index.html#autotoc_md15", null ],
-      [ "How to retrieve a device for sending an event?", "index.html#autotoc_md17", null ],
-      [ "Devices", "index.html#autotoc_md19", null ],
-      [ "Full user documentation", "index.html#autotoc_md21", null ]
+      [ "Full user documentation", "index.html#autotoc_md6", null ],
+      [ "Examples", "index.html#autotoc_md8", null ],
+      [ "Usage", "index.html#autotoc_md10", null ],
+      [ "How to add a device?", "index.html#autotoc_md17", null ],
+      [ "How to retrieve a device for sending an event?", "index.html#autotoc_md19", null ],
+      [ "Devices", "index.html#autotoc_md21", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],

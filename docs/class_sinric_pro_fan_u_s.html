@@ -181,8 +181,8 @@ Public Member Functions</h2></td></tr>
 </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rangeValue</td><td>Integer -n..n delta value for range value have to change </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">rangeValue</td><td>Integer 0..n returning the absolute range value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rangeValue</td><td>Integer -3..3 delta value for range value have to change </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rangeValue</td><td>Integer 3..3 returning the absolute range value </td></tr>
   </table>
   </dd>
 </dl>
@@ -273,8 +273,8 @@ Example-Code</h1>
 </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">rangeValue</td><td>Integer 0..n for range value device has to be set </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">rangeValue</td><td>Integer 0..n returning the current range value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">rangeValue</td><td>Integer 0..3 for range value device has to be set </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rangeValue</td><td>Integer 0..3 returning the current range value </td></tr>
   </table>
   </dd>
 </dl>
@@ -469,7 +469,7 @@ Example-Code</h1>
 <p>Send <code>rangeValue</code> event to report curent rangeValue to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rangeValue</td><td>Value between 0..n </td></tr>
+    <tr><td class="paramname">rangeValue</td><td>Value between 0..3 </td></tr>
     <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>
   </dd>
@@ -487,9 +487,9 @@ Example-Code</h1>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_sinric_pro_fan_u_s_html_a94adbcdf6ce61cb6552a5f9915e705ae"><div class="ttname"><a href="class_sinric_pro_fan_u_s.html#a94adbcdf6ce61cb6552a5f9915e705ae">SinricProFanUS::onRangeValue</a></div><div class="ttdeci">void onRangeValue(SetRangeValueCallback cb)</div><div class="ttdoc">Set callback function for setRangeValue request.</div><div class="ttdef"><b>Definition:</b> SinricProFanUS.h:101</div></div>
-<div class="ttc" id="aclass_sinric_pro_fan_u_s_html_ae85696d55112ae7343f9807faee6e064"><div class="ttname"><a href="class_sinric_pro_fan_u_s.html#ae85696d55112ae7343f9807faee6e064">SinricProFanUS::onAdjustRangeValue</a></div><div class="ttdeci">void onAdjustRangeValue(AdjustRangeValueCallback cb)</div><div class="ttdoc">Set callback function for adjustRangeValue request.</div><div class="ttdef"><b>Definition:</b> SinricProFanUS.h:111</div></div>
-<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:139</div></div>
+<div class="ttc" id="aclass_sinric_pro_fan_u_s_html_a94adbcdf6ce61cb6552a5f9915e705ae"><div class="ttname"><a href="class_sinric_pro_fan_u_s.html#a94adbcdf6ce61cb6552a5f9915e705ae">SinricProFanUS::onRangeValue</a></div><div class="ttdeci">void onRangeValue(SetRangeValueCallback cb)</div><div class="ttdoc">Set callback function for setRangeValue request.</div><div class="ttdef"><b>Definition:</b> SinricProFanUS.h:105</div></div>
+<div class="ttc" id="aclass_sinric_pro_fan_u_s_html_ae85696d55112ae7343f9807faee6e064"><div class="ttname"><a href="class_sinric_pro_fan_u_s.html#ae85696d55112ae7343f9807faee6e064">SinricProFanUS::onAdjustRangeValue</a></div><div class="ttdeci">void onAdjustRangeValue(AdjustRangeValueCallback cb)</div><div class="ttdoc">Set callback function for adjustRangeValue request.</div><div class="ttdef"><b>Definition:</b> SinricProFanUS.h:115</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:145</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

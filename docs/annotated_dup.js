@@ -13,6 +13,7 @@ var annotated_dup =
     [ "SinricProLight", "class_sinric_pro_light.html", "class_sinric_pro_light" ],
     [ "SinricProLock", "class_sinric_pro_lock.html", "class_sinric_pro_lock" ],
     [ "SinricProMotionsensor", "class_sinric_pro_motionsensor.html", "class_sinric_pro_motionsensor" ],
+    [ "SinricProPowerSensor", "class_sinric_pro_power_sensor.html", "class_sinric_pro_power_sensor" ],
     [ "SinricProSpeaker", "class_sinric_pro_speaker.html", "class_sinric_pro_speaker" ],
     [ "SinricProSwitch", "class_sinric_pro_switch.html", "class_sinric_pro_switch" ],
     [ "SinricProTemperaturesensor", "class_sinric_pro_temperaturesensor.html", "class_sinric_pro_temperaturesensor" ],
