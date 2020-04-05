@@ -54,7 +54,7 @@ bool onPowerLevel(const String &deviceId, int &powerLevel) {
   return true;
 }
 
-bool onAdjustPowerLevel(const String &deviceId, int levelDelta) {
+bool onAdjustPowerLevel(const String &deviceId, int &levelDelta) {
   device_state.powerLevel += levelDelta;
   Serial.printf("Device %s power level changed about %i to %d\r\n", deviceId.c_str(), levelDelta, device_state.powerLevel);
   levelDelta = device_state.powerLevel;
