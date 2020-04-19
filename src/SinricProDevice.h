@@ -60,6 +60,8 @@ class SinricProDevice : public SinricProDeviceInterface {
     unsigned long getTimestamp();
     char* deviceId;
     PowerStateCallback powerStateCallback;
+    template <typename T>
+    T limitValue(T value, T minValue, T maxValue);
   private:
     SinricProInterface* eventSender;
     unsigned long eventWaitTime;
@@ -133,6 +135,14 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
 unsigned long SinricProDevice::getTimestamp() {
   if (eventSender) return eventSender->getTimestamp();
   return 0;
+}
+
+template <typename T>
+T SinricProDevice::limitValue(T value, T minValue, T maxValue) {
+  T newValue = value;
+  if (value > maxValue) newValue = maxValue;
+  if (value < minValue) newValue = minValue;
+  return newValue;
 }
 
 /**

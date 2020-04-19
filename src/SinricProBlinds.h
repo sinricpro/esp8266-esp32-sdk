@@ -81,14 +81,14 @@ bool SinricProBlinds::handleRequest(const char* deviceId, const char* action, Js
   if (actionString == "setRangeValue" && setPositionCallback) {
     int position = request_value["rangeValue"] | 0;
     success = setPositionCallback(String(deviceId), position);
-    response_value["rangeValue"] = position;
+    response_value["rangeValue"] = limitValue(position, 0, 100);
     return success;
   }
 
   if (actionString == "adjustRangeValue" && adjustPositionCallback) {
     int positionDelta = request_value["rangeValueDelta"] | 0;
     success = adjustPositionCallback(String(deviceId), positionDelta);
-    response_value["rangeValue"] = positionDelta;
+    response_value["rangeValue"] = limitValue(positionDelta, 0, 100);
     return success;
   }
 
