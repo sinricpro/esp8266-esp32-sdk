@@ -217,14 +217,14 @@ bool SinricProSpeaker::handleRequest(const char* deviceId, const char* action, J
   if (volumeCallback && actionString == "setVolume") {
     int volume = request_value["volume"];
     success = volumeCallback(String(deviceId), volume);
-    response_value["volume"] = volume;
+    response_value["volume"] = limitValue(volume, 0, 100);
     return success;
   }
 
   if (adjustVolumeCallback && actionString == "adjustVolume") {
     int volume = request_value["volume"];
     success = adjustVolumeCallback(String(deviceId), volume);
-    response_value["volume"] = volume;
+    response_value["volume"] = limitValue(volume, 0, 100);
     return success;
   }
 
@@ -259,7 +259,7 @@ bool SinricProSpeaker::handleRequest(const char* deviceId, const char* action, J
       success = setBandsCallback(deviceId, bandsName, level);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
-      response_value_bands_i["level"] = level;
+      response_value_bands_i["level"] = limitValue(level, 0, 100);
     }
     return success;
   }
@@ -276,7 +276,7 @@ bool SinricProSpeaker::handleRequest(const char* deviceId, const char* action, J
       success = adjustBandsCallback(deviceId, bandsName, levelDelta);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
-      response_value_bands_i["level"] = levelDelta;
+      response_value_bands_i["level"] = limitValue(levelDelta, 0, 100);
     }
     return success;
   }
@@ -291,7 +291,7 @@ bool SinricProSpeaker::handleRequest(const char* deviceId, const char* action, J
       success = adjustBandsCallback(deviceId, bandsName, level);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
-      response_value_bands_i["level"] = level;
+      response_value_bands_i["level"] = limitValue(level, 0, 100);
     }
     return success;
   }

@@ -160,13 +160,13 @@ bool SinricProLight::handleRequest(const char* deviceId, const char* action, Jso
   if (brightnessCallback && actionString == "setBrightness") {
     int brightness = request_value["brightness"];
     success = brightnessCallback(String(deviceId), brightness);
-    response_value["brightness"] = brightness;
+    response_value["brightness"] = limitValue(brightness, 0, 100);
   }
 
   if (adjustBrightnessCallback && actionString == "adjustBrightness") {
     int brightnessDelta = request_value["brightnessDelta"];
     success = adjustBrightnessCallback(String(deviceId), brightnessDelta);
-    response_value["brightness"] = brightnessDelta;
+    response_value["brightness"] = limitValue(brightnessDelta, 0, 100);
   }
 
   if (colorCallback && actionString == "setColor") {

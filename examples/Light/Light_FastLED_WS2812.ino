@@ -26,39 +26,64 @@
        #include <WiFi.h>
 #endif
 
+#define FASTLED_ESP8266_DMA
+#define FASTLED_ESP8266_RAW_PIN_ORDER
+#include <FastLED.h>
+
 #include "SinricPro.h"
-#include "SinricProDimSwitch.h"
+#include "SinricProLight.h"
 
 #define WIFI_SSID         "YOUR-WIFI-SSID"    
 #define WIFI_PASS         "YOUR-WIFI-PASSWORD"
 #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define DIMSWITCH_ID      "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
+#define LIGHT_ID          "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                // Change baudrate to your need
 
-// we use a struct to store all states and values for our dimmable switch
-struct {
-  bool powerState = false;
-  int powerLevel = 0;
-} device_state;
+#define NUM_LEDS          1                   // how much LEDs are on the stripe
+#define LED_PIN           3                   // LED stripe is connected to PIN 3
+
+bool powerState;        
+int globalBrightness = 100;
+CRGB leds[NUM_LEDS];
 
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s power turned %s \r\n", deviceId.c_str(), state?"on":"off");
-  device_state.powerState = state;
+  powerState = state;
+  if (state) {
+    FastLED.setBrightness(map(globalBrightness, 0, 100, 0, 255));
+  } else {
+    FastLED.setBrightness(0);
+  }
+  FastLED.show();
   return true; // request handled properly
 }
 
-bool onPowerLevel(const String &deviceId, int &powerLevel) {
-  device_state.powerLevel = powerLevel;
-  Serial.printf("Device %s power level changed to %d\r\n", deviceId.c_str(), device_state.powerLevel);
+bool onBrightness(const String &deviceId, int &brightness) {
+  globalBrightness = brightness;
+  FastLED.setBrightness(map(brightness, 0, 100, 0, 255));
+  FastLED.show();
   return true;
 }
 
-bool onAdjustPowerLevel(const String &deviceId, int &levelDelta) {
-  device_state.powerLevel += levelDelta;
-  Serial.printf("Device %s power level changed about %i to %d\r\n", deviceId.c_str(), levelDelta, device_state.powerLevel);
-  levelDelta = device_state.powerLevel;
+bool onAdjustBrightness(const String &deviceId, int brightnessDelta) {
+  globalBrightness += brightnessDelta;
+  brightnessDelta = globalBrightness;
+  FastLED.setBrightness(map(globalBrightness, 0, 100, 0, 255));
+  FastLED.show();
   return true;
+}
+
+bool onColor(const String &deviceId, byte &r, byte &g, byte &b) {
+  fill_solid(leds, NUM_LEDS, CRGB(r, g, b));
+  FastLED.show();
+  return true;
+}
+
+void setupFastLED() {
+  FastLED.addLeds<WS2812B, LED_PIN, RGB>(leds, NUM_LEDS);
+  FastLED.setBrightness(map(globalBrightness, 0, 100, 0, 255));
+  fill_solid(leds, NUM_LEDS, CRGB::White);
+  FastLED.show();
 }
 
 void setupWiFi() {
@@ -70,26 +95,30 @@ void setupWiFi() {
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", localIP.toString().c_str());
 }
 
 void setupSinricPro() {
-  SinricProDimSwitch &myDimSwitch = SinricPro[DIMSWITCH_ID];
+  // get a new Light device from SinricPro
+  SinricProLight &myLight = SinricPro[LIGHT_ID];
 
   // set callback function to device
-  myDimSwitch.onPowerState(onPowerState);
-  myDimSwitch.onPowerLevel(onPowerLevel);
-  myDimSwitch.onAdjustPowerLevel(onAdjustPowerLevel);
+  myLight.onPowerState(onPowerState);
+  myLight.onBrightness(onBrightness);
+  myLight.onAdjustBrightness(onAdjustBrightness);
+  myLight.onColor(onColor);
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.restoreDeviceStates(true);
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
 void setup() {
   Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  setupFastLED();
   setupWiFi();
   setupSinricPro();
 }

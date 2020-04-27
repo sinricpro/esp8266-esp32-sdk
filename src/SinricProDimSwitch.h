@@ -78,13 +78,13 @@ bool SinricProDimSwitch::handleRequest(const char* deviceId, const char* action,
   if (setPowerLevelCallback && actionString == "setPowerLevel") {
     int powerLevel = request_value["powerLevel"];
     success = setPowerLevelCallback(String(deviceId), powerLevel);
-    response_value["powerLevel"] = powerLevel;
+    response_value["powerLevel"] = limitValue(powerLevel, 0, 100);
   }
 
   if (adjustPowerLevelCallback && actionString == "adjustPowerLevel") {
     int powerLevelDelta = request_value["powerLevelDelta"];
     success = adjustPowerLevelCallback(String(deviceId), powerLevelDelta);
-    response_value["powerLevel"] = powerLevelDelta;
+    response_value["powerLevel"] = limitValue(powerLevelDelta, 0, 100);
   }
   return success;
 }
