@@ -187,6 +187,7 @@ class SinricProSpeaker :  public SinricProDevice {
     void onAdjustVolume(AdjustVolumeCallback cb);
     void onMute(MuteCallback cb);
     void onMediaControl(MediaControlCallback cb);
+    void onSelectInput(SelectInputCallback cb);
     void onSetBands(SetBandsCallback cb);
     void onAdjustBands(AdjustBandsCallback cb);
     void onResetBands(ResetBandsCallback cb);
