@@ -100,7 +100,7 @@ void setupFlipSwitches() {
     int flipSwitchPIN = device.second.flipSwitchPIN;  // get the flipSwitchPIN
 
     flipSwitches[flipSwitchPIN] = flipSwitchConfig;   // save the flipSwitch config to flipSwitches map
-    pinMode(flipSwitchPIN, OUTPUT);                   // set the flipSwitch pin to OUTPUT
+    pinMode(flipSwitchPIN, INPUT);                   // set the flipSwitch pin to OUTPUT
   }
 }
 
