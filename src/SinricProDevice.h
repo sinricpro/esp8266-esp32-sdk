@@ -112,6 +112,11 @@ DynamicJsonDocument SinricProDevice::prepareEvent(const char* deviceId, const ch
 
 
 bool SinricProDevice::sendEvent(JsonDocument& event) {
+  if (!eventSender) return false;
+  if (!eventSender->isConnected()) {
+    DEBUG_SINRIC("[SinricProDevice::sendEvent]: The event could not be sent. No connection to the SinricPro server.\r\n");
+    return false;
+  }
   String eventName = event["payload"]["action"] | ""; // get event name
 
   LeakyBucket_t bucket; // leaky bucket algorithm is used to prevent flooding the server
@@ -124,7 +129,7 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
   }
 
   if (bucket.addDrop()) {                                  // if we can add a new drop
-    if (eventSender) eventSender->sendMessage(event);      // send event
+    eventSender->sendMessage(event);                       // send event
     eventFilter[eventName] = bucket;                       // update bucket on eventFilter
     return true;
   }

@@ -492,6 +492,10 @@ void SinricProClass::extractTimestamp(JsonDocument &message) {
 
 
 void SinricProClass::sendMessage(JsonDocument& jsonMessage) {
+  if (!isConnected()) {
+    DEBUG_SINRIC("[SinricPro:sendMessage()]: device is offline, message has been dropped\r\n");
+    return;
+  }
   DEBUG_SINRIC("[SinricPro:sendMessage()]: pushing message into sendQueue\r\n");
   String messageString;
   serializeJson(jsonMessage, messageString);
