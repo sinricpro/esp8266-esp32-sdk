@@ -65,6 +65,8 @@ void websocketListener::setExtraHeaders() {
   String headers  = "appkey:" + socketAuthToken + "\r\n";
          headers += "deviceids:" + deviceIds + "\r\n";
          headers += "restoredevicestates:" + String(restoreDeviceStates?"true":"false") + "\r\n";
+         headers += "ip:" + WiFi.localIP().toString() + "\r\n";
+         headers += "mac:" + WiFi.macAddress() + "\r\n";
   #ifdef ESP8266
          headers += "platform:ESP8266\r\n";
   #endif

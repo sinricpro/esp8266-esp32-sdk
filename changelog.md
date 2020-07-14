@@ -1,4 +1,8 @@
 # Changelog
+## Version 2.5.1
+New:
+- added IP and MAC address to header
+
 ## Version 2.5.0
 New:
 - Speaker device supports SelectInput
