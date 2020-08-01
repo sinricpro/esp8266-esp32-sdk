@@ -17,6 +17,7 @@
 class SinricProSwitch :  public SinricProDevice {
   public:
 	  SinricProSwitch(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("SWITCH"); }    
 };
 
 SinricProSwitch::SinricProSwitch(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}

@@ -89,6 +89,11 @@ bool onMediaControl(const String &deviceId, String &control) {
   return true;
 }
 
+bool onSelectInput(const String &deviceId, String &input) {
+  Serial.printf("Input changed to %s\r\n", input.c_str());
+  return true;
+}
+
 bool onSetMode(const String &deviceId, String &mode) {
   Serial.printf("Speaker mode set to %s\r\n", mode.c_str());
   if (mode == "MOVIE") speakerState.mode = mode_movie;
@@ -162,6 +167,7 @@ void setupSinricPro() {
   speaker.onResetBands(onResetBands);
   speaker.onSetMode(onSetMode);
   speaker.onMediaControl(onMediaControl);
+  speaker.onSelectInput(onSelectInput);
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 

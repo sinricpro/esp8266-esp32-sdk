@@ -7,6 +7,7 @@ var class_sinric_pro_speaker =
     [ "MuteCallback", "class_sinric_pro_speaker.html#a24d0844497c30b03f3c7ec9e30fcb33b", null ],
     [ "PowerStateCallback", "class_sinric_pro_speaker.html#aa9db92ebe40a0df6deb43eba70d3dea3", null ],
     [ "ResetBandsCallback", "class_sinric_pro_speaker.html#ae1ec62ffbf9d7f00df9760819305782e", null ],
+    [ "SelectInputCallback", "class_sinric_pro_speaker.html#a047ecacb194f2ad747fa2ab7e1117a88", null ],
     [ "SetBandsCallback", "class_sinric_pro_speaker.html#a765ec6504ace15f556dbf2510ce93d0f", null ],
     [ "SetVolumeCallback", "class_sinric_pro_speaker.html#aa495b90d483782760303ab45494deb7e", null ],
     [ "onAdjustBands", "class_sinric_pro_speaker.html#a41a5c1506545c44c2408054a8675c7a8", null ],
@@ -23,5 +24,6 @@ var class_sinric_pro_speaker =
     [ "sendModeEvent", "class_sinric_pro_speaker.html#a6ddd0a2abe7ab6d46e786057694ebb49", null ],
     [ "sendMuteEvent", "class_sinric_pro_speaker.html#abc47e827f33ac8bcc43ed204c7c4b8fd", null ],
     [ "sendPowerStateEvent", "class_sinric_pro_speaker.html#a8006e256414deac0f9a4e28774b47773", null ],
+    [ "sendSelectInputEvent", "class_sinric_pro_speaker.html#a8d79220a3a06331442d36524ceac1db3", null ],
     [ "sendVolumeEvent", "class_sinric_pro_speaker.html#a0f301accc58742f867de88c66a5eb3c5", null ]
 ];

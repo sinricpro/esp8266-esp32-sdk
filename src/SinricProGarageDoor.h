@@ -20,6 +20,7 @@
 class SinricProGarageDoor :  public SinricProDevice {
   public:
 	  SinricProGarageDoor(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("GARAGE_DOOR"); }
         
     /**
      * @brief Callback definition for onDoorState function
@@ -42,7 +43,6 @@ class SinricProGarageDoor :  public SinricProDevice {
     // event
     bool sendDoorStateEvent(bool mode, String cause = "PHYSICAL_INTERACTION");
     bool sendPowerStateEvent() = delete; // SinricProGarageDoor has no powerState
-
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:

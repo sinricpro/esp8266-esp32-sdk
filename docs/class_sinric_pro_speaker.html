@@ -145,6 +145,9 @@ Public Types</h2></td></tr>
 <tr class="memitem:a19062c8b2786a85d53129d572ec55bbd"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, String &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_speaker.html#a19062c8b2786a85d53129d572ec55bbd">MediaControlCallback</a></td></tr>
 <tr class="memdesc:a19062c8b2786a85d53129d572ec55bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onMediaControl function.  <a href="class_sinric_pro_speaker.html#a19062c8b2786a85d53129d572ec55bbd">More...</a><br /></td></tr>
 <tr class="separator:a19062c8b2786a85d53129d572ec55bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a047ecacb194f2ad747fa2ab7e1117a88"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, String &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_speaker.html#a047ecacb194f2ad747fa2ab7e1117a88">SelectInputCallback</a></td></tr>
+<tr class="memdesc:a047ecacb194f2ad747fa2ab7e1117a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onSelectInput function.  <a href="class_sinric_pro_speaker.html#a047ecacb194f2ad747fa2ab7e1117a88">More...</a><br /></td></tr>
+<tr class="separator:a047ecacb194f2ad747fa2ab7e1117a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a765ec6504ace15f556dbf2510ce93d0f"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; bool(const String &amp;, const String &amp;, int &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_speaker.html#a765ec6504ace15f556dbf2510ce93d0f">SetBandsCallback</a></td></tr>
 <tr class="memdesc:a765ec6504ace15f556dbf2510ce93d0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onSetBands function.  <a href="class_sinric_pro_speaker.html#a765ec6504ace15f556dbf2510ce93d0f">More...</a><br /></td></tr>
 <tr class="separator:a765ec6504ace15f556dbf2510ce93d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +199,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af69dc08522c75d484deab14beafcd176"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_speaker.html#af69dc08522c75d484deab14beafcd176">sendMediaControlEvent</a> (String mediaControl, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
 <tr class="memdesc:af69dc08522c75d484deab14beafcd176"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>mediaControl</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating devices media control state.  <a href="class_sinric_pro_speaker.html#af69dc08522c75d484deab14beafcd176">More...</a><br /></td></tr>
 <tr class="separator:af69dc08522c75d484deab14beafcd176"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d79220a3a06331442d36524ceac1db3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_speaker.html#a8d79220a3a06331442d36524ceac1db3">sendSelectInputEvent</a> (String intput, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
+<tr class="memdesc:a8d79220a3a06331442d36524ceac1db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>selectInput</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server to report selected input.  <a href="class_sinric_pro_speaker.html#a8d79220a3a06331442d36524ceac1db3">More...</a><br /></td></tr>
+<tr class="separator:a8d79220a3a06331442d36524ceac1db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ad5674e36d96a73147388251b794c82"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_speaker.html#a4ad5674e36d96a73147388251b794c82">sendBandsEvent</a> (String bands, int level, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
 <tr class="memdesc:a4ad5674e36d96a73147388251b794c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>setBands</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating bands level has changed.  <a href="class_sinric_pro_speaker.html#a4ad5674e36d96a73147388251b794c82">More...</a><br /></td></tr>
 <tr class="separator:a4ad5674e36d96a73147388251b794c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -557,6 +563,47 @@ Example-Code</h1>
 <div class="line">  }</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s bands reset to\r\n - BASS: %d\r\n - MIDRANGE: %d\r\n - TREBBLE: %d\r\n&quot;</span>, deviceId.c_str(), globalBass, globalMidrange, globalTrebble);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a047ecacb194f2ad747fa2ab7e1117a88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a047ecacb194f2ad747fa2ab7e1117a88">&#9670;&nbsp;</a></span>SelectInputCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::function&lt;bool(const String&amp;, String&amp;)&gt; <a class="el" href="class_sinric_pro_speaker.html#a047ecacb194f2ad747fa2ab7e1117a88">SelectInputCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback definition for onSelectInput function. </p>
+<p>Gets called when device receive a <code>selectInput</code> request <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>String with input name device is requested to switch to <br  />
+ <code>AUX 1</code>..<code>AUX 7</code>, <code>BLURAY</code>, <code>CABLE</code>, <code>CD</code>, <code>COAX 1</code>,<code>COAX 2</code>, <code>COMPOSITE 1</code>, <code>DVD</code>, <code>GAME</code>, <code>HD RADIO</code>, <code>HDMI 1</code>.. <code>HDMI 10</code>, <code>HDMI ARC</code>, <code>INPUT 1</code>..<code>INPUT 10</code>, <code>IPOD</code>, <code>LINE 1</code>..<code>LINE 7</code>, <code>MEDIA PLAYER</code>, <code>OPTICAL 1</code>, <code>OPTICAL 2</code>, <code>PHONO</code>, <code>PLAYSTATION</code>, <code>PLAYSTATION 3</code>, <code>PLAYSTATION 4</code>, <code>SATELLITE</code>, <code>SMARTCAST</code>, <code>TUNER</code>, <code>TV</code>, <code>USB DAC</code>, <code>VIDEO 1</code>..<code>VIDEO 3</code>, <code>XBOX</code> </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">input</td><td>String with input name device has switchted to <br  />
+ <code>AUX 1</code>..<code>AUX 7</code>, <code>BLURAY</code>, <code>CABLE</code>, <code>CD</code>, <code>COAX 1</code>,<code>COAX 2</code>, <code>COMPOSITE 1</code>, <code>DVD</code>, <code>GAME</code>, <code>HD RADIO</code>, <code>HDMI 1</code>.. <code>HDMI 10</code>, <code>HDMI ARC</code>, <code>INPUT 1</code>..<code>INPUT 10</code>, <code>IPOD</code>, <code>LINE 1</code>..<code>LINE 7</code>, <code>MEDIA PLAYER</code>, <code>OPTICAL 1</code>, <code>OPTICAL 2</code>, <code>PHONO</code>, <code>PLAYSTATION</code>, <code>PLAYSTATION 3</code>, <code>PLAYSTATION 4</code>, <code>SATELLITE</code>, <code>SMARTCAST</code>, <code>TUNER</code>, <code>TV</code>, <code>USB DAC</code>, <code>VIDEO 1</code>..<code>VIDEO 3</code>, <code>XBOX</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error</td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="SelectInput"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> onSelectInput(<span class="keyword">const</span> String &amp;deviceId, String &amp;input) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s input changed to %s\r\n&quot;</span>, deviceId.c_str(), input.c_str());</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
 </div><!-- fragment -->
 </div>
@@ -1149,6 +1196,52 @@ Example-Code</h1>
 
 </div>
 </div>
+<a id="a8d79220a3a06331442d36524ceac1db3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d79220a3a06331442d36524ceac1db3">&#9670;&nbsp;</a></span>sendSelectInputEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendSelectInputEvent </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send <code>selectInput</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server to report selected input. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input</td><td>String with actual media control <br  />
+ <code>AUX 1</code>..<code>AUX 7</code>, <code>BLURAY</code>, <code>CABLE</code>, <code>CD</code>, <code>COAX 1</code>,<code>COAX 2</code>, <code>COMPOSITE 1</code>, <code>DVD</code>, <code>GAME</code>, <code>HD RADIO</code>, <code>HDMI 1</code>.. <code>HDMI 10</code>, <code>HDMI ARC</code>, <code>INPUT 1</code>..<code>INPUT 10</code>, <code>IPOD</code>, <code>LINE 1</code>..<code>LINE 7</code>, <code>MEDIA PLAYER</code>, <code>OPTICAL 1</code>, <code>OPTICAL 2</code>, <code>PHONO</code>, <code>PLAYSTATION</code>, <code>PLAYSTATION 3</code>, <code>PLAYSTATION 4</code>, <code>SATELLITE</code>, <code>SMARTCAST</code>, <code>TUNER</code>, <code>TV</code>, <code>USB DAC</code>, <code>VIDEO 1</code>..<code>VIDEO 3</code>, <code>XBOX</code> </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
+    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a0f301accc58742f867de88c66a5eb3c5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f301accc58742f867de88c66a5eb3c5">&#9670;&nbsp;</a></span>sendVolumeEvent()</h2>
 
@@ -1196,14 +1289,14 @@ Example-Code</h1>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_sinric_pro_speaker_html_a4aaa7a29394560be7537a86b0304d199"><div class="ttname"><a href="class_sinric_pro_speaker.html#a4aaa7a29394560be7537a86b0304d199">SinricProSpeaker::onSetBands</a></div><div class="ttdeci">void onSetBands(SetBandsCallback cb)</div><div class="ttdoc">Set callback function for setBands request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:344</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_a41a5c1506545c44c2408054a8675c7a8"><div class="ttname"><a href="class_sinric_pro_speaker.html#a41a5c1506545c44c2408054a8675c7a8">SinricProSpeaker::onAdjustBands</a></div><div class="ttdeci">void onAdjustBands(AdjustBandsCallback cb)</div><div class="ttdoc">Set callback function for adjustBands request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:353</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_a2c868c87f96e3924c8b309e1bcfb507e"><div class="ttname"><a href="class_sinric_pro_speaker.html#a2c868c87f96e3924c8b309e1bcfb507e">SinricProSpeaker::onAdjustVolume</a></div><div class="ttdeci">void onAdjustVolume(AdjustVolumeCallback cb)</div><div class="ttdoc">Set callback function for adjustVolume request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:317</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_ada087c948c3ab923bdb7818daa6b2b79"><div class="ttname"><a href="class_sinric_pro_speaker.html#ada087c948c3ab923bdb7818daa6b2b79">SinricProSpeaker::onSetMode</a></div><div class="ttdeci">void onSetMode(ModeCallback cb)</div><div class="ttdoc">Set callback function for setMode request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:371</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_a5db8c85f222debbece54c794015f9402"><div class="ttname"><a href="class_sinric_pro_speaker.html#a5db8c85f222debbece54c794015f9402">SinricProSpeaker::onSetVolume</a></div><div class="ttdeci">void onSetVolume(SetVolumeCallback cb)</div><div class="ttdoc">Set callback function for setVolume request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:308</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_ab5fc79cc8903c3ccc1c106abf61d7cfd"><div class="ttname"><a href="class_sinric_pro_speaker.html#ab5fc79cc8903c3ccc1c106abf61d7cfd">SinricProSpeaker::onMute</a></div><div class="ttdeci">void onMute(MuteCallback cb)</div><div class="ttdoc">Set callback function for setMute request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:326</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_afc2620621377fff928737b5a8a537020"><div class="ttname"><a href="class_sinric_pro_speaker.html#afc2620621377fff928737b5a8a537020">SinricProSpeaker::onMediaControl</a></div><div class="ttdeci">void onMediaControl(MediaControlCallback cb)</div><div class="ttdoc">Set callback function for mediaControl request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:335</div></div>
-<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:145</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_a4aaa7a29394560be7537a86b0304d199"><div class="ttname"><a href="class_sinric_pro_speaker.html#a4aaa7a29394560be7537a86b0304d199">SinricProSpeaker::onSetBands</a></div><div class="ttdeci">void onSetBands(SetBandsCallback cb)</div><div class="ttdoc">Set callback function for setBands request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:379</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_a41a5c1506545c44c2408054a8675c7a8"><div class="ttname"><a href="class_sinric_pro_speaker.html#a41a5c1506545c44c2408054a8675c7a8">SinricProSpeaker::onAdjustBands</a></div><div class="ttdeci">void onAdjustBands(AdjustBandsCallback cb)</div><div class="ttdoc">Set callback function for adjustBands request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:388</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_a2c868c87f96e3924c8b309e1bcfb507e"><div class="ttname"><a href="class_sinric_pro_speaker.html#a2c868c87f96e3924c8b309e1bcfb507e">SinricProSpeaker::onAdjustVolume</a></div><div class="ttdeci">void onAdjustVolume(AdjustVolumeCallback cb)</div><div class="ttdoc">Set callback function for adjustVolume request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:343</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_ada087c948c3ab923bdb7818daa6b2b79"><div class="ttname"><a href="class_sinric_pro_speaker.html#ada087c948c3ab923bdb7818daa6b2b79">SinricProSpeaker::onSetMode</a></div><div class="ttdeci">void onSetMode(ModeCallback cb)</div><div class="ttdoc">Set callback function for setMode request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:406</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_a5db8c85f222debbece54c794015f9402"><div class="ttname"><a href="class_sinric_pro_speaker.html#a5db8c85f222debbece54c794015f9402">SinricProSpeaker::onSetVolume</a></div><div class="ttdeci">void onSetVolume(SetVolumeCallback cb)</div><div class="ttdoc">Set callback function for setVolume request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:334</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_ab5fc79cc8903c3ccc1c106abf61d7cfd"><div class="ttname"><a href="class_sinric_pro_speaker.html#ab5fc79cc8903c3ccc1c106abf61d7cfd">SinricProSpeaker::onMute</a></div><div class="ttdeci">void onMute(MuteCallback cb)</div><div class="ttdoc">Set callback function for setMute request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:352</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_afc2620621377fff928737b5a8a537020"><div class="ttname"><a href="class_sinric_pro_speaker.html#afc2620621377fff928737b5a8a537020">SinricProSpeaker::onMediaControl</a></div><div class="ttdeci">void onMediaControl(MediaControlCallback cb)</div><div class="ttdoc">Set callback function for mediaControl request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:361</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:156</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

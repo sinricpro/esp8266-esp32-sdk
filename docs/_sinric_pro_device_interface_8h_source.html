@@ -115,13 +115,14 @@ $(document).ready(function(){initNavTree('_sinric_pro_device_interface_8h_source
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, JsonObject &amp;request_value, JsonObject &amp;response_value) = 0;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* getDeviceId() = 0;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> begin(SinricProInterface* eventSender) = 0;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> sendEvent(JsonDocument&amp; event) = 0;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">virtual</span> DynamicJsonDocument prepareEvent(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, <span class="keyword">const</span> <span class="keywordtype">char</span>* cause) = 0;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;};</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">virtual</span> String getProductType() = 0;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> begin(SinricProInterface* eventSender) = 0;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> sendEvent(JsonDocument&amp; event) = 0;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">virtual</span> DynamicJsonDocument prepareEvent(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, <span class="keyword">const</span> <span class="keywordtype">char</span>* cause) = 0;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;};</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

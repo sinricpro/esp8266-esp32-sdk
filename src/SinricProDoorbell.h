@@ -17,6 +17,7 @@
 class SinricProDoorbell :  public SinricProDevice {
   public:
 	  SinricProDoorbell(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("DOORBELL"); }
     // event
     bool sendDoorbellEvent(String cause = "PHYSICAL_INTERACTION");
   private:

@@ -25,6 +25,7 @@ class SinricProDevice : public SinricProDeviceInterface {
     SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime=100);
     virtual ~SinricProDevice();
     virtual const char* getDeviceId();
+    virtual String getProductType();
     virtual void begin(SinricProInterface* eventSender);
     virtual void setEventWaitTime(unsigned long eventWaitTime) { if (eventWaitTime<100) {this->eventWaitTime=100;} else { this->eventWaitTime=eventWaitTime;} }
 
@@ -111,6 +112,11 @@ DynamicJsonDocument SinricProDevice::prepareEvent(const char* deviceId, const ch
 
 
 bool SinricProDevice::sendEvent(JsonDocument& event) {
+  if (!eventSender) return false;
+  if (!eventSender->isConnected()) {
+    DEBUG_SINRIC("[SinricProDevice::sendEvent]: The event could not be sent. No connection to the SinricPro server.\r\n");
+    return false;
+  }
   String eventName = event["payload"]["action"] | ""; // get event name
 
   LeakyBucket_t bucket; // leaky bucket algorithm is used to prevent flooding the server
@@ -123,7 +129,7 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
   }
 
   if (bucket.addDrop()) {                                  // if we can add a new drop
-    if (eventSender) eventSender->sendMessage(event);      // send event
+    eventSender->sendMessage(event);                       // send event
     eventFilter[eventName] = bucket;                       // update bucket on eventFilter
     return true;
   }
@@ -170,6 +176,10 @@ bool SinricProDevice::sendPowerStateEvent(bool state, String cause) {
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state?"On":"Off";
   return sendEvent(eventMessage);
+}
+
+String SinricProDevice::getProductType()  { 
+  return String("sinric.device.type."); 
 }
 
 #endif

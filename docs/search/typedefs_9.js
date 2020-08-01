@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['selectinputcallback_216',['SelectInputCallback',['../class_sinric_pro_t_v.html#a047ecacb194f2ad747fa2ab7e1117a88',1,'SinricProTV']]],
+  ['selectinputcallback_216',['SelectInputCallback',['../class_sinric_pro_speaker.html#a047ecacb194f2ad747fa2ab7e1117a88',1,'SinricProSpeaker::SelectInputCallback()'],['../class_sinric_pro_t_v.html#a047ecacb194f2ad747fa2ab7e1117a88',1,'SinricProTV::SelectInputCallback()']]],
   ['setbandscallback_217',['SetBandsCallback',['../class_sinric_pro_speaker.html#a765ec6504ace15f556dbf2510ce93d0f',1,'SinricProSpeaker']]],
   ['setpositioncallback_218',['SetPositionCallback',['../class_sinric_pro_blinds.html#a191ba7fd2f28b1892bc8ba7374089285',1,'SinricProBlinds']]],
   ['setpowerlevelcallback_219',['SetPowerLevelCallback',['../class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd',1,'SinricProDimSwitch']]],

@@ -16,6 +16,7 @@ class SinricProInterface {
     virtual void sendMessage(JsonDocument& jsonEvent);
     virtual DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause);
     virtual unsigned long getTimestamp(); 
+    virtual bool isConnected();
 };
 
 

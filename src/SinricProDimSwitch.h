@@ -17,6 +17,7 @@
 class SinricProDimSwitch :  public SinricProDevice {
   public:
 	  SinricProDimSwitch(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("DIMMABLE_SWITCH"); }
     // callbacks
     /**
      * @brief Definition for setPowerLevel callback
@@ -55,7 +56,6 @@ class SinricProDimSwitch :  public SinricProDevice {
 
     // event
     bool sendPowerLevelEvent(int powerLevel, String cause = "PHYSICAL_INTERACTION");
-
     // handle
     bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:

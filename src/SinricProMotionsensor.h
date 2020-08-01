@@ -17,6 +17,7 @@
 class SinricProMotionsensor :  public SinricProDevice {
   public:
 	  SinricProMotionsensor(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("MOTION_SENSOR"); }
 
     // event
     bool sendMotionEvent(bool detected, String cause = "PHYSICAL_INTERACTION");

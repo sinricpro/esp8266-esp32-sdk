@@ -24,6 +24,7 @@
 class SinricProWindowAC :  public SinricProDevice {
   public:
 	  SinricProWindowAC(const char* deviceId, unsigned long eventWaitTime=30000);
+    String getProductType() { return SinricProDevice::getProductType() + String("AC_UNIT"); }
     // callback
 
     /**
@@ -111,7 +112,6 @@ class SinricProWindowAC :  public SinricProDevice {
     void onTargetTemperature(SetTargetTemperatureCallback cb);
     void onAdjustTargetTemperature(AdjustTargetTemperatureCallback cb);
     void onThermostatMode(ThermostatModeCallback cb);
-
     // event
     bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION");
     bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");

@@ -32,6 +32,7 @@
 class SinricProSpeaker :  public SinricProDevice {
   public:
 	  SinricProSpeaker(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("SPEAKER"); }
     // callbacks
 
     /**
@@ -97,6 +98,22 @@ class SinricProSpeaker :  public SinricProDevice {
      * @snippet callbacks.cpp onMediaControl
      **/
     typedef std::function<bool(const String&, String&)> MediaControlCallback;
+
+    /**
+     * @brief Callback definition for onSelectInput function
+     * 
+     * Gets called when device receive a `selectInput` request \n
+     * @param[in]   deviceId    String which contains the ID of device
+     * @param[in]   input       String with input name device is requested to switch to \n `AUX 1`..`AUX 7`, `BLURAY`, `CABLE`, `CD`, `COAX 1`,`COAX 2`, `COMPOSITE 1`, `DVD`, `GAME`, `HD RADIO`, `HDMI 1`.. `HDMI 10`, `HDMI ARC`, `INPUT 1`..`INPUT 10`, `IPOD`, `LINE 1`..`LINE 7`, `MEDIA PLAYER`, `OPTICAL 1`, `OPTICAL 2`, `PHONO`, `PLAYSTATION`, `PLAYSTATION 3`, `PLAYSTATION 4`, `SATELLITE`, `SMARTCAST`, `TUNER`, `TV`, `USB DAC`, `VIDEO 1`..`VIDEO 3`, `XBOX`
+     * @param[out]  input       String with input name device has switchted to \n `AUX 1`..`AUX 7`, `BLURAY`, `CABLE`, `CD`, `COAX 1`,`COAX 2`, `COMPOSITE 1`, `DVD`, `GAME`, `HD RADIO`, `HDMI 1`.. `HDMI 10`, `HDMI ARC`, `INPUT 1`..`INPUT 10`, `IPOD`, `LINE 1`..`LINE 7`, `MEDIA PLAYER`, `OPTICAL 1`, `OPTICAL 2`, `PHONO`, `PLAYSTATION`, `PLAYSTATION 3`, `PLAYSTATION 4`, `SATELLITE`, `SMARTCAST`, `TUNER`, `TV`, `USB DAC`, `VIDEO 1`..`VIDEO 3`, `XBOX`
+     * @return      the success of the request
+     * @retval      true        request handled properly
+     * @retval      false       request was not handled properly because of some error
+     * 
+     * @section SelectInput Example-Code
+     * @snippet callbacks.cpp onSelectInput
+     **/
+    typedef std::function<bool(const String&, String&)> SelectInputCallback;
 
     /**
      * @brief Callback definition for onSetBands function
@@ -170,6 +187,7 @@ class SinricProSpeaker :  public SinricProDevice {
     void onAdjustVolume(AdjustVolumeCallback cb);
     void onMute(MuteCallback cb);
     void onMediaControl(MediaControlCallback cb);
+    void onSelectInput(SelectInputCallback cb);
     void onSetBands(SetBandsCallback cb);
     void onAdjustBands(AdjustBandsCallback cb);
     void onResetBands(ResetBandsCallback cb);
@@ -179,6 +197,7 @@ class SinricProSpeaker :  public SinricProDevice {
     bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION");
     bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION");
     bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION");
+    bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION");
     bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION");
     bool sendModeEvent(String mode, String cause = "PHYSICAL_INTERACTION");
     // handle
@@ -188,6 +207,7 @@ class SinricProSpeaker :  public SinricProDevice {
     AdjustVolumeCallback adjustVolumeCallback; 
     MuteCallback muteCallback;
     MediaControlCallback mediaControlCallback;
+    SelectInputCallback selectInputCallback;
     SetBandsCallback setBandsCallback;
     AdjustBandsCallback adjustBandsCallback;
     ResetBandsCallback resetBandsCallback;
@@ -245,6 +265,13 @@ bool SinricProSpeaker::handleRequest(const char* deviceId, const char* action, J
     String mediaControl = request_value["control"];
     success = mediaControlCallback(String(deviceId), mediaControl);
     response_value["control"] = mediaControl;
+    return success;
+  }
+
+  if (selectInputCallback && actionString == "selectInput") {
+    String input = request_value["input"];
+    success = selectInputCallback(String(deviceId), input);
+    response_value["input"] = input;
     return success;
   }
 
@@ -335,6 +362,15 @@ void SinricProSpeaker::onMute(MuteCallback cb) { muteCallback = cb; }
 void SinricProSpeaker::onMediaControl(MediaControlCallback cb) { mediaControlCallback = cb; }
 
 /**
+ * @brief Set callback function for `selectInput` request
+ * 
+ * @param cb Function pointer to a `SelectInputCallback` function
+ * @return void
+ * @see SelectInputCallback
+ **/
+void SinricProSpeaker::onSelectInput(SelectInputCallback cb) { selectInputCallback = cb; }
+
+/**
  * @brief Set callback function for `setBands` request
  * 
  * @param cb Function pointer to a `SetBandsCallback` function
@@ -417,6 +453,23 @@ bool SinricProSpeaker::sendMediaControlEvent(String mediaControl, String cause) 
   event_value["control"] = mediaControl;
   return sendEvent(eventMessage);
 }
+
+/**
+ * @brief Send `selectInput` event to SinricPro Server to report selected input
+ * 
+ * @param input           String with actual media control \n `AUX 1`..`AUX 7`, `BLURAY`, `CABLE`, `CD`, `COAX 1`,`COAX 2`, `COMPOSITE 1`, `DVD`, `GAME`, `HD RADIO`, `HDMI 1`.. `HDMI 10`, `HDMI ARC`, `INPUT 1`..`INPUT 10`, `IPOD`, `LINE 1`..`LINE 7`, `MEDIA PLAYER`, `OPTICAL 1`, `OPTICAL 2`, `PHONO`, `PLAYSTATION`, `PLAYSTATION 3`, `PLAYSTATION 4`, `SATELLITE`, `SMARTCAST`, `TUNER`, `TV`, `USB DAC`, `VIDEO 1`..`VIDEO 3`, `XBOX`
+ * @param cause           (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return the success of sending the even
+ * @retval true   event has been sent successfully
+ * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
+ **/
+bool SinricProSpeaker::sendSelectInputEvent(String input, String cause) {
+  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "selectInput", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["input"] = input;
+  return sendEvent(eventMessage);
+}
+
 
 /**
  * @brief Send `setMode` event to SinricPro Server indicating the mode has changed

@@ -17,10 +17,10 @@
 class SinricProContactsensor :  public SinricProDevice {
   public:
 	  SinricProContactsensor(const char* deviceId, unsigned long eventWaitTime=100);
+    String getProductType() { return SinricProDevice::getProductType() + String("CONTACT_SENSOR"); }
 
     // event
     bool sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION");
-
   private:
 };
 
