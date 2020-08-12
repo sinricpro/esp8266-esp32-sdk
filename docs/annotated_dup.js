@@ -1,7 +1,9 @@
 var annotated_dup =
 [
     [ "SinricPro", "class_sinric_pro.html", null ],
+    [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", "class_sinric_pro_air_quality_sensor" ],
     [ "SinricProBlinds", "class_sinric_pro_blinds.html", "class_sinric_pro_blinds" ],
+    [ "SinricProCamera", "class_sinric_pro_camera.html", "class_sinric_pro_camera" ],
     [ "SinricProClass", "class_sinric_pro_class.html", "class_sinric_pro_class" ],
     [ "SinricProContactsensor", "class_sinric_pro_contactsensor.html", "class_sinric_pro_contactsensor" ],
     [ "SinricProDevice", "class_sinric_pro_device.html", "class_sinric_pro_device" ],

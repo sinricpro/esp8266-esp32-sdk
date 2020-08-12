@@ -16,6 +16,7 @@ var class_sinric_pro_speaker =
     [ "onMute", "class_sinric_pro_speaker.html#ab5fc79cc8903c3ccc1c106abf61d7cfd", null ],
     [ "onPowerState", "class_sinric_pro_speaker.html#a32f3257da431a1035f23a265ff0cc4cf", null ],
     [ "onResetBands", "class_sinric_pro_speaker.html#aa6c3aabc2b442d82ac5456ccaac3f60d", null ],
+    [ "onSelectInput", "class_sinric_pro_speaker.html#a18f8f71ecf0d7292a63d9486f94e5180", null ],
     [ "onSetBands", "class_sinric_pro_speaker.html#a4aaa7a29394560be7537a86b0304d199", null ],
     [ "onSetMode", "class_sinric_pro_speaker.html#ada087c948c3ab923bdb7818daa6b2b79", null ],
     [ "onSetVolume", "class_sinric_pro_speaker.html#a5db8c85f222debbece54c794015f9402", null ],

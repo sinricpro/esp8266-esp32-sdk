@@ -3,7 +3,9 @@ var hierarchy =
     [ "SinricPro", "class_sinric_pro.html", null ],
     [ "SinricProClass", "class_sinric_pro_class.html", null ],
     [ "SinricProDevice", "class_sinric_pro_device.html", [
+      [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ],
       [ "SinricProBlinds", "class_sinric_pro_blinds.html", null ],
+      [ "SinricProCamera", "class_sinric_pro_camera.html", null ],
       [ "SinricProContactsensor", "class_sinric_pro_contactsensor.html", null ],
       [ "SinricProDimSwitch", "class_sinric_pro_dim_switch.html", [
         [ "SinricProFan", "class_sinric_pro_fan.html", null ]

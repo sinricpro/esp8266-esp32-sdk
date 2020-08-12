@@ -178,6 +178,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afc2620621377fff928737b5a8a537020"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_speaker.html#afc2620621377fff928737b5a8a537020">onMediaControl</a> (<a class="el" href="class_sinric_pro_speaker.html#a19062c8b2786a85d53129d572ec55bbd">MediaControlCallback</a> cb)</td></tr>
 <tr class="memdesc:afc2620621377fff928737b5a8a537020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>mediaControl</code> request.  <a href="class_sinric_pro_speaker.html#afc2620621377fff928737b5a8a537020">More...</a><br /></td></tr>
 <tr class="separator:afc2620621377fff928737b5a8a537020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18f8f71ecf0d7292a63d9486f94e5180"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_speaker.html#a18f8f71ecf0d7292a63d9486f94e5180">onSelectInput</a> (<a class="el" href="class_sinric_pro_speaker.html#a047ecacb194f2ad747fa2ab7e1117a88">SelectInputCallback</a> cb)</td></tr>
+<tr class="memdesc:a18f8f71ecf0d7292a63d9486f94e5180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>selectInput</code> request.  <a href="class_sinric_pro_speaker.html#a18f8f71ecf0d7292a63d9486f94e5180">More...</a><br /></td></tr>
+<tr class="separator:a18f8f71ecf0d7292a63d9486f94e5180"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4aaa7a29394560be7537a86b0304d199"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sinric_pro_speaker.html#a4aaa7a29394560be7537a86b0304d199">onSetBands</a> (<a class="el" href="class_sinric_pro_speaker.html#a765ec6504ace15f556dbf2510ce93d0f">SetBandsCallback</a> cb)</td></tr>
 <tr class="memdesc:a4aaa7a29394560be7537a86b0304d199"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>setBands</code> request.  <a href="class_sinric_pro_speaker.html#a4aaa7a29394560be7537a86b0304d199">More...</a><br /></td></tr>
 <tr class="separator:a4aaa7a29394560be7537a86b0304d199"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -601,7 +604,7 @@ Example-Code</h1>
 </dl>
 <h1><a class="anchor" id="SelectInput"></a>
 Example-Code</h1>
-<div class="fragment"><div class="line"><span class="keywordtype">bool</span> onSelectInput(<span class="keyword">const</span> String &amp;deviceId, String &amp;input) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_speaker.html#a18f8f71ecf0d7292a63d9486f94e5180">onSelectInput</a>(<span class="keyword">const</span> String &amp;deviceId, String &amp;input) {</div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s input changed to %s\r\n&quot;</span>, deviceId.c_str(), input.c_str());</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
@@ -864,6 +867,34 @@ Example-Code</h1>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_speaker.html#ae1ec62ffbf9d7f00df9760819305782e" title="Callback definition for onResetBands function.">ResetBandsCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="a18f8f71ecf0d7292a63d9486f94e5180"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18f8f71ecf0d7292a63d9486f94e5180">&#9670;&nbsp;</a></span>onSelectInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onSelectInput </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_sinric_pro_speaker.html#a047ecacb194f2ad747fa2ab7e1117a88">SelectInputCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>selectInput</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>SelectInputCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_sinric_pro_speaker.html#a047ecacb194f2ad747fa2ab7e1117a88" title="Callback definition for onSelectInput function.">SelectInputCallback</a> </dd></dl>
 
 </div>
 </div>
@@ -1289,14 +1320,15 @@ Example-Code</h1>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_sinric_pro_speaker_html_a4aaa7a29394560be7537a86b0304d199"><div class="ttname"><a href="class_sinric_pro_speaker.html#a4aaa7a29394560be7537a86b0304d199">SinricProSpeaker::onSetBands</a></div><div class="ttdeci">void onSetBands(SetBandsCallback cb)</div><div class="ttdoc">Set callback function for setBands request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:379</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_a41a5c1506545c44c2408054a8675c7a8"><div class="ttname"><a href="class_sinric_pro_speaker.html#a41a5c1506545c44c2408054a8675c7a8">SinricProSpeaker::onAdjustBands</a></div><div class="ttdeci">void onAdjustBands(AdjustBandsCallback cb)</div><div class="ttdoc">Set callback function for adjustBands request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:388</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_a2c868c87f96e3924c8b309e1bcfb507e"><div class="ttname"><a href="class_sinric_pro_speaker.html#a2c868c87f96e3924c8b309e1bcfb507e">SinricProSpeaker::onAdjustVolume</a></div><div class="ttdeci">void onAdjustVolume(AdjustVolumeCallback cb)</div><div class="ttdoc">Set callback function for adjustVolume request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:343</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_ada087c948c3ab923bdb7818daa6b2b79"><div class="ttname"><a href="class_sinric_pro_speaker.html#ada087c948c3ab923bdb7818daa6b2b79">SinricProSpeaker::onSetMode</a></div><div class="ttdeci">void onSetMode(ModeCallback cb)</div><div class="ttdoc">Set callback function for setMode request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:406</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_a5db8c85f222debbece54c794015f9402"><div class="ttname"><a href="class_sinric_pro_speaker.html#a5db8c85f222debbece54c794015f9402">SinricProSpeaker::onSetVolume</a></div><div class="ttdeci">void onSetVolume(SetVolumeCallback cb)</div><div class="ttdoc">Set callback function for setVolume request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:334</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_ab5fc79cc8903c3ccc1c106abf61d7cfd"><div class="ttname"><a href="class_sinric_pro_speaker.html#ab5fc79cc8903c3ccc1c106abf61d7cfd">SinricProSpeaker::onMute</a></div><div class="ttdeci">void onMute(MuteCallback cb)</div><div class="ttdoc">Set callback function for setMute request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:352</div></div>
-<div class="ttc" id="aclass_sinric_pro_speaker_html_afc2620621377fff928737b5a8a537020"><div class="ttname"><a href="class_sinric_pro_speaker.html#afc2620621377fff928737b5a8a537020">SinricProSpeaker::onMediaControl</a></div><div class="ttdeci">void onMediaControl(MediaControlCallback cb)</div><div class="ttdoc">Set callback function for mediaControl request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:361</div></div>
-<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:156</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_a4aaa7a29394560be7537a86b0304d199"><div class="ttname"><a href="class_sinric_pro_speaker.html#a4aaa7a29394560be7537a86b0304d199">SinricProSpeaker::onSetBands</a></div><div class="ttdeci">void onSetBands(SetBandsCallback cb)</div><div class="ttdoc">Set callback function for setBands request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:380</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_a41a5c1506545c44c2408054a8675c7a8"><div class="ttname"><a href="class_sinric_pro_speaker.html#a41a5c1506545c44c2408054a8675c7a8">SinricProSpeaker::onAdjustBands</a></div><div class="ttdeci">void onAdjustBands(AdjustBandsCallback cb)</div><div class="ttdoc">Set callback function for adjustBands request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:389</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_a2c868c87f96e3924c8b309e1bcfb507e"><div class="ttname"><a href="class_sinric_pro_speaker.html#a2c868c87f96e3924c8b309e1bcfb507e">SinricProSpeaker::onAdjustVolume</a></div><div class="ttdeci">void onAdjustVolume(AdjustVolumeCallback cb)</div><div class="ttdoc">Set callback function for adjustVolume request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:344</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_ada087c948c3ab923bdb7818daa6b2b79"><div class="ttname"><a href="class_sinric_pro_speaker.html#ada087c948c3ab923bdb7818daa6b2b79">SinricProSpeaker::onSetMode</a></div><div class="ttdeci">void onSetMode(ModeCallback cb)</div><div class="ttdoc">Set callback function for setMode request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:407</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_a18f8f71ecf0d7292a63d9486f94e5180"><div class="ttname"><a href="class_sinric_pro_speaker.html#a18f8f71ecf0d7292a63d9486f94e5180">SinricProSpeaker::onSelectInput</a></div><div class="ttdeci">void onSelectInput(SelectInputCallback cb)</div><div class="ttdoc">Set callback function for selectInput request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:371</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_a5db8c85f222debbece54c794015f9402"><div class="ttname"><a href="class_sinric_pro_speaker.html#a5db8c85f222debbece54c794015f9402">SinricProSpeaker::onSetVolume</a></div><div class="ttdeci">void onSetVolume(SetVolumeCallback cb)</div><div class="ttdoc">Set callback function for setVolume request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:335</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_ab5fc79cc8903c3ccc1c106abf61d7cfd"><div class="ttname"><a href="class_sinric_pro_speaker.html#ab5fc79cc8903c3ccc1c106abf61d7cfd">SinricProSpeaker::onMute</a></div><div class="ttdeci">void onMute(MuteCallback cb)</div><div class="ttdoc">Set callback function for setMute request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:353</div></div>
+<div class="ttc" id="aclass_sinric_pro_speaker_html_afc2620621377fff928737b5a8a537020"><div class="ttname"><a href="class_sinric_pro_speaker.html#afc2620621377fff928737b5a8a537020">SinricProSpeaker::onMediaControl</a></div><div class="ttdeci">void onMediaControl(MediaControlCallback cb)</div><div class="ttdoc">Set callback function for mediaControl request.</div><div class="ttdef"><b>Definition:</b> SinricProSpeaker.h:362</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf">SinricProDevice::onPowerState</a></div><div class="ttdeci">virtual void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:161</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

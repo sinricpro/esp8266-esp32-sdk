@@ -24,7 +24,7 @@ var searchData=
   ['onpowerstate_45',['onPowerState',['../class_sinric_pro_device.html#a32f3257da431a1035f23a265ff0cc4cf',1,'SinricProDevice']]],
   ['onrangevalue_46',['onRangeValue',['../class_sinric_pro_fan_u_s.html#a94adbcdf6ce61cb6552a5f9915e705ae',1,'SinricProFanUS::onRangeValue()'],['../class_sinric_pro_window_a_c.html#a94adbcdf6ce61cb6552a5f9915e705ae',1,'SinricProWindowAC::onRangeValue()']]],
   ['onresetbands_47',['onResetBands',['../class_sinric_pro_speaker.html#aa6c3aabc2b442d82ac5456ccaac3f60d',1,'SinricProSpeaker']]],
-  ['onselectinput_48',['onSelectInput',['../class_sinric_pro_t_v.html#a18f8f71ecf0d7292a63d9486f94e5180',1,'SinricProTV']]],
+  ['onselectinput_48',['onSelectInput',['../class_sinric_pro_speaker.html#a18f8f71ecf0d7292a63d9486f94e5180',1,'SinricProSpeaker::onSelectInput()'],['../class_sinric_pro_t_v.html#a18f8f71ecf0d7292a63d9486f94e5180',1,'SinricProTV::onSelectInput()']]],
   ['onsetbands_49',['onSetBands',['../class_sinric_pro_speaker.html#a4aaa7a29394560be7537a86b0304d199',1,'SinricProSpeaker']]],
   ['onsetmode_50',['onSetMode',['../class_sinric_pro_speaker.html#ada087c948c3ab923bdb7818daa6b2b79',1,'SinricProSpeaker']]],
   ['onsetposition_51',['onSetPosition',['../class_sinric_pro_blinds.html#a5e67c0c58e46d4e0ad1b811df1119cde',1,'SinricProBlinds']]],
