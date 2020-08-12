@@ -30,7 +30,7 @@
 #include <WiFiClient.h>
 
 #include "SinricPro.h"
-#include "SinricProSwitch.h"
+#include "SinricProCamera.h"
 
 #include "SimStreamer.h"
 #include "OV2640Streamer.h"
@@ -75,7 +75,7 @@ bool onPowerState(const String &deviceId, bool &state) {
 // setup function for SinricPro
 void setupSinricPro() {
   // add device to SinricPro
-  SinricProSwitch& mySwitch = SinricPro[CAMERA_ID];
+  SinricProCamera& mySwitch = SinricPro[CAMERA_ID];
 
   // set callback function to device
   mySwitch.onPowerState(onPowerState);
