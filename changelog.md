@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.6.1
+Fixed:
+  Air Quality Sensor example for sensor type GP2Y1014AU0F
+
 ## Version 2.6.0
 New:
 - Devices
