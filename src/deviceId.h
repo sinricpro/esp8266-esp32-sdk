@@ -13,12 +13,17 @@ class DeviceId {
     DeviceId(const DeviceId &other);
 
     DeviceId operator=(const DeviceId &other);
+    DeviceId operator=(const char* &other);
+    DeviceId operator=(const String &other);
 
     bool operator==(const DeviceId &other) const;
-    bool operator==(const String &other) const;
     bool operator==(const char* other) const;
+    bool operator==(const String& other) const;
 
     bool operator!=(const DeviceId &other) const { return !operator==(other); }
+    bool operator!=(const char* other) const { return !operator==(other); }
+    bool operator!=(const String &other) const { return !operator==(other); }
+    
     operator bool() const { return isValid(); }
     operator String() const { return toString(); }
     
@@ -34,7 +39,6 @@ DeviceId::DeviceId() : _deviceId_bin{} {}
 DeviceId::DeviceId(const char* deviceId) {
   fromString(deviceId);
 }
-
 DeviceId::DeviceId(const String &other) {
   fromString(other.c_str());
 }
@@ -66,13 +70,12 @@ bool DeviceId::operator==(const DeviceId &other) const {
 }
 
 bool DeviceId::operator==(const String &other) const {
-  return operator==((DeviceId) other);
+  return operator==((AppSecret) other);
 }
 
 bool DeviceId::operator==(const char* other) const {
-  return operator==((DeviceId) other);
+  return operator==((AppSecret) other);
 }
-
 
 bool DeviceId::isValid() const {
   for (size_t i=0; i<sizeof(deviceId_bin_t); i++) {

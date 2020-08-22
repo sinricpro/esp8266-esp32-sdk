@@ -13,11 +13,17 @@ class AppKey {
     AppKey(const AppKey &other);
 
     AppKey operator=(const AppKey &other);
+    AppKey operator=(const char* other);
+    AppKey operator=(const String &other);
     
-    bool operator==(const AppKey &other);
-    bool operator==(const String &other);
-    bool operator==(const char* other);
-    bool operator!=(const AppKey &other) { return !operator==(other); }
+    bool operator==(const AppKey &other) const;
+    bool operator==(const String &other) const;
+    bool operator==(const char* other) const;
+
+    bool operator!=(const AppKey &other) const { return !operator==(other); }
+    bool operator!=(const char* other) const { return !operator==(other); }
+    bool operator!=(const String &other) const { return !operator==(other); }
+
     operator bool() const { return isValid(); }
     operator String() const { return toString(); }
     
@@ -58,18 +64,28 @@ AppKey AppKey::operator=(const AppKey &other) {
   return *this;
 }
 
-bool AppKey::operator==(const AppKey &other) {
+AppKey AppKey::operator=(const char* other) {
+  fromString(other);
+  return *this;
+}
+
+AppKey AppKey::operator=(const String &other) {
+  fromString(other.c_str());
+  return *this;
+}
+
+bool AppKey::operator==(const AppKey &other) const {
   for (size_t i=0; i<APPKEY_BINLEN; i++) {
     if (_appKey_bin[i] != other._appKey_bin[i]) return false;
   }
   return true;
 }
 
-bool AppKey::operator==(const String &other) {
+bool AppKey::operator==(const String &other) const {
   return operator==((AppKey) other);
 }
 
-bool AppKey::operator==(const char* other) {
+bool AppKey::operator==(const char* other) const {
   return operator==((AppKey) other);
 }
 

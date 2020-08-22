@@ -13,10 +13,17 @@ class AppSecret {
     AppSecret(const AppSecret &other);
 
     AppSecret operator=(const AppSecret &other);
-    bool operator==(const AppSecret &other);
-    bool operator==(const String &other);
-    bool operator==(const char* other);
-    bool operator!=(const AppSecret &other) {return !operator==(other); }
+    AppSecret operator=(const char* other);
+    AppSecret operator=(const String &other);
+
+    bool operator==(const AppSecret &other) const;
+    bool operator==(const String &other) const;
+    bool operator==(const char* other) const;
+
+    bool operator!=(const AppSecret &other) const {return !operator==(other); }
+    bool operator!=(const char* other) const { return !operator==(other); }
+    bool operator!=(const String &other) const { return !operator==(other); }
+
     operator bool() const { return isValid(); }
     operator String() const { return toString(); }
     
@@ -33,7 +40,7 @@ AppSecret::AppSecret(const char* other) {
   fromString(other);
 }
 
-AppSecret::AppSecret(const String& other) {
+AppSecret::AppSecret(const String &other) {
   fromString(other.c_str());
 }
 
@@ -61,18 +68,18 @@ AppSecret AppSecret::operator=(const AppSecret &other) {
   return *this;
 }
 
-bool AppSecret::operator==(const AppSecret &other) {
+bool AppSecret::operator==(const AppSecret &other) const {
   for (size_t i=0; i<APPSECRET_BINLEN; i++) {
     if (_appSecret_bin[i] != other._appSecret_bin[i]) return false;
   }
   return true;
 }
 
-bool AppSecret::operator==(const String &other) {
+bool AppSecret::operator==(const String &other) const {
   return operator==((AppSecret) other);
 }
 
-bool AppSecret::operator==(const char* other) {
+bool AppSecret::operator==(const char* other) const {
   return operator==((AppSecret) other);
 }
 
