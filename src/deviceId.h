@@ -70,11 +70,11 @@ bool DeviceId::operator==(const DeviceId &other) const {
 }
 
 bool DeviceId::operator==(const String &other) const {
-  return operator==((AppSecret) other);
+  return operator==((DeviceId) other);
 }
 
 bool DeviceId::operator==(const char* other) const {
-  return operator==((AppSecret) other);
+  return operator==((DeviceId) other);
 }
 
 bool DeviceId::isValid() const {
