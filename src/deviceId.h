@@ -9,7 +9,7 @@ class DeviceId {
     typedef uint8_t deviceId_bin_t[DEVICEID_BINLEN];
     DeviceId();
     DeviceId(const char* deviceId);
-    DeviceId(const String &deviceId) { DeviceId(deviceId.c_str()); }
+    DeviceId(const String &deviceId);
     DeviceId(const DeviceId &other);
 
     DeviceId operator=(const DeviceId &other);
@@ -33,6 +33,10 @@ DeviceId::DeviceId() : _deviceId_bin{} {}
 
 DeviceId::DeviceId(const char* deviceId) {
   fromString(deviceId);
+}
+
+DeviceId::DeviceId(const String &other) {
+  fromString(other.c_str());
 }
 
 DeviceId::DeviceId(const DeviceId &other) {

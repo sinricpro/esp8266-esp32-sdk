@@ -9,7 +9,7 @@ class AppKey {
     typedef uint8_t appKey_bin_t[APPKEY_BINLEN];
     AppKey();
     AppKey(const char* other);
-    AppKey(const String &other) { AppKey(other.c_str()); }
+    AppKey(const String &other);
     AppKey(const AppKey &other);
 
     AppKey operator=(const AppKey &other);
@@ -32,6 +32,10 @@ AppKey::AppKey() : _appKey_bin{} {}
 
 AppKey::AppKey(const char* other) {
   fromString(other);
+}
+
+AppKey::AppKey(const String &other) {
+  fromString(other.c_str());
 }
 
 AppKey::AppKey(const AppKey &other) {

@@ -9,7 +9,7 @@ class AppSecret {
     typedef uint8_t appSecret_bin_t[APPSECRET_BINLEN];
     AppSecret();
     AppSecret(const char* other);
-    AppSecret(const String &other) { AppSecret(other.c_str()); }
+    AppSecret(const String &other);
     AppSecret(const AppSecret &other);
 
     AppSecret operator=(const AppSecret &other);
@@ -31,6 +31,10 @@ AppSecret::AppSecret() : _appSecret_bin{} {}
 
 AppSecret::AppSecret(const char* other) {
   fromString(other);
+}
+
+AppSecret::AppSecret(const String& other) {
+  fromString(other.c_str());
 }
 
 AppSecret::AppSecret(const AppSecret &other) {
