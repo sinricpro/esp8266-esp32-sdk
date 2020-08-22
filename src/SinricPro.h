@@ -114,9 +114,6 @@ class SinricProClass : public SinricProInterface {
     void onConnect() { DEBUG_SINRIC("[SinricPro]: Connected to \"%s\"!]\r\n", serverURL.c_str()); }
     void onDisconnect() { DEBUG_SINRIC("[SinricPro]: Disconnect\r\n"); }
 
-    bool verifyDeviceId(const char* id);
-    bool verifyAppKey(const char* key);
-    bool verifyAppSecret(const char* secret);
     void extractTimestamp(JsonDocument &message);
 
     SinricProDeviceInterface* getDevice(DeviceId deviceId);
@@ -125,10 +122,7 @@ class SinricProClass : public SinricProInterface {
     DeviceType& getDeviceInstance(DeviceId deviceId);
 
     std::vector<SinricProDeviceInterface*> devices;
-/*
-    String socketAuthToken;
-    String signingKey;
-*/
+
     AppKey socketAuthToken;
     AppSecret signingKey;
     String serverURL;
@@ -183,11 +177,6 @@ DeviceType& SinricProClass::getDeviceInstance(DeviceId deviceId) {
  * }
  * @endcode
  **/
-/**
-void SinricProClass::begin(String socketAuthToken, String signingKey, String serverURL) {
-  begin(AppKey(socketAuthToken), AppSecret(signingKey), serverURL);
-}
-**/
 void SinricProClass::begin(AppKey socketAuthToken, AppSecret signingKey, String serverURL) {
   bool success = true;
   if (!socketAuthToken.isValid()) {
@@ -462,22 +451,6 @@ void SinricProClass::reconnect() {
   DEBUG_SINRIC("SinricPro:reconnect(): connecting\r\n");
   connect();
 }
-
-bool SinricProClass::verifyDeviceId(const char* id) {
-  DeviceId _deviceId(id);
-  return _deviceId.isValid();
-}
-
-bool SinricProClass::verifyAppKey(const char* key) {
-  AppKey _appKey(key);
-  return _appKey.isValid();
-}
-
-bool SinricProClass::verifyAppSecret(const char* secret) {
-  AppSecret _appSecret(secret);
-  return _appSecret.isValid();
-}
-
 
 void SinricProClass::extractTimestamp(JsonDocument &message) {
   unsigned long tempTimestamp = 0;
