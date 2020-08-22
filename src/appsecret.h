@@ -8,8 +8,8 @@ class AppSecret {
   public:
     typedef uint8_t appSecret_bin_t[APPSECRET_BINLEN];
     AppSecret();
-    AppSecret(const char* appSecret);
-    AppSecret(const String &appSecret) { AppSecret(appSecret.c_str()); }
+    AppSecret(const char* other);
+    AppSecret(const String &other) { AppSecret(other.c_str()); }
     AppSecret(const AppSecret &other);
 
     AppSecret operator=(const AppSecret &other);
@@ -23,25 +23,14 @@ class AppSecret {
     String toString() const;
     bool isValid() const;
   private:
+    void fromString(const char* other);
     appSecret_bin_t _appSecret_bin;
 };
 
 AppSecret::AppSecret() : _appSecret_bin{} {}
 
-AppSecret::AppSecret(const char* appSecret) {
-  char tmp;
-  bool _isValid = (sscanf(appSecret, "%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%c",
-    &_appSecret_bin[31], &_appSecret_bin[30], &_appSecret_bin[29], &_appSecret_bin[28],
-    &_appSecret_bin[27], &_appSecret_bin[26], &_appSecret_bin[25], &_appSecret_bin[24],
-    &_appSecret_bin[23], &_appSecret_bin[22], &_appSecret_bin[21], &_appSecret_bin[20],
-    &_appSecret_bin[19], &_appSecret_bin[18], &_appSecret_bin[17], &_appSecret_bin[16],
-    &_appSecret_bin[15], &_appSecret_bin[14], &_appSecret_bin[13], &_appSecret_bin[12],
-    &_appSecret_bin[11], &_appSecret_bin[10], &_appSecret_bin[ 9], &_appSecret_bin[ 8],
-    &_appSecret_bin[ 7], &_appSecret_bin[ 6], &_appSecret_bin[ 5], &_appSecret_bin[ 4],
-    &_appSecret_bin[ 3], &_appSecret_bin[ 2], &_appSecret_bin[ 1], &_appSecret_bin[ 0],
-    &tmp
-  ) == sizeof(appSecret_bin_t)) && (strlen(appSecret) == APPSECRET_STRLEN);
-  if (!_isValid) memset((void*) &_appSecret_bin, 0, sizeof(appSecret_bin_t));
+AppSecret::AppSecret(const char* other) {
+  fromString(other);
 }
 
 AppSecret::AppSecret(const AppSecret &other) {
@@ -90,6 +79,22 @@ bool AppSecret::isValid() const {
   return false;
 }
 
+void AppSecret::fromString(const char* other) {
+  char tmp;
+  bool _isValid = (sscanf(other, "%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%c",
+    &_appSecret_bin[31], &_appSecret_bin[30], &_appSecret_bin[29], &_appSecret_bin[28],
+    &_appSecret_bin[27], &_appSecret_bin[26], &_appSecret_bin[25], &_appSecret_bin[24],
+    &_appSecret_bin[23], &_appSecret_bin[22], &_appSecret_bin[21], &_appSecret_bin[20],
+    &_appSecret_bin[19], &_appSecret_bin[18], &_appSecret_bin[17], &_appSecret_bin[16],
+    &_appSecret_bin[15], &_appSecret_bin[14], &_appSecret_bin[13], &_appSecret_bin[12],
+    &_appSecret_bin[11], &_appSecret_bin[10], &_appSecret_bin[ 9], &_appSecret_bin[ 8],
+    &_appSecret_bin[ 7], &_appSecret_bin[ 6], &_appSecret_bin[ 5], &_appSecret_bin[ 4],
+    &_appSecret_bin[ 3], &_appSecret_bin[ 2], &_appSecret_bin[ 1], &_appSecret_bin[ 0],
+    &tmp
+  ) == sizeof(appSecret_bin_t)) && (strlen(other) == APPSECRET_STRLEN);
+  if (!_isValid) memset((void*) &_appSecret_bin, 0, sizeof(appSecret_bin_t));
+
+}
 
 
 #endif

@@ -8,8 +8,8 @@ class AppKey {
   public:
     typedef uint8_t appKey_bin_t[APPKEY_BINLEN];
     AppKey();
-    AppKey(const char* appKey);
-    AppKey(const String &appKey) { AppKey(appKey.c_str()); }
+    AppKey(const char* other);
+    AppKey(const String &other) { AppKey(other.c_str()); }
     AppKey(const AppKey &other);
 
     AppKey operator=(const AppKey &other);
@@ -24,21 +24,14 @@ class AppKey {
     String toString() const;
     bool isValid() const;
   private:
+  void fromString(const char* other);
     appKey_bin_t _appKey_bin;
 };
 
 AppKey::AppKey() : _appKey_bin{} {}
 
-AppKey::AppKey(const char* appKey) {
-  char tmp;
-  bool _isValid = (sscanf(appKey,"%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%c",
-    &_appKey_bin[15], &_appKey_bin[14], &_appKey_bin[13], &_appKey_bin[12],
-    &_appKey_bin[11], &_appKey_bin[10], &_appKey_bin[9],  &_appKey_bin[8],
-    &_appKey_bin[7],  &_appKey_bin[6],  &_appKey_bin[5],  &_appKey_bin[4],
-    &_appKey_bin[3],  &_appKey_bin[2],  &_appKey_bin[1],  &_appKey_bin[0],
-    &tmp
-  ) == sizeof(appKey_bin_t)) && (strlen(appKey) == APPKEY_STRLEN);
-  if (!_isValid) memset((void*) &_appKey_bin, 0, sizeof(appKey_bin_t));
+AppKey::AppKey(const char* other) {
+  fromString(other);
 }
 
 AppKey::AppKey(const AppKey &other) {
@@ -83,6 +76,16 @@ bool AppKey::isValid() const {
   return false;
 }
 
-
+void AppKey::fromString(const char* other) {
+  char tmp;
+  bool _isValid = (sscanf(other,"%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%c",
+    &_appKey_bin[15], &_appKey_bin[14], &_appKey_bin[13], &_appKey_bin[12],
+    &_appKey_bin[11], &_appKey_bin[10], &_appKey_bin[9],  &_appKey_bin[8],
+    &_appKey_bin[7],  &_appKey_bin[6],  &_appKey_bin[5],  &_appKey_bin[4],
+    &_appKey_bin[3],  &_appKey_bin[2],  &_appKey_bin[1],  &_appKey_bin[0],
+    &tmp
+  ) == sizeof(appKey_bin_t)) && (strlen(other) == APPKEY_STRLEN);
+  if (!_isValid) memset((void*) &_appKey_bin, 0, sizeof(appKey_bin_t));
+}
 
 #endif

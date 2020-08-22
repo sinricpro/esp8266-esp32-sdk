@@ -25,21 +25,14 @@ class DeviceId {
     String toString() const;
     bool isValid() const;
   private:
+    void fromString(const char * other);
     deviceId_bin_t _deviceId_bin;
 };
-
 
 DeviceId::DeviceId() : _deviceId_bin{} {}
 
 DeviceId::DeviceId(const char* deviceId) {
-  char tmp;
-  bool _isValid = (sscanf(deviceId,"%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%c",
-    &_deviceId_bin[11], &_deviceId_bin[10], &_deviceId_bin[9], &_deviceId_bin[8],
-    &_deviceId_bin[7],  &_deviceId_bin[6],  &_deviceId_bin[5], &_deviceId_bin[4],
-    &_deviceId_bin[3],  &_deviceId_bin[2],  &_deviceId_bin[1], &_deviceId_bin[0],
-    &tmp
-  ) == sizeof(deviceId_bin_t)) && (strlen(deviceId) == DEVICEID_STRLEN);
-  if (!_isValid) memset((void*) &_deviceId_bin, 0, sizeof(deviceId_bin_t));
+  fromString(deviceId);
 }
 
 DeviceId::DeviceId(const DeviceId &other) {
@@ -84,4 +77,14 @@ bool DeviceId::isValid() const {
   return false;
 }
 
+void DeviceId::fromString(const char* other) {
+  char tmp;
+  bool _isValid = (sscanf(other,"%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%c",
+    &_deviceId_bin[11], &_deviceId_bin[10], &_deviceId_bin[9], &_deviceId_bin[8],
+    &_deviceId_bin[7],  &_deviceId_bin[6],  &_deviceId_bin[5], &_deviceId_bin[4],
+    &_deviceId_bin[3],  &_deviceId_bin[2],  &_deviceId_bin[1], &_deviceId_bin[0],
+    &tmp
+  ) == sizeof(deviceId_bin_t)) && (strlen(other) == DEVICEID_STRLEN);
+  if (!_isValid) memset((void*) &_deviceId_bin, 0, sizeof(deviceId_bin_t));
+}
 #endif
