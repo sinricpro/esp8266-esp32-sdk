@@ -4,25 +4,34 @@
 #define DEVICEID_BINLEN 12 // 12 bytes long
 #define DEVICEID_STRLEN 24 // string needs to hold 24 characters
 
-class deviceId_t {
+class DeviceId {
   public:
     typedef uint8_t deviceId_bin_t[DEVICEID_BINLEN];
-    deviceId_t();
-    deviceId_t(const char* deviceId);
-    deviceId_t(const String &deviceId) { deviceId_t(deviceId.c_str()); }
-    deviceId_t(const deviceId_t &other);
+    DeviceId();
+    DeviceId(const char* deviceId);
+    DeviceId(const String &deviceId) { DeviceId(deviceId.c_str()); }
+    DeviceId(const DeviceId &other);
 
-    deviceId_t operator=(const deviceId_t &other);
+    DeviceId operator=(const DeviceId &other);
+
+    bool operator==(const DeviceId &other) const;
+    bool operator==(const String &other) const;
+    bool operator==(const char* other) const;
+
+    bool operator!=(const DeviceId &other) const { return !operator==(other); }
+    operator bool() const { return isValid(); }
+    operator String() const { return toString(); }
     
-    String toString();
-    bool isValid();
+    String toString() const;
+    bool isValid() const;
   private:
     deviceId_bin_t _deviceId_bin;
 };
 
-deviceId_t::deviceId_t() : _deviceId_bin{} {}
 
-deviceId_t::deviceId_t(const char* deviceId) {
+DeviceId::DeviceId() : _deviceId_bin{} {}
+
+DeviceId::DeviceId(const char* deviceId) {
   char tmp;
   bool _isValid = (sscanf(deviceId,"%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%c",
     &_deviceId_bin[11], &_deviceId_bin[10], &_deviceId_bin[9], &_deviceId_bin[8],
@@ -33,11 +42,11 @@ deviceId_t::deviceId_t(const char* deviceId) {
   if (!_isValid) memset((void*) &_deviceId_bin, 0, sizeof(deviceId_bin_t));
 }
 
-deviceId_t::deviceId_t(const deviceId_t &other) {
+DeviceId::DeviceId(const DeviceId &other) {
   memcpy((void*) _deviceId_bin, (void*) other._deviceId_bin, sizeof(deviceId_bin_t));
 }
 
-String deviceId_t::toString() {
+String DeviceId::toString() const {
   char temp[DEVICEID_STRLEN+1];
   sprintf(temp, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
     _deviceId_bin[11], _deviceId_bin[10], _deviceId_bin[9], _deviceId_bin[8],
@@ -47,12 +56,28 @@ String deviceId_t::toString() {
   return String(temp);
 }
 
-deviceId_t deviceId_t::operator=(const deviceId_t &other) {
+DeviceId DeviceId::operator=(const DeviceId &other) {
   memcpy((void*) _deviceId_bin, (void*) other._deviceId_bin, sizeof(deviceId_bin_t));
   return *this;
 }
 
-bool deviceId_t::isValid() {
+bool DeviceId::operator==(const DeviceId &other) const {
+  for (size_t i=0; i<DEVICEID_BINLEN; i++) {
+    if (_deviceId_bin[i] != other._deviceId_bin[i]) return false;
+  }
+  return true;
+}
+
+bool DeviceId::operator==(const String &other) const {
+  return operator==((DeviceId) other);
+}
+
+bool DeviceId::operator==(const char* other) const {
+  return operator==((DeviceId) other);
+}
+
+
+bool DeviceId::isValid() const {
   for (size_t i=0; i<sizeof(deviceId_bin_t); i++) {
     if (_deviceId_bin[i] != 0) return true;
   }

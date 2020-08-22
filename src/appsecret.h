@@ -4,25 +4,31 @@
 #define APPSECRET_BINLEN 32
 #define APPSECRET_STRLEN 73
 
-class appSecret_t {
+class AppSecret {
   public:
-    typedef uint8_t appSecret_bin_t[32];
-    appSecret_t();
-    appSecret_t(const char* appSecret);
-    appSecret_t(const String &appSecret) { appSecret_t(appSecret.c_str()); }
-    appSecret_t(const appSecret_t &other);
+    typedef uint8_t appSecret_bin_t[APPSECRET_BINLEN];
+    AppSecret();
+    AppSecret(const char* appSecret);
+    AppSecret(const String &appSecret) { AppSecret(appSecret.c_str()); }
+    AppSecret(const AppSecret &other);
 
-    appSecret_t operator=(const appSecret_t &other);
+    AppSecret operator=(const AppSecret &other);
+    bool operator==(const AppSecret &other);
+    bool operator==(const String &other);
+    bool operator==(const char* other);
+    bool operator!=(const AppSecret &other) {return !operator==(other); }
+    operator bool() const { return isValid(); }
+    operator String() const { return toString(); }
     
-    String toString();
-    bool isValid();
+    String toString() const;
+    bool isValid() const;
   private:
     appSecret_bin_t _appSecret_bin;
 };
 
-appSecret_t::appSecret_t() : _appSecret_bin{} {}
+AppSecret::AppSecret() : _appSecret_bin{} {}
 
-appSecret_t::appSecret_t(const char* appSecret) {
+AppSecret::AppSecret(const char* appSecret) {
   char tmp;
   bool _isValid = (sscanf(appSecret, "%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%c",
     &_appSecret_bin[31], &_appSecret_bin[30], &_appSecret_bin[29], &_appSecret_bin[28],
@@ -38,11 +44,11 @@ appSecret_t::appSecret_t(const char* appSecret) {
   if (!_isValid) memset((void*) &_appSecret_bin, 0, sizeof(appSecret_bin_t));
 }
 
-appSecret_t::appSecret_t(const appSecret_t &other) {
+AppSecret::AppSecret(const AppSecret &other) {
   memcpy((void*) _appSecret_bin, (void*) other._appSecret_bin, sizeof(appSecret_bin_t));
 }
 
-String appSecret_t::toString() {
+String AppSecret::toString() const {
   char temp[APPSECRET_STRLEN+1];
   sprintf(temp, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x-%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
     _appSecret_bin[31], _appSecret_bin[30], _appSecret_bin[29], _appSecret_bin[28],
@@ -57,12 +63,27 @@ String appSecret_t::toString() {
   return String(temp);
 }
 
-appSecret_t appSecret_t::operator=(const appSecret_t &other) {
+AppSecret AppSecret::operator=(const AppSecret &other) {
   memcpy((void*) _appSecret_bin, (void*) other._appSecret_bin, sizeof(appSecret_bin_t));
   return *this;
 }
 
-bool appSecret_t::isValid() {
+bool AppSecret::operator==(const AppSecret &other) {
+  for (size_t i=0; i<APPSECRET_BINLEN; i++) {
+    if (_appSecret_bin[i] != other._appSecret_bin[i]) return false;
+  }
+  return true;
+}
+
+bool AppSecret::operator==(const String &other) {
+  return operator==((AppSecret) other);
+}
+
+bool AppSecret::operator==(const char* other) {
+  return operator==((AppSecret) other);
+}
+
+bool AppSecret::isValid() const {
   for (size_t i=0; i<sizeof(appSecret_bin_t); i++) {
     if (_appSecret_bin[i] != 0) return true;
   }

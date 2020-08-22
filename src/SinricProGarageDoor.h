@@ -19,7 +19,7 @@
  **/
 class SinricProGarageDoor :  public SinricProDevice {
   public:
-	  SinricProGarageDoor(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProGarageDoor(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("GARAGE_DOOR"); }
         
     /**
@@ -44,17 +44,17 @@ class SinricProGarageDoor :  public SinricProDevice {
     bool sendDoorStateEvent(bool mode, String cause = "PHYSICAL_INTERACTION");
     bool sendPowerStateEvent() = delete; // SinricProGarageDoor has no powerState
     // handle
-    bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
     DoorStateCallback doorStateCallback;
 };
 
-SinricProGarageDoor::SinricProGarageDoor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProGarageDoor::SinricProGarageDoor(const DeviceId &deviceId) : SinricProDevice(deviceId),
   doorStateCallback(nullptr) {
 }
 
-bool SinricProGarageDoor::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (strcmp(deviceId, this->deviceId) != 0) return false;
+bool SinricProGarageDoor::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+  if (deviceId != this->deviceId) return false;
   if (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) return true;
 
   bool success = false;
@@ -65,7 +65,7 @@ bool SinricProGarageDoor::handleRequest(const char* deviceId, const char* action
     bool mode;
     if (modeStr == "Open") mode = false;
     if (modeStr == "Close") mode = true;
-    success = doorStateCallback(String(deviceId), mode);
+    success = doorStateCallback(deviceId, mode);
     if (mode == false) modeStr = "Open";
     if (mode == true) modeStr = "Close";
     response_value["mode"] = modeStr;

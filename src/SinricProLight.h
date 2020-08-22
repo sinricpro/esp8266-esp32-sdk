@@ -22,7 +22,7 @@
  **/
 class SinricProLight :  public SinricProDevice {
   public:
-    SinricProLight(const char* deviceId, unsigned long eventWaitTime=100);
+    SinricProLight(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("LIGHT"); }
     // callback
 
@@ -132,7 +132,7 @@ class SinricProLight :  public SinricProDevice {
     bool sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION");
     bool sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION");
     // handle
-    bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
     BrightnessCallback brightnessCallback;
     AdjustBrightnessCallback adjustBrightnessCallback;
@@ -142,7 +142,7 @@ class SinricProLight :  public SinricProDevice {
     DecreaseColorTemperatureCallback decreaseColorTemperatureCallback;
 };
 
-SinricProLight::SinricProLight(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProLight::SinricProLight(const DeviceId &deviceId) : SinricProDevice(deviceId),
   brightnessCallback(nullptr),
   adjustBrightnessCallback(nullptr),
   colorCallback(nullptr),
@@ -150,8 +150,8 @@ SinricProLight::SinricProLight(const char* deviceId, unsigned long eventWaitTime
   increaseColorTemperatureCallback(nullptr),
   decreaseColorTemperatureCallback(nullptr) {}
 
-bool SinricProLight::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (strcmp(deviceId, this->deviceId) != 0) return false;
+bool SinricProLight::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+  if (deviceId != this->deviceId) return false;
   if (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) return true;
 
   bool success = false;
@@ -159,13 +159,13 @@ bool SinricProLight::handleRequest(const char* deviceId, const char* action, Jso
 
   if (brightnessCallback && actionString == "setBrightness") {
     int brightness = request_value["brightness"];
-    success = brightnessCallback(String(deviceId), brightness);
+    success = brightnessCallback(deviceId, brightness);
     response_value["brightness"] = limitValue(brightness, 0, 100);
   }
 
   if (adjustBrightnessCallback && actionString == "adjustBrightness") {
     int brightnessDelta = request_value["brightnessDelta"];
-    success = adjustBrightnessCallback(String(deviceId), brightnessDelta);
+    success = adjustBrightnessCallback(deviceId, brightnessDelta);
     response_value["brightness"] = limitValue(brightnessDelta, 0, 100);
   }
 
@@ -174,7 +174,7 @@ bool SinricProLight::handleRequest(const char* deviceId, const char* action, Jso
       r = request_value["color"]["r"];
       g = request_value["color"]["g"];
       b = request_value["color"]["b"];
-      success = colorCallback(String(deviceId), r, g, b);
+      success = colorCallback(deviceId, r, g, b);
       response_value.createNestedObject("color");
       response_value["color"]["r"] = r;
       response_value["color"]["g"] = g;
@@ -183,19 +183,19 @@ bool SinricProLight::handleRequest(const char* deviceId, const char* action, Jso
 
   if (colorTemperatureCallback && actionString == "setColorTemperature") {
     int colorTemperature = request_value["colorTemperature"];
-    success = colorTemperatureCallback(String(deviceId), colorTemperature);
+    success = colorTemperatureCallback(deviceId, colorTemperature);
     response_value["colorTemperature"] = colorTemperature;
   }
 
   if (increaseColorTemperatureCallback && actionString == "increaseColorTemperature") {
     int colorTemperature = 1;
-    success = increaseColorTemperatureCallback(String(deviceId), colorTemperature);
+    success = increaseColorTemperatureCallback(deviceId, colorTemperature);
     response_value["colorTemperature"] = colorTemperature;
   }
 
   if (decreaseColorTemperatureCallback && actionString == "decreaseColorTemperature") {
     int colorTemperature = -1;
-    success = decreaseColorTemperatureCallback(String(deviceId), colorTemperature);
+    success = decreaseColorTemperatureCallback(deviceId, colorTemperature);
     response_value["colorTemperature"] = colorTemperature;
   }
 

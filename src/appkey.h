@@ -4,25 +4,32 @@
 #define APPKEY_BINLEN 16
 #define APPKEY_STRLEN 36
 
-class appKey_t {
+class AppKey {
   public:
     typedef uint8_t appKey_bin_t[APPKEY_BINLEN];
-    appKey_t();
-    appKey_t(const char* appKey);
-    appKey_t(const String &appKey) { appKey_t(appKey.c_str()); }
-    appKey_t(const appKey_t &other);
+    AppKey();
+    AppKey(const char* appKey);
+    AppKey(const String &appKey) { AppKey(appKey.c_str()); }
+    AppKey(const AppKey &other);
 
-    appKey_t operator=(const appKey_t &other);
+    AppKey operator=(const AppKey &other);
     
-    String toString();
-    bool isValid();
+    bool operator==(const AppKey &other);
+    bool operator==(const String &other);
+    bool operator==(const char* other);
+    bool operator!=(const AppKey &other) { return !operator==(other); }
+    operator bool() const { return isValid(); }
+    operator String() const { return toString(); }
+    
+    String toString() const;
+    bool isValid() const;
   private:
     appKey_bin_t _appKey_bin;
 };
 
-appKey_t::appKey_t() : _appKey_bin{} {}
+AppKey::AppKey() : _appKey_bin{} {}
 
-appKey_t::appKey_t(const char* appKey) {
+AppKey::AppKey(const char* appKey) {
   char tmp;
   bool _isValid = (sscanf(appKey,"%2hhx%2hhx%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx-%2hhx%2hhx%2hhx%2hhx%2hhx%2hhx%c",
     &_appKey_bin[15], &_appKey_bin[14], &_appKey_bin[13], &_appKey_bin[12],
@@ -34,11 +41,11 @@ appKey_t::appKey_t(const char* appKey) {
   if (!_isValid) memset((void*) &_appKey_bin, 0, sizeof(appKey_bin_t));
 }
 
-appKey_t::appKey_t(const appKey_t &other) {
+AppKey::AppKey(const AppKey &other) {
   memcpy((void*) _appKey_bin, (void*) other._appKey_bin, sizeof(appKey_bin_t));
 }
 
-String appKey_t::toString() {
+String AppKey::toString() const {
   char temp[APPKEY_STRLEN+1];
   sprintf(temp, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
     _appKey_bin[15], _appKey_bin[14], _appKey_bin[13], _appKey_bin[12],
@@ -49,12 +56,27 @@ String appKey_t::toString() {
   return String(temp);
 }
 
-appKey_t appKey_t::operator=(const appKey_t &other) {
+AppKey AppKey::operator=(const AppKey &other) {
   memcpy((void*) _appKey_bin, (void*) other._appKey_bin, sizeof(appKey_bin_t));
   return *this;
 }
 
-bool appKey_t::isValid() {
+bool AppKey::operator==(const AppKey &other) {
+  for (size_t i=0; i<APPKEY_BINLEN; i++) {
+    if (_appKey_bin[i] != other._appKey_bin[i]) return false;
+  }
+  return true;
+}
+
+bool AppKey::operator==(const String &other) {
+  return operator==((AppKey) other);
+}
+
+bool AppKey::operator==(const char* other) {
+  return operator==((AppKey) other);
+}
+
+bool AppKey::isValid() const {
   for (size_t i=0; i<sizeof(appKey_bin_t); i++) {
     if (_appKey_bin[i] != 0) return true;
   }

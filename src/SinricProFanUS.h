@@ -16,7 +16,7 @@
  */
 class SinricProFanUS :  public SinricProDevice {
   public:
-	  SinricProFanUS(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProFanUS(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("FAN"); }
     // callback
 
@@ -59,17 +59,17 @@ class SinricProFanUS :  public SinricProDevice {
     // event
     bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION");
     // handle
-    bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
     SetRangeValueCallback setRangeValueCallback; 
     AdjustRangeValueCallback adjustRangeValueCallback;
 };
 
-SinricProFanUS::SinricProFanUS(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProFanUS::SinricProFanUS(const DeviceId &deviceId) : SinricProDevice(deviceId),
   setRangeValueCallback(nullptr) {}
 
-bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (strcmp(deviceId, this->deviceId) != 0) return false;
+bool SinricProFanUS::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+  if (deviceId != this->deviceId) return false;
   if (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) return true;
 
   bool success = false;
@@ -77,14 +77,14 @@ bool SinricProFanUS::handleRequest(const char* deviceId, const char* action, Jso
 
   if (actionString == "setRangeValue" && setRangeValueCallback) {
     int rangeValue = request_value["rangeValue"] | 0;
-    success = setRangeValueCallback(String(deviceId), rangeValue);
+    success = setRangeValueCallback(deviceId, rangeValue);
     response_value["rangeValue"] = limitValue(rangeValue, 1, 3);
     return success;
   }
 
   if (actionString == "adjustRangeValue" && adjustRangeValueCallback) {
     int rangeValueDelta = request_value["rangeValueDelta"] | 0;
-    success = adjustRangeValueCallback(String(deviceId), rangeValueDelta);
+    success = adjustRangeValueCallback(deviceId, rangeValueDelta);
     response_value["rangeValue"] = limitValue(rangeValueDelta, 1, 3);
     return success;
   }

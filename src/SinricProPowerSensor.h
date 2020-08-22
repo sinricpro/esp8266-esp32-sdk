@@ -16,7 +16,7 @@
  *  */
 class SinricProPowerSensor :  public SinricProDevice {
   public:
-	  SinricProPowerSensor(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProPowerSensor(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("POWER_SENSOR"); }
 
     // event
@@ -28,7 +28,7 @@ class SinricProPowerSensor :  public SinricProDevice {
     float getWattHours(unsigned long currentTimestamp);
 };
 
-SinricProPowerSensor::SinricProPowerSensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
+SinricProPowerSensor::SinricProPowerSensor(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
 
 /**
  * @brief Send PowerSensor event to SinricPro Server 

@@ -20,7 +20,7 @@
  **/
 class SinricProLock :  public SinricProDevice {
   public:
-	  SinricProLock(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProLock(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("SMARTLOCK"); }
     // callback
 
@@ -43,7 +43,7 @@ class SinricProLock :  public SinricProDevice {
      * }
      * @endcode
      **/
-	  typedef std::function<bool(const String&, bool&)> LockStateCallback; // void onLockState(const char* deviceId, bool& lockState);
+	  typedef std::function<bool(const String&, bool&)> LockStateCallback; // void onLockState(const DeviceId &deviceId, bool& lockState);
     
     void onLockState(LockStateCallback cb);
     void onPowerState() = delete;  // SinricProLock has no powerState
@@ -51,22 +51,22 @@ class SinricProLock :  public SinricProDevice {
     bool sendPowerStateEvent() = delete; // SinricProLock has no powerState
     bool sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
     // handle
-    bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
     LockStateCallback lockStateCallback;
 };
 
-SinricProLock::SinricProLock(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProLock::SinricProLock(const DeviceId &deviceId) : SinricProDevice(deviceId),
   lockStateCallback(nullptr) {}
 
-bool SinricProLock::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (strcmp(deviceId, this->deviceId) != 0) return false;
+bool SinricProLock::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+  if (deviceId != this->deviceId) return false;
   bool success = false;
   String actionString = String(action);
 
   if (actionString == "setLockState" && lockStateCallback) {
     bool lockState = request_value["state"]=="lock"?true:false;
-    success = lockStateCallback(String(deviceId), lockState);
+    success = lockStateCallback(deviceId, lockState);
     response_value["state"] = success?lockState?"LOCKED":"UNLOCKED":"JAMMED";
     return success;
   }

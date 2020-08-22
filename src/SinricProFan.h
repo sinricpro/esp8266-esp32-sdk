@@ -17,10 +17,10 @@
  **/
 class SinricProFan :  public SinricProDimSwitch {
   public:
-	  SinricProFan(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProFan(const DeviceId &deviceId);
 };
 
-SinricProFan::SinricProFan(const char* deviceId, unsigned long eventWaitTime) : SinricProDimSwitch(deviceId, eventWaitTime) {}
+SinricProFan::SinricProFan(const DeviceId &deviceId) : SinricProDimSwitch(deviceId) {}
 
 #endif
 

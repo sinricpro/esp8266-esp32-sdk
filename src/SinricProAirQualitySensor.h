@@ -16,7 +16,7 @@
  */
 class SinricProAirQualitySensor :  public SinricProDevice {
   public:
-	  SinricProAirQualitySensor(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProAirQualitySensor(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("AIR_QUALITY_SENSOR"); }
 
     // event
@@ -24,7 +24,7 @@ class SinricProAirQualitySensor :  public SinricProDevice {
   private:
 };
 
-SinricProAirQualitySensor::SinricProAirQualitySensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
+SinricProAirQualitySensor::SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
 
 /**
  * @brief Sending air quality to SinricPro server

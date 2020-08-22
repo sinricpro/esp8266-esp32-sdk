@@ -16,14 +16,14 @@
  *  */
 class SinricProDoorbell :  public SinricProDevice {
   public:
-	  SinricProDoorbell(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProDoorbell(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("DOORBELL"); }
     // event
     bool sendDoorbellEvent(String cause = "PHYSICAL_INTERACTION");
   private:
 };
 
-SinricProDoorbell::SinricProDoorbell(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
+SinricProDoorbell::SinricProDoorbell(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
 
 /**
  * @brief Send Doorbell event to SinricPro Server indicating someone pressed the doorbell button
