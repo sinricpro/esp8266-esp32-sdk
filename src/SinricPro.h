@@ -15,9 +15,7 @@
 #include "SinricProSignature.h"
 #include "SinricProMessageid.h"
 #include "SinricProQueue.h"
-#include "appkey.h"
-#include "deviceId.h"
-#include "appsecret.h"
+#include "SinricProId.h"
 
 #pragma message("SinricPro Version: " SINRICPRO_VERSION)
 /**

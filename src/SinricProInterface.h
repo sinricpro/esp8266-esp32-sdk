@@ -10,7 +10,7 @@
 
 #include "ArduinoJson.h"
 #include "SinricProQueue.h"
-#include "deviceId.h"
+#include "SinricProId.h"
 
 class SinricProInterface {
   public:

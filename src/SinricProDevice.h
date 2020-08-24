@@ -10,7 +10,7 @@
 
 #include "SinricProDeviceInterface.h"
 #include "LeakyBucket.h"
-#include "deviceId.h"
+#include "SinricProId.h"
 
 #include <map>
 

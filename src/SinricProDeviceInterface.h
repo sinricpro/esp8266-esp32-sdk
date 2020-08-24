@@ -2,7 +2,7 @@
 #define _SINRICPRODEVICEINTERFACE_
 
 #include <SinricProInterface.h>
-#include <deviceId.h>
+#include <SinricProId.h>
 
 class SinricProDeviceInterface {
   public:
