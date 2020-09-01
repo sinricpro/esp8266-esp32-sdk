@@ -100,6 +100,7 @@ class SinricProId {
     SinricProId(const char* other) { _data.fromString(other); }
     SinricProId(const String &other) { _data.fromString(other.c_str()); }
     SinricProId(const SinricProId &other) { copy(other); }
+    SinricProId(const T &other) { copy(other); }
 
     SinricProId operator=(const SinricProId &other) { copy(other); return *this; }
     SinricProId operator=(const char* other) { fromString(other); return *this; }
@@ -108,10 +109,12 @@ class SinricProId {
     bool operator==(const SinricProId &other) const { return compare(other); }
     bool operator==(const char* other) const { return compare((SinricProId) other); }
     bool operator==(const String& other) const { return compare((SinricProId) other); }
+    bool operator==(const T &other) const { return compare((SinricProId) other); }
 
     bool operator!=(const SinricProId &other) const { return !compare(other); }
     bool operator!=(const char* other) const { return !compare(other); }
     bool operator!=(const String &other) const { return !compare(other); }
+    bool operator!=(const T &other) const { return !compare(other); }
     
     operator bool() const { return isValid(); }
     operator String() const { return _data.toString(); }
@@ -121,6 +124,7 @@ class SinricProId {
   private:
     void fromString(const char * other) { _data.fromString(other); }
     void copy(const SinricProId &other) { memcpy(_data._data, other._data._data, sizeof(_data._data)); }    
+    void copy(const T &other) { memcpy(_data, other, sizeof(_data)); }
     bool compare(const SinricProId &other) const { return memcmp(_data._data, other._data._data, sizeof(_data._data)) == 0;}
     T _data;
 };
