@@ -23,6 +23,11 @@
 #include "SinricProQueue.h"
 #include "SinricProInterface.h"
 
+class AdvWebSocketsClient : public WebSocketsClient {
+  public:
+    uint32_t getLastPing() const { return _client.lastPing; }
+};
+
 class websocketListener
 {
   public:
@@ -49,7 +54,7 @@ class websocketListener
     bool _isConnected = false;
     bool restoreDeviceStates = false;
 
-    WebSocketsClient webSocket;
+    AdvWebSocketsClient webSocket;
 
     wsConnectedCallback _wsConnectedCb;
     wsDisconnectedCallback _wsDisconnectedCb;
@@ -153,6 +158,12 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
       receiveQueue->push(request);
       break;
     }
+#ifdef DEBUG_WIFI_ISSUE
+    case WStype_PONG: {
+        DEBUG_SINRIC("[SinricPro:Websocket]: RTT: %lu ms (RSSI: %d dBm)\r\n", millis()-webSocket.getLastPing(), WiFi.RSSI());
+        break;
+    }
+#endif
     default: break;
   }
 }
