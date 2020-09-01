@@ -123,7 +123,7 @@ class SinricProId {
     
     String toString() const { return _data.toString(); };
     const char* c_str() const { return _data.toString().c_str(); }
-    bool isValid() const { for (size_t i=0; i<sizeof(_data._data); i++) if (_data._data[i] != 0) return true; return false; };
+    bool isValid() const { return !compare(SinricProId<T>()); }
   
   private:
     void fromString(const char * other) { _data.fromString(other); }
