@@ -160,7 +160,18 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
     }
 #ifdef DEBUG_WIFI_ISSUE
     case WStype_PONG: {
-        DEBUG_SINRIC("[SinricPro:Websocket]: RTT: %lu ms (RSSI: %d dBm)\r\n", millis()-webSocket.getLastPing(), WiFi.RSSI());
+        unsigned long actualMillis = millis();
+        int32_t rssi = WiFi.RSSI();
+
+        char strengthStr[5];
+        sprintf(strengthStr, "%c%c%c%c", 
+          rssi>=-90?'.':' ',
+          rssi>=-80?')':' ',
+          rssi>=-70?')':' ',
+          rssi>=-50?')':' '
+        );
+        unsigned long rtt = actualMillis - webSocket.getLastPing();  
+        DEBUG_SINRIC("[WiFi]: %s %lu ms\t(%d dBm)\r\n", strengthStr, rtt, rssi);
         break;
     }
 #endif

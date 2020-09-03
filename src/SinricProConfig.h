@@ -40,7 +40,7 @@
 
 // WebSocket Configuration
 #ifdef DEBUG_WIFI_ISSUE
-  #define WEBSOCKET_PING_INTERVAL 5000
+  #define WEBSOCKET_PING_INTERVAL 10000
 #else
   #define WEBSOCKET_PING_INTERVAL 300000
 #endif
