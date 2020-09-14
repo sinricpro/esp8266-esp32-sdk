@@ -91,7 +91,7 @@ void setupSinricPro() {
 
 // main setup function
 void setup() {
-  pinMode(RELAY_PIN, OUTPUT); // define LED GPIO as output
+  pinMode(RELAY_PIN, OUTPUT); // define Relay GPIO as output
   
   Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   setupWiFi();
