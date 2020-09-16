@@ -62,7 +62,7 @@ bool myPowerState = false;
 bool onPowerState(const String &deviceId, bool &state) {
   Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
   myPowerState = state;
-  digitalWrite(RELAY_PIN, myPowerState?LOW:HIGH);
+  digitalWrite(RELAY_PIN, myPowerState?HIGH:LOW);
   return true; // request handled properly
 }
 
