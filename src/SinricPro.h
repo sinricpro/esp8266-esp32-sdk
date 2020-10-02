@@ -17,7 +17,6 @@
 #include "SinricProQueue.h"
 #include "SinricProId.h"
 
-#pragma message("SinricPro Version: " SINRICPRO_VERSION)
 /**
  * @class SinricProClass
  * @brief The main class of this library, handling communication between SinricPro Server and your devices
@@ -53,6 +52,7 @@ class SinricProClass : public SinricProInterface {
     typedef std::function<void(void)> DisconnectedCallbackHandler;
     void onConnected(ConnectedCallbackHandler cb);
     void onDisconnected(DisconnectedCallbackHandler cb);
+    void onPong(std::function<void(uint32_t)> cb) { _websocketListener.onPong(cb); }
 
     void restoreDeviceStates(bool flag);
 
@@ -408,6 +408,7 @@ void SinricProClass::connect() {
 
 
 void SinricProClass::stop() {
+  _begin = false;
   DEBUG_SINRIC("[SinricPro:stop()\r\n");
   _websocketListener.stop();
 }
