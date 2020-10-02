@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 2.7.0
+New:
+- Added new classes for AppKey, AppSecret and DeviceId
+  This allows to store credentials efficiently in EEPROM and reduces the internal RAM usage
+  
+- Added function to measure the RTT between device and SinricPro Server (SinricPro.onPong())
+
+Fixed:
+- Type mismatches in Crypto.h / Crypto.cpp (to reduce compiler warnings)
+
 ## Version 2.6.1
 Fixed:
   Air Quality Sensor example for sensor type GP2Y1014AU0F
