@@ -25,7 +25,16 @@
 
 class AdvWebSocketsClient : public WebSocketsClient {
   public:
-    uint32_t getLastPing() const { return _client.lastPing; }
+    void onPong(std::function<void(uint32_t)> cb) { _rttCb = cb; }
+  protected:
+    void messageReceived(WSclient_t * client, WSopcode_t opcode, uint8_t * payload, size_t length, bool fin) {
+      if ((opcode == WSop_pong)&& (_rttCb)) {
+        _rttCb(millis()-_client.lastPing);
+      }
+      WebSocketsClient::messageReceived(client, opcode, payload, length, fin);
+    }
+  private:
+    std::function<void(uint32_t)> _rttCb = nullptr;
 };
 
 class websocketListener
@@ -47,6 +56,7 @@ class websocketListener
 
     void onConnected(wsConnectedCallback callback) { _wsConnectedCb = callback; }
     void onDisconnected(wsDisconnectedCallback callback) { _wsDisconnectedCb = callback; }
+    void onPong(std::function<void(uint32_t)> cb) { webSocket.onPong(cb); }
 
     void disconnect() { webSocket.disconnect(); }
   private:
@@ -158,23 +168,6 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
       receiveQueue->push(request);
       break;
     }
-#ifdef DEBUG_WIFI_ISSUE
-    case WStype_PONG: {
-        unsigned long actualMillis = millis();
-        int32_t rssi = WiFi.RSSI();
-
-        char strengthStr[5];
-        sprintf(strengthStr, "%c%c%c%c", 
-          rssi>=-90?'.':' ',
-          rssi>=-80?')':' ',
-          rssi>=-70?')':' ',
-          rssi>=-50?')':' '
-        );
-        unsigned long rtt = actualMillis - webSocket.getLastPing();  
-        DEBUG_SINRIC("[WiFi]: %s %lu ms\t(%d dBm)\r\n", strengthStr, rtt, rssi);
-        break;
-    }
-#endif
     default: break;
   }
 }
