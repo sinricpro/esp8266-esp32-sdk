@@ -16,7 +16,7 @@
  */
 class SinricProTemperaturesensor :  public SinricProDevice {
   public:
-	  SinricProTemperaturesensor(const char* deviceId, unsigned long eventWaitTime=60000);
+	  SinricProTemperaturesensor(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("TEMPERATURESENSOR"); }
 
     // event
@@ -24,7 +24,7 @@ class SinricProTemperaturesensor :  public SinricProDevice {
   private:
 };
 
-SinricProTemperaturesensor::SinricProTemperaturesensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
+SinricProTemperaturesensor::SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
 
 /**
  * @brief Sending current temperature and humidity to SinricPro server

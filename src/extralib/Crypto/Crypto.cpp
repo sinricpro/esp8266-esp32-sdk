@@ -256,7 +256,7 @@ void SHA256::SHA256_Process(const byte digest[64])
 /**
  * Accepts an array of octets as the next portion of the message.
  */
-void SHA256::doUpdate(const byte * msg, int len)
+void SHA256::doUpdate(const byte * msg, unsigned int len)
 {
     uint32_t left = total[0] & 0x3F;
     uint32_t fill = 64 - left;
@@ -864,7 +864,7 @@ void AES::convertKey()
 void RNG::fill(uint8_t *dst, unsigned int length)
 {
     // ESP8266 and ESP32 only
-    for (int i = 0; i < length; i++)
+    for (unsigned int i = 0; i < length; i++)
     {
         dst[i] = get();
     }

@@ -16,7 +16,7 @@
  */
 class SinricProMotionsensor :  public SinricProDevice {
   public:
-	  SinricProMotionsensor(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProMotionsensor(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("MOTION_SENSOR"); }
 
     // event
@@ -24,7 +24,7 @@ class SinricProMotionsensor :  public SinricProDevice {
   private:
 };
 
-SinricProMotionsensor::SinricProMotionsensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
+SinricProMotionsensor::SinricProMotionsensor(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
 
 /**
  * @brief Sending motion detection state to SinricPro server

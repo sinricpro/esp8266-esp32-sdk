@@ -23,6 +23,20 @@
 #include "SinricProQueue.h"
 #include "SinricProInterface.h"
 
+class AdvWebSocketsClient : public WebSocketsClient {
+  public:
+    void onPong(std::function<void(uint32_t)> cb) { _rttCb = cb; }
+  protected:
+    void messageReceived(WSclient_t * client, WSopcode_t opcode, uint8_t * payload, size_t length, bool fin) {
+      if ((opcode == WSop_pong)&& (_rttCb)) {
+        _rttCb(millis()-_client.lastPing);
+      }
+      WebSocketsClient::messageReceived(client, opcode, payload, length, fin);
+    }
+  private:
+    std::function<void(uint32_t)> _rttCb = nullptr;
+};
+
 class websocketListener
 {
   public:
@@ -42,6 +56,7 @@ class websocketListener
 
     void onConnected(wsConnectedCallback callback) { _wsConnectedCb = callback; }
     void onDisconnected(wsDisconnectedCallback callback) { _wsDisconnectedCb = callback; }
+    void onPong(std::function<void(uint32_t)> cb) { webSocket.onPong(cb); }
 
     void disconnect() { webSocket.disconnect(); }
   private:
@@ -49,7 +64,7 @@ class websocketListener
     bool _isConnected = false;
     bool restoreDeviceStates = false;
 
-    WebSocketsClient webSocket;
+    AdvWebSocketsClient webSocket;
 
     wsConnectedCallback _wsConnectedCb;
     wsDisconnectedCallback _wsDisconnectedCb;

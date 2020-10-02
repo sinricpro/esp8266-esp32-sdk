@@ -21,9 +21,10 @@
  * * Report target temperature
  * * Report actual temperature
  **/
+
 class SinricProWindowAC :  public SinricProDevice {
   public:
-	  SinricProWindowAC(const char* deviceId, unsigned long eventWaitTime=30000);
+	  SinricProWindowAC(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("AC_UNIT"); }
     // callback
 
@@ -119,7 +120,7 @@ class SinricProWindowAC :  public SinricProDevice {
     bool sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION");
 
     // handle
-    bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
     SetRangeValueCallback rangeValueCallback; 
     AdjustRangeValueCallback adjustRangeValueCallback; 
@@ -129,15 +130,15 @@ class SinricProWindowAC :  public SinricProDevice {
 
 };
 
-SinricProWindowAC::SinricProWindowAC(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProWindowAC::SinricProWindowAC(const DeviceId &deviceId) : SinricProDevice(deviceId),
   rangeValueCallback(nullptr),
   adjustRangeValueCallback(nullptr),
   targetTemperatureCallback(nullptr),
   adjustTargetTemperatureCallback(nullptr),
   thermostatModeCallback(nullptr) {}
 
-bool SinricProWindowAC::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (strcmp(deviceId, this->deviceId) != 0) return false;
+bool SinricProWindowAC::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+  if (deviceId != this->deviceId) return false;
   if (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) return true;
 
   bool success = false;
@@ -145,14 +146,14 @@ bool SinricProWindowAC::handleRequest(const char* deviceId, const char* action, 
 
   if (actionString == "setRangeValue" && rangeValueCallback) {
     int rangeValue = request_value["rangeValue"] | 0;
-    success = rangeValueCallback(String(deviceId), rangeValue);
+    success = rangeValueCallback(deviceId, rangeValue);
     response_value["rangeValue"] = rangeValue;
     return success;
   }
 
   if (actionString == "adjustRangeValue" && adjustRangeValueCallback) {
     int rangeValueDelta = request_value["rangeValueDelta"] | 0;
-    success = adjustRangeValueCallback(String(deviceId), rangeValueDelta);
+    success = adjustRangeValueCallback(deviceId, rangeValueDelta);
     response_value["rangeValue"] = rangeValueDelta;
     return success;
   }
@@ -164,21 +165,21 @@ bool SinricProWindowAC::handleRequest(const char* deviceId, const char* action, 
     } else {
       temperature = 1;
     }
-    success = targetTemperatureCallback(String(deviceId), temperature);
+    success = targetTemperatureCallback(deviceId, temperature);
     response_value["temperature"] = temperature;
     return success;
   }
 
   if (actionString == "adjustTargetTemperature" && adjustTargetTemperatureCallback) {
     float temperatureDelta = request_value["temperature"];
-    success = adjustTargetTemperatureCallback(String(deviceId), temperatureDelta);
+    success = adjustTargetTemperatureCallback(deviceId, temperatureDelta);
     response_value["temperature"] = temperatureDelta;
     return success;
   }
 
   if (actionString == "setThermostatMode" && thermostatModeCallback) {
     String thermostatMode = request_value["thermostatMode"] | "";
-    success = thermostatModeCallback(String(deviceId), thermostatMode);
+    success = thermostatModeCallback(deviceId, thermostatMode);
     response_value["thermostatMode"] = thermostatMode;
     return success;
   }

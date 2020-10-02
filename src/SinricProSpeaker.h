@@ -31,7 +31,7 @@
  */
 class SinricProSpeaker :  public SinricProDevice {
   public:
-	  SinricProSpeaker(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProSpeaker(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("SPEAKER"); }
     // callbacks
 
@@ -201,7 +201,7 @@ class SinricProSpeaker :  public SinricProDevice {
     bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION");
     bool sendModeEvent(String mode, String cause = "PHYSICAL_INTERACTION");
     // handle
-    bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
     SetVolumeCallback volumeCallback;
     AdjustVolumeCallback adjustVolumeCallback; 
@@ -215,7 +215,7 @@ class SinricProSpeaker :  public SinricProDevice {
 };
 
 
-SinricProSpeaker::SinricProSpeaker(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProSpeaker::SinricProSpeaker(const DeviceId &deviceId) : SinricProDevice(deviceId),
   volumeCallback(nullptr),
   adjustVolumeCallback(nullptr),
   muteCallback(nullptr),
@@ -226,8 +226,8 @@ SinricProSpeaker::SinricProSpeaker(const char* deviceId, unsigned long eventWait
   setModeCallback(nullptr) {
 }
 
-bool SinricProSpeaker::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (strcmp(deviceId, this->deviceId) != 0) return false;
+bool SinricProSpeaker::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+  if (deviceId != this->deviceId) return false;
   if (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) return true;
 
   bool success = false;
@@ -235,42 +235,42 @@ bool SinricProSpeaker::handleRequest(const char* deviceId, const char* action, J
 
   if (volumeCallback && actionString == "setVolume") {
     int volume = request_value["volume"];
-    success = volumeCallback(String(deviceId), volume);
+    success = volumeCallback(deviceId, volume);
     response_value["volume"] = limitValue(volume, 0, 100);
     return success;
   }
 
   if (adjustVolumeCallback && actionString == "adjustVolume") {
     int volume = request_value["volume"];
-    success = adjustVolumeCallback(String(deviceId), volume);
+    success = adjustVolumeCallback(deviceId, volume);
     response_value["volume"] = limitValue(volume, 0, 100);
     return success;
   }
 
   if (muteCallback && actionString == "setMute") {
     bool mute = request_value["mute"];
-    success = muteCallback(String(deviceId), mute);
+    success = muteCallback(deviceId, mute);
     response_value["mute"] = mute;
     return success;
   }
 
   if (setModeCallback && actionString == "setMode") {
     String mode = request_value["mode"] | "";
-    success = setModeCallback(String(deviceId), mode);
+    success = setModeCallback(deviceId, mode);
     response_value["mode"] = mode;
     return success;
   }
 
   if (mediaControlCallback && actionString == "mediaControl") {
     String mediaControl = request_value["control"];
-    success = mediaControlCallback(String(deviceId), mediaControl);
+    success = mediaControlCallback(deviceId, mediaControl);
     response_value["control"] = mediaControl;
     return success;
   }
 
   if (selectInputCallback && actionString == "selectInput") {
     String input = request_value["input"];
-    success = selectInputCallback(String(deviceId), input);
+    success = selectInputCallback(deviceId, input);
     response_value["input"] = input;
     return success;
   }

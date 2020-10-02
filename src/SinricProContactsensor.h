@@ -16,7 +16,7 @@
  **/
 class SinricProContactsensor :  public SinricProDevice {
   public:
-	  SinricProContactsensor(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProContactsensor(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("CONTACT_SENSOR"); }
 
     // event
@@ -24,7 +24,7 @@ class SinricProContactsensor :  public SinricProDevice {
   private:
 };
 
-SinricProContactsensor::SinricProContactsensor(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
+SinricProContactsensor::SinricProContactsensor(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
 
 /**
  * \brief Send `setContactState` event to SinricPro Server indicating actual power state

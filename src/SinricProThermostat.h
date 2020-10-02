@@ -22,7 +22,7 @@
  **/
 class SinricProThermostat :  public SinricProDevice {
   public:
-	  SinricProThermostat(const char* deviceId, unsigned long eventWaitTime=60000);
+	  SinricProThermostat(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("THERMOSTAT"); }
     // callback
 
@@ -83,20 +83,20 @@ class SinricProThermostat :  public SinricProDevice {
     bool sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION");
     bool sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION");
     // handle
-    bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
     SetTargetTemperatureCallback targetTemperatureCallback;
     AdjustTargetTemperatureCallback adjustTargetTemperatureCallback;
     ThermostatModeCallback thermostatModeCallback;
 };
 
-SinricProThermostat::SinricProThermostat(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProThermostat::SinricProThermostat(const DeviceId &deviceId) : SinricProDevice(deviceId),
   targetTemperatureCallback(nullptr),
   adjustTargetTemperatureCallback(nullptr),
   thermostatModeCallback(nullptr) {}
 
-bool SinricProThermostat::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (strcmp(deviceId, this->deviceId) != 0) return false;
+bool SinricProThermostat::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+  if (deviceId != this->deviceId) return false;
   if (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) return true;
 
   bool success = false;
@@ -109,21 +109,21 @@ bool SinricProThermostat::handleRequest(const char* deviceId, const char* action
     } else {
       temperature = 1;
     }
-    success = targetTemperatureCallback(String(deviceId), temperature);
+    success = targetTemperatureCallback(deviceId, temperature);
     response_value["temperature"] = temperature;
     return success;
   }
 
   if (actionString == "adjustTargetTemperature" && adjustTargetTemperatureCallback) {
     float temperatureDelta = request_value["temperature"];
-    success = adjustTargetTemperatureCallback(String(deviceId), temperatureDelta);
+    success = adjustTargetTemperatureCallback(deviceId, temperatureDelta);
     response_value["temperature"] = temperatureDelta;
     return success;
   }
 
   if (actionString == "setThermostatMode" && thermostatModeCallback) {
     String thermostatMode = request_value["thermostatMode"] | "";
-    success = thermostatModeCallback(String(deviceId), thermostatMode);
+    success = thermostatModeCallback(deviceId, thermostatMode);
     response_value["thermostatMode"] = thermostatMode;
     return success;
   }

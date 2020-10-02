@@ -16,7 +16,7 @@
  **/ 
 class SinricProDimSwitch :  public SinricProDevice {
   public:
-	  SinricProDimSwitch(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProDimSwitch(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("DIMMABLE_SWITCH"); }
     // callbacks
     /**
@@ -57,19 +57,18 @@ class SinricProDimSwitch :  public SinricProDevice {
     // event
     bool sendPowerLevelEvent(int powerLevel, String cause = "PHYSICAL_INTERACTION");
     // handle
-    bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
   private:
     SetPowerLevelCallback setPowerLevelCallback;
     AdjustPowerLevelCallback adjustPowerLevelCallback;
 };
 
-SinricProDimSwitch::SinricProDimSwitch(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime),
+SinricProDimSwitch::SinricProDimSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId),
   setPowerLevelCallback(nullptr),
   adjustPowerLevelCallback(nullptr) {}
 
-bool SinricProDimSwitch::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (strcmp(deviceId, this->deviceId) != 0) return false;
-  
+bool SinricProDimSwitch::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+  if (deviceId != this->deviceId) return false;
   if (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) return true;
 
   bool success = false;
@@ -77,13 +76,13 @@ bool SinricProDimSwitch::handleRequest(const char* deviceId, const char* action,
 
   if (setPowerLevelCallback && actionString == "setPowerLevel") {
     int powerLevel = request_value["powerLevel"];
-    success = setPowerLevelCallback(String(deviceId), powerLevel);
+    success = setPowerLevelCallback(deviceId, powerLevel);
     response_value["powerLevel"] = limitValue(powerLevel, 0, 100);
   }
 
   if (adjustPowerLevelCallback && actionString == "adjustPowerLevel") {
     int powerLevelDelta = request_value["powerLevelDelta"];
-    success = adjustPowerLevelCallback(String(deviceId), powerLevelDelta);
+    success = adjustPowerLevelCallback(deviceId, powerLevelDelta);
     response_value["powerLevel"] = limitValue(powerLevelDelta, 0, 100);
   }
   return success;

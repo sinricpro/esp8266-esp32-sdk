@@ -1,3 +1,4 @@
+
 /*
  *  Copyright (c) 2019 Sinric. All rights reserved.
  *  Licensed under Creative Commons Attribution-Share Alike (CC BY-SA)
@@ -16,11 +17,11 @@
  **/
 class SinricProCamera :  public SinricProDevice {
   public:
-	  SinricProCamera(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProCamera(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("CAMERA"); }    
 };
 
-SinricProCamera::SinricProCamera(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
+SinricProCamera::SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
 
 
 #endif

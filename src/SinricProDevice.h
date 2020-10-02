@@ -10,6 +10,7 @@
 
 #include "SinricProDeviceInterface.h"
 #include "LeakyBucket.h"
+#include "SinricProId.h"
 
 #include <map>
 
@@ -22,12 +23,11 @@
  **/
 class SinricProDevice : public SinricProDeviceInterface {
   public:
-    SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime=100);
+    SinricProDevice(const DeviceId &deviceId);
     virtual ~SinricProDevice();
-    virtual const char* getDeviceId();
+    virtual DeviceId getDeviceId();
     virtual String getProductType();
     virtual void begin(SinricProInterface* eventSender);
-    virtual void setEventWaitTime(unsigned long eventWaitTime) { if (eventWaitTime<100) {this->eventWaitTime=100;} else { this->eventWaitTime=eventWaitTime;} }
 
     // callback definitions
     /**
@@ -47,7 +47,7 @@ class SinricProDevice : public SinricProDeviceInterface {
     
 
     // standard request handler
-    virtual bool handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value);
+    virtual bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value);
 
     // standard Callbacks
     virtual void onPowerState(PowerStateCallback cb);
@@ -57,56 +57,52 @@ class SinricProDevice : public SinricProDeviceInterface {
 
   protected:
     virtual bool sendEvent(JsonDocument& event);
-    virtual DynamicJsonDocument prepareEvent(const char* deviceId, const char* action, const char* cause);
+    virtual DynamicJsonDocument prepareEvent(const DeviceId &deviceId, const char* action, const char* cause);
     unsigned long getTimestamp();
-    char* deviceId;
+    DeviceId deviceId;
     PowerStateCallback powerStateCallback;
     template <typename T>
     T limitValue(T value, T minValue, T maxValue);
   private:
     SinricProInterface* eventSender;
-    unsigned long eventWaitTime;
     std::map<String, LeakyBucket_t> eventFilter;
 };
 
-SinricProDevice::SinricProDevice(const char* newDeviceId, unsigned long eventWaitTime) : 
+SinricProDevice::SinricProDevice(const DeviceId &deviceId) : 
+  deviceId(deviceId),
   powerStateCallback(nullptr),
-  eventSender(nullptr),
-  eventWaitTime(eventWaitTime) {
-  deviceId = strdup(newDeviceId);
-  if (this->eventWaitTime < 100) this->eventWaitTime = 100;
+  eventSender(nullptr) {
 }
 
 SinricProDevice::~SinricProDevice() {
-  if (deviceId) free(deviceId);
 }
 
 void SinricProDevice::begin(SinricProInterface* eventSender) {
   this->eventSender = eventSender;
 }
 
-const char* SinricProDevice::getDeviceId() {
+DeviceId SinricProDevice::getDeviceId() {
   return deviceId;
 }
 
-bool SinricProDevice::handleRequest(const char* deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (strcmp(deviceId, this->deviceId) != 0) return false;
+bool SinricProDevice::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
+  if (deviceId != this->deviceId) return false;
   DEBUG_SINRIC("SinricProDevice::handleRequest()\r\n");
   bool success = false;
   String actionString = String(action);
 
   if (actionString == "setPowerState" && powerStateCallback) {
     bool powerState = request_value["state"]=="On"?true:false;
-    success = powerStateCallback(String(deviceId), powerState);
+    success = powerStateCallback(deviceId, powerState);
     response_value["state"] = powerState?"On":"Off";
     return success;
   }
   return success;
 }
 
-DynamicJsonDocument SinricProDevice::prepareEvent(const char* deviceId, const char* action, const char* cause) {
+DynamicJsonDocument SinricProDevice::prepareEvent(const DeviceId &deviceId, const char* action, const char* cause) {
   if (eventSender) return eventSender->prepareEvent(deviceId, action, cause);
-  DEBUG_SINRIC("[SinricProDevice:prepareEvent()]: Device \"%s\" isn't configured correctly! The \'%s\' event will be ignored.\r\n", deviceId, action);
+  DEBUG_SINRIC("[SinricProDevice:prepareEvent()]: Device \"%s\" isn't configured correctly! The \'%s\' event will be ignored.\r\n", deviceId.toString().c_str(), action);
   return DynamicJsonDocument(1024);
 }
 

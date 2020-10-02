@@ -16,11 +16,11 @@
  **/
 class SinricProSwitch :  public SinricProDevice {
   public:
-	  SinricProSwitch(const char* deviceId, unsigned long eventWaitTime=100);
+	  SinricProSwitch(const DeviceId &deviceId);
     String getProductType() { return SinricProDevice::getProductType() + String("SWITCH"); }    
 };
 
-SinricProSwitch::SinricProSwitch(const char* deviceId, unsigned long eventWaitTime) : SinricProDevice(deviceId, eventWaitTime) {}
+SinricProSwitch::SinricProSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
 
 
 #endif
