@@ -1,4 +1,8 @@
 # Changelog
+## Version 2.7.1
+Fixed:
+- Switch example
+  `SinricProDevice.getDeviceId()` returns since version 2.7.0 a `SinricProId` instead of char*
 
 ## Version 2.7.0
 New:
