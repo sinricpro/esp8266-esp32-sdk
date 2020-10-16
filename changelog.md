@@ -1,8 +1,12 @@
 # Changelog
+## Version 2.7.2
+Fixed:
+- The examples are now located in subfolders if more than one example is provided
+
 ## Version 2.7.1
 Fixed:
 - Switch example
-  `SinricProDevice.getDeviceId()` returns since version 2.7.0 a `SinricProId` instead of char*
+  `SinricProDevice.getDeviceId()` returns `SinricProId` instead of `char*` since version 2.7.0
 
 ## Version 2.7.0
 New:

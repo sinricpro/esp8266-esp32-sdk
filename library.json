@@ -13,14 +13,15 @@
       "maintainer": true
     }
   ],
-  "version": "2.7.1",
+  "version": "2.7.2",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",
     "espressif32"
   ],
   "examples":[
-    "examples/*/*.ino"
+    "examples/*/*.ino",
+    "examples/*/*/*.ino"
   ],
   "license": "CC-BY-SA-4.0"
 }
