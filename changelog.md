@@ -1,4 +1,9 @@
 # Changelog
+## Version 2.7.3
+Fixed
+- `.c_str()` for AppKey, AppSecret and DeviceId return now a valid `const char*`
+
+
 ## Version 2.7.2
 Fixed:
 - The examples are now located in subfolders if more than one example is provided

@@ -122,7 +122,7 @@ class SinricProId {
     operator String() const { return _data.toString(); }
     
     String toString() const { return _data.toString(); };
-    const char* c_str() const { return _data.toString().c_str(); }
+    const char* c_str() const { static String str = _data.toString(); return str.c_str(); }
     bool isValid() const { return !compare(SinricProId<T>()); }
   
   private:
