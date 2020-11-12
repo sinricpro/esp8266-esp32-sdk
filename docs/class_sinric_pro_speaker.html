@@ -332,9 +332,9 @@ Example-Code</h1>
 Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> absoluteVolume;</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_speaker.html#a2c868c87f96e3924c8b309e1bcfb507e">onAdjustVolume</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;volumeDelta) {</div>
+<div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_speaker.html#a2c868c87f96e3924c8b309e1bcfb507e">onAdjustVolume</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">int</span> &amp;volumeDelta, <span class="keywordtype">bool</span> volumeDefault) {</div>
 <div class="line">  absoluteVolume += volumeDelta;  <span class="comment">// calculate absolute volume</span></div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s volume changed about %i to %d\r\n&quot;</span>, deviceId.c_str(), volumeDelta, absoluteVolume);</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s volume changed about %i to %d (default: %s)\r\n&quot;</span>, deviceId.c_str(), volumeDelta, absoluteVolume, volumeDefault);</div>
 <div class="line">  volumeDelta = absoluteVolume; <span class="comment">// return absolute volume</span></div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
