@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_light_8h_source.html','');
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_sinric_pro_light.html">   23</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_sinric_pro_light.html">SinricProLight</a> :  <span class="keyword">public</span> <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a> {</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="class_sinric_pro_light.html">SinricProLight</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime=100);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="class_sinric_pro_light.html">SinricProLight</a>(<span class="keyword">const</span> DeviceId &amp;deviceId);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    String getProductType() { <span class="keywordflow">return</span> SinricProDevice::getProductType() + String(<span class="stringliteral">&quot;LIGHT&quot;</span>); }</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">// callback</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_light_8h_source.html','');
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#aa3019d161b320267666cdb11d1c3d827">sendColorEvent</a>(<span class="keywordtype">byte</span> r, <span class="keywordtype">byte</span> g, <span class="keywordtype">byte</span> b, String cause = <span class="stringliteral">&quot;PHYSICAL_INTERACTION&quot;</span>);</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_light.html#a9065e6d08309d313b16adc774cc642ff">sendColorTemperatureEvent</a>(<span class="keywordtype">int</span> colorTemperature, String cause = <span class="stringliteral">&quot;PHYSICAL_INTERACTION&quot;</span>);</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="comment">// handle</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, JsonObject &amp;request_value, JsonObject &amp;response_value) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> DeviceId &amp;deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, JsonObject &amp;request_value, JsonObject &amp;response_value) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <a class="code" href="class_sinric_pro_light.html#a1bf03bd01ae1f4ddf164260435dc2026">BrightnessCallback</a> brightnessCallback;</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <a class="code" href="class_sinric_pro_light.html#ab2267f4b655928122371dcc0bc960e88">AdjustBrightnessCallback</a> adjustBrightnessCallback;</div>
@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_light_8h_source.html','');
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="class_sinric_pro_light.html#a8fce91e931713aa452fb7bd0805e3c81">DecreaseColorTemperatureCallback</a> decreaseColorTemperatureCallback;</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;};</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;SinricProLight::SinricProLight(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId, eventWaitTime),</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;SinricProLight::SinricProLight(<span class="keyword">const</span> DeviceId &amp;deviceId) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId),</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  brightnessCallback(nullptr),</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  adjustBrightnessCallback(nullptr),</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  colorCallback(nullptr),</div>
@@ -166,8 +166,8 @@ $(document).ready(function(){initNavTree('_sinric_pro_light_8h_source.html','');
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  increaseColorTemperatureCallback(nullptr),</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  decreaseColorTemperatureCallback(nullptr) {}</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="keywordtype">bool</span> SinricProLight::handleRequest(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, JsonObject &amp;request_value, JsonObject &amp;response_value) {</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="keywordflow">if</span> (strcmp(deviceId, this-&gt;deviceId) != 0) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="keywordtype">bool</span> SinricProLight::handleRequest(<span class="keyword">const</span> DeviceId &amp;deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, JsonObject &amp;request_value, JsonObject &amp;response_value) {</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="keywordflow">if</span> (deviceId != this-&gt;deviceId) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keywordflow">if</span> (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="keywordtype">bool</span> success = <span class="keyword">false</span>;</div>
@@ -175,13 +175,13 @@ $(document).ready(function(){initNavTree('_sinric_pro_light_8h_source.html','');
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <span class="keywordflow">if</span> (brightnessCallback &amp;&amp; actionString == <span class="stringliteral">&quot;setBrightness&quot;</span>) {</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordtype">int</span> brightness = request_value[<span class="stringliteral">&quot;brightness&quot;</span>];</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    success = brightnessCallback(String(deviceId), brightness);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    success = brightnessCallback(deviceId, brightness);</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    response_value[<span class="stringliteral">&quot;brightness&quot;</span>] = limitValue(brightness, 0, 100);</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  }</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <span class="keywordflow">if</span> (adjustBrightnessCallback &amp;&amp; actionString == <span class="stringliteral">&quot;adjustBrightness&quot;</span>) {</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordtype">int</span> brightnessDelta = request_value[<span class="stringliteral">&quot;brightnessDelta&quot;</span>];</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    success = adjustBrightnessCallback(String(deviceId), brightnessDelta);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    success = adjustBrightnessCallback(deviceId, brightnessDelta);</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    response_value[<span class="stringliteral">&quot;brightness&quot;</span>] = limitValue(brightnessDelta, 0, 100);</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  }</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_light_8h_source.html','');
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      r = request_value[<span class="stringliteral">&quot;color&quot;</span>][<span class="stringliteral">&quot;r&quot;</span>];</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      g = request_value[<span class="stringliteral">&quot;color&quot;</span>][<span class="stringliteral">&quot;g&quot;</span>];</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;      b = request_value[<span class="stringliteral">&quot;color&quot;</span>][<span class="stringliteral">&quot;b&quot;</span>];</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;      success = colorCallback(String(deviceId), r, g, b);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;      success = colorCallback(deviceId, r, g, b);</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;      response_value.createNestedObject(<span class="stringliteral">&quot;color&quot;</span>);</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;      response_value[<span class="stringliteral">&quot;color&quot;</span>][<span class="stringliteral">&quot;r&quot;</span>] = r;</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;      response_value[<span class="stringliteral">&quot;color&quot;</span>][<span class="stringliteral">&quot;g&quot;</span>] = g;</div>
@@ -199,19 +199,19 @@ $(document).ready(function(){initNavTree('_sinric_pro_light_8h_source.html','');
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="keywordflow">if</span> (colorTemperatureCallback &amp;&amp; actionString == <span class="stringliteral">&quot;setColorTemperature&quot;</span>) {</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">int</span> colorTemperature = request_value[<span class="stringliteral">&quot;colorTemperature&quot;</span>];</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    success = colorTemperatureCallback(String(deviceId), colorTemperature);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    success = colorTemperatureCallback(deviceId, colorTemperature);</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    response_value[<span class="stringliteral">&quot;colorTemperature&quot;</span>] = colorTemperature;</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  }</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="keywordflow">if</span> (increaseColorTemperatureCallback &amp;&amp; actionString == <span class="stringliteral">&quot;increaseColorTemperature&quot;</span>) {</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordtype">int</span> colorTemperature = 1;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    success = increaseColorTemperatureCallback(String(deviceId), colorTemperature);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    success = increaseColorTemperatureCallback(deviceId, colorTemperature);</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    response_value[<span class="stringliteral">&quot;colorTemperature&quot;</span>] = colorTemperature;</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  }</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="keywordflow">if</span> (decreaseColorTemperatureCallback &amp;&amp; actionString == <span class="stringliteral">&quot;decreaseColorTemperature&quot;</span>) {</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordtype">int</span> colorTemperature = -1;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    success = decreaseColorTemperatureCallback(String(deviceId), colorTemperature);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    success = decreaseColorTemperatureCallback(deviceId, colorTemperature);</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    response_value[<span class="stringliteral">&quot;colorTemperature&quot;</span>] = colorTemperature;</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  }</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
@@ -284,7 +284,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_light_8h_source.html','');
 <div class="ttc" id="aclass_sinric_pro_light_html_a059ff103149869b7c49cdb8911875b7b"><div class="ttname"><a href="class_sinric_pro_light.html#a059ff103149869b7c49cdb8911875b7b">SinricProLight::onColor</a></div><div class="ttdeci">void onColor(ColorCallback cb)</div><div class="ttdoc">Set callback function for setColor request.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:234</div></div>
 <div class="ttc" id="aclass_sinric_pro_light_html_a0633e5fa2981189f4a093bab00a8c7f1"><div class="ttname"><a href="class_sinric_pro_light.html#a0633e5fa2981189f4a093bab00a8c7f1">SinricProLight::onAdjustBrightness</a></div><div class="ttdeci">void onAdjustBrightness(AdjustBrightnessCallback cb)</div><div class="ttdoc">Set callback function for adjustBrightness request.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:223</div></div>
 <div class="ttc" id="aclass_sinric_pro_light_html_aa42df8ac91de826653626df67a8500b6"><div class="ttname"><a href="class_sinric_pro_light.html#aa42df8ac91de826653626df67a8500b6">SinricProLight::sendBrightnessEvent</a></div><div class="ttdeci">bool sendBrightnessEvent(int brightness, String cause=&quot;PHYSICAL_INTERACTION&quot;)</div><div class="ttdoc">Send setBrightness event to SinricPro Server indicating actual brightness.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:280</div></div>
-<div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:23</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:24</div></div>
 <div class="ttc" id="aclass_sinric_pro_light_html_abbaab3067b1fcdcc5928451b818a4420"><div class="ttname"><a href="class_sinric_pro_light.html#abbaab3067b1fcdcc5928451b818a4420">SinricProLight::onBrightness</a></div><div class="ttdeci">void onBrightness(BrightnessCallback cb)</div><div class="ttdoc">Set callback function for setBrightness request.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:212</div></div>
 <div class="ttc" id="aclass_sinric_pro_light_html_ac29cb175180abefcc181191de6be6c9f"><div class="ttname"><a href="class_sinric_pro_light.html#ac29cb175180abefcc181191de6be6c9f">SinricProLight::IncreaseColorTemperatureCallback</a></div><div class="ttdeci">std::function&lt; bool(const String &amp;, int &amp;)&gt; IncreaseColorTemperatureCallback</div><div class="ttdoc">Callback definition for onIncreaseColorTemperature function.</div><div class="ttdef"><b>Definition:</b> SinricProLight.h:106</div></div>
 <!-- start footer part -->

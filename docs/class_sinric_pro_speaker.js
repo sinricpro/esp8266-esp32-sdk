@@ -1,7 +1,7 @@
 var class_sinric_pro_speaker =
 [
     [ "AdjustBandsCallback", "class_sinric_pro_speaker.html#a9fd3e3ebbb960707aa11e4fe77961368", null ],
-    [ "AdjustVolumeCallback", "class_sinric_pro_speaker.html#a1dfe43a4f99caf28ad07a2ff84708f94", null ],
+    [ "AdjustVolumeCallback", "class_sinric_pro_speaker.html#ae89a822920b205b05131de3a853b1c0d", null ],
     [ "MediaControlCallback", "class_sinric_pro_speaker.html#a19062c8b2786a85d53129d572ec55bbd", null ],
     [ "ModeCallback", "class_sinric_pro_speaker.html#affad86b6a5068090c860b36d26280d49", null ],
     [ "MuteCallback", "class_sinric_pro_speaker.html#a24d0844497c30b03f3c7ec9e30fcb33b", null ],

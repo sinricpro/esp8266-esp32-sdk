@@ -1,8 +1,13 @@
 # Changelog
+## Version 2.7.4
+- New
+  - Speaker & TV `onAdjustVolume` callback changed:
+    The new format is `bool onAdjustVolume(const String &deviceId, int &volumeDelta, bool volumeDefault);`
+    `volumeDefault`: `false` if the user specified the amount by which to change the volume; otherwise `true`
+
 ## Version 2.7.3
 Fixed
 - `.c_str()` for AppKey, AppSecret and DeviceId return now a valid `const char*`
-
 
 ## Version 2.7.2
 Fixed:

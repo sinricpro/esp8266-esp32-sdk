@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_fan_u_s_8h_source.html',''
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_sinric_pro_fan_u_s.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_sinric_pro_fan_u_s.html">SinricProFanUS</a> :  <span class="keyword">public</span> <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a> {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <a class="code" href="class_sinric_pro_fan_u_s.html">SinricProFanUS</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime=100);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <a class="code" href="class_sinric_pro_fan_u_s.html">SinricProFanUS</a>(<span class="keyword">const</span> DeviceId &amp;deviceId);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    String getProductType() { <span class="keywordflow">return</span> SinricProDevice::getProductType() + String(<span class="stringliteral">&quot;FAN&quot;</span>); }</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">// callback</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
@@ -135,17 +135,17 @@ $(document).ready(function(){initNavTree('_sinric_pro_fan_u_s_8h_source.html',''
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// event</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_fan_u_s.html#af676bb2b419c4321d0a678cf9446da0c">sendRangeValueEvent</a>(<span class="keywordtype">int</span> rangeValue, String cause = <span class="stringliteral">&quot;PHYSICAL_INTERACTION&quot;</span>);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// handle</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, JsonObject &amp;request_value, JsonObject &amp;response_value) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> DeviceId &amp;deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, JsonObject &amp;request_value, JsonObject &amp;response_value) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="class_sinric_pro_fan_u_s.html#ad2be7dbd98eae8443f8c76721cbffead">SetRangeValueCallback</a> setRangeValueCallback; </div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="class_sinric_pro_fan_u_s.html#a8977055ae213732aaa3ef430259208f4">AdjustRangeValueCallback</a> adjustRangeValueCallback;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;SinricProFanUS::SinricProFanUS(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId, eventWaitTime),</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;SinricProFanUS::SinricProFanUS(<span class="keyword">const</span> DeviceId &amp;deviceId) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId),</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  setRangeValueCallback(nullptr) {}</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keywordtype">bool</span> SinricProFanUS::handleRequest(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, JsonObject &amp;request_value, JsonObject &amp;response_value) {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">if</span> (strcmp(deviceId, this-&gt;deviceId) != 0) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keywordtype">bool</span> SinricProFanUS::handleRequest(<span class="keyword">const</span> DeviceId &amp;deviceId, <span class="keyword">const</span> <span class="keywordtype">char</span>* action, JsonObject &amp;request_value, JsonObject &amp;response_value) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">if</span> (deviceId != this-&gt;deviceId) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordflow">if</span> (SinricProDevice::handleRequest(deviceId, action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">bool</span> success = <span class="keyword">false</span>;</div>
@@ -153,14 +153,14 @@ $(document).ready(function(){initNavTree('_sinric_pro_fan_u_s_8h_source.html',''
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">if</span> (actionString == <span class="stringliteral">&quot;setRangeValue&quot;</span> &amp;&amp; setRangeValueCallback) {</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">int</span> rangeValue = request_value[<span class="stringliteral">&quot;rangeValue&quot;</span>] | 0;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    success = setRangeValueCallback(String(deviceId), rangeValue);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    success = setRangeValueCallback(deviceId, rangeValue);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    response_value[<span class="stringliteral">&quot;rangeValue&quot;</span>] = limitValue(rangeValue, 1, 3);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">return</span> success;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  }</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordflow">if</span> (actionString == <span class="stringliteral">&quot;adjustRangeValue&quot;</span> &amp;&amp; adjustRangeValueCallback) {</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">int</span> rangeValueDelta = request_value[<span class="stringliteral">&quot;rangeValueDelta&quot;</span>] | 0;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    success = adjustRangeValueCallback(String(deviceId), rangeValueDelta);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    success = adjustRangeValueCallback(deviceId, rangeValueDelta);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    response_value[<span class="stringliteral">&quot;rangeValue&quot;</span>] = limitValue(rangeValueDelta, 1, 3);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordflow">return</span> success;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  }</div>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_fan_u_s_8h_source.html',''
 <div class="ttc" id="aclass_sinric_pro_fan_u_s_html_af676bb2b419c4321d0a678cf9446da0c"><div class="ttname"><a href="class_sinric_pro_fan_u_s.html#af676bb2b419c4321d0a678cf9446da0c">SinricProFanUS::sendRangeValueEvent</a></div><div class="ttdeci">bool sendRangeValueEvent(int rangeValue, String cause=&quot;PHYSICAL_INTERACTION&quot;)</div><div class="ttdoc">Send rangeValue event to report curent rangeValue to SinricPro server.</div><div class="ttdef"><b>Definition:</b> SinricProFanUS.h:124</div></div>
 <div class="ttc" id="aclass_sinric_pro_fan_u_s_html"><div class="ttname"><a href="class_sinric_pro_fan_u_s.html">SinricProFanUS</a></div><div class="ttdoc">Device to control a fan with on / off commands and its speed by a range value.</div><div class="ttdef"><b>Definition:</b> SinricProFanUS.h:17</div></div>
 <div class="ttc" id="aclass_sinric_pro_fan_u_s_html_a8977055ae213732aaa3ef430259208f4"><div class="ttname"><a href="class_sinric_pro_fan_u_s.html#a8977055ae213732aaa3ef430259208f4">SinricProFanUS::AdjustRangeValueCallback</a></div><div class="ttdeci">std::function&lt; bool(const String &amp;, int &amp;)&gt; AdjustRangeValueCallback</div><div class="ttdoc">Callback definition for onAdjustRangeValue function.</div><div class="ttdef"><b>Definition:</b> SinricProFanUS.h:53</div></div>
-<div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:23</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:24</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_air_quality_sensor_8h_sour
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_sinric_pro_air_quality_sensor.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_sinric_pro_air_quality_sensor.html">SinricProAirQualitySensor</a> :  <span class="keyword">public</span> <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a> {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <a class="code" href="class_sinric_pro_air_quality_sensor.html">SinricProAirQualitySensor</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime=100);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <a class="code" href="class_sinric_pro_air_quality_sensor.html">SinricProAirQualitySensor</a>(<span class="keyword">const</span> DeviceId &amp;deviceId);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    String getProductType() { <span class="keywordflow">return</span> SinricProDevice::getProductType() + String(<span class="stringliteral">&quot;AIR_QUALITY_SENSOR&quot;</span>); }</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// event</span></div>
@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_air_quality_sensor_8h_sour
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;};</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;SinricProAirQualitySensor::SinricProAirQualitySensor(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId, eventWaitTime) {}</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;SinricProAirQualitySensor::SinricProAirQualitySensor(<span class="keyword">const</span> DeviceId &amp;deviceId) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId) {}</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_sinric_pro_air_quality_sensor.html#a3836e4dca79c1563fcdae880bb368323">   40</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_air_quality_sensor.html#a3836e4dca79c1563fcdae880bb368323">SinricProAirQualitySensor::sendAirQualityEvent</a>(<span class="keywordtype">int</span> pm1, <span class="keywordtype">int</span> pm2_5, <span class="keywordtype">int</span> pm10, String cause) {</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  DynamicJsonDocument eventMessage = prepareEvent(deviceId, <span class="stringliteral">&quot;airQuality&quot;</span>, cause.c_str());</div>
@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_air_quality_sensor_8h_sour
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_sinric_pro_air_quality_sensor_html_a3836e4dca79c1563fcdae880bb368323"><div class="ttname"><a href="class_sinric_pro_air_quality_sensor.html#a3836e4dca79c1563fcdae880bb368323">SinricProAirQualitySensor::sendAirQualityEvent</a></div><div class="ttdeci">bool sendAirQualityEvent(int pm1=0, int pm2_5=0, int pm10=0, String cause=&quot;PERIODIC_POLL&quot;)</div><div class="ttdoc">Sending air quality to SinricPro server.</div><div class="ttdef"><b>Definition:</b> SinricProAirQualitySensor.h:40</div></div>
 <div class="ttc" id="aclass_sinric_pro_air_quality_sensor_html"><div class="ttname"><a href="class_sinric_pro_air_quality_sensor.html">SinricProAirQualitySensor</a></div><div class="ttdoc">Device to report air quality events.</div><div class="ttdef"><b>Definition:</b> SinricProAirQualitySensor.h:17</div></div>
-<div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:23</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:24</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

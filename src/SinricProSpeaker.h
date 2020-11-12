@@ -58,6 +58,7 @@ class SinricProSpeaker :  public SinricProDevice {
      * @param[in]   deviceId    String which contains the ID of device
      * @param[in]   volumeDelta Integer with relative volume the device should change about (-100..100)
      * @param[out]  volumeDelta Integer with absolute volume device has been set to
+     * @param[in]   volumeDefault Bool `false` if the user specified the amount by which to change the volume; otherwise `true`
      * @return      the success of the request
      * @retval      true        request handled properly
      * @retval      false       request was not handled properly because of some error
@@ -65,7 +66,7 @@ class SinricProSpeaker :  public SinricProDevice {
      * @section AdjustVolumeCallback Example-Code
      * @snippet callbacks.cpp onAdjustVolume
      **/  
-    typedef std::function<bool(const String&, int&)> AdjustVolumeCallback;
+    typedef std::function<bool(const String&, int&, bool)> AdjustVolumeCallback;
     
     /**
      * @brief Callback definition for onMute function
@@ -242,7 +243,8 @@ bool SinricProSpeaker::handleRequest(const DeviceId &deviceId, const char* actio
 
   if (adjustVolumeCallback && actionString == "adjustVolume") {
     int volume = request_value["volume"];
-    success = adjustVolumeCallback(deviceId, volume);
+    bool volumeDefault = request_value["volumeDefault"] | false;
+    success = adjustVolumeCallback(deviceId, volume, volumeDefault);
     response_value["volume"] = limitValue(volume, 0, 100);
     return success;
   }

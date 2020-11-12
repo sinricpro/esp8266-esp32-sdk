@@ -32,5 +32,5 @@ var searchData=
   ['onskipchannels_170',['onSkipChannels',['../class_sinric_pro_t_v.html#ab1123d03d471fad4896eb2960ed41855',1,'SinricProTV']]],
   ['ontargettemperature_171',['onTargetTemperature',['../class_sinric_pro_thermostat.html#a1c73725f1f3fbb1c5b72208aae5c2bf2',1,'SinricProThermostat::onTargetTemperature()'],['../class_sinric_pro_window_a_c.html#a1c73725f1f3fbb1c5b72208aae5c2bf2',1,'SinricProWindowAC::onTargetTemperature()']]],
   ['onthermostatmode_172',['onThermostatMode',['../class_sinric_pro_thermostat.html#a2ef31536973b20815dd6c80a28e19c9f',1,'SinricProThermostat::onThermostatMode()'],['../class_sinric_pro_window_a_c.html#a2ef31536973b20815dd6c80a28e19c9f',1,'SinricProWindowAC::onThermostatMode()']]],
-  ['operator_5b_5d_173',['operator[]',['../class_sinric_pro_class.html#a5df2137b8d06e894c917fd28c35c31a4',1,'SinricProClass']]]
+  ['operator_5b_5d_173',['operator[]',['../class_sinric_pro_class.html#a9e5d96d0f1fb3409b3576e0107b97ce8',1,'SinricProClass']]]
 ];

@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_temperaturesensor_8h_sourc
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_sinric_pro_temperaturesensor.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_sinric_pro_temperaturesensor.html">SinricProTemperaturesensor</a> :  <span class="keyword">public</span> <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a> {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <a class="code" href="class_sinric_pro_temperaturesensor.html">SinricProTemperaturesensor</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime=60000);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <a class="code" href="class_sinric_pro_temperaturesensor.html">SinricProTemperaturesensor</a>(<span class="keyword">const</span> DeviceId &amp;deviceId);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    String getProductType() { <span class="keywordflow">return</span> SinricProDevice::getProductType() + String(<span class="stringliteral">&quot;TEMPERATURESENSOR&quot;</span>); }</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// event</span></div>
@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_temperaturesensor_8h_sourc
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;};</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;SinricProTemperaturesensor::SinricProTemperaturesensor(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId, eventWaitTime) {}</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;SinricProTemperaturesensor::SinricProTemperaturesensor(<span class="keyword">const</span> DeviceId &amp;deviceId) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId) {}</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="class_sinric_pro_temperaturesensor.html#a9545808dacd9efc40a05f16e09d79b4e">   39</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_temperaturesensor.html#a9545808dacd9efc40a05f16e09d79b4e">SinricProTemperaturesensor::sendTemperatureEvent</a>(<span class="keywordtype">float</span> temperature, <span class="keywordtype">float</span> humidity, String cause) {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  DynamicJsonDocument eventMessage = prepareEvent(deviceId, <span class="stringliteral">&quot;currentTemperature&quot;</span>, cause.c_str());</div>
@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_temperaturesensor_8h_sourc
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_sinric_pro_temperaturesensor_html_a9545808dacd9efc40a05f16e09d79b4e"><div class="ttname"><a href="class_sinric_pro_temperaturesensor.html#a9545808dacd9efc40a05f16e09d79b4e">SinricProTemperaturesensor::sendTemperatureEvent</a></div><div class="ttdeci">bool sendTemperatureEvent(float temperature, float humidity=-1, String cause=&quot;PERIODIC_POLL&quot;)</div><div class="ttdoc">Sending current temperature and humidity to SinricPro server.</div><div class="ttdef"><b>Definition:</b> SinricProTemperaturesensor.h:39</div></div>
 <div class="ttc" id="aclass_sinric_pro_temperaturesensor_html"><div class="ttname"><a href="class_sinric_pro_temperaturesensor.html">SinricProTemperaturesensor</a></div><div class="ttdoc">Device to report actual temperature and humidity.</div><div class="ttdef"><b>Definition:</b> SinricProTemperaturesensor.h:17</div></div>
-<div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:23</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:24</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

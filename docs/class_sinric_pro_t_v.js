@@ -1,6 +1,6 @@
 var class_sinric_pro_t_v =
 [
-    [ "AdjustVolumeCallback", "class_sinric_pro_t_v.html#a1dfe43a4f99caf28ad07a2ff84708f94", null ],
+    [ "AdjustVolumeCallback", "class_sinric_pro_t_v.html#ae89a822920b205b05131de3a853b1c0d", null ],
     [ "ChangeChannelCallback", "class_sinric_pro_t_v.html#a276a4a418aa341936a2e8870cac15e79", null ],
     [ "ChangeChannelNumberCallback", "class_sinric_pro_t_v.html#aed91a90de7d42e34af4a0d995e8b525b", null ],
     [ "MediaControlCallback", "class_sinric_pro_t_v.html#a19062c8b2786a85d53129d572ec55bbd", null ],

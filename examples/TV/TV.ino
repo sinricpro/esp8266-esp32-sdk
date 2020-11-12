@@ -69,7 +69,7 @@ void setupChannelNumbers() {
 
 // TV device callbacks
 
-bool onAdjustVolume(const String &deviceId, int &volumeDelta) {
+bool onAdjustVolume(const String &deviceId, int &volumeDelta, bool volumeDefault) {
   tvVolume += volumeDelta;  // calcualte new absolute volume
   Serial.printf("Volume changed about %i to %i\r\n", volumeDelta, tvVolume);
   volumeDelta = tvVolume; // return new absolute volume

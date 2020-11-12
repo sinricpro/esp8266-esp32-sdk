@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_contactsensor_8h_source.ht
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_sinric_pro_contactsensor.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_sinric_pro_contactsensor.html">SinricProContactsensor</a> :  <span class="keyword">public</span> <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a> {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <a class="code" href="class_sinric_pro_contactsensor.html">SinricProContactsensor</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime=100);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <a class="code" href="class_sinric_pro_contactsensor.html">SinricProContactsensor</a>(<span class="keyword">const</span> DeviceId &amp;deviceId);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    String getProductType() { <span class="keywordflow">return</span> SinricProDevice::getProductType() + String(<span class="stringliteral">&quot;CONTACT_SENSOR&quot;</span>); }</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// event</span></div>
@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_contactsensor_8h_source.ht
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;};</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;SinricProContactsensor::SinricProContactsensor(<span class="keyword">const</span> <span class="keywordtype">char</span>* deviceId, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> eventWaitTime) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId, eventWaitTime) {}</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;SinricProContactsensor::SinricProContactsensor(<span class="keyword">const</span> DeviceId &amp;deviceId) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId) {}</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_sinric_pro_contactsensor.html#a0b4b9006c0be003c615848bcc2b690fd">   37</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_sinric_pro_contactsensor.html#a0b4b9006c0be003c615848bcc2b690fd">SinricProContactsensor::sendContactEvent</a>(<span class="keywordtype">bool</span> state, String cause) {</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  DynamicJsonDocument eventMessage = prepareEvent(deviceId, <span class="stringliteral">&quot;setContactState&quot;</span>, cause.c_str());</div>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_contactsensor_8h_source.ht
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_sinric_pro_contactsensor_html"><div class="ttname"><a href="class_sinric_pro_contactsensor.html">SinricProContactsensor</a></div><div class="ttdoc">Device to report contact sensor events.</div><div class="ttdef"><b>Definition:</b> SinricProContactsensor.h:17</div></div>
 <div class="ttc" id="aclass_sinric_pro_contactsensor_html_a0b4b9006c0be003c615848bcc2b690fd"><div class="ttname"><a href="class_sinric_pro_contactsensor.html#a0b4b9006c0be003c615848bcc2b690fd">SinricProContactsensor::sendContactEvent</a></div><div class="ttdeci">bool sendContactEvent(bool detected, String cause=&quot;PHYSICAL_INTERACTION&quot;)</div><div class="ttdoc">Send setContactState event to SinricPro Server indicating actual power state.</div><div class="ttdef"><b>Definition:</b> SinricProContactsensor.h:37</div></div>
-<div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:23</div></div>
+<div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:24</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
