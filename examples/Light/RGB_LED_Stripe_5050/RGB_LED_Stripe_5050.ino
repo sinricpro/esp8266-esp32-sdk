@@ -36,9 +36,9 @@
 #define LIGHT_ID          "YOUR-DEVICEID"           // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                      // Change baudrate to your need for serial log
 
-#define RED_PIN           D6                        // PIN for RED Mosfet   - change this to your need
-#define GREEN_PIN         D7                        // PIN for GREEN Mosfet - change this to your need
-#define BLUE_PIN          D8                        // PIN for BLUE Mosfet  - change this to your need
+#define BLUE_PIN          D5                        // PIN for BLUE Mosfet  - change this to your need (D5 = GPIO14 on ESP8266)
+#define RED_PIN           D6                        // PIN for RED Mosfet   - change this to your need (D6 = GPIO12 on ESP8266)
+#define GREEN_PIN         D7                        // PIN for GREEN Mosfet - change this to your need (D7 = GPIO13 on ESP8266)
 
 struct {                                            // Stores current device state with following initial values:
   bool powerState = false;                          // initial state is off

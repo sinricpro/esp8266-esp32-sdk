@@ -36,40 +36,22 @@
 #define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                // Change baudrate to your need
 
-#define RELAY_PIN         D5                  // pin where Relay is connected. Change the pin if required. D5 mapping is from https://github.com/esp8266/Arduino/blob/master/variants/d1_mini/pins_arduino.h#L49-L61
-
+#define RELAY_PIN         D5                  // Pin where the relay is connected (D5 = GPIO 14 on ESP8266)
 
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
-  digitalWrite(RELAY_PIN, state);
-  return true; // request handled properly
-}
-
-void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
-
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
-    delay(250);
-  }
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
-}
-
-void setupSinricPro() {
-  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
-  mySwitch.onPowerState(onPowerState);
-  SinricPro.begin(APP_KEY, APP_SECRET);
+  digitalWrite(RELAY_PIN, state);             // set pin state
+  return true;                                // request handled properly
 }
 
 void setup() {
-  pinMode(RELAY_PIN, OUTPUT); // define LED GPIO as output
+  pinMode(RELAY_PIN, OUTPUT);                 // set relay-pin to output mode
+  WiFi.begin(WIFI_SSID, WIFI_PASS);           // start wifi
 
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
-  setupWiFi();
-  setupSinricPro();
+  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];   // create new switch device
+  mySwitch.onPowerState(onPowerState);                // apply onPowerState callback
+  SinricPro.begin(APP_KEY, APP_SECRET);               // start SinricPro
 }
 
 void loop() {
-  SinricPro.handle();
+  SinricPro.handle();                         // handle SinricPro commands
 }
