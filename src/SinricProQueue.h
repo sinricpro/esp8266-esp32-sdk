@@ -8,8 +8,7 @@
 #ifndef __SINRICPRO_QUEUE_H__
 #define __SINRICPRO_QUEUE_H__
 
-#include "extralib/QueueList/QueueList.h"
-
+#include <queue>
 
 typedef enum {
   IF_UNKNOWN    = 0,
@@ -19,15 +18,33 @@ typedef enum {
 
 class SinricProMessage {
 public:
-  SinricProMessage(interface_t interface, const char* message) : _interface(interface) { _message = strdup(message); };
-  ~SinricProMessage() { if (_message) free(_message); };
-  const char* getMessage() { return _message; };
-  interface_t getInterface() { return _interface; };
+  SinricProMessage(interface_t interface, const char* message);
+  ~SinricProMessage();
+  const char* getMessage() const;
+  interface_t getInterface() const;
 private:
   interface_t _interface;
   char* _message;
 };
 
-typedef QueueList<SinricProMessage*> SinricProQueue_t;
+SinricProMessage::SinricProMessage(interface_t interface, const char* message) : 
+  _interface(interface) { 
+  _message = strdup(message); 
+};
+
+SinricProMessage::~SinricProMessage() { 
+  if (_message) free(_message); 
+};
+
+const char* SinricProMessage::getMessage() const { 
+  return _message; 
+};
+
+interface_t SinricProMessage::getInterface() const { 
+  return _interface; 
+};
+
+
+typedef std::queue<SinricProMessage*> SinricProQueue_t;
 
 #endif

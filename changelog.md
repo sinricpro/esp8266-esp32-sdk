@@ -1,4 +1,13 @@
 # Changelog
+## Version 2.7.6
+- Internal changes
+  removed QueueList.h and use std::queue instead
+
+## Version 2.7.5
+- New Examples 
+  - Examples / Light / RGB_LED_Stripe_5050
+  - Examples / Switch / Relay
+
 ## Version 2.7.4
 - New
   - Speaker & TV `onAdjustVolume` callback changed:
