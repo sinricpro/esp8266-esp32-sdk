@@ -324,11 +324,12 @@ void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interfac
 }
 
 void SinricProClass::handleReceiveQueue() {
-  if (receiveQueue.count() == 0) return;
+  if (receiveQueue.size() == 0) return;
 
-  DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: %i message(s) in receiveQueue\r\n", receiveQueue.count());
-  while (receiveQueue.count() > 0) {
-    SinricProMessage* rawMessage = receiveQueue.pop();
+  DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: %i message(s) in receiveQueue\r\n", receiveQueue.size());
+  while (receiveQueue.size() > 0) {
+    SinricProMessage* rawMessage = receiveQueue.front();
+    receiveQueue.pop();
     DynamicJsonDocument jsonMessage(1024);
     deserializeJson(jsonMessage, rawMessage->getMessage());
 
@@ -357,11 +358,11 @@ void SinricProClass::handleReceiveQueue() {
 void SinricProClass::handleSendQueue() {
   if (!isConnected()) return;
   if (!baseTimestamp) return;
-  while (sendQueue.count() > 0) {
-    DEBUG_SINRIC("[SinricPro:handleSendQueue()]: %i message(s) in sendQueue\r\n", sendQueue.count());
+  while (sendQueue.size() > 0) {
+    DEBUG_SINRIC("[SinricPro:handleSendQueue()]: %i message(s) in sendQueue\r\n", sendQueue.size());
     DEBUG_SINRIC("[SinricPro:handleSendQueue()]: Sending message...\r\n");
 
-    SinricProMessage* rawMessage = sendQueue.pop();
+    SinricProMessage* rawMessage = sendQueue.front(); sendQueue.pop();
 
     DynamicJsonDocument jsonMessage(1024);
     deserializeJson(jsonMessage, rawMessage->getMessage());
