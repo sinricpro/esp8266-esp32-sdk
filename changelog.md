@@ -1,4 +1,7 @@
 # Changelog
+## Version 2.8.0
+- SSL is now enabled by default
+
 ## Version 2.7.6
 - Internal changes
   removed QueueList.h and use std::queue instead
