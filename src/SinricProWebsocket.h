@@ -121,9 +121,9 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
 #ifdef WEBSOCKET_SSL
   // To get this working, WebSocketsClient.h needs to be fixed. See https://github.com/Links2004/arduinoWebSockets/issues/492
-  webSocket.beginSSL(server, SINRICPRO_SERVER_SSL_PORT, "/");
+  webSocket.beginSSL(server.c_str(), SINRICPRO_SERVER_SSL_PORT, "/");
 #else
-  webSocket.begin(server, SINRICPRO_SERVER_PORT, "/"); // server address, port and URL
+  webSocket.begin(server.c_str(), SINRICPRO_SERVER_PORT, "/"); // server address, port and URL
 #endif
 }
 
