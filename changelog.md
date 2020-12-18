@@ -1,4 +1,8 @@
 # Changelog
+## Version 2.8.1
+- New Example: MultiRelays_advance (see examples/Relay)
+- Moved existing relay example to new folder (examples/Relay)
+
 ## Version 2.8.0
 - SSL is now enabled by default
 
