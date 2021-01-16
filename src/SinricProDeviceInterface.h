@@ -10,7 +10,6 @@ class SinricProDeviceInterface {
     virtual DeviceId getDeviceId() = 0;
     virtual String getProductType() = 0;
     virtual void begin(SinricProInterface* eventSender) = 0;
-  protected:
     virtual bool sendEvent(JsonDocument& event) = 0;
     virtual DynamicJsonDocument prepareEvent(const DeviceId &deviceId, const char* action, const char* cause) = 0;
 };

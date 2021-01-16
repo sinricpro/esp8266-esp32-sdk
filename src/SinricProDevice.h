@@ -29,40 +29,12 @@ class SinricProDevice : public SinricProDeviceInterface {
     virtual String getProductType();
     virtual void begin(SinricProInterface* eventSender);
 
-    // callback definitions
-    /**
-     * @brief Callback definition for onPowerState function
-     * 
-     * Gets called when device receive a `setPowerState` reuqest \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   state       `true` = device is requested to turn on \n `false` = device is requested to turn off
-     * @param[out]  state       `true` = device has been turned on \n `false` = device has been turned off
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section PowerStateCallback Example-Code
-     * @snippet callbacks.cpp onPowerState
-     **/
-    typedef std::function<bool(const String&, bool&)> PowerStateCallback;
-    
-
-    // standard request handler
-    virtual bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value);
-
-    // standard Callbacks
-    virtual void onPowerState(PowerStateCallback cb);
-
-    // standard events
-    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    virtual bool sendEvent(JsonDocument &event);
+    virtual DynamicJsonDocument prepareEvent(const DeviceId &deviceId, const char *action, const char *cause);
 
   protected:
-    virtual bool sendEvent(JsonDocument& event);
-    virtual DynamicJsonDocument prepareEvent(const DeviceId &deviceId, const char* action, const char* cause);
     unsigned long getTimestamp();
     DeviceId deviceId;
-    PowerStateCallback powerStateCallback;
-    template <typename T>
-    T limitValue(T value, T minValue, T maxValue);
   private:
     SinricProInterface* eventSender;
     std::map<String, LeakyBucket_t> eventFilter;
@@ -70,7 +42,6 @@ class SinricProDevice : public SinricProDeviceInterface {
 
 SinricProDevice::SinricProDevice(const DeviceId &deviceId) : 
   deviceId(deviceId),
-  powerStateCallback(nullptr),
   eventSender(nullptr) {
 }
 
@@ -85,20 +56,6 @@ DeviceId SinricProDevice::getDeviceId() {
   return deviceId;
 }
 
-bool SinricProDevice::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (deviceId != this->deviceId) return false;
-  DEBUG_SINRIC("SinricProDevice::handleRequest()\r\n");
-  bool success = false;
-  String actionString = String(action);
-
-  if (actionString == "setPowerState" && powerStateCallback) {
-    bool powerState = request_value["state"]=="On"?true:false;
-    success = powerStateCallback(deviceId, powerState);
-    response_value["state"] = powerState?"On":"Off";
-    return success;
-  }
-  return success;
-}
 
 DynamicJsonDocument SinricProDevice::prepareEvent(const DeviceId &deviceId, const char* action, const char* cause) {
   if (eventSender) return eventSender->prepareEvent(deviceId, action, cause);
@@ -137,41 +94,6 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
 unsigned long SinricProDevice::getTimestamp() {
   if (eventSender) return eventSender->getTimestamp();
   return 0;
-}
-
-template <typename T>
-T SinricProDevice::limitValue(T value, T minValue, T maxValue) {
-  T newValue = value;
-  if (value > maxValue) newValue = maxValue;
-  if (value < minValue) newValue = minValue;
-  return newValue;
-}
-
-/**
- * @brief Set callback function for `powerState` request
- * 
- * @param cb Function pointer to a `PowerStateCallback` function
- * @return void
- * @see PowerStateCallback
- **/
-void SinricProDevice::onPowerState(PowerStateCallback cb) { 
-  powerStateCallback = cb; 
-}
-
-/**
- * @brief Send `setPowerState` event to SinricPro Server indicating actual power state
- * 
- * @param state   `true` = device turned on \n `false` = device turned off
- * @param cause   (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
- * @return the success of sending the even
- * @retval true   event has been sent successfully
- * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
- **/
-bool SinricProDevice::sendPowerStateEvent(bool state, String cause) {
-  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setPowerState", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state?"On":"Off";
-  return sendEvent(eventMessage);
 }
 
 String SinricProDevice::getProductType()  { 
