@@ -9,39 +9,32 @@
 #define _SINRICTEMPERATURESENSOR_H_
 
 #include "SinricProDevice.h"
+#include "./Controller/PowerStateController.h"
+#include "./Controller/TemperatureController.h"
 
 /**
  * @class SinricProTemperaturesensor
  * @brief Device to report actual temperature and humidity
  */
-class SinricProTemperaturesensor :  public SinricProDevice {
+class SinricProTemperaturesensor :  public SinricProDevice,
+                                    public PowerStateController,
+                                    public TemperatureController {
   public:
 	  SinricProTemperaturesensor(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("TEMPERATURESENSOR"); }
 
-    // event
-    bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
-  private:
+    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) override;
 };
 
-SinricProTemperaturesensor::SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
+SinricProTemperaturesensor::SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "TEMPERATURESENSOR"),
+                                                                                   PowerStateController(this),
+                                                                                   TemperatureController(this) {}
 
-/**
- * @brief Sending current temperature and humidity to SinricPro server
- * 
- * @param   temperature   float representing current temperature
- * @param   humidity      (optional) float representing current humidity (default = `-1` meaning not supported)
- * @param   cause         (optional) `String` reason why event is sent (default = `"PERIODIC_POLL"`)
- * @return  the success of sending the event
- * @retval  true          event has been sent successfully
- * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
- **/
-bool SinricProTemperaturesensor::sendTemperatureEvent(float temperature, float humidity, String cause) {
-  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "currentTemperature", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["humidity"] = roundf(humidity * 10) / 10.0;
-  event_value["temperature"] = roundf(temperature * 10) / 10.0;
-  return sendEvent(eventMessage);
+bool SinricProTemperaturesensor::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
+  bool success = false;
+
+  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
+
+  return success;
 }
 
 #endif

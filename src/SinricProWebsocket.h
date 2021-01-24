@@ -16,12 +16,18 @@
   #include <WiFi.h>
 #endif
 
+//#include <WebSockets.h>
 #include <WebSocketsClient.h>
+
 #include <ArduinoJson.h>
 #include "SinricProDebug.h"
 #include "SinricProConfig.h"
 #include "SinricProQueue.h"
 #include "SinricProInterface.h"
+
+#if !defined(WEBSOCKETS_VERSION_INT) || (WEBSOCKETS_VERSION_INT < 2003003)
+#error "Wrong WebSockets Version! Minimum Version is 2.3.3!!!"
+#endif
 
 class AdvWebSocketsClient : public WebSocketsClient {
   public:

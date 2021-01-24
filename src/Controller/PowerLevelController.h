@@ -46,6 +46,7 @@ class PowerLevelController {
     void onAdjustPowerLevel(AdjustPowerLevelCallback cb);
     bool sendPowerLevelEvent(int powerLevel, String cause = "PHYSICAL_INTERACTION");
 
+  protected:
     bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
 
   private:
@@ -86,7 +87,7 @@ void PowerLevelController::onAdjustPowerLevel(AdjustPowerLevelCallback cb) {
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
 bool PowerLevelController::sendPowerLevelEvent(int powerLevel, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent(device->getDeviceId(), "setPowerLevel", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setPowerLevel", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["powerLevel"] = powerLevel;
   return device->sendEvent(eventMessage);

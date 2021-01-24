@@ -35,6 +35,7 @@ class LockController {
     void onLockState(LockStateCallback cb);
     bool sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
 
+  protected:
     bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
 
   private:
@@ -65,7 +66,7 @@ void LockController::onLockState(LockStateCallback cb) {
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
 bool LockController::sendLockStateEvent(bool state, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent(device->getDeviceId(), "setLockState", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setLockState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   state ? event_value["state"] = "LOCKED" : event_value["state"] = "UNLOCKED";
   return device->sendEvent(eventMessage);

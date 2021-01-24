@@ -21,22 +21,18 @@ class SinricProFanUS :  public SinricProDevice,
                         public RangeController {
   public:
 	  SinricProFanUS(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("FAN"); }
     bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
 };
 
-SinricProFanUS::SinricProFanUS(const DeviceId &deviceId) : SinricProDevice(deviceId),
+SinricProFanUS::SinricProFanUS(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN"),
                                                            PowerStateController(this),
                                                            RangeController(this) {}
 
 bool SinricProFanUS::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (deviceId != this->deviceId) return false;
-
   bool success = false;
-  String actionString = String(action);
 
-  if (!success) PowerStateController::handleRequest(action, request_value, response_value);
-  if (!success) RangeController::handleRequest(action, request_value, response_value);
+  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
+  if (!success) success = RangeController::handleRequest(action, request_value, response_value);
 
   return success;
 }

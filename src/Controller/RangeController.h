@@ -48,12 +48,14 @@ class RangeController {
 
     bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION");
 
+  protected:
     bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
-    private:
-      SinricProDeviceInterface *device;
-      SetRangeValueCallback setRangeValueCallback;
-      AdjustRangeValueCallback adjustRangeValueCallback;
-    };
+    
+  private:
+    SinricProDeviceInterface *device;
+    SetRangeValueCallback setRangeValueCallback;
+    AdjustRangeValueCallback adjustRangeValueCallback;
+};
 
 RangeController::RangeController(SinricProDeviceInterface *device) : device(device) {}
 
@@ -87,7 +89,7 @@ void RangeController::onAdjustRangeValue(AdjustRangeValueCallback cb) {
  * @retval  false       event has not been sent, maybe you sent to much events in a short distance of time
  */
 bool RangeController::sendRangeValueEvent(int rangeValue, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent(device->getDeviceId(), "setRangeValue", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setRangeValue", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["rangeValue"] = rangeValue;
   return device->sendEvent(eventMessage);

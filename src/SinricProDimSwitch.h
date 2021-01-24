@@ -22,21 +22,19 @@ class SinricProDimSwitch :  public SinricProDevice,
   public:
 	  SinricProDimSwitch(const DeviceId &deviceId);
     bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
-    String getProductType() { return SinricProDevice::getProductType() + String("DIMMABLE_SWITCH"); }
 };
 
-SinricProDimSwitch::SinricProDimSwitch(const DeviceId &deviceId) : 
-  SinricProDevice(deviceId),
-  PowerStateController(this),
-  PowerLevelController(this) {
+SinricProDimSwitch::SinricProDimSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "DIMMABLE_SWITCH"),
+                                                                   PowerStateController(this),
+                                                                   PowerLevelController(this)
+{
 }
 
 bool SinricProDimSwitch::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
-  if (deviceId != this->deviceId) return false;
-
   bool success = false;
-  if (!success) PowerStateController::handleRequest(action, request_value, response_value);
-  if (!success) PowerLevelController::handleRequest(action, request_value, response_value);
+
+  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
+  if (!success) success = PowerLevelController::handleRequest(action, request_value, response_value);
 
   return success;
 }

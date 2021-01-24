@@ -23,26 +23,27 @@
  **/
 class SinricProDevice : public SinricProDeviceInterface {
   public:
-    SinricProDevice(const DeviceId &deviceId);
+    SinricProDevice(const DeviceId &deviceId, const String &productType = "");
     virtual ~SinricProDevice();
     virtual DeviceId getDeviceId();
     virtual String getProductType();
     virtual void begin(SinricProInterface* eventSender);
 
     virtual bool sendEvent(JsonDocument &event);
-    virtual DynamicJsonDocument prepareEvent(const DeviceId &deviceId, const char *action, const char *cause);
-
-  protected:
+    virtual DynamicJsonDocument prepareEvent(const char *action, const char *cause);
     unsigned long getTimestamp();
+  protected:
     DeviceId deviceId;
   private:
     SinricProInterface* eventSender;
     std::map<String, LeakyBucket_t> eventFilter;
+    String productType;
 };
 
-SinricProDevice::SinricProDevice(const DeviceId &deviceId) : 
+SinricProDevice::SinricProDevice(const DeviceId &deviceId, const String &productType) : 
   deviceId(deviceId),
-  eventSender(nullptr) {
+  eventSender(nullptr),
+  productType(productType) {
 }
 
 SinricProDevice::~SinricProDevice() {
@@ -57,7 +58,7 @@ DeviceId SinricProDevice::getDeviceId() {
 }
 
 
-DynamicJsonDocument SinricProDevice::prepareEvent(const DeviceId &deviceId, const char* action, const char* cause) {
+DynamicJsonDocument SinricProDevice::prepareEvent(const char* action, const char* cause) {
   if (eventSender) return eventSender->prepareEvent(deviceId, action, cause);
   DEBUG_SINRIC("[SinricProDevice:prepareEvent()]: Device \"%s\" isn't configured correctly! The \'%s\' event will be ignored.\r\n", deviceId.toString().c_str(), action);
   return DynamicJsonDocument(1024);
@@ -97,7 +98,7 @@ unsigned long SinricProDevice::getTimestamp() {
 }
 
 String SinricProDevice::getProductType()  { 
-  return String("sinric.device.type."); 
+  return String("sinric.device.type.")+productType; 
 }
 
 #endif

@@ -33,6 +33,7 @@ class ColorController {
     void onColor(ColorCallback cb);
     bool sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION");
 
+  protected:
     bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
   private:
     SinricProDeviceInterface* device;
@@ -64,7 +65,7 @@ void ColorController::onColor(ColorCallback cb) {
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
 bool ColorController::sendColorEvent(byte r, byte g, byte b, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent(device->getDeviceId(), "setColor", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setColor", cause.c_str());
   JsonObject event_color = eventMessage["payload"]["value"].createNestedObject("color");
   event_color["r"] = r;
   event_color["g"] = g;

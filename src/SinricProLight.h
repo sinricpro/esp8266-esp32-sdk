@@ -31,15 +31,7 @@ class SinricProLight :  public SinricProDevice,
                         public ColorTemperatureController {
   public:
     SinricProLight(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("LIGHT"); }
-    // callback
 
-
-  
-
-
-    // event
-    // handle
     bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value);
   private:
     ColorTemperatureCallback colorTemperatureCallback;
@@ -47,20 +39,18 @@ class SinricProLight :  public SinricProDevice,
     DecreaseColorTemperatureCallback decreaseColorTemperatureCallback;
 };
 
-SinricProLight::SinricProLight(const DeviceId &deviceId) : 
-  SinricProDevice(deviceId),
-  PowerStateController(this),
-  BrightnessController(this),
-  ColorController(this),
-  ColorTemperatureController(this) {}
+SinricProLight::SinricProLight(const DeviceId &deviceId) : SinricProDevice(deviceId, "LIGHT"),
+                                                           PowerStateController(this),
+                                                           BrightnessController(this),
+                                                           ColorController(this),
+                                                           ColorTemperatureController(this) {}
 
 bool SinricProLight::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (deviceId != this->deviceId) return false;
-
   bool success = false;
-  if (!success) BrightnessController::handleRequest(action, request_value, response_value);
-  if (!success) ColorController::handleRequest(action, request_value, response_value);
-  if (!success) ColorTemperatureController::handleRequest(action, request_value, response_value);
+
+  if (!success) success = BrightnessController::handleRequest(action, request_value, response_value);
+  if (!success) success = ColorController::handleRequest(action, request_value, response_value);
+  if (!success) success = ColorTemperatureController::handleRequest(action, request_value, response_value);
 
   return success;
 }

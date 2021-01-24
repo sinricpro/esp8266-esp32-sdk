@@ -11,16 +11,33 @@
 #include "SinricProDevice.h"
 #include "SinricProDimSwitch.h"
 
+#include "./Controller/PowerStateController.h"
+#include "./Controller/PowerLevelController.h"
+
 /**
  * @class SinricProFan
  * @brief Device to turn on / off a fan and change it's speed by using powerlevel
  **/
-class SinricProFan :  public SinricProDimSwitch {
+class SinricProFan : public SinricProDevice,
+                     public PowerStateController,
+                     public PowerLevelController {
   public:
 	  SinricProFan(const DeviceId &deviceId);
+    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
 };
 
-SinricProFan::SinricProFan(const DeviceId &deviceId) : SinricProDimSwitch(deviceId) {}
+SinricProFan::SinricProFan(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN_NON-US"),
+                                                       PowerStateController(this),
+                                                       PowerLevelController(this) {}
+
+bool SinricProFan::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
+  bool success = false;
+
+  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
+  if (!success) success = PowerLevelController::handleRequest(action, request_value, response_value);
+
+  return success;
+}
 
 #endif
 

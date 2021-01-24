@@ -29,6 +29,7 @@ class PowerStateController {
     void onPowerState(PowerStateCallback cb);
     bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
 
+  protected:
     bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
   private:
     SinricProDeviceInterface* device; 
@@ -58,7 +59,7 @@ void PowerStateController::onPowerState(PowerStateCallback cb) {
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
 bool PowerStateController::sendPowerStateEvent(bool state, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent(device->getDeviceId(), "setPowerState", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state ? "On" : "Off";
   return device->sendEvent(eventMessage);

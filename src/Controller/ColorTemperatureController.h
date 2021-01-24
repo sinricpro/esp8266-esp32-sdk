@@ -62,6 +62,7 @@ class ColorTemperatureController {
 
     bool sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION");
 
+  protected:
     bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
 
   private : SinricProDeviceInterface *device;
@@ -70,9 +71,7 @@ class ColorTemperatureController {
     DecreaseColorTemperatureCallback decreaseColorTemperatureCallback;
 };
 
-ColorTemperatureController::ColorTemperatureController(SinricProDeviceInterface *device) {
-  this->device = device;
-}
+ColorTemperatureController::ColorTemperatureController(SinricProDeviceInterface *device) : device(device) {}
 
 /**
  * @brief Set callback function for `setColorTemperature` request
@@ -119,7 +118,7 @@ void ColorTemperatureController::onDecreaseColorTemperature(DecreaseColorTempera
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
 bool ColorTemperatureController::sendColorTemperatureEvent(int colorTemperature, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent(device->getDeviceId(), "setColorTemperature", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setColorTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["colorTemperature"] = colorTemperature;
   return device->sendEvent(eventMessage);

@@ -10,19 +10,29 @@
 #define _SINRICCAMERA_H_
 
 #include "SinricProDevice.h"
+#include "./Controller/PowerStateController.h"
 
 /**
  * @class SinricProCamera
  * @brief Camera suporting basic on / off command
  **/
-class SinricProCamera :  public SinricProDevice {
+class SinricProCamera : public SinricProDevice,
+                        public PowerStateController {
   public:
 	  SinricProCamera(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("CAMERA"); }    
+    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
 };
 
-SinricProCamera::SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
+SinricProCamera::SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId, "CAMERA"),
+                                                             PowerStateController(this) {}
 
+bool SinricProCamera::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
+  bool success = false;
+
+  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
+
+  return success;
+}
 
 #endif
 

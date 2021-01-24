@@ -23,19 +23,18 @@ class SinricProLock :  public SinricProDevice,
                        public LockController {
   public:
 	  SinricProLock(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("SMARTLOCK"); }
 
     bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
 };
 
-SinricProLock::SinricProLock(const DeviceId &deviceId) : SinricProDevice(deviceId),
+SinricProLock::SinricProLock(const DeviceId &deviceId) : SinricProDevice(deviceId, "SMARTLOCK"),
                                                          LockController(this) {}
 
 bool SinricProLock::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  if (deviceId != this->deviceId) return false;
   bool success = false;
 
-  if (!success) LockController::handleRequest(action, request_value, response_value);
+  if (!success) success = LockController::handleRequest(action, request_value, response_value);
+
   return success;
 }
 

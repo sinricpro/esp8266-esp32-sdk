@@ -9,35 +9,33 @@
 #define _SINRICDOORBELL_H_
 
 #include "SinricProDevice.h"
+#include "Controller/PowerStateController.h"
+#include "Controller/DoorbellController.h"
 
 /**
  * @class SinricProDoorbell
  * @brief Device to report doorbell events
  *  */
-class SinricProDoorbell :  public SinricProDevice {
+class SinricProDoorbell :  public SinricProDevice,
+                           public PowerStateController,
+                           public DoorbellController {
   public:
 	  SinricProDoorbell(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("DOORBELL"); }
-    // event
-    bool sendDoorbellEvent(String cause = "PHYSICAL_INTERACTION");
+    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
+
   private:
 };
 
-SinricProDoorbell::SinricProDoorbell(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
+SinricProDoorbell::SinricProDoorbell(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR"),
+                                                                 PowerStateController(this),
+                                                                 DoorbellController(this) {}
 
-/**
- * @brief Send Doorbell event to SinricPro Server indicating someone pressed the doorbell button
- * 
- * @param   cause         (optional) Reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
- * @return  the success of sending the event
- * @retval  true          event has been sent successfully
- * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
- **/
-bool SinricProDoorbell::sendDoorbellEvent(String cause) {
-  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "DoorbellPress", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = "pressed";
-  return sendEvent(eventMessage);
+bool SinricProDoorbell::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
+  bool success = false;
+
+  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
+
+  return success;
 }
 
 #endif
