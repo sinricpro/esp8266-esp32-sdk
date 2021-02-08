@@ -1,0 +1,6 @@
+<map id="SinricProPowerSensor" name="SinricProPowerSensor">
+<area shape="rect" id="node1" title="Device to report power usage." alt="" coords="5,185,157,212"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="9,102,122,129"/>
+<area shape="rect" id="node3" href="$class_power_sensor_event_source.html" title=" " alt="" coords="147,95,323,136"/>
+<area shape="rect" id="node4" href="$class_power_sensor_event_source.html" title="PowerSensorEventSource." alt="" coords="133,5,336,32"/>
+</map>

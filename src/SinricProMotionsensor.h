@@ -10,32 +10,27 @@
 
 #include "SinricProDevice.h"
 #include "./Controller/PowerStateController.h"
-#include "./Controller/MotionController.h"
+#include "./EventSource/MotionEventSource.h"
 
 /**
  * @class SinricProMotionsensor
  * @brief Device to report motion detection events
+ * @ingroup Devices
  */
-class SinricProMotionsensor :  public SinricProDevice,
-                               public PowerStateController,
-                               public MotionController {
-  public:
-	  SinricProMotionsensor(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
-
-  private:
+class SinricProMotionsensor : public SinricProDevice,
+                              public PowerStateController<SinricProMotionsensor>,
+                              public MotionEventSource<SinricProMotionsensor> {
+public:
+  SinricProMotionsensor(const DeviceId &deviceId);
+  bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
-SinricProMotionsensor::SinricProMotionsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "MOTION_SENSOR"),
-                                                                         PowerStateController(this),
-                                                                         MotionController(this) {}
-                                                                         
-bool SinricProMotionsensor::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
+SinricProMotionsensor::SinricProMotionsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "MOTION_SENSOR") {}
 
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
+bool SinricProMotionsensor::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
 
-  return success;
+  return false;
 }
 
 #endif

@@ -1,8 +1,8 @@
 var class_sinric_pro_dim_switch =
 [
-    [ "AdjustPowerLevelCallback", "class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a", null ],
-    [ "PowerStateCallback", "class_sinric_pro_dim_switch.html#aa9db92ebe40a0df6deb43eba70d3dea3", null ],
-    [ "SetPowerLevelCallback", "class_sinric_pro_dim_switch.html#afbdda289acfd7d72c03bab3b69b42afd", null ],
+    [ "AdjustPowerLevelCallback", "class_sinric_pro_dim_switch.html#a3ec3aad26d06f5b943a6906e11afc1f3", null ],
+    [ "PowerStateCallback", "class_sinric_pro_dim_switch.html#aad370bc6b280bbdeac98181a31f22df4", null ],
+    [ "SetPowerLevelCallback", "class_sinric_pro_dim_switch.html#a5be6c20c0ba9e9b19bd76d42918451b2", null ],
     [ "onAdjustPowerLevel", "class_sinric_pro_dim_switch.html#a13b10bdb1844babe4de320fff9172d96", null ],
     [ "onPowerLevel", "class_sinric_pro_dim_switch.html#a0685d34694badb4442fed6b69b69b366", null ],
     [ "onPowerState", "class_sinric_pro_dim_switch.html#a32f3257da431a1035f23a265ff0cc4cf", null ],

@@ -10,32 +10,28 @@
 
 #include "SinricProDevice.h"
 #include "Controller/PowerStateController.h"
-#include "Controller/ContactController.h"
+#include "EventSource/ContactEventSource.h"
 
 /**
  * @class SinricProContactsensor
  * @brief Device to report contact sensor events
+ * @ingroup Devices
  **/
 class SinricProContactsensor : public SinricProDevice,
-                               public PowerStateController,
-                               public ContactController {
+                               public PowerStateController<SinricProContactsensor>,
+                               public ContactEventSource<SinricProContactsensor> {
   public:
 	  SinricProContactsensor(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 
   private:
 };
 
-SinricProContactsensor::SinricProContactsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR"),
-                                                                           PowerStateController(this),
-                                                                           ContactController(this) {}
+SinricProContactsensor::SinricProContactsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 
-bool SinricProContactsensor::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-
-  return success;
+bool SinricProContactsensor::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  return false;
 }
 
 #endif

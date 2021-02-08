@@ -9,22 +9,22 @@
 #define _SINRICPOWERSENSOR_H_
 
 #include "SinricProDevice.h"
-#include "Controller/PowerSensorController.h"
+#include "EventSource/PowerSensorEventSource.h"
 
 /**
  * @class SinricProPowerSensor
  * @brief Device to report power usage
- *  */
+ * @ingroup Devices
+ **/
 class SinricProPowerSensor :  public SinricProDevice,
-                              public PowerSensorController {
+                              public PowerSensorEventSource<SinricProPowerSensor> {
   public:
 	  SinricProPowerSensor(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
-SinricProPowerSensor::SinricProPowerSensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "POWER_SENSOR"),
-                                                                       PowerSensorController(this) {}
+SinricProPowerSensor::SinricProPowerSensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "POWER_SENSOR") {}
 
-bool SinricProPowerSensor::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) { return false; }
+bool SinricProPowerSensor::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) { return false; }
 
 #endif

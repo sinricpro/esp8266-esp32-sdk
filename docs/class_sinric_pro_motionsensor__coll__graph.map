@@ -1,0 +1,8 @@
+<map id="SinricProMotionsensor" name="SinricProMotionsensor">
+<area shape="rect" id="node1" title="Device to report motion detection events." alt="" coords="615,64,768,91"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="420,5,533,32"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="388,57,565,98"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
+<area shape="rect" id="node5" href="$class_motion_event_source.html" title=" " alt="" coords="392,122,561,163"/>
+<area shape="rect" id="node6" href="$class_motion_event_source.html" title="MotionEventSource." alt="" coords="10,129,175,156"/>
+</map>

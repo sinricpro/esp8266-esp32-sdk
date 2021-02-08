@@ -1,11 +1,13 @@
 #ifndef _MEDIACONTROLLER_H_
 #define _MEDIACONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
+/**
+ * @brief MediaController
+ * @ingroup Controller
+ **/
+template <typename T>
 class MediaController {
   public:
-    MediaController(SinricProDeviceInterface *device);
 
     /**
      * @brief Callback definition for onMediaControl function
@@ -27,14 +29,11 @@ class MediaController {
     bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleMediaController(const String &action, JsonObject &request_value, JsonObject &response_value);
 
   private:
-    SinricProDeviceInterface* device;
     MediaControlCallback mediaControlCallback;
 };
-
-MediaController::MediaController(SinricProDeviceInterface *device) : device(device) {}
 
 /**
  * @brief Set callback function for `mediaControl` request
@@ -43,8 +42,9 @@ MediaController::MediaController(SinricProDeviceInterface *device) : device(devi
  * @return void
  * @see MediaControlCallback
  **/
-void MediaController::onMediaControl(MediaControlCallback cb) { 
-  mediaControlCallback = cb; 
+template <typename T>
+void MediaController<T>::onMediaControl(MediaControlCallback cb) {
+  mediaControlCallback = cb;
 }
 
 /**
@@ -56,20 +56,25 @@ void MediaController::onMediaControl(MediaControlCallback cb) {
  * @retval true   event has been sent successfully
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool MediaController::sendMediaControlEvent(String mediaControl, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("mediaControl", cause.c_str());
+template <typename T>
+bool MediaController<T>::sendMediaControlEvent(String mediaControl, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("mediaControl", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["control"] = mediaControl;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool MediaController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-  String actionString = String(action);
+template <typename T>
+bool MediaController<T>::handleMediaController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
 
-  if (mediaControlCallback && actionString == "mediaControl") {
+  bool success = false;
+
+  if (mediaControlCallback && action == "mediaControl") {
     String mediaControl = request_value["control"];
-    success = mediaControlCallback(device->getDeviceId(), mediaControl);
+    success = mediaControlCallback(device.getDeviceId(), mediaControl);
     response_value["control"] = mediaControl;
     return success;
   }

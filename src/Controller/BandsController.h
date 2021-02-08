@@ -1,13 +1,15 @@
 #ifndef _BANDSCONTROLLER_H_
 #define _BANDSCONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
-class BandsController {
-  public:
-    BandsController(SinricProDeviceInterface* device);
-
-    /**
+/**
+ * @brief BandsController
+ * @ingroup Controller
+ **/
+template <typename T>
+class BandsController
+{
+public:
+  /**
      * @brief Callback definition for onSetBands function
      * 
      * Gets called when device receive a `setBands` request \n
@@ -23,9 +25,9 @@ class BandsController {
      * @section SetBandsCallback Example-Code
      * @snippet callbacks.cpp onSetBands
      **/
-    using SetBandsCallback = std::function<bool(const String &, const String &, int &)>;
+  using SetBandsCallback = std::function<bool(const String &, const String &, int &)>;
 
-    /**
+  /**
      * @brief Callback definition for onAdjustBands function
      * 
      * Gets called when device receive a `adjustBands` request \n
@@ -41,9 +43,9 @@ class BandsController {
      * @section AdjustBandsCallback Example-Code
      * @snippet callbacks.cpp onAdjustBands
      **/
-    using AdjustBandsCallback = std::function<bool(const String &, const String &, int &)>;
+  using AdjustBandsCallback = std::function<bool(const String &, const String &, int &)>;
 
-    /**
+  /**
      * @brief Callback definition for onResetBands function
      * 
      * Gets called when device receive a `onResetBands` request \n
@@ -58,25 +60,22 @@ class BandsController {
      * @section ResetBandsCallback Example-Code
      * @snippet callbacks.cpp onResetBands
      **/
-    using ResetBandsCallback = std::function<bool(const String &, const String &, int &)>;
+  using ResetBandsCallback = std::function<bool(const String &, const String &, int &)>;
 
-    void onSetBands(SetBandsCallback cb);
-    void onAdjustBands(AdjustBandsCallback cb);
-    void onResetBands(ResetBandsCallback cb);
+  void onSetBands(SetBandsCallback cb);
+  void onAdjustBands(AdjustBandsCallback cb);
+  void onResetBands(ResetBandsCallback cb);
 
-    bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION");
+  bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION");
 
-  protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+protected:
+  bool handleBandsController(const String &action, JsonObject &request_value, JsonObject &response_value);
 
-  private:
-    SinricProDeviceInterface *device;
-    SetBandsCallback setBandsCallback;
-    AdjustBandsCallback adjustBandsCallback;
-    ResetBandsCallback resetBandsCallback;
+private:
+  SetBandsCallback setBandsCallback;
+  AdjustBandsCallback adjustBandsCallback;
+  ResetBandsCallback resetBandsCallback;
 };
-
-BandsController::BandsController(SinricProDeviceInterface *device) : device(device) {}
 
 /**
  * @brief Set callback function for `setBands` request
@@ -85,7 +84,8 @@ BandsController::BandsController(SinricProDeviceInterface *device) : device(devi
  * @return void
  * @see SetBandsCallback
  **/
-void BandsController::onSetBands(SetBandsCallback cb) { setBandsCallback = cb; }
+template <typename T>
+void BandsController<T>::onSetBands(SetBandsCallback cb) { setBandsCallback = cb; }
 
 /**
  * @brief Set callback function for `adjustBands` request
@@ -94,7 +94,8 @@ void BandsController::onSetBands(SetBandsCallback cb) { setBandsCallback = cb; }
  * @return void
  * @see AdjustBandsCallback
  **/
-void BandsController::onAdjustBands(AdjustBandsCallback cb) { adjustBandsCallback = cb; }
+template <typename T>
+void BandsController<T>::onAdjustBands(AdjustBandsCallback cb) { adjustBandsCallback = cb; }
 
 /**
  * @brief Set callback function for `resetBands` request
@@ -103,7 +104,8 @@ void BandsController::onAdjustBands(AdjustBandsCallback cb) { adjustBandsCallbac
  * @return void
  * @see ResetBandsCallback
  **/
-void BandsController::onResetBands(ResetBandsCallback cb) { resetBandsCallback = cb; }
+template <typename T>
+void BandsController<T>::onResetBands(ResetBandsCallback cb) { resetBandsCallback = cb; }
 
 /**
  * @brief Send `setBands` event to SinricPro Server indicating bands level has changed
@@ -115,28 +117,33 @@ void BandsController::onResetBands(ResetBandsCallback cb) { resetBandsCallback =
  * @retval true   event has been sent successfully
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool BandsController::sendBandsEvent(String bands, int level, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("setBands", cause.c_str());
+template <typename T>
+bool BandsController<T>::sendBandsEvent(String bands, int level, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setBands", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   JsonArray event_value_bands = event_value.createNestedArray("bands");
   JsonObject event_bands = event_value_bands.createNestedObject();
   event_bands["name"] = bands;
   event_bands["value"] = level;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool BandsController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
+template <typename T>
+bool BandsController<T>::handleBandsController(const String &action, JsonObject &request_value, JsonObject &response_value)
+{
+  T &device = static_cast<T &>(*this);
   bool success = false;
-  String actionString = String(action);
 
-  if (setBandsCallback && actionString == "setBands") {
+  if (setBandsCallback && action == "setBands") {
     JsonArray bands_array = request_value["bands"];
     JsonArray response_value_bands = response_value.createNestedArray("bands");
 
     for (size_t i = 0; i < bands_array.size(); i++) {
       int level = bands_array[i]["level"] | 0;
       String bandsName = bands_array[i]["name"] | "";
-      success = setBandsCallback(device->getDeviceId(), bandsName, level);
+      success = setBandsCallback(device.getDeviceId(), bandsName, level);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
       response_value_bands_i["level"] = level;
@@ -144,7 +151,7 @@ bool BandsController::handleRequest(const char *action, JsonObject &request_valu
     return success;
   }
 
-  if (adjustBandsCallback && actionString == "adjustBands") {
+  if (adjustBandsCallback && action == "adjustBands") {
     JsonArray bands_array = request_value["bands"];
     JsonArray response_value_bands = response_value.createNestedArray("bands");
 
@@ -154,7 +161,7 @@ bool BandsController::handleRequest(const char *action, JsonObject &request_valu
       if (direction == "DOWN")
         levelDelta *= -1;
       String bandsName = bands_array[i]["name"] | "";
-      success = adjustBandsCallback(device->getDeviceId(), bandsName, levelDelta);
+      success = adjustBandsCallback(device.getDeviceId(), bandsName, levelDelta);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
       response_value_bands_i["level"] = levelDelta;
@@ -162,14 +169,14 @@ bool BandsController::handleRequest(const char *action, JsonObject &request_valu
     return success;
   }
 
-  if (resetBandsCallback && actionString == "resetBands") {
+  if (resetBandsCallback && action == "resetBands") {
     JsonArray bands_array = request_value["bands"];
     JsonArray response_value_bands = response_value.createNestedArray("bands");
 
     for (size_t i = 0; i < bands_array.size(); i++) {
       int level = 0;
       String bandsName = bands_array[i]["name"] | "";
-      success = adjustBandsCallback(device->getDeviceId(), bandsName, level);
+      success = adjustBandsCallback(device.getDeviceId(), bandsName, level);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
       response_value_bands_i["level"] = level;

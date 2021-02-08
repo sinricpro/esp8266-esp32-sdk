@@ -19,6 +19,7 @@
 /**
  * @class SinricProTV
  * @brief Device to control a TV
+ * @ingroup Devices
  * 
  * Supporting: 
  * * setVolume / adjustVolume
@@ -32,37 +33,29 @@
  * * Skip channels
  */
 class SinricProTV : public SinricProDevice,
-                    public PowerStateController,
-                    public VolumeController,
-                    public MuteController,
-                    public MediaController,
-                    public InputController,
-                    public ChannelController {
+                    public PowerStateController<SinricProTV>,
+                    public VolumeController<SinricProTV>,
+                    public MuteController<SinricProTV>,
+                    public MediaController<SinricProTV>,
+                    public InputController<SinricProTV>,
+                    public ChannelController<SinricProTV> {
   public:
 	  SinricProTV(const DeviceId &deviceId);
 
-    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
-SinricProTV::SinricProTV(const DeviceId &deviceId) : SinricProDevice(deviceId, "TV"),
-                                                     PowerStateController(this),
-                                                     VolumeController(this),
-                                                     MuteController(this),
-                                                     MediaController(this),
-                                                     InputController(this),
-                                                     ChannelController(this) {}
+SinricProTV::SinricProTV(const DeviceId &deviceId) : SinricProDevice(deviceId, "TV") {}
 
-bool SinricProTV::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
+bool SinricProTV::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  if (handleVolumeController(action, request_value, response_value)) return true;
+  if (handleMuteController(action, request_value, response_value)) return true;
+  if (handleMediaController(action, request_value, response_value)) return true;
+  if (handleInputController(action, request_value, response_value)) return true;
+  if (handleChannelController(action, request_value, response_value)) return true;
 
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-  if (!success) success = VolumeController::handleRequest(action, request_value, response_value);
-  if (!success) success = MuteController::handleRequest(action, request_value, response_value);
-  if (!success) success = MediaController::handleRequest(action, request_value, response_value);
-  if (!success) success = InputController::handleRequest(action, request_value, response_value);
-  if (!success) success = ChannelController::handleRequest(action, request_value, response_value);
-
-  return success;
+  return false;
 }
 
 #endif

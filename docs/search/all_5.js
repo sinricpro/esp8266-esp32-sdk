@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['handle_18',['handle',['../class_sinric_pro_class.html#a37c2d0658e498b1bf878f8a3d9a7c5b4',1,'SinricProClass']]]
+  ['genericadjustrangevaluecallback_34',['GenericAdjustRangeValueCallback',['../class_range_controller.html#a90fe7dc0c27988409efcfb91f0803a5c',1,'RangeController']]],
+  ['genericmodecallback_35',['GenericModeCallback',['../class_mode_controller.html#ac29fade927b50eac618999f84b29d02b',1,'ModeController']]],
+  ['genericsetrangevaluecallback_36',['GenericSetRangeValueCallback',['../class_range_controller.html#af39a258f97a68dde10bbc724cef7a669',1,'RangeController']]],
+  ['generictogglestatecallback_37',['GenericToggleStateCallback',['../class_toggle_controller.html#a87371479ad42795e9dc9344bd02a6312',1,'ToggleController']]],
+  ['gettimestamp_38',['getTimestamp',['../class_sinric_pro_class.html#afb2be26eef972203404140612fa31326',1,'SinricProClass']]]
 ];

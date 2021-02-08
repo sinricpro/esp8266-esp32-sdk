@@ -1,0 +1,13 @@
+/**
+ * @defgroup SinricPro SinricPro
+ * @brief Main instance of SinricProClass
+ *
+ * @defgroup Devices Devices
+ * @brief Available devices
+ *
+ * @defgroup Controller Controller
+ * @brief Controllers
+ * 
+ * @defgroup EventSource EventSource
+ * @brief Event sources
+ **/ 

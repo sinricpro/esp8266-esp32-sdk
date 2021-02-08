@@ -1,0 +1,8 @@
+<map id="SinricProTemperaturesensor" name="SinricProTemperaturesensor">
+<area shape="rect" id="node1" title="Device to report actual temperature and humidity." alt="" coords="705,64,892,91"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="494,5,607,32"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="445,57,656,98"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="17,64,192,91"/>
+<area shape="rect" id="node5" href="$class_temperature_event_source.html" title=" " alt="" coords="445,122,656,163"/>
+<area shape="rect" id="node6" href="$class_temperature_event_source.html" title="TemperatureEventSource." alt="" coords="5,129,204,156"/>
+</map>

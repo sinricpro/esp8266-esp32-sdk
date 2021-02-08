@@ -1,0 +1,8 @@
+<map id="SinricProContactsensor" name="SinricProContactsensor">
+<area shape="rect" id="node1" title="Device to report contact sensor events." alt="" coords="625,64,784,91"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="428,5,541,32"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="393,57,576,98"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
+<area shape="rect" id="node5" href="$class_contact_event_source.html" title=" " alt="" coords="393,122,576,163"/>
+<area shape="rect" id="node6" href="$class_contact_event_source.html" title="ContactEventSource." alt="" coords="7,129,178,156"/>
+</map>

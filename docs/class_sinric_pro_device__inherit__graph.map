@@ -1,0 +1,22 @@
+<map id="SinricProDevice" name="SinricProDevice">
+<area shape="rect" id="node1" title="Base class for all device types." alt="" coords="5,461,119,488"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_air_quality_sensor.html" title="Device to report air quality events." alt="" coords="173,5,347,32"/>
+<area shape="rect" id="node3" href="$class_sinric_pro_blinds.html" title="Device to control interior blinds." alt="" coords="205,56,315,83"/>
+<area shape="rect" id="node4" href="$class_sinric_pro_camera.html" title="Camera suporting basic on / off command." alt="" coords="200,107,320,133"/>
+<area shape="rect" id="node5" href="$class_sinric_pro_contactsensor.html" title="Device to report contact sensor events." alt="" coords="181,157,339,184"/>
+<area shape="rect" id="node6" href="$class_sinric_pro_dim_switch.html" title="Device which supports on / off and dimming commands." alt="" coords="191,208,329,235"/>
+<area shape="rect" id="node7" href="$class_sinric_pro_doorbell.html" title="Device to report doorbell events." alt="" coords="199,259,321,285"/>
+<area shape="rect" id="node8" href="$class_sinric_pro_fan.html" title="Device to turn on / off a fan and change it&#39;s speed by using powerlevel." alt="" coords="211,309,309,336"/>
+<area shape="rect" id="node9" href="$class_sinric_pro_fan_u_s.html" title="Device to control a fan with on / off commands and its speed by a range value." alt="" coords="203,360,317,387"/>
+<area shape="rect" id="node10" href="$class_sinric_pro_garage_door.html" title="Device to control a garage door." alt="" coords="188,411,332,437"/>
+<area shape="rect" id="node11" href="$class_sinric_pro_light.html" title="Device to control a light." alt="" coords="209,461,311,488"/>
+<area shape="rect" id="node12" href="$class_sinric_pro_lock.html" title="Device to control a smart lock." alt="" coords="209,512,311,539"/>
+<area shape="rect" id="node13" href="$class_sinric_pro_motionsensor.html" title="Device to report motion detection events." alt="" coords="183,563,337,589"/>
+<area shape="rect" id="node14" href="$class_sinric_pro_power_sensor.html" title="Device to report power usage." alt="" coords="184,613,336,640"/>
+<area shape="rect" id="node15" href="$class_sinric_pro_speaker.html" title="Device to control a smart speaker." alt="" coords="199,664,321,691"/>
+<area shape="rect" id="node16" href="$class_sinric_pro_switch.html" title="Device suporting basic on / off command." alt="" coords="203,715,317,741"/>
+<area shape="rect" id="node17" href="$class_sinric_pro_t_v.html" title="Device to control a TV." alt="" coords="215,765,305,792"/>
+<area shape="rect" id="node18" href="$class_sinric_pro_temperaturesensor.html" title="Device to report actual temperature and humidity." alt="" coords="167,816,353,843"/>
+<area shape="rect" id="node19" href="$class_sinric_pro_thermostat.html" title="Device to control Thermostat." alt="" coords="190,867,330,893"/>
+<area shape="rect" id="node20" href="$class_sinric_pro_window_a_c.html" title="Device to control Window Air Conditioner." alt="" coords="191,917,329,944"/>
+</map>

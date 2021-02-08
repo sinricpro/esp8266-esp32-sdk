@@ -1,15 +1,13 @@
 #ifndef _COLORTEMPERATURECONTROLLER_H_
 #define _COLORTEMPERATURECONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
 /**
- * @class ColorTemperatureController
- * @brief supports onColorTemperature, onIncreaseColorTemperature, onDecreaseColorTemperature, sendColorTemperatureEvent
+ * @brief ColorTemperatureController
+ * @ingroup Controller
  **/
+template <typename T>
 class ColorTemperatureController {
   public:
-    ColorTemperatureController(SinricProDeviceInterface* device);
 
     /**
      * @brief Callback definition for onColorTemperature function
@@ -63,15 +61,13 @@ class ColorTemperatureController {
     bool sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleColorTemperatureController(const String &action, JsonObject &request_value, JsonObject &response_value);
 
   private : SinricProDeviceInterface *device;
     ColorTemperatureCallback colorTemperatureCallback;
     IncreaseColorTemperatureCallback increaseColorTemperatureCallback;
     DecreaseColorTemperatureCallback decreaseColorTemperatureCallback;
 };
-
-ColorTemperatureController::ColorTemperatureController(SinricProDeviceInterface *device) : device(device) {}
 
 /**
  * @brief Set callback function for `setColorTemperature` request
@@ -80,8 +76,8 @@ ColorTemperatureController::ColorTemperatureController(SinricProDeviceInterface 
  * @return void
  * @see ColorTemperatureCallback
  **/
-void ColorTemperatureController::onColorTemperature(ColorTemperatureCallback cb)
-{
+template <typename T>
+void ColorTemperatureController<T>::onColorTemperature(ColorTemperatureCallback cb) {
   colorTemperatureCallback = cb;
 }
 
@@ -92,7 +88,8 @@ void ColorTemperatureController::onColorTemperature(ColorTemperatureCallback cb)
  * @return void
  * @see IncreaseColorTemperatureCallback
  **/
-void ColorTemperatureController::onIncreaseColorTemperature(IncreaseColorTemperatureCallback cb) {
+template <typename T>
+void ColorTemperatureController<T>::onIncreaseColorTemperature(IncreaseColorTemperatureCallback cb) {
   increaseColorTemperatureCallback = cb;
 }
 
@@ -103,8 +100,8 @@ void ColorTemperatureController::onIncreaseColorTemperature(IncreaseColorTempera
  * @return void
  * @see DecreaseColorTemperatureCallback
  **/
-void ColorTemperatureController::onDecreaseColorTemperature(DecreaseColorTemperatureCallback cb)
-{
+template <typename T>
+void ColorTemperatureController<T>::onDecreaseColorTemperature(DecreaseColorTemperatureCallback cb) {
   decreaseColorTemperatureCallback = cb;
 }
 
@@ -117,32 +114,37 @@ void ColorTemperatureController::onDecreaseColorTemperature(DecreaseColorTempera
  * @retval true   event has been sent successfully
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool ColorTemperatureController::sendColorTemperatureEvent(int colorTemperature, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("setColorTemperature", cause.c_str());
+template <typename T>
+bool ColorTemperatureController<T>::sendColorTemperatureEvent(int colorTemperature, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setColorTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["colorTemperature"] = colorTemperature;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool ColorTemperatureController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
+template <typename T>
+bool ColorTemperatureController<T>::handleColorTemperatureController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
+
   bool success = false;
-  String actionString = String(action);
 
-  if (colorTemperatureCallback && actionString == "setColorTemperature") {
+  if (colorTemperatureCallback && action == "setColorTemperature") {
     int colorTemperature = request_value["colorTemperature"];
-    success = colorTemperatureCallback(device->getDeviceId(), colorTemperature);
+    success = colorTemperatureCallback(device.getDeviceId(), colorTemperature);
     response_value["colorTemperature"] = colorTemperature;
   }
 
-  if (increaseColorTemperatureCallback && actionString == "increaseColorTemperature") {
+  if (increaseColorTemperatureCallback && action == "increaseColorTemperature") {
     int colorTemperature = 1;
-    success = increaseColorTemperatureCallback(device->getDeviceId(), colorTemperature);
+    success = increaseColorTemperatureCallback(device.getDeviceId(), colorTemperature);
     response_value["colorTemperature"] = colorTemperature;
   }
 
-  if (decreaseColorTemperatureCallback && actionString == "decreaseColorTemperature") {
+  if (decreaseColorTemperatureCallback && action == "decreaseColorTemperature") {
     int colorTemperature = -1;
-    success = decreaseColorTemperatureCallback(device->getDeviceId(), colorTemperature);
+    success = decreaseColorTemperatureCallback(device.getDeviceId(), colorTemperature);
     response_value["colorTemperature"] = colorTemperature;
   }
 

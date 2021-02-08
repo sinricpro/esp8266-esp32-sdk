@@ -1,5 +1,26 @@
 var searchData=
 [
-  ['resetbandscallback_58',['ResetBandsCallback',['../class_sinric_pro_speaker.html#ae1ec62ffbf9d7f00df9760819305782e',1,'SinricProSpeaker']]],
-  ['restoredevicestates_59',['restoreDeviceStates',['../class_sinric_pro_class.html#a27a9bb7f1e8bde0f39398649493b6f93',1,'SinricProClass']]]
+  ['powerlevelcontroller_92',['PowerLevelController',['../class_power_level_controller.html',1,'']]],
+  ['powerlevelcontroller_3c_20sinricprodimswitch_20_3e_93',['PowerLevelController&lt; SinricProDimSwitch &gt;',['../class_power_level_controller.html',1,'']]],
+  ['powerlevelcontroller_3c_20sinricprofan_20_3e_94',['PowerLevelController&lt; SinricProFan &gt;',['../class_power_level_controller.html',1,'']]],
+  ['powersensoreventsource_95',['PowerSensorEventSource',['../class_power_sensor_event_source.html',1,'']]],
+  ['powersensoreventsource_3c_20sinricpropowersensor_20_3e_96',['PowerSensorEventSource&lt; SinricProPowerSensor &gt;',['../class_power_sensor_event_source.html',1,'']]],
+  ['powerstatecallback_97',['PowerStateCallback',['../class_power_state_controller.html#aad370bc6b280bbdeac98181a31f22df4',1,'PowerStateController']]],
+  ['powerstatecontroller_98',['PowerStateController',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricproairqualitysensor_20_3e_99',['PowerStateController&lt; SinricProAirQualitySensor &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricproblinds_20_3e_100',['PowerStateController&lt; SinricProBlinds &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprocamera_20_3e_101',['PowerStateController&lt; SinricProCamera &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprocontactsensor_20_3e_102',['PowerStateController&lt; SinricProContactsensor &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprodimswitch_20_3e_103',['PowerStateController&lt; SinricProDimSwitch &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprodoorbell_20_3e_104',['PowerStateController&lt; SinricProDoorbell &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprofan_20_3e_105',['PowerStateController&lt; SinricProFan &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprofanus_20_3e_106',['PowerStateController&lt; SinricProFanUS &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprolight_20_3e_107',['PowerStateController&lt; SinricProLight &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricpromotionsensor_20_3e_108',['PowerStateController&lt; SinricProMotionsensor &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprospeaker_20_3e_109',['PowerStateController&lt; SinricProSpeaker &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricproswitch_20_3e_110',['PowerStateController&lt; SinricProSwitch &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprotemperaturesensor_20_3e_111',['PowerStateController&lt; SinricProTemperaturesensor &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprothermostat_20_3e_112',['PowerStateController&lt; SinricProThermostat &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprotv_20_3e_113',['PowerStateController&lt; SinricProTV &gt;',['../class_power_state_controller.html',1,'']]],
+  ['powerstatecontroller_3c_20sinricprowindowac_20_3e_114',['PowerStateController&lt; SinricProWindowAC &gt;',['../class_power_state_controller.html',1,'']]]
 ];

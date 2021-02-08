@@ -10,28 +10,26 @@
 
 #include "SinricProDevice.h"
 #include "./Controller/PowerStateController.h"
-#include "./Controller/AirQualityController.h"
+#include "./EventSource/AirQualityEventSource.h"
 
 /**
  * @class SinricProAirQualitySensor
  * @brief Device to report air quality events
+ * @ingroup Devices
  */
-class SinricProAirQualitySensor :  public SinricProDevice,
-                                   public PowerStateController,
-                                   public AirQualityController {
-  public:
-	  SinricProAirQualitySensor(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
+class SinricProAirQualitySensor : public SinricProDevice,
+                                  public PowerStateController<SinricProAirQualitySensor>,
+                                  public AirQualityEventSource<SinricProAirQualitySensor> {
+public:
+  SinricProAirQualitySensor(const DeviceId &deviceId);
+  bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
-SinricProAirQualitySensor::SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR"),
-                                                                                 PowerStateController(this),
-                                                                                 AirQualityController(this) {}
+SinricProAirQualitySensor::SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR") {}
 
-bool SinricProAirQualitySensor::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-  return success;
+bool SinricProAirQualitySensor::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  return false;
 }
 
 #endif

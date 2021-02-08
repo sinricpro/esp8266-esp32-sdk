@@ -15,28 +15,24 @@
 /**
  * @class SinricProFanUS
  * @brief Device to control a fan with on / off commands and its speed by a range value
+ * @ingroup Devices
  */
 class SinricProFanUS :  public SinricProDevice,
-                        public PowerStateController,
-                        public RangeController {
+                        public PowerStateController<SinricProFanUS>,
+                        public RangeController<SinricProFanUS> {
   public:
 	  SinricProFanUS(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
-SinricProFanUS::SinricProFanUS(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN"),
-                                                           PowerStateController(this),
-                                                           RangeController(this) {}
+SinricProFanUS::SinricProFanUS(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN") {}
 
-bool SinricProFanUS::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
+bool SinricProFanUS::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  if (handleRangeController(action, instance, request_value, response_value)) return true;
 
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-  if (!success) success = RangeController::handleRequest(action, request_value, response_value);
-
-  return success;
+  return false;
 }
-
 
 #endif
 

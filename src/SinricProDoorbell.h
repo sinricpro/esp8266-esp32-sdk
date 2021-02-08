@@ -10,32 +10,28 @@
 
 #include "SinricProDevice.h"
 #include "Controller/PowerStateController.h"
-#include "Controller/DoorbellController.h"
+#include "EventSource/DoorbellEventSource.h"
 
 /**
  * @class SinricProDoorbell
  * @brief Device to report doorbell events
- *  */
+ * @ingroup Devices
+ **/
 class SinricProDoorbell :  public SinricProDevice,
-                           public PowerStateController,
-                           public DoorbellController {
+                           public PowerStateController<SinricProDoorbell>,
+                           public DoorbellEventSource<SinricProDoorbell> {
   public:
 	  SinricProDoorbell(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 
   private:
 };
 
-SinricProDoorbell::SinricProDoorbell(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR"),
-                                                                 PowerStateController(this),
-                                                                 DoorbellController(this) {}
+SinricProDoorbell::SinricProDoorbell(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 
-bool SinricProDoorbell::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-
-  return success;
+bool SinricProDoorbell::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  return false;
 }
 
 #endif

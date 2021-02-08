@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lockstatecallback_216',['LockStateCallback',['../class_sinric_pro_lock.html#a2e4171a3cfcd3a87584fc114782ed4d8',1,'SinricProLock']]]
+  ['increasecolortemperaturecallback_351',['IncreaseColorTemperatureCallback',['../class_color_temperature_controller.html#aed3d41935f8162074c2a2cc0168164dd',1,'ColorTemperatureController']]]
 ];

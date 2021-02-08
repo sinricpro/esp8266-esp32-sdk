@@ -14,28 +14,26 @@
 /**
  * @class SinricProLock
  * @brief Device to control a smart lock
+ * @ingroup Devices
  * 
  * Supporting 
  * * on / off
  * * lock / unlock
  **/
 class SinricProLock :  public SinricProDevice,
-                       public LockController {
+                       public LockController<SinricProLock> {
   public:
 	  SinricProLock(const DeviceId &deviceId);
 
-    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
-SinricProLock::SinricProLock(const DeviceId &deviceId) : SinricProDevice(deviceId, "SMARTLOCK"),
-                                                         LockController(this) {}
+SinricProLock::SinricProLock(const DeviceId &deviceId) : SinricProDevice(deviceId, "SMARTLOCK") {}
 
-bool SinricProLock::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
+bool SinricProLock::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handleLockController(action, request_value, response_value)) return true;
 
-  if (!success) success = LockController::handleRequest(action, request_value, response_value);
-
-  return success;
+  return false;
 }
 
 #endif

@@ -1,0 +1,8 @@
+<map id="SinricProFanUS" name="SinricProFanUS">
+<area shape="rect" id="node1" title="Device to control a fan with on / off commands and its speed by a range value." alt="" coords="577,64,692,91"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="382,5,495,32"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="367,57,511,98"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
+<area shape="rect" id="node5" href="$class_range_controller.html" title=" " alt="" coords="349,122,528,163"/>
+<area shape="rect" id="node6" href="$class_range_controller.html" title="RangeController." alt="" coords="20,129,165,156"/>
+</map>

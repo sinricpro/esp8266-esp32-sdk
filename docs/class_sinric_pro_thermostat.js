@@ -1,9 +1,9 @@
 var class_sinric_pro_thermostat =
 [
-    [ "AdjustTargetTemperatureCallback", "class_sinric_pro_thermostat.html#aeae1f9b5872cf8dcba7efc2548a671fa", null ],
-    [ "PowerStateCallback", "class_sinric_pro_thermostat.html#aa9db92ebe40a0df6deb43eba70d3dea3", null ],
-    [ "SetTargetTemperatureCallback", "class_sinric_pro_thermostat.html#a345ea0fb9b4069b8c540b17009272f65", null ],
-    [ "ThermostatModeCallback", "class_sinric_pro_thermostat.html#abe5ced42c285b52c2414e788dc8b63b3", null ],
+    [ "AdjustTargetTemperatureCallback", "class_sinric_pro_thermostat.html#a8d55dffbb520779ef95fc29e49032886", null ],
+    [ "PowerStateCallback", "class_sinric_pro_thermostat.html#aad370bc6b280bbdeac98181a31f22df4", null ],
+    [ "SetTargetTemperatureCallback", "class_sinric_pro_thermostat.html#a64ecf52eb927d219b3acabf01ad0d31f", null ],
+    [ "ThermostatModeCallback", "class_sinric_pro_thermostat.html#a6cb473352a45a2ae76a46a4292c95a8c", null ],
     [ "onAdjustTargetTemperature", "class_sinric_pro_thermostat.html#ac51f6fecfdf4c7bc8e0712e2da47bbf4", null ],
     [ "onPowerState", "class_sinric_pro_thermostat.html#a32f3257da431a1035f23a265ff0cc4cf", null ],
     [ "onTargetTemperature", "class_sinric_pro_thermostat.html#a1c73725f1f3fbb1c5b72208aae5c2bf2", null ],

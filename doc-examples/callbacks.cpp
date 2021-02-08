@@ -16,6 +16,13 @@ bool onPowerState(const String &deviceId, bool &state) {
 }
 //! [onPowerState]
 
+//! [onToggleState]
+bool onToggleState(const String &deviceId, bool &state) {
+  Serial.printf("Function turned %s\r\n", state ? "on" : "off");
+  return true; // request handled properly
+}
+//! [onToggleState]
+
 //! [onPowerLevel]
 bool onPowerLevel(const String &deviceId, int &powerLevel) {
   Serial.printf("Device %s powerlevel %d\r\n", deviceId.c_str(), powerLevel);
@@ -91,21 +98,39 @@ bool onDecreaseColorTemperature(const String &deviceId, int &colorTemperature) {
 
 //! [onRangeValue]
 bool onRangeValue(const String &deviceId, int &rangeValue) {
-  Serial.printf("Device %s range value has been set to %d\r\n", rangeValue);
+  Serial.printf("Device %s range value has been set to %d\r\n", deviceId.c_str(), rangeValue);
   return true; // request handled properly
 }
 //! [onRangeValue]
+
+//! [onRangeValueGeneric]
+bool onRangeValue(const String &deviceId, const String &instance, int &rangeValue) {
+  Serial.printf("Device %s range value for %s has been set to %d\r\n", deviceId.c_str(), instance.c_str(), rangeValue);
+  return true; // request handled properly
+}
+//! [onRangeValueGeneric]
 
 //! [onAdjustRangeValue]
 int globalRangeValue;
 
 bool onAdjustRangeValue(const String &deviceId, int &rangeValueDelta) {
   globalRangeValue += rangeValue; // calculate absolute rangeValue
-  Serial.printf("Device %s range value has been changed about %i to %d\r\n", rangeValueDelta, globalRangeValue);
+  Serial.printf("Device %s range value has been changed about %i to %d\r\n", deviceId.c_str(), rangeValueDelta, globalRangeValue);
   rangeValueDelta = globalRangeValue; // return absolute rangeValue
   return true; // request handled properly
 }
 //! [onAdjustRangeValue]
+
+//! [onAdjustRangeValueGeneric]
+int globalRangeValue;
+
+bool onAdjustRangeValue(const String &deviceId, const String& instance, int &rangeValueDelta) {
+  globalRangeValue += rangeValue; // calculate absolute rangeValue
+  Serial.printf("Device %s range value for %s has been changed about %i to %d\r\n", deviceId.c_str(), instance.c_str(), rangeValueDelta, globalRangeValue);
+  rangeValueDelta = globalRangeValue; // return absolute rangeValue
+  return true;                        // request handled properly
+}
+//! [onAdjustRangeValueGeneric]
 
 //! [onTargetTemperature]
 bool onTargetTemperature(const String &deviceId, float &targetTemp) { 
@@ -226,6 +251,13 @@ bool onSetMode(const String &deviceId, String &mode) {
   return true; // request handled properly
 }
 //! [onSetMode]
+
+//! [onSetModeGeneric] 
+bool onSetMode(const String &deviceId, const String &instance, String &mode) {
+  Serial.printf("Device %s mode %s set to %s\r\n", deviceId.c_str(), instance.c_str(), mode);
+  return true; // request handled properly
+}
+//! [onSetModeGeneric]
 
 //! [onChangeChannel]
 // channelNames used to convert channelNumber into channelName

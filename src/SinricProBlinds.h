@@ -10,10 +10,12 @@
 
 #include "SinricProDevice.h"
 #include "Controller/RangeController.h"
+#include "Controller/PowerStateController.h"
 
 /**
  * @class SinricProBlinds
  * @brief Device to control interior blinds
+ * @ingroup Devices
  * 
  * Supporting 
  * * On / Off
@@ -21,28 +23,23 @@
  * * open / close 
  **/
 class SinricProBlinds : public SinricProDevice,
-                        public PowerStateController,
-                        public RangeController {
+                        public PowerStateController<SinricProBlinds>,
+                        public RangeController<SinricProBlinds> {
   public:
 	  SinricProBlinds(const DeviceId &deviceId);
 
-    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+
   private:
 };
 
-SinricProBlinds::SinricProBlinds(const DeviceId &deviceId) : SinricProDevice(deviceId, "BLIND"),
-                                                             PowerStateController(this),
-                                                             RangeController(this) {}
+SinricProBlinds::SinricProBlinds(const DeviceId &deviceId) : SinricProDevice(deviceId, "BLIND") {}
 
-bool SinricProBlinds::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-  if (!success) success = RangeController::handleRequest(action, request_value, response_value);
-
-  return success;
+bool SinricProBlinds::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  if (handleRangeController(action, instance, request_value, response_value)) return true;
+  return false;
 }
-
 
 #endif
 

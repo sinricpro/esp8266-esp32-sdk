@@ -1,11 +1,13 @@
 #ifndef _INPUTCONTROLLER_H_
 #define _INPUTCONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
+/**
+ * @brief InputController
+ * @ingroup Controller
+ **/
+template <typename T>
 class InputController {
   public:
-    InputController(SinricProDeviceInterface *device);
     /**
      * @brief Callback definition for onSelectInput function
      * 
@@ -26,13 +28,11 @@ class InputController {
     bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleInputController(const String &action, JsonObject &request_value, JsonObject &response_value);
+
   private: 
-    SinricProDeviceInterface *device;
     SelectInputCallback selectInputCallback;
 };
-
-InputController::InputController(SinricProDeviceInterface *device) : device(device) {}
 
 /**
  * @brief Set callback function for `selectInput` request
@@ -41,7 +41,10 @@ InputController::InputController(SinricProDeviceInterface *device) : device(devi
  * @return void
  * @see SelectInputCallback
  **/
-void InputController::onSelectInput(SelectInputCallback cb) { selectInputCallback = cb; }
+template <typename T>
+void InputController<T>::onSelectInput(SelectInputCallback cb) {
+  selectInputCallback = cb;
+}
 
 /**
  * @brief Send `selectInput` event to SinricPro Server to report selected input
@@ -52,20 +55,25 @@ void InputController::onSelectInput(SelectInputCallback cb) { selectInputCallbac
  * @retval true   event has been sent successfully
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool InputController::sendSelectInputEvent(String input, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("selectInput", cause.c_str());
+template <typename T>
+bool InputController<T>::sendSelectInputEvent(String input, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("selectInput", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["input"] = input;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool InputController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-  String actionString = String(action);
+template <typename T>
+bool InputController<T>::handleInputController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
 
-  if (selectInputCallback && actionString == "selectInput") {
+  bool success = false;
+
+  if (selectInputCallback && action == "selectInput") {
     String input = request_value["input"];
-    success = selectInputCallback(device->getDeviceId(), input);
+    success = selectInputCallback(device.getDeviceId(), input);
     response_value["input"] = input;
     return success;
   }

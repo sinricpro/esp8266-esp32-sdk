@@ -14,23 +14,21 @@
 /**
  * @class SinricProSwitch
  * @brief Device suporting basic on / off command
+ * @ingroup Devices
  **/
 class SinricProSwitch :  public SinricProDevice,
-                         public PowerStateController {
+                         public PowerStateController<SinricProSwitch> {
   public:
     SinricProSwitch(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
-SinricProSwitch::SinricProSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "SWITCH"),
-                                                             PowerStateController(this)                                                             
-{
+SinricProSwitch::SinricProSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "SWITCH") {
 }
 
-bool SinricProSwitch::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-  return success;
+bool SinricProSwitch::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  return false;
 }
 
 #endif

@@ -11,11 +11,12 @@
 #include "SinricProDevice.h"
 #include "./Controller/PowerStateController.h"
 #include "./Controller/ThermostatController.h"
-#include "./Controller/TemperatureController.h"
+#include "./EventSource/TemperatureEventSource.h"
 
 /**
  * @class SinricProThermostat
  * @brief Device to control Thermostat
+ * @ingroup Devices
  * 
  * Support
  * * Set / adjust target temperature
@@ -24,28 +25,24 @@
  * * Set thermostat mode `AUTO`, `COOL`, `HEAT`
  **/
 class SinricProThermostat :  public SinricProDevice,
-                             public PowerStateController,
-                             public ThermostatController,
-                             public TemperatureController {
+                             public PowerStateController<SinricProThermostat>,
+                             public ThermostatController<SinricProThermostat>,
+                             public TemperatureEventSource<SinricProThermostat> {
   public:
 	  SinricProThermostat(const DeviceId &deviceId);
 
-    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+
   private:
 };
 
-SinricProThermostat::SinricProThermostat(const DeviceId &deviceId) : SinricProDevice(deviceId, "THERMOSTAT"),
-                                                                     PowerStateController(this),
-                                                                     ThermostatController(this),
-                                                                     TemperatureController(this) {}
+SinricProThermostat::SinricProThermostat(const DeviceId &deviceId) : SinricProDevice(deviceId, "THERMOSTAT") {}
 
-bool SinricProThermostat::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
+bool SinricProThermostat::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  if (handleThermostatController(action, request_value, response_value)) return true;
 
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-  if (!success) success = ThermostatController::handleRequest(action, request_value, response_value);
-
-  return success;
+  return false;
 }
 
 #endif

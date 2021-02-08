@@ -1,16 +1,13 @@
 #ifndef _POWERSTATECONTROLLER_H_
 #define _POWERSTATECONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
 /**
- * @class PowerStateController
- * @brief support for basic on/off command
+ * @brief PowerStateController
+ * @ingroup Controller
  **/
+template <typename T>
 class PowerStateController {
   public:
-    PowerStateController(SinricProDeviceInterface *device);
-
     /**
      * @brief Callback definition for onPowerState function
      * 
@@ -30,13 +27,11 @@ class PowerStateController {
     bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handlePowerStateController(const String &action, JsonObject &request_value, JsonObject &response_value);
+
   private:
-    SinricProDeviceInterface* device; 
     PowerStateCallback powerStateCallback;
 };
-
-PowerStateController::PowerStateController(SinricProDeviceInterface *device) : device(device) {}
 
 /**
  * @brief Set callback function for `powerState` request
@@ -45,7 +40,8 @@ PowerStateController::PowerStateController(SinricProDeviceInterface *device) : d
  * @return void
  * @see PowerStateCallback
  **/
-void PowerStateController::onPowerState(PowerStateCallback cb) {
+template <typename T>
+void PowerStateController<T>::onPowerState(PowerStateCallback cb) {
   powerStateCallback = cb;
 }
 
@@ -58,25 +54,29 @@ void PowerStateController::onPowerState(PowerStateCallback cb) {
  * @retval true   event has been sent successfully
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool PowerStateController::sendPowerStateEvent(bool state, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("setPowerState", cause.c_str());
+template <typename T>
+bool PowerStateController<T>::sendPowerStateEvent(bool state, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setPowerState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state ? "On" : "Off";
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool PowerStateController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-  String actionString = String(action);
+template <typename T>
+bool PowerStateController<T>::handlePowerStateController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
 
-  if (actionString == "setPowerState" && powerStateCallback)  {
+  bool success = false;
+
+  if (action == "setPowerState" && powerStateCallback)  {
     bool powerState = request_value["state"] == "On" ? true : false;
-    success = powerStateCallback(device->getDeviceId(), powerState);
+    success = powerStateCallback(device.getDeviceId(), powerState);
     response_value["state"] = powerState ? "On" : "Off";
     return success;
   }
   return success;
 }
-
 
 #endif

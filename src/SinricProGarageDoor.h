@@ -14,27 +14,24 @@
 /**
  * @class SinricProGarageDoor
  * @brief Device to control a garage door
+ * @ingroup Devices
  * 
  * Supporting 
  * * open / close 
  **/
 class SinricProGarageDoor : public SinricProDevice,
-                            public ModeController {
+                            public ModeController<SinricProGarageDoor> {
   public:
 	  SinricProGarageDoor(const DeviceId &deviceId);
-        
-    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
-SinricProGarageDoor::SinricProGarageDoor(const DeviceId &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR"),
-                                                                     ModeController(this) {}
+SinricProGarageDoor::SinricProGarageDoor(const DeviceId &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR") {}
 
-bool SinricProGarageDoor::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-
-  if (!success) success = ModeController::handleRequest(action, request_value, response_value);
-
-  return success;
+bool SinricProGarageDoor::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handleModeController(action, instance, request_value, response_value)) return true;
+  return false;
 }
 
 #endif

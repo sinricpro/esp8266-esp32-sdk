@@ -1,0 +1,8 @@
+<map id="SinricProAirQualitySensor" name="SinricProAirQualitySensor">
+<area shape="rect" id="node1" title="Device to report air quality events." alt="" coords="663,64,836,91"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="458,5,571,32"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="416,57,613,98"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="9,64,184,91"/>
+<area shape="rect" id="node5" href="$class_air_quality_event_source.html" title=" " alt="" coords="416,122,613,163"/>
+<area shape="rect" id="node6" href="$class_air_quality_event_source.html" title="AirQualityEventSource." alt="" coords="5,129,188,156"/>
+</map>

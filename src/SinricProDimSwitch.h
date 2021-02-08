@@ -15,28 +15,24 @@
 /**
  * @class SinricProDimSwitch
  * @brief Device which supports on / off and dimming commands
+ * @ingroup Devices
  **/
 class SinricProDimSwitch :  public SinricProDevice,
-                            public PowerStateController,
-                            public PowerLevelController {
+                            public PowerStateController<SinricProDimSwitch>,
+                            public PowerLevelController<SinricProDimSwitch> {
   public:
 	  SinricProDimSwitch(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String& instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
-SinricProDimSwitch::SinricProDimSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "DIMMABLE_SWITCH"),
-                                                                   PowerStateController(this),
-                                                                   PowerLevelController(this)
-{
+SinricProDimSwitch::SinricProDimSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "DIMMABLE_SWITCH") {
 }
 
-bool SinricProDimSwitch::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
+bool SinricProDimSwitch::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  if (handlePowerLevelController(action, request_value, response_value)) return true;
 
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-  if (!success) success = PowerLevelController::handleRequest(action, request_value, response_value);
-
-  return success;
+  return false;
 }
 
 #endif

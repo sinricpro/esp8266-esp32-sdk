@@ -1,15 +1,13 @@
 #ifndef _THERMOSTATCONTROLLER_H_
 #define _THERMOSTATCONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
 /**
- * @class: ThermostatController
- * @brief: support for onThermostatMode, onTargetTemperature, adjustTargetTemperature, sendThermostatModeEvent, sendTargetTemepratureEvent
+ * @brief ThermostatController
+ * @ingroup Controller
  **/ 
+template <typename T>
 class ThermostatController {
   public:
-    ThermostatController(SinricProDeviceInterface *device);
     /**
      * @brief Callback definition for onThermostatMode function
      * 
@@ -66,16 +64,13 @@ class ThermostatController {
     bool sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleThermostatController(const String &action, JsonObject &request_value, JsonObject &response_value);
 
   private:
-    SinricProDeviceInterface* device;
     ThermostatModeCallback thermostatModeCallback;
     SetTargetTemperatureCallback targetTemperatureCallback;
     AdjustTargetTemperatureCallback adjustTargetTemperatureCallback;
 };
-
-ThermostatController::ThermostatController(SinricProDeviceInterface* device) : device(device) {}
 
 /**
  * @brief Set callback function for `setThermostatMode` request
@@ -84,8 +79,9 @@ ThermostatController::ThermostatController(SinricProDeviceInterface* device) : d
  * @return void
  * @see ThermostatModeCallback
  **/
-void ThermostatController::onThermostatMode(ThermostatModeCallback cb) { 
-  thermostatModeCallback = cb; 
+template <typename T>
+void ThermostatController<T>::onThermostatMode(ThermostatModeCallback cb) {
+  thermostatModeCallback = cb;
 }
 
 /**
@@ -95,8 +91,8 @@ void ThermostatController::onThermostatMode(ThermostatModeCallback cb) {
  * @return void
  * @see SetTargetTemperatureCallback
  **/
-void ThermostatController::onTargetTemperature(SetTargetTemperatureCallback cb)
-{
+template <typename T>
+void ThermostatController<T>::onTargetTemperature(SetTargetTemperatureCallback cb) {
   targetTemperatureCallback = cb;
 }
 
@@ -107,8 +103,8 @@ void ThermostatController::onTargetTemperature(SetTargetTemperatureCallback cb)
  * @return void
  * @see AdjustTargetTemperatureCallback
  **/
-void ThermostatController::onAdjustTargetTemperature(AdjustTargetTemperatureCallback cb)
-{
+template <typename T>
+void ThermostatController<T>::onAdjustTargetTemperature(AdjustTargetTemperatureCallback cb) {
   adjustTargetTemperatureCallback = cb;
 }
 
@@ -121,11 +117,14 @@ void ThermostatController::onAdjustTargetTemperature(AdjustTargetTemperatureCall
  * @retval  true            event has been sent successfully
  * @retval  false           event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool ThermostatController::sendThermostatModeEvent(String thermostatMode, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("setThermostatMode", cause.c_str());
+template <typename T>
+bool ThermostatController<T>::sendThermostatModeEvent(String thermostatMode, String cause) {
+  T &device = static_cast<T &>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setThermostatMode", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["thermostatMode"] = thermostatMode;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
 /**
@@ -137,39 +136,44 @@ bool ThermostatController::sendThermostatModeEvent(String thermostatMode, String
  * @retval  true          event has been sent successfully
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool ThermostatController::sendTargetTemperatureEvent(float temperature, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("targetTemperature", cause.c_str());
+template <typename T>
+bool ThermostatController<T>::sendTargetTemperatureEvent(float temperature, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("targetTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["temperature"] = roundf(temperature * 10) / 10.0;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool ThermostatController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-  String actionString = String(action);
+template <typename T>
+bool ThermostatController<T>::handleThermostatController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
 
-  if (actionString == "targetTemperature" && targetTemperatureCallback) {
+  bool success = false;
+
+  if (action == "targetTemperature" && targetTemperatureCallback) {
     float temperature;
     if (request_value.containsKey("temperature"))  {
       temperature = request_value["temperature"];
     }  else {
       temperature = 1;
     }
-    success = targetTemperatureCallback(device->getDeviceId(), temperature);
+    success = targetTemperatureCallback(device.getDeviceId(), temperature);
     response_value["temperature"] = temperature;
     return success;
   }
 
-  if (actionString == "adjustTargetTemperature" && adjustTargetTemperatureCallback) {
+  if (action == "adjustTargetTemperature" && adjustTargetTemperatureCallback) {
     float temperatureDelta = request_value["temperature"];
-    success = adjustTargetTemperatureCallback(device->getDeviceId(), temperatureDelta);
+    success = adjustTargetTemperatureCallback(device.getDeviceId(), temperatureDelta);
     response_value["temperature"] = temperatureDelta;
     return success;
   }
 
-  if (actionString == "setThermostatMode" && thermostatModeCallback) {
+  if (action == "setThermostatMode" && thermostatModeCallback) {
     String thermostatMode = request_value["thermostatMode"] | "";
-    success = thermostatModeCallback(device->getDeviceId(), thermostatMode);
+    success = thermostatModeCallback(device.getDeviceId(), thermostatMode);
     response_value["thermostatMode"] = thermostatMode;
     return success;
   }

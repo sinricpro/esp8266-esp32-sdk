@@ -20,6 +20,7 @@
 /**
  * @class SinricProSpeaker
  * @brief Device to control a smart speaker
+ * @ingroup Devices
  * 
  * Supporting: 
  * * setVolume / adjustVolume
@@ -37,41 +38,30 @@
  * * set mode (TV, MOVIE, ...)
  */
 class SinricProSpeaker : public SinricProDevice,
-                         public PowerStateController,
-                         public MuteController,
-                         public VolumeController,
-                         public MediaController,
-                         public InputController,
-                         public BandsController,
-                         public ModeController {
+                         public PowerStateController<SinricProSpeaker>,
+                         public MuteController<SinricProSpeaker>,
+                         public VolumeController<SinricProSpeaker>,
+                         public MediaController<SinricProSpeaker>,
+                         public InputController<SinricProSpeaker>,
+                         public BandsController<SinricProSpeaker>,
+                         public ModeController<SinricProSpeaker> {
 public:
   SinricProSpeaker(const DeviceId &deviceId);
-  bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
-
-private:
+  bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
-SinricProSpeaker::SinricProSpeaker(const DeviceId &deviceId) : SinricProDevice(deviceId, "SPEAKER"),
-                                                               PowerStateController(this),
-                                                               MuteController(this),
-                                                               VolumeController(this),
-                                                               MediaController(this),
-                                                               InputController(this),
-                                                               BandsController(this),
-                                                               ModeController(this) {}
+SinricProSpeaker::SinricProSpeaker(const DeviceId &deviceId) : SinricProDevice(deviceId, "SPEAKER") {}
 
-bool SinricProSpeaker::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
+bool SinricProSpeaker::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  if (handleMuteController(action, request_value, response_value)) return true;
+  if (handleVolumeController(action, request_value, response_value)) return true;
+  if (handleMediaController(action, request_value, response_value)) return true;
+  if (handleInputController(action, request_value, response_value)) return true;
+  if (handleBandsController(action, request_value, response_value)) return true;
+  if (handleModeController(action, instance, request_value, response_value)) return true;
 
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-  if (!success) success = MuteController::handleRequest(action, request_value, response_value);
-  if (!success) success = VolumeController::handleRequest(action, request_value, response_value);
-  if (!success) success = MediaController::handleRequest(action, request_value, response_value);
-  if (!success) success = InputController::handleRequest(action, request_value, response_value);
-  if (!success) success = BandsController::handleRequest(action, request_value, response_value);
-  if (!success) success = ModeController::handleRequest(action, request_value, response_value);
-
-  return success;
+  return false;
 }
 
 #endif

@@ -15,23 +15,20 @@
 /**
  * @class SinricProCamera
  * @brief Camera suporting basic on / off command
+ * @ingroup Devices
  **/
 class SinricProCamera : public SinricProDevice,
-                        public PowerStateController {
+                        public PowerStateController<SinricProCamera> {
   public:
 	  SinricProCamera(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
-SinricProCamera::SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId, "CAMERA"),
-                                                             PowerStateController(this) {}
+SinricProCamera::SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId, "CAMERA") {}
 
-bool SinricProCamera::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-
-  return success;
+bool SinricProCamera::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  return false;
 }
 
 #endif

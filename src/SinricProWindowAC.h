@@ -16,6 +16,7 @@
 /**
  * @class SinricProWindowAC
  * @brief Device to control Window Air Conditioner 
+ * @ingroup Devices
  * 
  * Support
  * * Set / adjust target temperature
@@ -26,30 +27,23 @@
  **/
 
 class SinricProWindowAC :  public SinricProDevice,
-                           public PowerStateController,
-                           public RangeController,
-                           public ThermostatController {
+                           public PowerStateController<SinricProWindowAC>,
+                           public RangeController<SinricProWindowAC>,
+                           public ThermostatController<SinricProWindowAC> {
   public:
 	  SinricProWindowAC(const DeviceId &deviceId);
 
-    bool handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) override;
-
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
-SinricProWindowAC::SinricProWindowAC(const DeviceId &deviceId) : SinricProDevice(deviceId, "AC_UNIT"),
-                                                                 PowerStateController(this),
-                                                                 RangeController(this),
-                                                                 ThermostatController(this) {}
+SinricProWindowAC::SinricProWindowAC(const DeviceId &deviceId) : SinricProDevice(deviceId, "AC_UNIT") {}
 
-bool SinricProWindowAC::handleRequest(const DeviceId &deviceId, const char* action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
+bool SinricProWindowAC::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  if (handleRangeController(action, instance, request_value, response_value)) return true;
+  if (handleThermostatController(action, request_value, response_value)) return true;
 
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-  if (!success) success = RangeController::handleRequest(action, request_value, response_value);
-  if (!success) success = ThermostatController::handleRequest(action, request_value, response_value);
-
-  return success;
+  return false;
 }
-
 
 #endif

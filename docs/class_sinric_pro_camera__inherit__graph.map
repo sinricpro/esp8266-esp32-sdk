@@ -1,0 +1,6 @@
+<map id="SinricProCamera" name="SinricProCamera">
+<area shape="rect" id="node1" title="Camera suporting basic on / off command." alt="" coords="18,185,138,212"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="5,102,119,129"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="143,95,287,136"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="128,5,303,32"/>
+</map>

@@ -1,11 +1,14 @@
 #ifndef _CHANNELCONTROLLER_H_
 #define _CHANNELCONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
 
+/**
+ * @brief ChannelController
+ * @ingroup Controller
+ **/
+template <typename T>
 class ChannelController {
   public:
-    ChannelController(SinricProDeviceInterface *device);
 
     /**
      * @brief Callback definition for onChangeChannel function
@@ -61,16 +64,14 @@ class ChannelController {
 
     bool sendChangeChannelEvent(String channelName, String cause = "PHYSICAL_INTERACTION");
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleChannelController(const String &action, JsonObject &request_value, JsonObject &response_value);
 
   private:
-    SinricProDeviceInterface *device;
     ChangeChannelCallback changeChannelCallback;
     ChangeChannelNumberCallback changeChannelNumberCallback;
     SkipChannelsCallback skipChannelsCallback;
 };
 
-ChannelController::ChannelController(SinricProDeviceInterface *device) : device(device) {}
 
 /**
  * @brief Set callback function for `changeChannel` request
@@ -79,7 +80,10 @@ ChannelController::ChannelController(SinricProDeviceInterface *device) : device(
  * @return void
  * @see ChangeChannelCallback
  **/
-void ChannelController::onChangeChannel(ChangeChannelCallback cb) { changeChannelCallback = cb; }
+template <typename T>
+void ChannelController<T>::onChangeChannel(ChangeChannelCallback cb) {
+  changeChannelCallback = cb;
+}
 
 /**
  * @brief Set callback function for `changeChannel` request
@@ -88,7 +92,10 @@ void ChannelController::onChangeChannel(ChangeChannelCallback cb) { changeChanne
  * @return void
  * @see ChangeChannelNumberCallback
  **/
-void ChannelController::onChangeChannelNumber(ChangeChannelNumberCallback cb) { changeChannelNumberCallback = cb; }
+template <typename T>
+void ChannelController<T>::onChangeChannelNumber(ChangeChannelNumberCallback cb) {
+  changeChannelNumberCallback = cb;
+}
 
 /**
  * @brief Set callback function for `skipChannels` request
@@ -97,7 +104,10 @@ void ChannelController::onChangeChannelNumber(ChangeChannelNumberCallback cb) { 
  * @return void
  * @see SkipChannelsCallback
  **/
-void ChannelController::onSkipChannels(SkipChannelsCallback cb) { skipChannelsCallback = cb; }
+template <typename T>
+void ChannelController<T>::onSkipChannels(SkipChannelsCallback cb) {
+  skipChannelsCallback = cb;
+}
 
 /**
  * @brief Send `changeChannel` event to SinricPro Server to report selected channel
@@ -108,38 +118,43 @@ void ChannelController::onSkipChannels(SkipChannelsCallback cb) { skipChannelsCa
  * @retval true   event has been sent successfully
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool ChannelController::sendChangeChannelEvent(String channelName, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("changeChannel", cause.c_str());
+template <typename T>
+bool ChannelController<T>::sendChangeChannelEvent(String channelName, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("changeChannel", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["channel"]["name"] = channelName;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool ChannelController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
-  String actionString = String(action);
+template <typename T>
+bool ChannelController<T>::handleChannelController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
+
   bool success = false;
 
-  if (actionString == "changeChannel") {
+  if (action == "changeChannel") {
 
     if (changeChannelCallback && request_value["channel"].containsKey("name")) {
       String channelName = request_value["channel"]["name"] | "";
-      success = changeChannelCallback(device->getDeviceId(), channelName);
+      success = changeChannelCallback(device.getDeviceId(), channelName);
       response_value["channel"]["name"] = channelName;
     }
 
     if (changeChannelNumberCallback && request_value["channel"].containsKey("number")) {
       int channelNumber = request_value["channel"]["number"];
       String channelName("");
-      success = changeChannelNumberCallback(device->getDeviceId(), channelNumber, channelName);
+      success = changeChannelNumberCallback(device.getDeviceId(), channelNumber, channelName);
       response_value["channel"]["name"] = channelName;
     }
     return success;
   }
 
-  if (skipChannelsCallback && actionString == "skipChannels") {
+  if (skipChannelsCallback && action == "skipChannels") {
     int channelCount = request_value["channelCount"] | 0;
     String channelName;
-    success = skipChannelsCallback(device->getDeviceId(), channelCount, channelName);
+    success = skipChannelsCallback(device.getDeviceId(), channelCount, channelName);
     response_value["channel"]["name"] = channelName;
     return success;
   }

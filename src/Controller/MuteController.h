@@ -1,11 +1,13 @@
 #ifndef _MUTECONTROLLER_H_
 #define _MUTECONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
+/**
+ * @brief MuteController
+ * @ingroup Controller
+ **/
+template <typename T>
 class MuteController {
   public:
-    MuteController(SinricProDeviceInterface *device);
 
     /**
      * @brief Callback definition for onMute function
@@ -26,13 +28,11 @@ class MuteController {
     void onMute(MuteCallback cb);
     bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION");
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleMuteController(const String &action, JsonObject &request_value, JsonObject &response_value);
+
   private:
-    SinricProDeviceInterface* device;
     MuteCallback muteCallback;
 };
-
-MuteController::MuteController(SinricProDeviceInterface *device) : device(device) {}
 
 /**
  * @brief Set callback function for `setMute` request
@@ -41,7 +41,8 @@ MuteController::MuteController(SinricProDeviceInterface *device) : device(device
  * @return void
  * @see MuteCallback
  **/
-void MuteController::onMute(MuteCallback cb) { muteCallback = cb; }
+template <typename T>
+void MuteController<T>::onMute(MuteCallback cb) { muteCallback = cb; }
 
 /**
  * @brief Send `setMute` event to SinricPro Server indicating actual mute state
@@ -52,20 +53,25 @@ void MuteController::onMute(MuteCallback cb) { muteCallback = cb; }
  * @retval true   event has been sent successfully
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool MuteController::sendMuteEvent(bool mute, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("setMute", cause.c_str());
+template <typename T>
+bool MuteController<T>::sendMuteEvent(bool mute, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setMute", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["mute"] = mute;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool MuteController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-  String actionString = String(action);
+template <typename T>
+bool MuteController<T>::handleMuteController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
 
-  if (muteCallback && actionString == "setMute") {
+  bool success = false;
+
+  if (muteCallback && action == "setMute") {
     bool mute = request_value["mute"];
-    success = muteCallback(device->getDeviceId(), mute);
+    success = muteCallback(device.getDeviceId(), mute);
     response_value["mute"] = mute;
     return success;
   }

@@ -19,6 +19,7 @@
 
 /**
  * @class SinricProClass
+ * @ingroup SinricPro
  * @brief The main class of this library, handling communication between SinricPro Server and your devices
  **/
 class SinricProClass : public SinricProInterface {
@@ -299,13 +300,14 @@ void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interfac
   // handle devices
   bool success = false;
   const char* deviceId = requestMessage["payload"]["deviceId"];
-  const char* action = requestMessage["payload"]["action"];
+  String action = requestMessage["payload"]["action"] | "";
+  String instance = requestMessage["payload"]["instanceId"] | "";
   JsonObject request_value = requestMessage["payload"]["value"];
   JsonObject response_value = responseMessage["payload"]["value"];
 
   for (auto& device : devices) {
     if (device->getDeviceId() == deviceId && success == false) {
-      success = device->handleRequest(deviceId, action, request_value, response_value);
+      success = device->handleRequest(deviceId, action, instance, request_value, response_value);
       responseMessage["payload"]["success"] = success;
       if (!success) {
         if (responseMessageStr.length() > 0){
@@ -507,6 +509,7 @@ DynamicJsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage
   payload["clientId"] = requestMessage["payload"]["clientId"];
   payload["createdAt"] = 0;
   payload["deviceId"] = requestMessage["payload"]["deviceId"];
+  if (requestMessage["payload"].containsKey("instanceId")) payload["instanceId"] = requestMessage["payload"]["instanceId"];
   payload["message"] = "OK";
   payload["replyToken"] = requestMessage["payload"]["replyToken"];
   payload["success"] = false;

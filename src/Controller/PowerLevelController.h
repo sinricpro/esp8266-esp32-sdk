@@ -1,15 +1,13 @@
 #ifndef _POWERLEVELCONTROLLER_H_
 #define _POWERLEVELCONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
 /**
- * @class PowerLevelController
- * @brief support for setPowerLevel, adjustPowerLevel and sendPowerLevel
+ * @brief PowerLevelController
+ * @ingroup Controller
  **/ 
+template <typename T>
 class PowerLevelController {
   public:
-    PowerLevelController(SinricProDeviceInterface* device);
     /**
      * @brief Definition for setPowerLevel callback
      * 
@@ -47,15 +45,12 @@ class PowerLevelController {
     bool sendPowerLevelEvent(int powerLevel, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handlePowerLevelController(const String &action, JsonObject &request_value, JsonObject &response_value);
 
   private:
-    SinricProDeviceInterface* device;
     SetPowerLevelCallback setPowerLevelCallback;
     AdjustPowerLevelCallback adjustPowerLevelCallback;
 };
-
-PowerLevelController::PowerLevelController(SinricProDeviceInterface* device) : device(device) {}
 
 /**
  * @brief Set callback function for setPowerLevel request
@@ -63,7 +58,8 @@ PowerLevelController::PowerLevelController(SinricProDeviceInterface* device) : d
  * @param     cb    Function pointer to a SetPowerLevelCallback function
  * @see       SetPowerLevelCallback
  **/
-void PowerLevelController::onPowerLevel(SetPowerLevelCallback cb) {
+template <typename T>
+void PowerLevelController<T>::onPowerLevel(SetPowerLevelCallback cb) {
   setPowerLevelCallback = cb;
 }
 
@@ -73,7 +69,9 @@ void PowerLevelController::onPowerLevel(SetPowerLevelCallback cb) {
  * @param     cb    Function pointer to a AdjustPowerLevelCallback function
  * @see       AdjustPowerLevelCallback
  **/
-void PowerLevelController::onAdjustPowerLevel(AdjustPowerLevelCallback cb) {
+template <typename T>
+void PowerLevelController<T>::onAdjustPowerLevel(AdjustPowerLevelCallback cb)
+{
   adjustPowerLevelCallback = cb;
 }
 
@@ -86,26 +84,32 @@ void PowerLevelController::onAdjustPowerLevel(AdjustPowerLevelCallback cb) {
  * @retval  true          event has been sent successfully
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool PowerLevelController::sendPowerLevelEvent(int powerLevel, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("setPowerLevel", cause.c_str());
+template <typename T>
+bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause)
+{
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setPowerLevel", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["powerLevel"] = powerLevel;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool PowerLevelController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-  String actionString = String(action);
+template <typename T>
+bool PowerLevelController<T>::handlePowerLevelController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
 
-  if (setPowerLevelCallback && actionString == "setPowerLevel") {
+  bool success = false;
+
+  if (setPowerLevelCallback && action == "setPowerLevel") {
     int powerLevel = request_value["powerLevel"];
-    success = setPowerLevelCallback(device->getDeviceId(), powerLevel);
+    success = setPowerLevelCallback(device.getDeviceId(), powerLevel);
     response_value["powerLevel"] = powerLevel;
   }
 
-  if (adjustPowerLevelCallback && actionString == "adjustPowerLevel") {
+  if (adjustPowerLevelCallback && action == "adjustPowerLevel") {
     int powerLevelDelta = request_value["powerLevelDelta"];
-    success = adjustPowerLevelCallback(device->getDeviceId(), powerLevelDelta);
+    success = adjustPowerLevelCallback(device.getDeviceId(), powerLevelDelta);
     response_value["powerLevel"] = powerLevelDelta;
   }
   return success;

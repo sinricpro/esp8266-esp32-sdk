@@ -1,0 +1,12 @@
+<map id="SinricProLight" name="SinricProLight">
+<area shape="rect" id="node1" title="Device to control a light." alt="" coords="601,129,704,156"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="406,5,519,32"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="391,57,535,98"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="23,64,198,91"/>
+<area shape="rect" id="node5" href="$class_brightness_controller.html" title=" " alt="" coords="393,122,532,163"/>
+<area shape="rect" id="node6" href="$class_brightness_controller.html" title="BrightnessController." alt="" coords="25,129,196,156"/>
+<area shape="rect" id="node7" href="$class_color_controller.html" title=" " alt="" coords="377,187,549,229"/>
+<area shape="rect" id="node8" href="$class_color_controller.html" title="ColorController." alt="" coords="41,195,180,221"/>
+<area shape="rect" id="node9" href="$class_color_temperature_controller.html" title=" " alt="" coords="373,253,552,294"/>
+<area shape="rect" id="node10" href="$class_color_temperature_controller.html" title="ColorTemperatureController." alt="" coords="5,260,216,287"/>
+</map>

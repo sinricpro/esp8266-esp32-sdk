@@ -10,31 +10,27 @@
 
 #include "SinricProDevice.h"
 #include "./Controller/PowerStateController.h"
-#include "./Controller/TemperatureController.h"
+#include "./EventSource/TemperatureEventSource.h"
 
 /**
  * @class SinricProTemperaturesensor
  * @brief Device to report actual temperature and humidity
+ * @ingroup Devices
  */
 class SinricProTemperaturesensor :  public SinricProDevice,
-                                    public PowerStateController,
-                                    public TemperatureController {
+                                    public PowerStateController<SinricProTemperaturesensor>,
+                                    public TemperatureEventSource<SinricProTemperaturesensor> {
   public:
 	  SinricProTemperaturesensor(const DeviceId &deviceId);
 
-    bool handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
-SinricProTemperaturesensor::SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "TEMPERATURESENSOR"),
-                                                                                   PowerStateController(this),
-                                                                                   TemperatureController(this) {}
+SinricProTemperaturesensor::SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "TEMPERATURESENSOR") {}
 
-bool SinricProTemperaturesensor::handleRequest(const DeviceId &deviceId, const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-
-  if (!success) success = PowerStateController::handleRequest(action, request_value, response_value);
-
-  return success;
+bool SinricProTemperaturesensor::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  if (handlePowerStateController(action, request_value, response_value)) return true;
+  return false;
 }
 
 #endif

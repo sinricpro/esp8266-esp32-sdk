@@ -1,15 +1,14 @@
 #ifndef _LOCKCONTROLLER_H_
 #define _LOCKCONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
 
 /**
- * @class LockController
- * @brief supports onLockState, sendLockStateEvent
+ * @brief LockController
+ * @ingroup Controller
  **/
+template <typename T>
 class LockController {
   public:
-    LockController(SinricProDeviceInterface* device);
 
     /**
      * @brief Callback definition for onLockState function
@@ -36,14 +35,11 @@ class LockController {
     bool sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleLockController(const String &action, JsonObject &request_value, JsonObject &response_value);
 
   private:
-    SinricProDeviceInterface* device;
     LockStateCallback lockStateCallback;
 };
-
-LockController::LockController(SinricProDeviceInterface *device) : device(device) {}
 
 /**
  * @brief Set callback function for `setLockState` request
@@ -52,7 +48,8 @@ LockController::LockController(SinricProDeviceInterface *device) : device(device
  * @return void
  * @see LockStateCallback
  **/
-void LockController::onLockState(LockStateCallback cb) {
+template <typename T>
+void LockController<T>::onLockState(LockStateCallback cb) {
   lockStateCallback = cb;
 }
 
@@ -65,20 +62,25 @@ void LockController::onLockState(LockStateCallback cb) {
  * @retval true   event has been sent successfully
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool LockController::sendLockStateEvent(bool state, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("setLockState", cause.c_str());
+template <typename T>
+bool LockController<T>::sendLockStateEvent(bool state, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setLockState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   state ? event_value["state"] = "LOCKED" : event_value["state"] = "UNLOCKED";
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool LockController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
-  String actionString = String(action);
+template <typename T>
+bool LockController<T>::handleLockController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
+
   bool success = false;
 
-  if (actionString == "setLockState" && lockStateCallback)  {
+  if (action == "setLockState" && lockStateCallback)  {
     bool lockState = request_value["state"] == "lock" ? true : false;
-    success = lockStateCallback(device->getDeviceId(), lockState);
+    success = lockStateCallback(device.getDeviceId(), lockState);
     response_value["state"] = success ? lockState ? "LOCKED" : "UNLOCKED" : "JAMMED";
     return success;
   }

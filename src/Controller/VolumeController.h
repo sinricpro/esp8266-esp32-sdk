@@ -1,11 +1,13 @@
 #ifndef _VOLUMECONTROLLER_H_
 #define _VOLUMECONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
+/**
+ * @brief VolumeController
+ * @ingroup Controller
+ **/
+template <typename T>
 class VolumeController {
   public:
-    VolumeController(SinricProDeviceInterface *device);
 
     /**
      * @brief Callback definition for onSetVolume function
@@ -46,15 +48,12 @@ class VolumeController {
     bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleVolumeController(const String &action, JsonObject &request_value, JsonObject &response_value);
 
   private:
-    SinricProDeviceInterface *device;
     SetVolumeCallback volumeCallback;
     AdjustVolumeCallback adjustVolumeCallback;
 };
-
-VolumeController::VolumeController(SinricProDeviceInterface *device) : device(device) {}
 
 /**
  * @brief Set callback function for `setVolume` request
@@ -63,7 +62,8 @@ VolumeController::VolumeController(SinricProDeviceInterface *device) : device(de
  * @return void
  * @see SetVolumeCallback
  **/
-void VolumeController::onSetVolume(SetVolumeCallback cb) { volumeCallback = cb; }
+template <typename T>
+void VolumeController<T>::onSetVolume(SetVolumeCallback cb) { volumeCallback = cb; }
 
 /**
  * @brief Set callback function for `adjustVolume` request
@@ -72,7 +72,8 @@ void VolumeController::onSetVolume(SetVolumeCallback cb) { volumeCallback = cb; 
  * @return void
  * @see AdjustVolumeCallback
  **/
-void VolumeController::onAdjustVolume(AdjustVolumeCallback cb) { adjustVolumeCallback = cb; }
+template <typename T>
+void VolumeController<T>::onAdjustVolume(AdjustVolumeCallback cb) { adjustVolumeCallback = cb; }
 
 /**
  * @brief Send `setVolume` event to SinricPro Server indicating actual volume has changed
@@ -83,28 +84,33 @@ void VolumeController::onAdjustVolume(AdjustVolumeCallback cb) { adjustVolumeCal
  * @retval  true          event has been sent successfully
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool VolumeController::sendVolumeEvent(int volume, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("setVolume", cause.c_str());
+template <typename T>
+bool VolumeController<T>::sendVolumeEvent(int volume, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setVolume", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["volume"] = volume;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool VolumeController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-  String actionString = String(action);
+template <typename T>
+bool VolumeController<T>::handleVolumeController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
 
-  if (volumeCallback && actionString == "setVolume") {
+  bool success = false;
+
+  if (volumeCallback && action == "setVolume") {
     int volume = request_value["volume"];
-    success = volumeCallback(device->getDeviceId(), volume);
+    success = volumeCallback(device.getDeviceId(), volume);
     response_value["volume"] = volume;
     return success;
   }
 
-  if (adjustVolumeCallback && actionString == "adjustVolume") {
+  if (adjustVolumeCallback && action == "adjustVolume") {
     int volume = request_value["volume"];
     bool volumeDefault = request_value["volumeDefault"] | false;
-    success = adjustVolumeCallback(device->getDeviceId(), volume, volumeDefault);
+    success = adjustVolumeCallback(device.getDeviceId(), volume, volumeDefault);
     response_value["volume"] = volume;
     return success;
   }

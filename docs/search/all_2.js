@@ -1,8 +1,17 @@
 var searchData=
 [
-  ['changechannelcallback_9',['ChangeChannelCallback',['../class_sinric_pro_t_v.html#a276a4a418aa341936a2e8870cac15e79',1,'SinricProTV']]],
-  ['changechannelnumbercallback_10',['ChangeChannelNumberCallback',['../class_sinric_pro_t_v.html#aed91a90de7d42e34af4a0d995e8b525b',1,'SinricProTV']]],
-  ['colorcallback_11',['ColorCallback',['../class_sinric_pro_light.html#a916ceb3c8ef5094cc578f739b2d9edca',1,'SinricProLight']]],
-  ['colortemperaturecallback_12',['ColorTemperatureCallback',['../class_sinric_pro_light.html#ac46e0327976c2cb38b6e97110763de5f',1,'SinricProLight']]],
-  ['connectedcallbackhandler_13',['ConnectedCallbackHandler',['../class_sinric_pro_class.html#a4d7d8547a83d53c20cbd9aa7768e99f5',1,'SinricProClass']]]
+  ['changechannelcallback_14',['ChangeChannelCallback',['../class_channel_controller.html#a8bc108630d532266ae36cda5ec7b4857',1,'ChannelController']]],
+  ['changechannelnumbercallback_15',['ChangeChannelNumberCallback',['../class_channel_controller.html#ab21b05b6f4a6be7e89a7173b7fafb552',1,'ChannelController']]],
+  ['channelcontroller_16',['ChannelController',['../class_channel_controller.html',1,'']]],
+  ['channelcontroller_3c_20sinricprotv_20_3e_17',['ChannelController&lt; SinricProTV &gt;',['../class_channel_controller.html',1,'']]],
+  ['colorcallback_18',['ColorCallback',['../class_color_controller.html#ad8bcf09f6da3f41fffb001868cd3f84e',1,'ColorController']]],
+  ['colorcontroller_19',['ColorController',['../class_color_controller.html',1,'']]],
+  ['colorcontroller_3c_20sinricprolight_20_3e_20',['ColorController&lt; SinricProLight &gt;',['../class_color_controller.html',1,'']]],
+  ['colortemperaturecallback_21',['ColorTemperatureCallback',['../class_color_temperature_controller.html#a9828094e72d45dc55a1023fd677f0cc5',1,'ColorTemperatureController']]],
+  ['colortemperaturecontroller_22',['ColorTemperatureController',['../class_color_temperature_controller.html',1,'']]],
+  ['colortemperaturecontroller_3c_20sinricprolight_20_3e_23',['ColorTemperatureController&lt; SinricProLight &gt;',['../class_color_temperature_controller.html',1,'']]],
+  ['connectedcallbackhandler_24',['ConnectedCallbackHandler',['../class_sinric_pro_class.html#a4d7d8547a83d53c20cbd9aa7768e99f5',1,'SinricProClass']]],
+  ['contacteventsource_25',['ContactEventSource',['../class_contact_event_source.html',1,'']]],
+  ['contacteventsource_3c_20sinricprocontactsensor_20_3e_26',['ContactEventSource&lt; SinricProContactsensor &gt;',['../class_contact_event_source.html',1,'']]],
+  ['controller_27',['Controller',['../group___controller.html',1,'']]]
 ];

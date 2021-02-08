@@ -1,15 +1,13 @@
 #ifndef _COLORCONTROLLER_H_
 #define _COLORCONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
 /**
- * @class ColorController
- * @brief supports onColor, sendColorEvent
+ * @brief ColorController
+ * @ingroup Controller
  **/
+template <typename T>
 class ColorController {
   public:
-    ColorController(SinricProDeviceInterface* device);
 
     /**
      * @brief Callback definition for onColor function
@@ -34,13 +32,12 @@ class ColorController {
     bool sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleColorController(const String &action, JsonObject &request_value, JsonObject &response_value);
+
   private:
-    SinricProDeviceInterface* device;
     ColorCallback colorCallback;
 };
 
-ColorController::ColorController(SinricProDeviceInterface* device) : device(device) {}
 
 /**
  * @brief Set callback function for `setColor` request
@@ -49,7 +46,8 @@ ColorController::ColorController(SinricProDeviceInterface* device) : device(devi
  * @return void
  * @see ColorCallback
  **/
-void ColorController::onColor(ColorCallback cb) {
+template <typename T>
+void ColorController<T>::onColor(ColorCallback cb) {
   colorCallback = cb;
 }
 
@@ -64,25 +62,30 @@ void ColorController::onColor(ColorCallback cb) {
  * @retval true   event has been sent successfully
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool ColorController::sendColorEvent(byte r, byte g, byte b, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("setColor", cause.c_str());
+template <typename T>
+bool ColorController<T>::sendColorEvent(byte r, byte g, byte b, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setColor", cause.c_str());
   JsonObject event_color = eventMessage["payload"]["value"].createNestedObject("color");
   event_color["r"] = r;
   event_color["g"] = g;
   event_color["b"] = b;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool ColorController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
-  bool success = false;
-  String actionString = String(action);
+template <typename T>
+bool ColorController<T>::handleColorController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+  T &device = static_cast<T &>(*this);
 
-  if (colorCallback && actionString == "setColor") {
+  bool success = false;
+
+  if (colorCallback && action == "setColor") {
     unsigned char r, g, b;
     r = request_value["color"]["r"];
     g = request_value["color"]["g"];
     b = request_value["color"]["b"];
-    success = colorCallback(device->getDeviceId(), r, g, b);
+    success = colorCallback(device.getDeviceId(), r, g, b);
     response_value.createNestedObject("color");
     response_value["color"]["r"] = r;
     response_value["color"]["g"] = g;

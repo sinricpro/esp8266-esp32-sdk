@@ -1,15 +1,13 @@
 #ifndef _BRIGHTNESSCONTROLLER_H_
 #define _BRIGHTNESSCONTROLLER_H_
 
-#include "./../SinricProDeviceInterface.h"
-
 /**
- * @class: BrightnessController
- * @brief: support for onBrightness, adjustBrightness, sendBrightnessEvent
+ * @brief BrightnessController
+ * @ingroup Controller
  **/
+template <typename T>
 class BrightnessController {
   public:
-    BrightnessController(SinricProDeviceInterface *device);
 
     /**
      * @brief Callback definition for onBrightness function
@@ -46,15 +44,13 @@ class BrightnessController {
 
     bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
   protected:
-    bool handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value);
+    bool handleBrightnessController(const String &action, JsonObject &request_value, JsonObject &response_value);
 
   private:
-    SinricProDeviceInterface* device;
     BrightnessCallback brightnessCallback;
     AdjustBrightnessCallback adjustBrightnessCallback;
 };
 
-BrightnessController::BrightnessController(SinricProDeviceInterface* device) : device(device) {}
 
 /**
  * @brief Set callback function for `setBrightness` request
@@ -63,7 +59,8 @@ BrightnessController::BrightnessController(SinricProDeviceInterface* device) : d
  * @return void
  * @see BrightnessCallback
  **/
-void BrightnessController::onBrightness(BrightnessCallback cb) {
+template <typename T>
+void BrightnessController<T>::onBrightness(BrightnessCallback cb) {
   brightnessCallback = cb;
 }
 
@@ -74,7 +71,8 @@ void BrightnessController::onBrightness(BrightnessCallback cb) {
  * @return void
  * @see AdjustBrightnessCallback
  **/
-void BrightnessController::onAdjustBrightness(AdjustBrightnessCallback cb) {
+template <typename T>
+void BrightnessController<T>::onAdjustBrightness(AdjustBrightnessCallback cb) {
   adjustBrightnessCallback = cb;
 }
 
@@ -87,26 +85,31 @@ void BrightnessController::onAdjustBrightness(AdjustBrightnessCallback cb) {
  * @retval true   event has been sent successfully
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
-bool BrightnessController::sendBrightnessEvent(int brightness, String cause) {
-  DynamicJsonDocument eventMessage = device->prepareEvent("setBrightness", cause.c_str());
+template <typename T>
+bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setBrightness", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["brightness"] = brightness;
-  return device->sendEvent(eventMessage);
+  return device.sendEvent(eventMessage);
 }
 
-bool BrightnessController::handleRequest(const char *action, JsonObject &request_value, JsonObject &response_value) {
+template <typename T>
+bool BrightnessController<T>::handleBrightnessController(const String &action, JsonObject &request_value, JsonObject &response_value)
+{
+  T &device = static_cast<T &>(*this);
   bool success = false;
-  String actionString = String(action);
 
-  if (brightnessCallback && actionString == "setBrightness") {
+  if (brightnessCallback && action == "setBrightness") {
     int brightness = request_value["brightness"];
-    success = brightnessCallback(device->getDeviceId(), brightness);
+    success = brightnessCallback(device.getDeviceId(), brightness);
     response_value["brightness"] = brightness;
   }
 
-  if (adjustBrightnessCallback && actionString == "adjustBrightness") {
+  if (adjustBrightnessCallback && action == "adjustBrightness") {
     int brightnessDelta = request_value["brightnessDelta"];
-    success = adjustBrightnessCallback(device->getDeviceId(), brightnessDelta);
+    success = adjustBrightnessCallback(device.getDeviceId(), brightnessDelta);
     response_value["brightness"] = brightnessDelta;
   }
 

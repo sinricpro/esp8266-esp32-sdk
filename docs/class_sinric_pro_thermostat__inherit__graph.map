@@ -1,0 +1,10 @@
+<map id="SinricProThermostat" name="SinricProThermostat">
+<area shape="rect" id="node1" title="Device to control Thermostat." alt="" coords="615,89,755,116"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="425,5,539,32"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="400,57,564,98"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="17,64,192,91"/>
+<area shape="rect" id="node5" href="$class_thermostat_controller.html" title=" " alt="" coords="400,122,564,163"/>
+<area shape="rect" id="node6" href="$class_thermostat_controller.html" title="ThermostatController." alt="" coords="18,129,191,156"/>
+<area shape="rect" id="node7" href="$class_temperature_event_source.html" title=" " alt="" coords="399,187,565,229"/>
+<area shape="rect" id="node8" href="$class_temperature_event_source.html" title="TemperatureEventSource." alt="" coords="5,195,204,221"/>
+</map>
