@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('_motion_event_source_8h_source.html','
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;};</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_motion_event_source.html#ab28a28a17768a38eea033ba700095672">   24</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_motion_event_source.html#ab28a28a17768a38eea033ba700095672">MotionEventSource&lt;T&gt;::sendMotionEvent</a>(<span class="keywordtype">bool</span> state, String cause) {</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_motion_event_source.html#ab28a28a17768a38eea033ba700095672">   24</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_motion_event_source.html#ab28a28a17768a38eea033ba700095672">MotionEventSource&lt;T&gt;::sendMotionEvent</a>(<span class="keywordtype">bool</span> detected, String cause) {</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;motion&quot;</span>, cause.c_str());</div>

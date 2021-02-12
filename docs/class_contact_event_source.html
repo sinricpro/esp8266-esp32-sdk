@@ -124,7 +124,7 @@ class ContactEventSource&lt; T &gt;</h3>
           <td class="memname">bool sendContactEvent </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>state</em>, </td>
+          <td class="paramname"><em>detected</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -143,7 +143,7 @@ class ContactEventSource&lt; T &gt;</h3>
 <p>Send <code>setContactState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>[in] <code>true</code> = contact is closed <br  />
+    <tr><td class="paramname">detected</td><td>[in] <code>bool</code><code>true</code> = contact is closed <br  />
  [in] <code>false</code> = contact is open </td></tr>
     <tr><td class="paramname">cause</td><td>[in] <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
   </table>

@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('_contact_event_source_8h_source.html',
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;};</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_contact_event_source.html#a0b4b9006c0be003c615848bcc2b690fd">   23</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_contact_event_source.html#a0b4b9006c0be003c615848bcc2b690fd">ContactEventSource&lt;T&gt;::sendContactEvent</a>(<span class="keywordtype">bool</span> state, String cause) {</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_contact_event_source.html#a0b4b9006c0be003c615848bcc2b690fd">   23</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_contact_event_source.html#a0b4b9006c0be003c615848bcc2b690fd">ContactEventSource&lt;T&gt;::sendContactEvent</a>(<span class="keywordtype">bool</span> detected, String cause) {</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;setContactState&quot;</span>, cause.c_str());</div>

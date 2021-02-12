@@ -18,13 +18,13 @@ private:
 
 /**
  * @brief Send PowerSensor event to SinricPro Server 
- * @param   voltage       voltage
- * @param   current       current
- * @param   power         (optional) if not provided, it is calculated automaticly (power = voltage * current)
- * @param   apparentPower (optional) if not provided it is set to -1
- * @param   reactivePower (optional) if not provided it is set to -1
- * @param   factor        (optional) if not provided it is set to -1 \n if apparentPower is provided, factor is calculated automaticly (factor = power / apparentPower)
- * @param   cause         (optional) Reason why event is sent (default = `"PERIODIC_POLL"`)
+ * @param   voltage       `float` voltage
+ * @param   current       `float` current
+ * @param   power         `float` (optional) if not provided, it is calculated automaticly (power = voltage * current)
+ * @param   apparentPower `float` (optional) if not provided it is set to -1
+ * @param   reactivePower `float` (optional) if not provided it is set to -1
+ * @param   factor        `float` (optional) if not provided it is set to -1 \n if apparentPower is provided, factor is calculated automaticly (factor = power / apparentPower)
+ * @param   cause         `String` (optional) Reason why event is sent (default = `"PERIODIC_POLL"`)
  * @return  the success of sending the event
  * @retval  true          event has been sent successfully
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time

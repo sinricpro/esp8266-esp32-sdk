@@ -14,18 +14,18 @@ class ContactEventSource {
 /**
  * \brief Send `setContactState` event to SinricPro Server indicating actual power state
  * 
- * @param state [in] `true` = contact is closed \n [in] `false` = contact is open
+ * @param detected [in] `bool``true` = contact is closed \n [in] `false` = contact is open
  * @param cause [in] `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
  * @return `true` event has been sent successfully
  * @return `false` event has not been sent, maybe you sent to much events in a short distance of time
  **/
 template <typename T>
-bool ContactEventSource<T>::sendContactEvent(bool state, String cause) {
+bool ContactEventSource<T>::sendContactEvent(bool detected, String cause) {
   T& device = static_cast<T&>(*this);
   
   DynamicJsonDocument eventMessage = device.prepareEvent("setContactState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state ? "closed" : "open";
+  event_value["state"] = detected ? "closed" : "open";
   return device.sendEvent(eventMessage);
 }
 

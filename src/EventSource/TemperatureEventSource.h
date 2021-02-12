@@ -14,8 +14,8 @@ class TemperatureEventSource {
 /**
  * @brief Send `currentTemperature` event to report actual temperature (measured by a sensor)
  * 
- * @param   temperature   Float with actual temperature measured by a sensor
- * @param   humidity      (optional) Float with actual humidity measured by a sensor (default=-1.0f means not supported)
+ * @param   temperature   `float` actual temperature measured by a sensor
+ * @param   humidity      `float` (optional) actual humidity measured by a sensor (default=-1.0f means not supported)
  * @param   cause         (optional) `String` reason why event is sent (default = `"PERIODIC_POLL"`)
  * @return  the success of sending the even
  * @retval  true          event has been sent successfully

@@ -173,14 +173,14 @@ class PowerSensorEventSource&lt; T &gt;</h3>
 <p>Send PowerSensor event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">voltage</td><td>voltage </td></tr>
-    <tr><td class="paramname">current</td><td>current </td></tr>
-    <tr><td class="paramname">power</td><td>(optional) if not provided, it is calculated automaticly (power = voltage * current) </td></tr>
-    <tr><td class="paramname">apparentPower</td><td>(optional) if not provided it is set to -1 </td></tr>
-    <tr><td class="paramname">reactivePower</td><td>(optional) if not provided it is set to -1 </td></tr>
-    <tr><td class="paramname">factor</td><td>(optional) if not provided it is set to -1 <br  />
+    <tr><td class="paramname">voltage</td><td><code>float</code> voltage </td></tr>
+    <tr><td class="paramname">current</td><td><code>float</code> current </td></tr>
+    <tr><td class="paramname">power</td><td><code>float</code> (optional) if not provided, it is calculated automaticly (power = voltage * current) </td></tr>
+    <tr><td class="paramname">apparentPower</td><td><code>float</code> (optional) if not provided it is set to -1 </td></tr>
+    <tr><td class="paramname">reactivePower</td><td><code>float</code> (optional) if not provided it is set to -1 </td></tr>
+    <tr><td class="paramname">factor</td><td><code>float</code> (optional) if not provided it is set to -1 <br  />
  if apparentPower is provided, factor is calculated automaticly (factor = power / apparentPower) </td></tr>
-    <tr><td class="paramname">cause</td><td>(optional) Reason why event is sent (default = <code>"PERIODIC_POLL"</code>) </td></tr>
+    <tr><td class="paramname">cause</td><td><code>String</code> (optional) Reason why event is sent (default = <code>"PERIODIC_POLL"</code>) </td></tr>
   </table>
   </dd>
 </dl>
