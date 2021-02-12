@@ -191,55 +191,33 @@ bool onMediaControl(const String &deviceId, String &control) {
 //! [onMediaControl]
 
 //! [onSetBands]
+std::map<String, int> equalizerBands;
+
 bool onSetBands(const String &deviceId, String &bands, int &level) {
   Serial.printf("Device %s bands %s set to %d\r\n", deviceId.c_str(), bands.c_str(), level);
+  equalizerBands[bands] = level; 
   return true; // request handled properly
 }
 //! [onSetBands]
 
 //! [onAdjustBands]
-int globalBass;
-int globalMidrange;
-int globalTrebble;
+std::map<String, int> equalizerBands;
 
 bool onAdjustBands(const String &deviceId, String &bands, int &levelDelta) {
-  if (bands == "BASS") {
-    globalBass += levelDelta; // calculate absolute bass level
-    levelDelta = globalBass; // return absolute bass level
-  }
-  if (bands == "MIDRANGE") {
-    globalMidrange += levelDelta; // calculate absolute midrange level
-    levelDelta = globalMidrange; // return absolute midrange level
-  }
-  if (bands == "TREBBLE") {
-    globalMidrange += levelDelta; // calculate absolute trebble level
-    levelDelta = globalMidrange; // return absolute trebble level
-  }
-  Serial.printf("Device %s bands set to\r\n - BASS: %d\r\n - MIDRANGE: %d\r\n - TREBBLE: %d\r\n", deviceId.c_str(), globalBass, globalMidrange, globalTrebble);
+  equalizerBands[bands] += levelDelta; // calculate absolute bands level
+  Serial.printf("Device %s bands %s changed about %d to %d\r\n", deviceId.c_str(), bands.c_str(), levelDelta, equalizerBands[bands]);
+  levelDelta = equalizerBands[bands]; // return absolute bands level
   return true; // request handled properly
 }
 //! [onAdjustBands]
 
 
 //! [onResetBands]
-int globalBass;
-int globalMidrange;
-int globalTrebble;
+std::map<String, int> equalizerBands;
 
-bool onAdjustBands(const String &deviceId, String &bands, int &level) {
-  if (bands == "BASS") {
-    globalBass = 0; // reset bass level to 0
-    level = globalBass; // return bass level
-  }
-  if (bands == "MIDRANGE") {
-    globalMidrange = 0; // reset midrange level to 0
-    level = globalMidrange; // return midrange level
-  }
-  if (bands == "TREBBLE") {
-    globalMidrange = 0; // reset trebble level to 0
-    level = globalMidrange; // return trebble level
-  }
-  Serial.printf("Device %s bands reset to\r\n - BASS: %d\r\n - MIDRANGE: %d\r\n - TREBBLE: %d\r\n", deviceId.c_str(), globalBass, globalMidrange, globalTrebble);
+bool onResetBands(const String &deviceId, String &bands, int &level) {
+  equalizerBands[bands] = 0; // reset bands level to 0
+  Serial.printf("Device %s bands %s reset to %d\r\n", deviceId.c_str(), bands.c_str(), equalizerBands[bands]);
   return true; // request handled properly
 }
 //! [onResetBands]

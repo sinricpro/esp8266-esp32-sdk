@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['onadjustbands_64',['onAdjustBands',['../class_bands_controller.html#a41a5c1506545c44c2408054a8675c7a8',1,'BandsController']]],
+  ['onadjustbands_64',['onAdjustBands',['../class_equalizer_controller.html#a41a5c1506545c44c2408054a8675c7a8',1,'EqualizerController']]],
   ['onadjustbrightness_65',['onAdjustBrightness',['../class_brightness_controller.html#a0633e5fa2981189f4a093bab00a8c7f1',1,'BrightnessController']]],
   ['onadjustpercentage_66',['onAdjustPercentage',['../class_percentage_controller.html#a77ac70c4880e38dae4f640dceaeb2816',1,'PercentageController']]],
   ['onadjustpowerlevel_67',['onAdjustPowerLevel',['../class_power_level_controller.html#a13b10bdb1844babe4de320fff9172d96',1,'PowerLevelController']]],
@@ -23,9 +23,9 @@ var searchData=
   ['onpowerlevel_84',['onPowerLevel',['../class_power_level_controller.html#a0685d34694badb4442fed6b69b69b366',1,'PowerLevelController']]],
   ['onpowerstate_85',['onPowerState',['../class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf',1,'PowerStateController']]],
   ['onrangevalue_86',['onRangeValue',['../class_range_controller.html#a94adbcdf6ce61cb6552a5f9915e705ae',1,'RangeController::onRangeValue(SetRangeValueCallback cb)'],['../class_range_controller.html#ab898f07de68726a799dd565582e2c99f',1,'RangeController::onRangeValue(const String &amp;instance, GenericSetRangeValueCallback cb)']]],
-  ['onresetbands_87',['onResetBands',['../class_bands_controller.html#aa6c3aabc2b442d82ac5456ccaac3f60d',1,'BandsController']]],
+  ['onresetbands_87',['onResetBands',['../class_equalizer_controller.html#aa6c3aabc2b442d82ac5456ccaac3f60d',1,'EqualizerController']]],
   ['onselectinput_88',['onSelectInput',['../class_input_controller.html#a18f8f71ecf0d7292a63d9486f94e5180',1,'InputController']]],
-  ['onsetbands_89',['onSetBands',['../class_bands_controller.html#a4aaa7a29394560be7537a86b0304d199',1,'BandsController']]],
+  ['onsetbands_89',['onSetBands',['../class_equalizer_controller.html#a4aaa7a29394560be7537a86b0304d199',1,'EqualizerController']]],
   ['onsetmode_90',['onSetMode',['../class_mode_controller.html#ada087c948c3ab923bdb7818daa6b2b79',1,'ModeController::onSetMode(ModeCallback cb)'],['../class_mode_controller.html#a6b15ba168b3a673b98da43ac5e4ef76c',1,'ModeController::onSetMode(const String &amp;instance, GenericModeCallback cb)']]],
   ['onsetpercentage_91',['onSetPercentage',['../class_percentage_controller.html#aeef432df118679c689ccd8a48d47dc3d',1,'PercentageController']]],
   ['onsetvolume_92',['onSetVolume',['../class_volume_controller.html#a5db8c85f222debbece54c794015f9402',1,'VolumeController']]],

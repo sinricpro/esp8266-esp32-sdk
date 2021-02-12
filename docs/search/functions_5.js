@@ -1,7 +1,7 @@
 var searchData=
 [
   ['sendairqualityevent_324',['sendAirQualityEvent',['../class_air_quality_event_source.html#a3836e4dca79c1563fcdae880bb368323',1,'AirQualityEventSource']]],
-  ['sendbandsevent_325',['sendBandsEvent',['../class_bands_controller.html#a4ad5674e36d96a73147388251b794c82',1,'BandsController']]],
+  ['sendbandsevent_325',['sendBandsEvent',['../class_equalizer_controller.html#a4ad5674e36d96a73147388251b794c82',1,'EqualizerController']]],
   ['sendbrightnessevent_326',['sendBrightnessEvent',['../class_brightness_controller.html#aa42df8ac91de826653626df67a8500b6',1,'BrightnessController']]],
   ['sendchangechannelevent_327',['sendChangeChannelEvent',['../class_channel_controller.html#aa85e049284116b157e34159624680ae1',1,'ChannelController']]],
   ['sendcolorevent_328',['sendColorEvent',['../class_color_controller.html#aa3019d161b320267666cdb11d1c3d827',1,'ColorController']]],

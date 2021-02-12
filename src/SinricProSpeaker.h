@@ -14,7 +14,7 @@
 #include "Controller/VolumeController.h"
 #include "Controller/MediaController.h"
 #include "Controller/InputController.h"
-#include "Controller/BandsController.h"
+#include "Controller/EqualizerController.h"
 #include "Controller/ModeController.h"
 
 /**
@@ -43,7 +43,7 @@ class SinricProSpeaker : public SinricProDevice,
                          public VolumeController<SinricProSpeaker>,
                          public MediaController<SinricProSpeaker>,
                          public InputController<SinricProSpeaker>,
-                         public BandsController<SinricProSpeaker>,
+                         public EqualizerController<SinricProSpeaker>,
                          public ModeController<SinricProSpeaker> {
 public:
   SinricProSpeaker(const DeviceId &deviceId);
@@ -58,7 +58,7 @@ bool SinricProSpeaker::handleRequest(const DeviceId &deviceId, const String &act
   if (handleVolumeController(action, request_value, response_value)) return true;
   if (handleMediaController(action, request_value, response_value)) return true;
   if (handleInputController(action, request_value, response_value)) return true;
-  if (handleBandsController(action, request_value, response_value)) return true;
+  if (handleEqualizerController(action, request_value, response_value)) return true;
   if (handleModeController(action, instance, request_value, response_value)) return true;
 
   return false;

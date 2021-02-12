@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['adjustbandscallback_0',['AdjustBandsCallback',['../class_bands_controller.html#a28446c362f1f44e269b50619761c9e9b',1,'BandsController']]],
+  ['adjustbandscallback_0',['AdjustBandsCallback',['../class_equalizer_controller.html#a28446c362f1f44e269b50619761c9e9b',1,'EqualizerController']]],
   ['adjustbrightnesscallback_1',['AdjustBrightnessCallback',['../class_brightness_controller.html#a3ff8d93d9483f41bf8504fd3e9cc8f49',1,'BrightnessController']]],
   ['adjustpercentagecallback_2',['AdjustPercentageCallback',['../class_percentage_controller.html#a088a491b8656c376085bc31d558fd05d',1,'PercentageController']]],
   ['adjustpowerlevelcallback_3',['AdjustPowerLevelCallback',['../class_power_level_controller.html#a3ec3aad26d06f5b943a6906e11afc1f3',1,'PowerLevelController']]],

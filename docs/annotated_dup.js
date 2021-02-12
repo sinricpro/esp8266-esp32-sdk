@@ -1,13 +1,13 @@
 var annotated_dup =
 [
     [ "AirQualityEventSource", "class_air_quality_event_source.html", "class_air_quality_event_source" ],
-    [ "BandsController", "class_bands_controller.html", "class_bands_controller" ],
     [ "BrightnessController", "class_brightness_controller.html", "class_brightness_controller" ],
     [ "ChannelController", "class_channel_controller.html", "class_channel_controller" ],
     [ "ColorController", "class_color_controller.html", "class_color_controller" ],
     [ "ColorTemperatureController", "class_color_temperature_controller.html", "class_color_temperature_controller" ],
     [ "ContactEventSource", "class_contact_event_source.html", "class_contact_event_source" ],
     [ "DoorbellEventSource", "class_doorbell_event_source.html", "class_doorbell_event_source" ],
+    [ "EqualizerController", "class_equalizer_controller.html", "class_equalizer_controller" ],
     [ "InputController", "class_input_controller.html", "class_input_controller" ],
     [ "KeypadController", "class_keypad_controller.html", "class_keypad_controller" ],
     [ "LockController", "class_lock_controller.html", "class_lock_controller" ],

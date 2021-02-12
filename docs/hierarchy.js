@@ -4,10 +4,6 @@ var hierarchy =
     [ "AirQualityEventSource< SinricProAirQualitySensor >", "class_air_quality_event_source.html", [
       [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ]
     ] ],
-    [ "BandsController< T >", "class_bands_controller.html", null ],
-    [ "BandsController< SinricProSpeaker >", "class_bands_controller.html", [
-      [ "SinricProSpeaker", "class_sinric_pro_speaker.html", null ]
-    ] ],
     [ "BrightnessController< T >", "class_brightness_controller.html", null ],
     [ "BrightnessController< SinricProLight >", "class_brightness_controller.html", [
       [ "SinricProLight", "class_sinric_pro_light.html", null ]
@@ -31,6 +27,10 @@ var hierarchy =
     [ "DoorbellEventSource< T >", "class_doorbell_event_source.html", null ],
     [ "DoorbellEventSource< SinricProDoorbell >", "class_doorbell_event_source.html", [
       [ "SinricProDoorbell", "class_sinric_pro_doorbell.html", null ]
+    ] ],
+    [ "EqualizerController< T >", "class_equalizer_controller.html", null ],
+    [ "EqualizerController< SinricProSpeaker >", "class_equalizer_controller.html", [
+      [ "SinricProSpeaker", "class_sinric_pro_speaker.html", null ]
     ] ],
     [ "InputController< T >", "class_input_controller.html", null ],
     [ "InputController< SinricProSpeaker >", "class_input_controller.html", [

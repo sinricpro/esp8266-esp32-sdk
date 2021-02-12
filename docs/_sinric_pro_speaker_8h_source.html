@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_speaker_8h_source.html',''
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;Controller/VolumeController.h&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;Controller/MediaController.h&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;Controller/InputController.h&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;Controller/BandsController.h&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;Controller/EqualizerController.h&quot;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;Controller/ModeController.h&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_sinric_pro_speaker.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_sinric_pro_speaker.html">SinricProSpeaker</a> : <span class="keyword">public</span> <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>,</div>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_speaker_8h_source.html',''
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                         <span class="keyword">public</span> <a class="code" href="class_volume_controller.html">VolumeController</a>&lt;SinricProSpeaker&gt;,</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                         <span class="keyword">public</span> <a class="code" href="class_media_controller.html">MediaController</a>&lt;SinricProSpeaker&gt;,</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                         <span class="keyword">public</span> <a class="code" href="class_input_controller.html">InputController</a>&lt;SinricProSpeaker&gt;,</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                         <span class="keyword">public</span> <a class="code" href="class_bands_controller.html">BandsController</a>&lt;SinricProSpeaker&gt;,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                         <span class="keyword">public</span> <a class="code" href="class_equalizer_controller.html">EqualizerController</a>&lt;SinricProSpeaker&gt;,</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                         <span class="keyword">public</span> <a class="code" href="class_mode_controller.html">ModeController</a>&lt;SinricProSpeaker&gt; {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="class_sinric_pro_speaker.html">SinricProSpeaker</a>(<span class="keyword">const</span> DeviceId &amp;deviceId);</div>
@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_speaker_8h_source.html',''
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">if</span> (handleVolumeController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordflow">if</span> (handleMediaController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">if</span> (handleInputController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordflow">if</span> (handleBandsController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordflow">if</span> (handleEqualizerController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">if</span> (handleModeController(action, instance, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('_sinric_pro_speaker_8h_source.html',''
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="ttc" id="aclass_bands_controller_html"><div class="ttname"><a href="class_bands_controller.html">BandsController</a></div><div class="ttdoc">BandsController.</div><div class="ttdef"><b>Definition:</b> BandsController.h:10</div></div>
+<div class="ttc" id="aclass_equalizer_controller_html"><div class="ttname"><a href="class_equalizer_controller.html">EqualizerController</a></div><div class="ttdoc">EqualizerController.</div><div class="ttdef"><b>Definition:</b> EqualizerController.h:9</div></div>
 <div class="ttc" id="aclass_input_controller_html"><div class="ttname"><a href="class_input_controller.html">InputController</a></div><div class="ttdoc">InputController.</div><div class="ttdef"><b>Definition:</b> InputController.h:9</div></div>
 <div class="ttc" id="aclass_media_controller_html"><div class="ttname"><a href="class_media_controller.html">MediaController</a></div><div class="ttdoc">MediaController.</div><div class="ttdef"><b>Definition:</b> MediaController.h:9</div></div>
 <div class="ttc" id="aclass_mode_controller_html"><div class="ttname"><a href="class_mode_controller.html">ModeController</a></div><div class="ttdoc">ModeController.</div><div class="ttdef"><b>Definition:</b> ModeController.h:10</div></div>

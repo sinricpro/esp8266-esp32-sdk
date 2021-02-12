@@ -2,7 +2,7 @@ var searchData=
 [
   ['selectinputcallback_128',['SelectInputCallback',['../class_input_controller.html#a2f7a91a480cd401f4df2f7ddda4a8f13',1,'InputController']]],
   ['sendairqualityevent_129',['sendAirQualityEvent',['../class_air_quality_event_source.html#a3836e4dca79c1563fcdae880bb368323',1,'AirQualityEventSource']]],
-  ['sendbandsevent_130',['sendBandsEvent',['../class_bands_controller.html#a4ad5674e36d96a73147388251b794c82',1,'BandsController']]],
+  ['sendbandsevent_130',['sendBandsEvent',['../class_equalizer_controller.html#a4ad5674e36d96a73147388251b794c82',1,'EqualizerController']]],
   ['sendbrightnessevent_131',['sendBrightnessEvent',['../class_brightness_controller.html#aa42df8ac91de826653626df67a8500b6',1,'BrightnessController']]],
   ['sendchangechannelevent_132',['sendChangeChannelEvent',['../class_channel_controller.html#aa85e049284116b157e34159624680ae1',1,'ChannelController']]],
   ['sendcolorevent_133',['sendColorEvent',['../class_color_controller.html#aa3019d161b320267666cdb11d1c3d827',1,'ColorController']]],
@@ -25,7 +25,7 @@ var searchData=
   ['sendthermostatmodeevent_150',['sendThermostatModeEvent',['../class_thermostat_controller.html#acd81e847a7f1029163729574c3d3971d',1,'ThermostatController']]],
   ['sendtogglestateevent_151',['sendToggleStateEvent',['../class_toggle_controller.html#ab8156107c28c5fc2568be696b2c4d3e6',1,'ToggleController']]],
   ['sendvolumeevent_152',['sendVolumeEvent',['../class_volume_controller.html#a0f301accc58742f867de88c66a5eb3c5',1,'VolumeController']]],
-  ['setbandscallback_153',['SetBandsCallback',['../class_bands_controller.html#aaabec5dea3546d52e744a4b0b90c02f4',1,'BandsController']]],
+  ['setbandscallback_153',['SetBandsCallback',['../class_equalizer_controller.html#aaabec5dea3546d52e744a4b0b90c02f4',1,'EqualizerController']]],
   ['setpercentagecallback_154',['SetPercentageCallback',['../class_percentage_controller.html#a3ab0c4ff332f49884fe6a75cb2a293c2',1,'PercentageController']]],
   ['setpowerlevelcallback_155',['SetPowerLevelCallback',['../class_power_level_controller.html#a5be6c20c0ba9e9b19bd76d42918451b2',1,'PowerLevelController']]],
   ['setrangevaluecallback_156',['SetRangeValueCallback',['../class_range_controller.html#ace966ac5942be2953ebe4573fb4ab329',1,'RangeController']]],

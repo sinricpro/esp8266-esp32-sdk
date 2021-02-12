@@ -1,13 +1,12 @@
-#ifndef _BANDSCONTROLLER_H_
-#define _BANDSCONTROLLER_H_
+#ifndef _EQUALIZERCONTROLLER_H_
+#define _EQUALIZERCONTROLLER_H_
 
 /**
- * @brief BandsController
+ * @brief EqualizerController
  * @ingroup Controller
  **/
 template <typename T>
-class BandsController
-{
+class EqualizerController {
 public:
   /**
      * @brief Callback definition for onSetBands function
@@ -69,7 +68,7 @@ public:
   bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION");
 
 protected:
-  bool handleBandsController(const String &action, JsonObject &request_value, JsonObject &response_value);
+  bool handleEqualizerController(const String &action, JsonObject &request_value, JsonObject &response_value);
 
 private:
   SetBandsCallback setBandsCallback;
@@ -85,7 +84,7 @@ private:
  * @see SetBandsCallback
  **/
 template <typename T>
-void BandsController<T>::onSetBands(SetBandsCallback cb) { setBandsCallback = cb; }
+void EqualizerController<T>::onSetBands(SetBandsCallback cb) { setBandsCallback = cb; }
 
 /**
  * @brief Set callback function for `adjustBands` request
@@ -95,7 +94,7 @@ void BandsController<T>::onSetBands(SetBandsCallback cb) { setBandsCallback = cb
  * @see AdjustBandsCallback
  **/
 template <typename T>
-void BandsController<T>::onAdjustBands(AdjustBandsCallback cb) { adjustBandsCallback = cb; }
+void EqualizerController<T>::onAdjustBands(AdjustBandsCallback cb) { adjustBandsCallback = cb; }
 
 /**
  * @brief Set callback function for `resetBands` request
@@ -105,7 +104,7 @@ void BandsController<T>::onAdjustBands(AdjustBandsCallback cb) { adjustBandsCall
  * @see ResetBandsCallback
  **/
 template <typename T>
-void BandsController<T>::onResetBands(ResetBandsCallback cb) { resetBandsCallback = cb; }
+void EqualizerController<T>::onResetBands(ResetBandsCallback cb) { resetBandsCallback = cb; }
 
 /**
  * @brief Send `setBands` event to SinricPro Server indicating bands level has changed
@@ -118,7 +117,7 @@ void BandsController<T>::onResetBands(ResetBandsCallback cb) { resetBandsCallbac
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
 template <typename T>
-bool BandsController<T>::sendBandsEvent(String bands, int level, String cause) {
+bool EqualizerController<T>::sendBandsEvent(String bands, int level, String cause) {
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setBands", cause.c_str());
@@ -131,8 +130,7 @@ bool BandsController<T>::sendBandsEvent(String bands, int level, String cause) {
 }
 
 template <typename T>
-bool BandsController<T>::handleBandsController(const String &action, JsonObject &request_value, JsonObject &response_value)
-{
+bool EqualizerController<T>::handleEqualizerController(const String &action, JsonObject &request_value, JsonObject &response_value) {
   T &device = static_cast<T &>(*this);
   bool success = false;
 

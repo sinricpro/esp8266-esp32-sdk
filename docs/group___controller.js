@@ -1,14 +1,5 @@
 var group___controller =
 [
-    [ "BandsController", "class_bands_controller.html", [
-      [ "AdjustBandsCallback", "class_bands_controller.html#a28446c362f1f44e269b50619761c9e9b", null ],
-      [ "ResetBandsCallback", "class_bands_controller.html#aa8c78de42c40ee03966f3c96cdc05bab", null ],
-      [ "SetBandsCallback", "class_bands_controller.html#aaabec5dea3546d52e744a4b0b90c02f4", null ],
-      [ "onAdjustBands", "class_bands_controller.html#a41a5c1506545c44c2408054a8675c7a8", null ],
-      [ "onResetBands", "class_bands_controller.html#aa6c3aabc2b442d82ac5456ccaac3f60d", null ],
-      [ "onSetBands", "class_bands_controller.html#a4aaa7a29394560be7537a86b0304d199", null ],
-      [ "sendBandsEvent", "class_bands_controller.html#a4ad5674e36d96a73147388251b794c82", null ]
-    ] ],
     [ "BrightnessController", "class_brightness_controller.html", [
       [ "AdjustBrightnessCallback", "class_brightness_controller.html#a3ff8d93d9483f41bf8504fd3e9cc8f49", null ],
       [ "BrightnessCallback", "class_brightness_controller.html#aff9938ddc803e4339a3db9b31503e12d", null ],
@@ -38,6 +29,15 @@ var group___controller =
       [ "onDecreaseColorTemperature", "class_color_temperature_controller.html#a7468976e7fffeee14cc869b7236cbb50", null ],
       [ "onIncreaseColorTemperature", "class_color_temperature_controller.html#a7ea9fd9861a5668a41d06267bfbec82a", null ],
       [ "sendColorTemperatureEvent", "class_color_temperature_controller.html#a9065e6d08309d313b16adc774cc642ff", null ]
+    ] ],
+    [ "EqualizerController", "class_equalizer_controller.html", [
+      [ "AdjustBandsCallback", "class_equalizer_controller.html#a28446c362f1f44e269b50619761c9e9b", null ],
+      [ "ResetBandsCallback", "class_equalizer_controller.html#aa8c78de42c40ee03966f3c96cdc05bab", null ],
+      [ "SetBandsCallback", "class_equalizer_controller.html#aaabec5dea3546d52e744a4b0b90c02f4", null ],
+      [ "onAdjustBands", "class_equalizer_controller.html#a41a5c1506545c44c2408054a8675c7a8", null ],
+      [ "onResetBands", "class_equalizer_controller.html#aa6c3aabc2b442d82ac5456ccaac3f60d", null ],
+      [ "onSetBands", "class_equalizer_controller.html#a4aaa7a29394560be7537a86b0304d199", null ],
+      [ "sendBandsEvent", "class_equalizer_controller.html#a4ad5674e36d96a73147388251b794c82", null ]
     ] ],
     [ "InputController", "class_input_controller.html", [
       [ "SelectInputCallback", "class_input_controller.html#a2f7a91a480cd401f4df2f7ddda4a8f13", null ],
