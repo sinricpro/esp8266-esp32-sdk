@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resetbandscallback_357',['ResetBandsCallback',['../class_bands_controller.html#aa8c78de42c40ee03966f3c96cdc05bab',1,'BandsController']]]
+  ['powerstatecallback_373',['PowerStateCallback',['../class_power_state_controller.html#aad370bc6b280bbdeac98181a31f22df4',1,'PowerStateController']]]
 ];

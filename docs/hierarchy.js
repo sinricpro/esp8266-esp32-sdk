@@ -39,6 +39,7 @@ var hierarchy =
     [ "InputController< SinricProTV >", "class_input_controller.html", [
       [ "SinricProTV", "class_sinric_pro_t_v.html", null ]
     ] ],
+    [ "KeypadController< T >", "class_keypad_controller.html", null ],
     [ "LockController< T >", "class_lock_controller.html", null ],
     [ "LockController< SinricProLock >", "class_lock_controller.html", [
       [ "SinricProLock", "class_sinric_pro_lock.html", null ]
@@ -68,6 +69,7 @@ var hierarchy =
     [ "MuteController< SinricProTV >", "class_mute_controller.html", [
       [ "SinricProTV", "class_sinric_pro_t_v.html", null ]
     ] ],
+    [ "PercentageController< T >", "class_percentage_controller.html", null ],
     [ "PowerLevelController< T >", "class_power_level_controller.html", null ],
     [ "PowerLevelController< SinricProDimSwitch >", "class_power_level_controller.html", [
       [ "SinricProDimSwitch", "class_sinric_pro_dim_switch.html", null ]

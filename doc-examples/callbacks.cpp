@@ -185,7 +185,7 @@ bool onMute(const String &deviceId, bool &mute) {
 
 //! [onMediaControl]
 bool onMediaControl(const String &deviceId, String &control) {
-  Serial.printf("Device %s: %s\r\n", deviceId.c_str(), control);
+  Serial.printf("Device %s: %s\r\n", deviceId.c_str(), control.c_str());
   return true; // request handled properly
 }
 //! [onMediaControl]
@@ -434,3 +434,27 @@ bool onDoorState(const String &deviceId, bool &doorState) {
 }
 //! [onDoorState]
 
+//! [onKeystroke]
+bool onKeystroke(const String& deviceId, String &keystroke) {
+  Serial.printf("Device %s, key %s pressed\r\n", deviceId.c_str(), keystroke.c_str());
+  return true;
+}
+//! [onKeystroke]
+
+//! [onSetPercentage]
+bool onSetPercentage(const String &deviceId, int &percentage) {
+  Serial.printf("Device %s percentage %d\r\n", deviceId.c_str(), percentage);
+  return true; // request handled properly
+}
+//! [onSetPercentage]
+
+//! [onAdjustPercentage]
+int absolutePercentage;
+
+bool onAdjustPercentage(const String &deviceId, int &percentageDelta) {
+  absolutePercentage += percentageDelta; // calculate absolute percentage
+  Serial.printf("Device %s percentage changed about %i to %d\r\n", deviceId.c_str(), percentageDelta, absolutePercentage);
+  percentageDelta = absolutePercentage; // return absolute percentage
+  return true;                     // request handled properly
+}
+//! [onAdjustPercentage]

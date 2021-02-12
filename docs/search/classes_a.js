@@ -1,10 +1,25 @@
 var searchData=
 [
-  ['temperatureeventsource_265',['TemperatureEventSource',['../class_temperature_event_source.html',1,'']]],
-  ['temperatureeventsource_3c_20sinricprotemperaturesensor_20_3e_266',['TemperatureEventSource&lt; SinricProTemperaturesensor &gt;',['../class_temperature_event_source.html',1,'']]],
-  ['temperatureeventsource_3c_20sinricprothermostat_20_3e_267',['TemperatureEventSource&lt; SinricProThermostat &gt;',['../class_temperature_event_source.html',1,'']]],
-  ['thermostatcontroller_268',['ThermostatController',['../class_thermostat_controller.html',1,'']]],
-  ['thermostatcontroller_3c_20sinricprothermostat_20_3e_269',['ThermostatController&lt; SinricProThermostat &gt;',['../class_thermostat_controller.html',1,'']]],
-  ['thermostatcontroller_3c_20sinricprowindowac_20_3e_270',['ThermostatController&lt; SinricProWindowAC &gt;',['../class_thermostat_controller.html',1,'']]],
-  ['togglecontroller_271',['ToggleController',['../class_toggle_controller.html',1,'']]]
+  ['sinricpro_254',['SinricPro',['../class_sinric_pro.html',1,'']]],
+  ['sinricproairqualitysensor_255',['SinricProAirQualitySensor',['../class_sinric_pro_air_quality_sensor.html',1,'']]],
+  ['sinricproblinds_256',['SinricProBlinds',['../class_sinric_pro_blinds.html',1,'']]],
+  ['sinricprocamera_257',['SinricProCamera',['../class_sinric_pro_camera.html',1,'']]],
+  ['sinricproclass_258',['SinricProClass',['../class_sinric_pro_class.html',1,'']]],
+  ['sinricprocontactsensor_259',['SinricProContactsensor',['../class_sinric_pro_contactsensor.html',1,'']]],
+  ['sinricprodevice_260',['SinricProDevice',['../class_sinric_pro_device.html',1,'']]],
+  ['sinricprodimswitch_261',['SinricProDimSwitch',['../class_sinric_pro_dim_switch.html',1,'']]],
+  ['sinricprodoorbell_262',['SinricProDoorbell',['../class_sinric_pro_doorbell.html',1,'']]],
+  ['sinricprofan_263',['SinricProFan',['../class_sinric_pro_fan.html',1,'']]],
+  ['sinricprofanus_264',['SinricProFanUS',['../class_sinric_pro_fan_u_s.html',1,'']]],
+  ['sinricprogaragedoor_265',['SinricProGarageDoor',['../class_sinric_pro_garage_door.html',1,'']]],
+  ['sinricprolight_266',['SinricProLight',['../class_sinric_pro_light.html',1,'']]],
+  ['sinricprolock_267',['SinricProLock',['../class_sinric_pro_lock.html',1,'']]],
+  ['sinricpromotionsensor_268',['SinricProMotionsensor',['../class_sinric_pro_motionsensor.html',1,'']]],
+  ['sinricpropowersensor_269',['SinricProPowerSensor',['../class_sinric_pro_power_sensor.html',1,'']]],
+  ['sinricprospeaker_270',['SinricProSpeaker',['../class_sinric_pro_speaker.html',1,'']]],
+  ['sinricproswitch_271',['SinricProSwitch',['../class_sinric_pro_switch.html',1,'']]],
+  ['sinricprotemperaturesensor_272',['SinricProTemperaturesensor',['../class_sinric_pro_temperaturesensor.html',1,'']]],
+  ['sinricprothermostat_273',['SinricProThermostat',['../class_sinric_pro_thermostat.html',1,'']]],
+  ['sinricprotv_274',['SinricProTV',['../class_sinric_pro_t_v.html',1,'']]],
+  ['sinricprowindowac_275',['SinricProWindowAC',['../class_sinric_pro_window_a_c.html',1,'']]]
 ];

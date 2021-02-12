@@ -44,6 +44,10 @@ var group___controller =
       [ "onSelectInput", "class_input_controller.html#a18f8f71ecf0d7292a63d9486f94e5180", null ],
       [ "sendSelectInputEvent", "class_input_controller.html#a8d79220a3a06331442d36524ceac1db3", null ]
     ] ],
+    [ "KeypadController", "class_keypad_controller.html", [
+      [ "KeystrokeCallback", "class_keypad_controller.html#a3dd7e26af9b9026ccc6f5328f563a8c3", null ],
+      [ "onKeystroke", "class_keypad_controller.html#ab24b4858dcc69145a367e964c2ae7961", null ]
+    ] ],
     [ "LockController", "class_lock_controller.html", [
       [ "LockStateCallback", "class_lock_controller.html#a53b5285d1315f98fa2c5dd27c7547ea5", null ],
       [ "onLockState", "class_lock_controller.html#aee42cc397234a454fd353ca6bc12a859", null ],
@@ -66,6 +70,13 @@ var group___controller =
       [ "MuteCallback", "class_mute_controller.html#a0e4c9c4ee0b526732bc0a868ac4f2c41", null ],
       [ "onMute", "class_mute_controller.html#ab5fc79cc8903c3ccc1c106abf61d7cfd", null ],
       [ "sendMuteEvent", "class_mute_controller.html#abc47e827f33ac8bcc43ed204c7c4b8fd", null ]
+    ] ],
+    [ "PercentageController", "class_percentage_controller.html", [
+      [ "AdjustPercentageCallback", "class_percentage_controller.html#a088a491b8656c376085bc31d558fd05d", null ],
+      [ "SetPercentageCallback", "class_percentage_controller.html#a3ab0c4ff332f49884fe6a75cb2a293c2", null ],
+      [ "onAdjustPercentage", "class_percentage_controller.html#a77ac70c4880e38dae4f640dceaeb2816", null ],
+      [ "onSetPercentage", "class_percentage_controller.html#aeef432df118679c689ccd8a48d47dc3d", null ],
+      [ "sendSetPercentageEvent", "class_percentage_controller.html#a940fd94e961b9b5fda5b836517f66767", null ]
     ] ],
     [ "PowerLevelController", "class_power_level_controller.html", [
       [ "AdjustPowerLevelCallback", "class_power_level_controller.html#a3ec3aad26d06f5b943a6906e11afc1f3", null ],

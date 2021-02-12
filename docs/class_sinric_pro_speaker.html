@@ -445,7 +445,7 @@ Example-Code</h1>
 <h1><a class="anchor" id="MediaControlCallback"></a>
 Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_media_controller.html#afc2620621377fff928737b5a8a537020">onMediaControl</a>(<span class="keyword">const</span> String &amp;deviceId, String &amp;control) {</div>
-<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s: %s\r\n&quot;</span>, deviceId.c_str(), control);</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s: %s\r\n&quot;</span>, deviceId.c_str(), control.c_str());</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
 <div class="ttc" id="aclass_media_controller_html_afc2620621377fff928737b5a8a537020"><div class="ttname"><a href="class_media_controller.html#afc2620621377fff928737b5a8a537020">MediaController&lt; SinricProSpeaker &gt;::onMediaControl</a></div><div class="ttdeci">void onMediaControl(MediaControlCallback cb)</div><div class="ttdoc">Set callback function for mediaControl request.</div><div class="ttdef"><b>Definition:</b> MediaController.h:46</div></div>
