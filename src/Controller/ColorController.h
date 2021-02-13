@@ -85,7 +85,7 @@ bool ColorController<T>::handleColorController(const String &action, JsonObject 
     r = request_value["color"]["r"];
     g = request_value["color"]["g"];
     b = request_value["color"]["b"];
-    success = colorCallback(device.getDeviceId(), r, g, b);
+    success = colorCallback(device.deviceId, r, g, b);
     response_value.createNestedObject("color");
     response_value["color"]["r"] = r;
     response_value["color"]["g"] = g;

@@ -25,17 +25,19 @@
 class SinricProBlinds : public SinricProDevice,
                         public PowerStateController<SinricProBlinds>,
                         public RangeController<SinricProBlinds> {
+                        friend class PowerStateController<SinricProBlinds>;
+                        friend class RangeController<SinricProBlinds>;
   public:
 	  SinricProBlinds(const DeviceId &deviceId);
 
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 
   private:
 };
 
 SinricProBlinds::SinricProBlinds(const DeviceId &deviceId) : SinricProDevice(deviceId, "BLIND") {}
 
-bool SinricProBlinds::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProBlinds::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
   if (handlePowerStateController(action, request_value, response_value)) return true;
   if (handleRangeController(action, instance, request_value, response_value)) return true;
   return false;

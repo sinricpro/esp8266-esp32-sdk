@@ -23,14 +23,10 @@
  * @brief The main class of this library, handling communication between SinricPro Server and your devices
  **/
 class SinricProClass : public SinricProInterface {
+  friend class SinricProDevice;
   public:
     void begin(AppKey socketAuthToken, AppSecret signingKey, String serverURL = SINRICPRO_SERVER_URL);
 //    void begin(String socketAuthToken, String signingKey, String serverURL = SINRICPRO_SERVER_URL);
-    template <typename DeviceType>
-    DeviceType& add(DeviceId deviceId);
-
-    void add(SinricProDeviceInterface& newDevice);
-    void add(SinricProDeviceInterface* newDevice);
     void handle();
     void stop();
     bool isConnected();
@@ -56,10 +52,6 @@ class SinricProClass : public SinricProInterface {
     void onPong(std::function<void(uint32_t)> cb) { _websocketListener.onPong(cb); }
 
     void restoreDeviceStates(bool flag);
-
-    DynamicJsonDocument prepareResponse(JsonDocument& requestMessage);
-    DynamicJsonDocument prepareEvent(DeviceId deviceId, const char* action, const char* cause) override;
-    void sendMessage(JsonDocument& jsonMessage) override;
 
     struct proxy {
       proxy(SinricProClass* ptr, DeviceId deviceId) : ptr(ptr), deviceId(deviceId) {}
@@ -97,6 +89,17 @@ class SinricProClass : public SinricProInterface {
      * @return unsigned long current timestamp (unix epoch time)
      */
     unsigned long getTimestamp() override { return baseTimestamp + (millis()/1000); }
+  protected:
+    template <typename DeviceType>
+    DeviceType &add(DeviceId deviceId);
+
+    void add(SinricProDeviceInterface &newDevice);
+    void add(SinricProDeviceInterface *newDevice);
+
+    DynamicJsonDocument prepareResponse(JsonDocument &requestMessage);
+    DynamicJsonDocument prepareEvent(DeviceId deviceId, const char *action, const char *cause) override;
+    void sendMessage(JsonDocument &jsonMessage) override;
+
   private:
     void handleReceiveQueue();
     void handleSendQueue();
@@ -281,6 +284,7 @@ DynamicJsonDocument SinricProClass::prepareRequest(DeviceId deviceId, const char
 }
 
 void SinricProClass::handleResponse(DynamicJsonDocument& responseMessage) {
+  (void) responseMessage;
   DEBUG_SINRIC("[SinricPro.handleResponse()]:\r\n");
 
   #ifndef NODEBUG_SINRIC
@@ -307,7 +311,7 @@ void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interfac
 
   for (auto& device : devices) {
     if (device->getDeviceId() == deviceId && success == false) {
-      success = device->handleRequest(deviceId, action, instance, request_value, response_value);
+      success = device->handleRequest(action, instance, request_value, response_value);
       responseMessage["payload"]["success"] = success;
       if (!success) {
         if (responseMessageStr.length() > 0){

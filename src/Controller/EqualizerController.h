@@ -141,7 +141,7 @@ bool EqualizerController<T>::handleEqualizerController(const String &action, Jso
     for (size_t i = 0; i < bands_array.size(); i++) {
       int level = bands_array[i]["level"] | 0;
       String bandsName = bands_array[i]["name"] | "";
-      success = setBandsCallback(device.getDeviceId(), bandsName, level);
+      success = setBandsCallback(device.deviceId, bandsName, level);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
       response_value_bands_i["level"] = level;
@@ -159,7 +159,7 @@ bool EqualizerController<T>::handleEqualizerController(const String &action, Jso
       if (direction == "DOWN")
         levelDelta *= -1;
       String bandsName = bands_array[i]["name"] | "";
-      success = adjustBandsCallback(device.getDeviceId(), bandsName, levelDelta);
+      success = adjustBandsCallback(device.deviceId, bandsName, levelDelta);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
       response_value_bands_i["level"] = levelDelta;
@@ -174,7 +174,7 @@ bool EqualizerController<T>::handleEqualizerController(const String &action, Jso
     for (size_t i = 0; i < bands_array.size(); i++) {
       int level = 0;
       String bandsName = bands_array[i]["name"] | "";
-      success = adjustBandsCallback(device.getDeviceId(), bandsName, level);
+      success = adjustBandsCallback(device.deviceId, bandsName, level);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
       response_value_bands_i["level"] = level;

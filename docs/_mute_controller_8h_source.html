@@ -110,10 +110,10 @@ $(document).ready(function(){initNavTree('_mute_controller_8h_source.html',''); 
 <div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="class_mute_controller.html#abc47e827f33ac8bcc43ed204c7c4b8fd">   57</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_mute_controller.html#abc47e827f33ac8bcc43ed204c7c4b8fd">MuteController&lt;T&gt;::sendMuteEvent</a>(<span class="keywordtype">bool</span> mute, String cause) {</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;setMute&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  DynamicJsonDocument eventMessage = device._prepareEvent(<span class="stringliteral">&quot;setMute&quot;</span>, cause.c_str());</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  event_value[<span class="stringliteral">&quot;mute&quot;</span>] = mute;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">return</span> device._sendEvent(eventMessage);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>

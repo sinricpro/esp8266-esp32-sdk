@@ -72,7 +72,8 @@ bool PowerStateController<T>::handlePowerStateController(const String &action, J
 
   if (action == "setPowerState" && powerStateCallback)  {
     bool powerState = request_value["state"] == "On" ? true : false;
-    success = powerStateCallback(device.getDeviceId(), powerState);
+//    success = powerStateCallback(device.deviceId, powerState);
+    success = powerStateCallback(device.deviceId, powerState);
     response_value["state"] = powerState ? "On" : "Off";
     return success;
   }

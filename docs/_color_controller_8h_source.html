@@ -114,12 +114,12 @@ $(document).ready(function(){initNavTree('_color_controller_8h_source.html','');
 <div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_color_controller.html#aa3019d161b320267666cdb11d1c3d827">   66</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_color_controller.html#aa3019d161b320267666cdb11d1c3d827">ColorController&lt;T&gt;::sendColorEvent</a>(<span class="keywordtype">byte</span> r, <span class="keywordtype">byte</span> g, <span class="keywordtype">byte</span> b, String cause) {</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;setColor&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  DynamicJsonDocument eventMessage = device._prepareEvent(<span class="stringliteral">&quot;setColor&quot;</span>, cause.c_str());</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  JsonObject event_color = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>].createNestedObject(<span class="stringliteral">&quot;color&quot;</span>);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  event_color[<span class="stringliteral">&quot;r&quot;</span>] = r;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  event_color[<span class="stringliteral">&quot;g&quot;</span>] = g;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  event_color[<span class="stringliteral">&quot;b&quot;</span>] = b;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">return</span> device._sendEvent(eventMessage);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>

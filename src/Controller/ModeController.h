@@ -129,13 +129,13 @@ bool ModeController<T>::handleModeController(const String &action, const String 
 
   if (instance != "") {
     if (genericModeCallback.find(instance) != genericModeCallback.end()) {
-      success = genericModeCallback[instance](device.getDeviceId(), instance, mode);
+      success = genericModeCallback[instance](device.deviceId, instance, mode);
       response_value["mode"] = mode;
       return success;
     } else return false;
   } else {
     if (setModeCallback) {
-      success = setModeCallback(device.getDeviceId(), mode);
+      success = setModeCallback(device.deviceId, mode);
       response_value["mode"] = mode;
       return success;
     }

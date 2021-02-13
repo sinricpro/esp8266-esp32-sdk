@@ -20,14 +20,17 @@
 class SinricProFanUS :  public SinricProDevice,
                         public PowerStateController<SinricProFanUS>,
                         public RangeController<SinricProFanUS> {
+                        friend class PowerStateController<SinricProFanUS>;
+                        friend class RangeController<SinricProFanUS>;
   public:
 	  SinricProFanUS(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+  protected:
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
 SinricProFanUS::SinricProFanUS(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN") {}
 
-bool SinricProFanUS::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProFanUS::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
   if (handlePowerStateController(action, request_value, response_value)) return true;
   if (handleRangeController(action, instance, request_value, response_value)) return true;
 

@@ -103,13 +103,13 @@ bool BrightnessController<T>::handleBrightnessController(const String &action, J
 
   if (brightnessCallback && action == "setBrightness") {
     int brightness = request_value["brightness"];
-    success = brightnessCallback(device.getDeviceId(), brightness);
+    success = brightnessCallback(device.deviceId, brightness);
     response_value["brightness"] = brightness;
   }
 
   if (adjustBrightnessCallback && action == "adjustBrightness") {
     int brightnessDelta = request_value["brightnessDelta"];
-    success = adjustBrightnessCallback(device.getDeviceId(), brightnessDelta);
+    success = adjustBrightnessCallback(device.deviceId, brightnessDelta);
     response_value["brightness"] = brightnessDelta;
   }
 

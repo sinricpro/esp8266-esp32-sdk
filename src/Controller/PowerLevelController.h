@@ -103,13 +103,13 @@ bool PowerLevelController<T>::handlePowerLevelController(const String &action, J
 
   if (setPowerLevelCallback && action == "setPowerLevel") {
     int powerLevel = request_value["powerLevel"];
-    success = setPowerLevelCallback(device.getDeviceId(), powerLevel);
+    success = setPowerLevelCallback(device.deviceId, powerLevel);
     response_value["powerLevel"] = powerLevel;
   }
 
   if (adjustPowerLevelCallback && action == "adjustPowerLevel") {
     int powerLevelDelta = request_value["powerLevelDelta"];
-    success = adjustPowerLevelCallback(device.getDeviceId(), powerLevelDelta);
+    success = adjustPowerLevelCallback(device.deviceId, powerLevelDelta);
     response_value["powerLevel"] = powerLevelDelta;
   }
   return success;

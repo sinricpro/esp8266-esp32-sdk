@@ -102,7 +102,7 @@ bool VolumeController<T>::handleVolumeController(const String &action, JsonObjec
 
   if (volumeCallback && action == "setVolume") {
     int volume = request_value["volume"];
-    success = volumeCallback(device.getDeviceId(), volume);
+    success = volumeCallback(device.deviceId, volume);
     response_value["volume"] = volume;
     return success;
   }
@@ -110,7 +110,7 @@ bool VolumeController<T>::handleVolumeController(const String &action, JsonObjec
   if (adjustVolumeCallback && action == "adjustVolume") {
     int volume = request_value["volume"];
     bool volumeDefault = request_value["volumeDefault"] | false;
-    success = adjustVolumeCallback(device.getDeviceId(), volume, volumeDefault);
+    success = adjustVolumeCallback(device.deviceId, volume, volumeDefault);
     response_value["volume"] = volume;
     return success;
   }

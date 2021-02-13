@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('_power_sensor_event_source_8h_source.h
 <div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_power_sensor_event_source.html#a15776ac1a6e2077230d77a69fc670453">   33</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_power_sensor_event_source.html#a15776ac1a6e2077230d77a69fc670453">PowerSensorEventSource&lt;T&gt;::sendPowerSensorEvent</a>(<span class="keywordtype">float</span> voltage, <span class="keywordtype">float</span> current, <span class="keywordtype">float</span> power, <span class="keywordtype">float</span> apparentPower, <span class="keywordtype">float</span> reactivePower, <span class="keywordtype">float</span> factor, String cause) {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;powerUsage&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  DynamicJsonDocument eventMessage = device._prepareEvent(<span class="stringliteral">&quot;powerUsage&quot;</span>, cause.c_str());</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">if</span> (power == -1)</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    power = voltage * current;</div>
@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('_power_sensor_event_source_8h_source.h
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  startTime = currentTimestamp;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  lastPower = power;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">return</span> device._sendEvent(eventMessage);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>

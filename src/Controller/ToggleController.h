@@ -79,7 +79,7 @@ bool ToggleController<T>::handleToggleController(const String &action, const Str
   if (action == "setToggleState")  {
     bool powerState = request_value["state"] == "On" ? true : false;
     if (genericToggleStateCallback.find(instance) != genericToggleStateCallback.end())
-      success = genericToggleStateCallback[instance](device.getDeviceId(), instance, powerState);
+      success = genericToggleStateCallback[instance](device.deviceId, instance, powerState);
     response_value["state"] = powerState ? "On" : "Off";
     return success;
   }

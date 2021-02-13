@@ -20,16 +20,18 @@
 class SinricProDoorbell :  public SinricProDevice,
                            public PowerStateController<SinricProDoorbell>,
                            public DoorbellEventSource<SinricProDoorbell> {
+                           friend class PowerStateController<SinricProDoorbell>;
+                           friend class DoorbellEventSource<SinricProDoorbell>;
   public:
 	  SinricProDoorbell(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
-
-  private:
+  protected:
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
 SinricProDoorbell::SinricProDoorbell(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 
-bool SinricProDoorbell::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProDoorbell::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  (void) instance;
   if (handlePowerStateController(action, request_value, response_value)) return true;
   return false;
 }

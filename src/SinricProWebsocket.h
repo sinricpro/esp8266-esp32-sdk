@@ -150,6 +150,7 @@ void websocketListener::sendMessage(String &message) {
 
 void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t length)
 {
+  (void) length;
   switch (type) {
     case WStype_DISCONNECTED:
       if (_isConnected) {

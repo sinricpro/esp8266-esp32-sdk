@@ -20,15 +20,19 @@
 class SinricProDimSwitch :  public SinricProDevice,
                             public PowerStateController<SinricProDimSwitch>,
                             public PowerLevelController<SinricProDimSwitch> {
+                            friend class PowerStateController<SinricProDimSwitch>;
+                            friend class PowerLevelController<SinricProDimSwitch>;
   public:
 	  SinricProDimSwitch(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String& instance, JsonObject &request_value, JsonObject &response_value) override;
+  protected:
+    bool handleRequest(const String &action, const String& instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
 SinricProDimSwitch::SinricProDimSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "DIMMABLE_SWITCH") {
 }
 
-bool SinricProDimSwitch::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProDimSwitch::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  (void) instance;
   if (handlePowerStateController(action, request_value, response_value)) return true;
   if (handlePowerLevelController(action, request_value, response_value)) return true;
 

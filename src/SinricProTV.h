@@ -39,15 +39,22 @@ class SinricProTV : public SinricProDevice,
                     public MediaController<SinricProTV>,
                     public InputController<SinricProTV>,
                     public ChannelController<SinricProTV> {
+                    friend class PowerStateController<SinricProTV>;
+                    friend class VolumeController<SinricProTV>;
+                    friend class MuteController<SinricProTV>;
+                    friend class MediaController<SinricProTV>;
+                    friend class InputController<SinricProTV>;
+                    friend class ChannelController<SinricProTV>;
   public:
 	  SinricProTV(const DeviceId &deviceId);
-
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+  protected:
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
 SinricProTV::SinricProTV(const DeviceId &deviceId) : SinricProDevice(deviceId, "TV") {}
 
-bool SinricProTV::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProTV::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  (void) instance;
   if (handlePowerStateController(action, request_value, response_value)) return true;
   if (handleVolumeController(action, request_value, response_value)) return true;
   if (handleMuteController(action, request_value, response_value)) return true;

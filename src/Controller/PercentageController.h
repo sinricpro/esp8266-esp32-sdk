@@ -101,14 +101,14 @@ bool PercentageController<T>::handlePercentageController(const String &action, J
 
   if (percentageCallback && action == "setPercentage") {
     int percentage = request_value["percentage"];
-    success = percentageCallback(device.getDeviceId(), percentage);
+    success = percentageCallback(device.deviceId, percentage);
     response_value["percentage"] = percentage;
     return success;
   }
 
   if (adjustPercentageCallback && action == "adjustPercentage") {
     int percentage = request_value["percentage"];
-    success = adjustPercentageCallback(device.getDeviceId(), percentage);
+    success = adjustPercentageCallback(device.deviceId, percentage);
     response_value["percentage"] = percentage;
     return success;
   }

@@ -92,17 +92,21 @@ $(document).ready(function(){initNavTree('_sinric_pro_device_interface_8h_source
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;SinricProId.h&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">class </span>SinricProDeviceInterface {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> DeviceId &amp;deviceId, <span class="keyword">const</span> String &amp;action, <span class="keyword">const</span> String &amp;instance, JsonObject &amp;request_value, JsonObject &amp;response_value) = 0;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">virtual</span> DeviceId getDeviceId() = 0;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">virtual</span> String getProductType() = 0;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> begin(SinricProInterface* eventSender) = 0;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> sendEvent(JsonDocument&amp; event) = 0;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">virtual</span> DynamicJsonDocument prepareEvent(<span class="keyword">const</span> <span class="keywordtype">char</span>* action, <span class="keyword">const</span> <span class="keywordtype">char</span>* cause) = 0;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> getTimestamp();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;};</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_sinric_pro_class.html">SinricProClass</a>;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> DeviceId &amp;deviceId, <span class="keyword">const</span> String &amp;action, <span class="keyword">const</span> String &amp;instance, JsonObject &amp;request_value, JsonObject &amp;response_value) = 0;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">virtual</span> DeviceId getDeviceId() = 0;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">virtual</span> String getProductType() = 0;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_sinric_pro_class.html#ab19ffdad72d356ef0a32db068455a320">begin</a>(SinricProInterface* eventSender) = 0;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//    virtual bool sendEvent(JsonDocument&amp; event) = 0;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">//    virtual DynamicJsonDocument prepareEvent(const char* action, const char* cause) = 0;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_sinric_pro_class.html#afb2be26eef972203404140612fa31326">getTimestamp</a>();</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;};</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_sinric_pro_class_html"><div class="ttname"><a href="class_sinric_pro_class.html">SinricProClass</a></div><div class="ttdoc">The main class of this library, handling communication between SinricPro Server and your devices.</div><div class="ttdef"><b>Definition:</b> SinricPro.h:25</div></div>
+<div class="ttc" id="aclass_sinric_pro_class_html_ab19ffdad72d356ef0a32db068455a320"><div class="ttname"><a href="class_sinric_pro_class.html#ab19ffdad72d356ef0a32db068455a320">SinricProClass::begin</a></div><div class="ttdeci">void begin(AppKey socketAuthToken, AppSecret signingKey, String serverURL=SINRICPRO_SERVER_URL)</div><div class="ttdoc">Initializing SinricProClass to be able to connect to SinricPro Server.</div><div class="ttdef"><b>Definition:</b> SinricPro.h:182</div></div>
+<div class="ttc" id="aclass_sinric_pro_class_html_afb2be26eef972203404140612fa31326"><div class="ttname"><a href="class_sinric_pro_class.html#afb2be26eef972203404140612fa31326">SinricProClass::getTimestamp</a></div><div class="ttdeci">unsigned long getTimestamp() override</div><div class="ttdoc">Get the current timestamp.</div><div class="ttdef"><b>Definition:</b> SinricPro.h:91</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -53,7 +53,7 @@ bool KeypadController<T>::handleKeypadController(const String &action, JsonObjec
   String keystroke = request_value["keystroke"] | "";
 
   if (keystrokeCallback) {
-    success = keystrokeCallback(device.getDeviceId(), keystroke);
+    success = keystrokeCallback(device.deviceId, keystroke);
     response_value["keystroke"] = keystroke;
     return success;
   }

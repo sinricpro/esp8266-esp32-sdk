@@ -74,7 +74,7 @@ bool MediaController<T>::handleMediaController(const String &action, JsonObject 
 
   if (mediaControlCallback && action == "mediaControl") {
     String mediaControl = request_value["control"];
-    success = mediaControlCallback(device.getDeviceId(), mediaControl);
+    success = mediaControlCallback(device.deviceId, mediaControl);
     response_value["control"] = mediaControl;
     return success;
   }

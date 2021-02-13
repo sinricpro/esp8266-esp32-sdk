@@ -21,15 +21,16 @@
  **/
 class SinricProGarageDoor : public SinricProDevice,
                             public ModeController<SinricProGarageDoor> {
+                            friend class ModeController<SinricProGarageDoor>;
   public:
 	  SinricProGarageDoor(const DeviceId &deviceId);
 
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
 SinricProGarageDoor::SinricProGarageDoor(const DeviceId &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR") {}
 
-bool SinricProGarageDoor::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProGarageDoor::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
   if (handleModeController(action, instance, request_value, response_value)) return true;
   return false;
 }

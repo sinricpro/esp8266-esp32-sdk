@@ -30,15 +30,18 @@ class SinricProWindowAC :  public SinricProDevice,
                            public PowerStateController<SinricProWindowAC>,
                            public RangeController<SinricProWindowAC>,
                            public ThermostatController<SinricProWindowAC> {
+                           friend class public PowerStateController<SinricProWindowAC>;
+                           friend class public RangeController<SinricProWindowAC>;
+                           friend class public ThermostatController<SinricProWindowAC>;
   public:
 	  SinricProWindowAC(const DeviceId &deviceId);
-
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+  protected:
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
 };
 
 SinricProWindowAC::SinricProWindowAC(const DeviceId &deviceId) : SinricProDevice(deviceId, "AC_UNIT") {}
 
-bool SinricProWindowAC::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProWindowAC::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
   if (handlePowerStateController(action, request_value, response_value)) return true;
   if (handleRangeController(action, instance, request_value, response_value)) return true;
   if (handleThermostatController(action, request_value, response_value)) return true;

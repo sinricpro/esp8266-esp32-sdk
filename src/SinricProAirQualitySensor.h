@@ -20,14 +20,19 @@
 class SinricProAirQualitySensor : public SinricProDevice,
                                   public PowerStateController<SinricProAirQualitySensor>,
                                   public AirQualityEventSource<SinricProAirQualitySensor> {
+                                  friend class PowerStateController<SinricProAirQualitySensor>;
+                                  friend class AirQualityEventSource<SinricProAirQualitySensor>;
+                                  
 public:
   SinricProAirQualitySensor(const DeviceId &deviceId);
-  bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+protected:
+  bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
 SinricProAirQualitySensor::SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR") {}
 
-bool SinricProAirQualitySensor::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProAirQualitySensor::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  (void) instance;
   if (handlePowerStateController(action, request_value, response_value)) return true;
   return false;
 }

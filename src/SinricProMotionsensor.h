@@ -20,16 +20,19 @@
 class SinricProMotionsensor : public SinricProDevice,
                               public PowerStateController<SinricProMotionsensor>,
                               public MotionEventSource<SinricProMotionsensor> {
-public:
-  SinricProMotionsensor(const DeviceId &deviceId);
-  bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+                              friend class PowerStateController<SinricProMotionsensor>;
+                              friend class MotionEventSource<SinricProMotionsensor>;
+  public:
+    SinricProMotionsensor(const DeviceId &deviceId);
+  protected:
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
 SinricProMotionsensor::SinricProMotionsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "MOTION_SENSOR") {}
 
-bool SinricProMotionsensor::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProMotionsensor::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  (void) instance;
   if (handlePowerStateController(action, request_value, response_value)) return true;
-
   return false;
 }
 

@@ -125,13 +125,13 @@ $(document).ready(function(){initNavTree('_equalizer_controller_8h_source.html',
 <div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="class_equalizer_controller.html#a4ad5674e36d96a73147388251b794c82">  120</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_equalizer_controller.html#a4ad5674e36d96a73147388251b794c82">EqualizerController&lt;T&gt;::sendBandsEvent</a>(String bands, <span class="keywordtype">int</span> level, String cause) {</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;setBands&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  DynamicJsonDocument eventMessage = device._prepareEvent(<span class="stringliteral">&quot;setBands&quot;</span>, cause.c_str());</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  JsonArray event_value_bands = event_value.createNestedArray(<span class="stringliteral">&quot;bands&quot;</span>);</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  JsonObject event_bands = event_value_bands.createNestedObject();</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  event_bands[<span class="stringliteral">&quot;name&quot;</span>] = bands;</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  event_bands[<span class="stringliteral">&quot;value&quot;</span>] = level;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordflow">return</span> device._sendEvent(eventMessage);</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>

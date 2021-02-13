@@ -114,10 +114,10 @@ $(document).ready(function(){initNavTree('_lock_controller_8h_source.html',''); 
 <div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_lock_controller.html#a3795d2fa1b8474239f46493915e70f1c">   66</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_lock_controller.html#a3795d2fa1b8474239f46493915e70f1c">LockController&lt;T&gt;::sendLockStateEvent</a>(<span class="keywordtype">bool</span> state, String cause) {</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;setLockState&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  DynamicJsonDocument eventMessage = device._prepareEvent(<span class="stringliteral">&quot;setLockState&quot;</span>, cause.c_str());</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  state ? event_value[<span class="stringliteral">&quot;state&quot;</span>] = <span class="stringliteral">&quot;LOCKED&quot;</span> : event_value[<span class="stringliteral">&quot;state&quot;</span>] = <span class="stringliteral">&quot;UNLOCKED&quot;</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">return</span> device._sendEvent(eventMessage);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>

@@ -184,9 +184,9 @@ bool RangeController<T>::handleRangeController(const String &action, const Strin
     int rangeValue = request_value["rangeValue"] | 0;
     if (instance != "") {
       if (genericSetRangeValueCallback.find(instance) != genericSetRangeValueCallback.end()) 
-        success = genericSetRangeValueCallback[instance](device.getDeviceId(), instance, rangeValue);
+        success = genericSetRangeValueCallback[instance](device.deviceId, instance, rangeValue);
     } else {
-      if (setRangeValueCallback) success = setRangeValueCallback(device.getDeviceId(), rangeValue);
+      if (setRangeValueCallback) success = setRangeValueCallback(device.deviceId, rangeValue);
     }
     response_value["rangeValue"] = rangeValue;
     return success;
@@ -196,10 +196,10 @@ bool RangeController<T>::handleRangeController(const String &action, const Strin
     int rangeValueDelta = request_value["rangeValueDelta"] | 0;
     if (instance != "") {
       if (genericAdjustRangeValueCallback.find(instance) != genericAdjustRangeValueCallback.end()) 
-        success = genericAdjustRangeValueCallback[instance](device.getDeviceId(), instance, rangeValueDelta);
+        success = genericAdjustRangeValueCallback[instance](device.deviceId, instance, rangeValueDelta);
     } else {
       if (adjustRangeValueCallback)
-        success = adjustRangeValueCallback(device.getDeviceId(), rangeValueDelta);
+        success = adjustRangeValueCallback(device.deviceId, rangeValueDelta);
     }
     
     response_value["rangeValue"] = rangeValueDelta;

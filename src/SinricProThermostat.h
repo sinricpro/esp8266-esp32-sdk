@@ -28,17 +28,19 @@ class SinricProThermostat :  public SinricProDevice,
                              public PowerStateController<SinricProThermostat>,
                              public ThermostatController<SinricProThermostat>,
                              public TemperatureEventSource<SinricProThermostat> {
+                             friend class PowerStateController<SinricProThermostat>;
+                             friend class ThermostatController<SinricProThermostat>;
+                             friend class TemperatureEventSource<SinricProThermostat>;
   public:
 	  SinricProThermostat(const DeviceId &deviceId);
-
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
-
-  private:
+  protected:
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
 SinricProThermostat::SinricProThermostat(const DeviceId &deviceId) : SinricProDevice(deviceId, "THERMOSTAT") {}
 
-bool SinricProThermostat::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProThermostat::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  (void) instance;
   if (handlePowerStateController(action, request_value, response_value)) return true;
   if (handleThermostatController(action, request_value, response_value)) return true;
 

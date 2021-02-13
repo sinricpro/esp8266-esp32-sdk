@@ -18,13 +18,18 @@
  **/
 class SinricProPowerSensor :  public SinricProDevice,
                               public PowerSensorEventSource<SinricProPowerSensor> {
+                              friend class PowerSensorEventSource<SinricProPowerSensor>;
   public:
 	  SinricProPowerSensor(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+  protected:
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
 SinricProPowerSensor::SinricProPowerSensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "POWER_SENSOR") {}
 
-bool SinricProPowerSensor::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) { return false; }
+bool SinricProPowerSensor::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  (void) instance;
+  return false;
+}
 
 #endif

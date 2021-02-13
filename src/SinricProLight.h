@@ -30,15 +30,20 @@ class SinricProLight :  public SinricProDevice,
                         public BrightnessController<SinricProLight>,
                         public ColorController<SinricProLight>,
                         public ColorTemperatureController<SinricProLight> {
+                        friend class PowerStateController<SinricProLight>;
+                        friend class BrightnessController<SinricProLight>;
+                        friend class ColorController<SinricProLight>;
+                        friend class ColorTemperatureController<SinricProLight>;
   public:
     SinricProLight(const DeviceId &deviceId);
-
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+  protected:
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
 SinricProLight::SinricProLight(const DeviceId &deviceId) : SinricProDevice(deviceId, "LIGHT") {}
 
-bool SinricProLight::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProLight::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  (void) instance;
   if (handlePowerStateController(action, request_value, response_value)) return true;
   if (handleBrightnessController(action, request_value, response_value)) return true;
   if (handleColorController(action, request_value, response_value)) return true;

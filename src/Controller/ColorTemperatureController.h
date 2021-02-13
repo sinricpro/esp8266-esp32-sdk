@@ -132,19 +132,19 @@ bool ColorTemperatureController<T>::handleColorTemperatureController(const Strin
 
   if (colorTemperatureCallback && action == "setColorTemperature") {
     int colorTemperature = request_value["colorTemperature"];
-    success = colorTemperatureCallback(device.getDeviceId(), colorTemperature);
+    success = colorTemperatureCallback(device.deviceId, colorTemperature);
     response_value["colorTemperature"] = colorTemperature;
   }
 
   if (increaseColorTemperatureCallback && action == "increaseColorTemperature") {
     int colorTemperature = 1;
-    success = increaseColorTemperatureCallback(device.getDeviceId(), colorTemperature);
+    success = increaseColorTemperatureCallback(device.deviceId, colorTemperature);
     response_value["colorTemperature"] = colorTemperature;
   }
 
   if (decreaseColorTemperatureCallback && action == "decreaseColorTemperature") {
     int colorTemperature = -1;
-    success = decreaseColorTemperatureCallback(device.getDeviceId(), colorTemperature);
+    success = decreaseColorTemperatureCallback(device.deviceId, colorTemperature);
     response_value["colorTemperature"] = colorTemperature;
   }
 

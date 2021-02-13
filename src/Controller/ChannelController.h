@@ -138,14 +138,14 @@ bool ChannelController<T>::handleChannelController(const String &action, JsonObj
 
     if (changeChannelCallback && request_value["channel"].containsKey("name")) {
       String channelName = request_value["channel"]["name"] | "";
-      success = changeChannelCallback(device.getDeviceId(), channelName);
+      success = changeChannelCallback(device.deviceId, channelName);
       response_value["channel"]["name"] = channelName;
     }
 
     if (changeChannelNumberCallback && request_value["channel"].containsKey("number")) {
       int channelNumber = request_value["channel"]["number"];
       String channelName("");
-      success = changeChannelNumberCallback(device.getDeviceId(), channelNumber, channelName);
+      success = changeChannelNumberCallback(device.deviceId, channelNumber, channelName);
       response_value["channel"]["name"] = channelName;
     }
     return success;
@@ -154,7 +154,7 @@ bool ChannelController<T>::handleChannelController(const String &action, JsonObj
   if (skipChannelsCallback && action == "skipChannels") {
     int channelCount = request_value["channelCount"] | 0;
     String channelName;
-    success = skipChannelsCallback(device.getDeviceId(), channelCount, channelName);
+    success = skipChannelsCallback(device.deviceId, channelCount, channelName);
     response_value["channel"]["name"] = channelName;
     return success;
   }

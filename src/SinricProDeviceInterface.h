@@ -5,13 +5,14 @@
 #include <SinricProId.h>
 
 class SinricProDeviceInterface {
-  public:
-    virtual bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) = 0;
+  friend class SinricProClass;
+  protected:
+    virtual bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) = 0;
     virtual DeviceId getDeviceId() = 0;
     virtual String getProductType() = 0;
     virtual void begin(SinricProInterface* eventSender) = 0;
-    virtual bool sendEvent(JsonDocument& event) = 0;
-    virtual DynamicJsonDocument prepareEvent(const char* action, const char* cause) = 0;
+//    virtual bool sendEvent(JsonDocument& event) = 0;
+//    virtual DynamicJsonDocument prepareEvent(const char* action, const char* cause) = 0;
     virtual unsigned long getTimestamp();
 };
 

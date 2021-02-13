@@ -19,14 +19,16 @@
  **/
 class SinricProCamera : public SinricProDevice,
                         public PowerStateController<SinricProCamera> {
+                        friend class PowerStateController<SinricProCamera>;
   public:
 	  SinricProCamera(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
 SinricProCamera::SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId, "CAMERA") {}
 
-bool SinricProCamera::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProCamera::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  (void) instance;
   if (handlePowerStateController(action, request_value, response_value)) return true;
   return false;
 }

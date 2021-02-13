@@ -80,7 +80,7 @@ bool LockController<T>::handleLockController(const String &action, JsonObject &r
 
   if (action == "setLockState" && lockStateCallback)  {
     bool lockState = request_value["state"] == "lock" ? true : false;
-    success = lockStateCallback(device.getDeviceId(), lockState);
+    success = lockStateCallback(device.deviceId, lockState);
     response_value["state"] = success ? lockState ? "LOCKED" : "UNLOCKED" : "JAMMED";
     return success;
   }

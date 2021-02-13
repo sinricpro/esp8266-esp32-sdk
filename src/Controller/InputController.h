@@ -73,7 +73,7 @@ bool InputController<T>::handleInputController(const String &action, JsonObject 
 
   if (selectInputCallback && action == "selectInput") {
     String input = request_value["input"];
-    success = selectInputCallback(device.getDeviceId(), input);
+    success = selectInputCallback(device.deviceId, input);
     response_value["input"] = input;
     return success;
   }

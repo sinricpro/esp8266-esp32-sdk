@@ -45,14 +45,22 @@ class SinricProSpeaker : public SinricProDevice,
                          public InputController<SinricProSpeaker>,
                          public EqualizerController<SinricProSpeaker>,
                          public ModeController<SinricProSpeaker> {
+                         friend class PowerStateController<SinricProSpeaker>;
+                         friend class MuteController<SinricProSpeaker>;
+                         friend class VolumeController<SinricProSpeaker>;
+                         friend class MediaController<SinricProSpeaker>;
+                         friend class InputController<SinricProSpeaker>;
+                         friend class EqualizerController<SinricProSpeaker>;
+                         friend class ModeController<SinricProSpeaker>;
 public:
   SinricProSpeaker(const DeviceId &deviceId);
-  bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+protected:
+  bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
 SinricProSpeaker::SinricProSpeaker(const DeviceId &deviceId) : SinricProDevice(deviceId, "SPEAKER") {}
 
-bool SinricProSpeaker::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProSpeaker::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
   if (handlePowerStateController(action, request_value, response_value)) return true;
   if (handleMuteController(action, request_value, response_value)) return true;
   if (handleVolumeController(action, request_value, response_value)) return true;

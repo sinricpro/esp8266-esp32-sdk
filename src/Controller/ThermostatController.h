@@ -159,21 +159,21 @@ bool ThermostatController<T>::handleThermostatController(const String &action, J
     }  else {
       temperature = 1;
     }
-    success = targetTemperatureCallback(device.getDeviceId(), temperature);
+    success = targetTemperatureCallback(device.deviceId, temperature);
     response_value["temperature"] = temperature;
     return success;
   }
 
   if (action == "adjustTargetTemperature" && adjustTargetTemperatureCallback) {
     float temperatureDelta = request_value["temperature"];
-    success = adjustTargetTemperatureCallback(device.getDeviceId(), temperatureDelta);
+    success = adjustTargetTemperatureCallback(device.deviceId, temperatureDelta);
     response_value["temperature"] = temperatureDelta;
     return success;
   }
 
   if (action == "setThermostatMode" && thermostatModeCallback) {
     String thermostatMode = request_value["thermostatMode"] | "";
-    success = thermostatModeCallback(device.getDeviceId(), thermostatMode);
+    success = thermostatModeCallback(device.deviceId, thermostatMode);
     response_value["thermostatMode"] = thermostatMode;
     return success;
   }

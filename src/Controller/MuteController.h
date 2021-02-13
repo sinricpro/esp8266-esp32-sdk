@@ -71,7 +71,7 @@ bool MuteController<T>::handleMuteController(const String &action, JsonObject &r
 
   if (muteCallback && action == "setMute") {
     bool mute = request_value["mute"];
-    success = muteCallback(device.getDeviceId(), mute);
+    success = muteCallback(device.deviceId, mute);
     response_value["mute"] = mute;
     return success;
   }

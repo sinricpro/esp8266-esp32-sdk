@@ -22,14 +22,17 @@
 class SinricProFan : public SinricProDevice,
                      public PowerStateController<SinricProFan>,
                      public PowerLevelController<SinricProFan> {
+                     friend class PowerStateController<SinricProFan>;
+                     friend class PowerLevelController<SinricProFan>;
   public:
 	  SinricProFan(const DeviceId &deviceId);
-    bool handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
 };
 
 SinricProFan::SinricProFan(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN_NON-US") {}
 
-bool SinricProFan::handleRequest(const DeviceId &deviceId, const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool SinricProFan::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+  (void) instance;
   if (handlePowerStateController(action, request_value, response_value)) return true;
   if (handlePowerLevelController(action, request_value, response_value)) return true;
 

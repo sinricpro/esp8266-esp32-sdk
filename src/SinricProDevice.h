@@ -22,22 +22,25 @@
  * Implements basic on/off functions like onPowerState and sendPowerStateEvent
  **/
 class SinricProDevice : public SinricProDeviceInterface {
-  public:
-    SinricProDevice(const DeviceId &deviceId, const String &productType = "");
-    virtual ~SinricProDevice();
-    virtual DeviceId getDeviceId();
-    virtual String getProductType();
-    virtual void begin(SinricProInterface* eventSender);
+  friend class SinricProClass;
+public:
+  SinricProDevice(const DeviceId &deviceId, const String &productType = "");
 
-    virtual bool sendEvent(JsonDocument &event);
-    virtual DynamicJsonDocument prepareEvent(const char *action, const char *cause);
-    unsigned long getTimestamp();
-  protected:
-    DeviceId deviceId;
-  private:
-    SinricProInterface* eventSender;
-    std::map<String, LeakyBucket_t> eventFilter;
-    String productType;
+protected:
+  virtual DeviceId getDeviceId();
+  unsigned long getTimestamp();
+  virtual bool sendEvent(JsonDocument &event);
+  virtual DynamicJsonDocument prepareEvent(const char *action, const char *cause);
+
+  virtual ~SinricProDevice();
+  virtual String getProductType();
+  virtual void begin(SinricProInterface *eventSender);
+  DeviceId deviceId;
+
+private:
+  SinricProInterface *eventSender;
+  std::map<String, LeakyBucket_t> eventFilter;
+  String productType;
 };
 
 SinricProDevice::SinricProDevice(const DeviceId &deviceId, const String &productType) : 
