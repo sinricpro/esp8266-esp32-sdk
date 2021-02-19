@@ -28,6 +28,9 @@
        #include <WiFi.h>
 #endif
 
+#include <SinricPro.h>
+#include <SinricProSwitch.h>
+
 /*****************
  * Configuration *
  *****************/
