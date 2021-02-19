@@ -143,22 +143,22 @@ $(document).ready(function(){initNavTree('_range_controller_8h_source.html','');
 <div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="class_range_controller.html#af676bb2b419c4321d0a678cf9446da0c">  146</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_range_controller.html#af676bb2b419c4321d0a678cf9446da0c">RangeController&lt;T&gt;::sendRangeValueEvent</a>(<span class="keywordtype">int</span> rangeValue, String cause) {</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  DynamicJsonDocument eventMessage = device._prepareEvent(<span class="stringliteral">&quot;setRangeValue&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;setRangeValue&quot;</span>, cause.c_str());</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  event_value[<span class="stringliteral">&quot;rangeValue&quot;</span>] = rangeValue;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="keywordflow">return</span> device._sendEvent(eventMessage);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00166"></a><span class="lineno"><a class="line" href="class_range_controller.html#a60998b10a31b66e92d6b292a60b26c2e">  166</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_range_controller.html#af676bb2b419c4321d0a678cf9446da0c">RangeController&lt;T&gt;::sendRangeValueEvent</a>(<span class="keyword">const</span> String&amp; instance, <span class="keywordtype">int</span> rangeValue, String cause){</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  T &amp;device = <span class="keyword">static_cast&lt;</span>T &amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  DynamicJsonDocument eventMessage = device._prepareEvent(<span class="stringliteral">&quot;setRangeValue&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;setRangeValue&quot;</span>, cause.c_str());</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  eventMessage[<span class="stringliteral">&quot;instance&quot;</span>] = instance;</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  event_value[<span class="stringliteral">&quot;rangeValue&quot;</span>] = rangeValue;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <span class="keywordflow">return</span> device._sendEvent(eventMessage);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;}</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
@@ -171,9 +171,9 @@ $(document).ready(function(){initNavTree('_range_controller_8h_source.html','');
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordtype">int</span> rangeValue = request_value[<span class="stringliteral">&quot;rangeValue&quot;</span>] | 0;</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordflow">if</span> (instance != <span class="stringliteral">&quot;&quot;</span>) {</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;      <span class="keywordflow">if</span> (genericSetRangeValueCallback.find(instance) != genericSetRangeValueCallback.end()) </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        success = genericSetRangeValueCallback[instance](device.getDeviceId(), instance, rangeValue);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        success = genericSetRangeValueCallback[instance](device.deviceId, instance, rangeValue);</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      <span class="keywordflow">if</span> (setRangeValueCallback) success = setRangeValueCallback(device.getDeviceId(), rangeValue);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      <span class="keywordflow">if</span> (setRangeValueCallback) success = setRangeValueCallback(device.deviceId, rangeValue);</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    }</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    response_value[<span class="stringliteral">&quot;rangeValue&quot;</span>] = rangeValue;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keywordflow">return</span> success;</div>
@@ -183,10 +183,10 @@ $(document).ready(function(){initNavTree('_range_controller_8h_source.html','');
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordtype">int</span> rangeValueDelta = request_value[<span class="stringliteral">&quot;rangeValueDelta&quot;</span>] | 0;</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">if</span> (instance != <span class="stringliteral">&quot;&quot;</span>) {</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      <span class="keywordflow">if</span> (genericAdjustRangeValueCallback.find(instance) != genericAdjustRangeValueCallback.end()) </div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        success = genericAdjustRangeValueCallback[instance](device.getDeviceId(), instance, rangeValueDelta);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        success = genericAdjustRangeValueCallback[instance](device.deviceId, instance, rangeValueDelta);</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      <span class="keywordflow">if</span> (adjustRangeValueCallback)</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        success = adjustRangeValueCallback(device.getDeviceId(), rangeValueDelta);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        success = adjustRangeValueCallback(device.deviceId, rangeValueDelta);</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    }</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    </div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    response_value[<span class="stringliteral">&quot;rangeValue&quot;</span>] = rangeValueDelta;</div>

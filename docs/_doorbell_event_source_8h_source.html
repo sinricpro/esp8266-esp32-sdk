@@ -98,10 +98,10 @@ $(document).ready(function(){initNavTree('_doorbell_event_source_8h_source.html'
 <div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_doorbell_event_source.html#a084a5475db7127784c452deb3a080f62">   23</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_doorbell_event_source.html#a084a5475db7127784c452deb3a080f62">DoorbellEventSource&lt;T&gt;::sendDoorbellEvent</a>(String cause) {</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  DynamicJsonDocument eventMessage = device._prepareEvent(<span class="stringliteral">&quot;DoorbellPress&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;DoorbellPress&quot;</span>, cause.c_str());</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  event_value[<span class="stringliteral">&quot;state&quot;</span>] = <span class="stringliteral">&quot;pressed&quot;</span>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keywordflow">return</span> device._sendEvent(eventMessage);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif</span></div>

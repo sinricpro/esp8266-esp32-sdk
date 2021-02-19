@@ -98,10 +98,10 @@ $(document).ready(function(){initNavTree('_motion_event_source_8h_source.html','
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_motion_event_source.html#ab28a28a17768a38eea033ba700095672">   24</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_motion_event_source.html#ab28a28a17768a38eea033ba700095672">MotionEventSource&lt;T&gt;::sendMotionEvent</a>(<span class="keywordtype">bool</span> detected, String cause) {</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  DynamicJsonDocument eventMessage = device._prepareEvent(<span class="stringliteral">&quot;motion&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;motion&quot;</span>, cause.c_str());</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  event_value[<span class="stringliteral">&quot;state&quot;</span>] = detected ? <span class="stringliteral">&quot;detected&quot;</span> : <span class="stringliteral">&quot;notDetected&quot;</span>;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keywordflow">return</span> device._sendEvent(eventMessage);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif</span></div>

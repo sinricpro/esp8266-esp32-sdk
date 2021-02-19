@@ -112,10 +112,10 @@ $(document).ready(function(){initNavTree('_input_controller_8h_source.html','');
 <div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="class_input_controller.html#a8d79220a3a06331442d36524ceac1db3">   59</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="class_input_controller.html#a8d79220a3a06331442d36524ceac1db3">InputController&lt;T&gt;::sendSelectInputEvent</a>(String input, String cause) {</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  DynamicJsonDocument eventMessage = device._prepareEvent(<span class="stringliteral">&quot;selectInput&quot;</span>, cause.c_str());</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;selectInput&quot;</span>, cause.c_str());</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  event_value[<span class="stringliteral">&quot;input&quot;</span>] = input;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">return</span> device._sendEvent(eventMessage);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('_input_controller_8h_source.html','');
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">if</span> (selectInputCallback &amp;&amp; action == <span class="stringliteral">&quot;selectInput&quot;</span>) {</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    String input = request_value[<span class="stringliteral">&quot;input&quot;</span>];</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    success = selectInputCallback(device.getDeviceId(), input);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    success = selectInputCallback(device.deviceId, input);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    response_value[<span class="stringliteral">&quot;input&quot;</span>] = input;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">return</span> success;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  }</div>

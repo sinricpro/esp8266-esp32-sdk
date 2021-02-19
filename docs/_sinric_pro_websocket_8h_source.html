@@ -237,34 +237,35 @@ $(document).ready(function(){initNavTree('_sinric_pro_websocket_8h_source.html',
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="keywordtype">void</span> websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, <span class="keywordtype">size_t</span> length)</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;{</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keywordflow">switch</span> (type) {</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">case</span> WStype_DISCONNECTED:</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      <span class="keywordflow">if</span> (_isConnected) {</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        DEBUG_SINRIC(<span class="stringliteral">&quot;[SinricPro:Websocket]: disconnected\r\n&quot;</span>);</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordflow">if</span> (_wsDisconnectedCb) _wsDisconnectedCb();</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        _isConnected = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      }</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordflow">case</span> WStype_CONNECTED:</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;      _isConnected = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      DEBUG_SINRIC(<span class="stringliteral">&quot;[SinricPro:Websocket]: connected\r\n&quot;</span>);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      <span class="keywordflow">if</span> (_wsConnectedCb) _wsConnectedCb();</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      <span class="keywordflow">if</span> (restoreDeviceStates) {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        restoreDeviceStates=<span class="keyword">false</span>; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        setExtraHeaders();</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      }</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordflow">case</span> WStype_TEXT: {</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      SinricProMessage* request = <span class="keyword">new</span> SinricProMessage(IF_WEBSOCKET, (<span class="keywordtype">char</span>*)payload);</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      DEBUG_SINRIC(<span class="stringliteral">&quot;[SinricPro:Websocket]: receiving data\r\n&quot;</span>);</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      receiveQueue-&gt;push(request);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordflow">default</span>: <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  }</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;}</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  (void) length;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="keywordflow">switch</span> (type) {</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">case</span> WStype_DISCONNECTED:</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      <span class="keywordflow">if</span> (_isConnected) {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        DEBUG_SINRIC(<span class="stringliteral">&quot;[SinricPro:Websocket]: disconnected\r\n&quot;</span>);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordflow">if</span> (_wsDisconnectedCb) _wsDisconnectedCb();</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        _isConnected = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      }</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;      <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordflow">case</span> WStype_CONNECTED:</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      _isConnected = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      DEBUG_SINRIC(<span class="stringliteral">&quot;[SinricPro:Websocket]: connected\r\n&quot;</span>);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      <span class="keywordflow">if</span> (_wsConnectedCb) _wsConnectedCb();</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      <span class="keywordflow">if</span> (restoreDeviceStates) {</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        restoreDeviceStates=<span class="keyword">false</span>; </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        setExtraHeaders();</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">case</span> WStype_TEXT: {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      SinricProMessage* request = <span class="keyword">new</span> SinricProMessage(IF_WEBSOCKET, (<span class="keywordtype">char</span>*)payload);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      DEBUG_SINRIC(<span class="stringliteral">&quot;[SinricPro:Websocket]: receiving data\r\n&quot;</span>);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      receiveQueue-&gt;push(request);</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordflow">default</span>: <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;}</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -113,22 +113,23 @@ $(document).ready(function(){initNavTree('_sinric_pro_light_8h_source.html','');
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="class_sinric_pro_light.html">SinricProLight</a>(<span class="keyword">const</span> DeviceId &amp;deviceId);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> DeviceId &amp;deviceId, <span class="keyword">const</span> String &amp;action, <span class="keyword">const</span> String &amp;instance, JsonObject &amp;request_value, JsonObject &amp;response_value);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">bool</span> handleRequest(<span class="keyword">const</span> String &amp;action, <span class="keyword">const</span> String &amp;instance, JsonObject &amp;request_value, JsonObject &amp;response_value);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;};</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;SinricProLight::SinricProLight(<span class="keyword">const</span> DeviceId &amp;deviceId) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId, <span class="stringliteral">&quot;LIGHT&quot;</span>) {}</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">bool</span> SinricProLight::handleRequest(<span class="keyword">const</span> DeviceId &amp;deviceId, <span class="keyword">const</span> String &amp;action, <span class="keyword">const</span> String &amp;instance, JsonObject &amp;request_value, JsonObject &amp;response_value) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordflow">if</span> (handlePowerStateController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordflow">if</span> (handleBrightnessController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">if</span> (handleColorController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">if</span> (handleColorTemperatureController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">bool</span> SinricProLight::handleRequest(<span class="keyword">const</span> String &amp;action, <span class="keyword">const</span> String &amp;instance, JsonObject &amp;request_value, JsonObject &amp;response_value) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  (void) instance;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordflow">if</span> (handlePowerStateController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">if</span> (handleBrightnessController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">if</span> (handleColorController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordflow">if</span> (handleColorTemperatureController(action, request_value, response_value)) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="ttc" id="aclass_brightness_controller_html"><div class="ttname"><a href="class_brightness_controller.html">BrightnessController</a></div><div class="ttdoc">BrightnessController.</div><div class="ttdef"><b>Definition:</b> BrightnessController.h:9</div></div>
 <div class="ttc" id="aclass_color_controller_html"><div class="ttname"><a href="class_color_controller.html">ColorController</a></div><div class="ttdoc">ColorController.</div><div class="ttdef"><b>Definition:</b> ColorController.h:9</div></div>
 <div class="ttc" id="aclass_color_temperature_controller_html"><div class="ttname"><a href="class_color_temperature_controller.html">ColorTemperatureController</a></div><div class="ttdoc">ColorTemperatureController.</div><div class="ttdef"><b>Definition:</b> ColorTemperatureController.h:9</div></div>

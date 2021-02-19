@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['this_20is_20a_20test_20page_274',['This is a test page',['../md_doc_examples_test.html',1,'']]]
+  ['sinricpro_20_28esp8266_20_2f_20esp32_20sdk_29_376',['SinricPro (ESP8266 / ESP32 SDK)',['../index.html',1,'']]]
 ];
