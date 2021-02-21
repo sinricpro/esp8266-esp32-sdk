@@ -9,7 +9,7 @@
 #define _SINRICPOWERSENSOR_H_
 
 #include "SinricProDevice.h"
-#include "EventSource/PowerSensorEventSource.h"
+#include "Capabilities/PowerSensorEventSource.h"
 
 /**
  * @class SinricProPowerSensor
@@ -17,19 +17,10 @@
  * @ingroup Devices
  **/
 class SinricProPowerSensor :  public SinricProDevice,
-                              public PowerSensorEventSource<SinricProPowerSensor> {
-                              friend class PowerSensorEventSource<SinricProPowerSensor>;
+                              public PowerSensor<SinricProPowerSensor> {
+                              friend class PowerSensor<SinricProPowerSensor>;
   public:
-	  SinricProPowerSensor(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+	  SinricProPowerSensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "POWER_SENSOR") {}
 };
-
-SinricProPowerSensor::SinricProPowerSensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "POWER_SENSOR") {}
-
-bool SinricProPowerSensor::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  return false;
-}
 
 #endif

@@ -8,8 +8,8 @@
 #ifndef _SINRICSWITCH_H_
 #define _SINRICSWITCH_H_
 
-#include "./SinricProDevice.h"
-#include "./Controller/PowerStateController.h"
+#include "SinricProDevice.h"
+#include "Capabilities/PowerStateController.h"
 
 /**
  * @class SinricProSwitch
@@ -20,19 +20,8 @@ class SinricProSwitch : public SinricProDevice,
                         public PowerStateController<SinricProSwitch> {
                         friend class PowerStateController<SinricProSwitch>;
   public:
-    SinricProSwitch(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+    SinricProSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "SWITCH") {};
 };
-
-SinricProSwitch::SinricProSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "SWITCH") {
-}
-
-bool SinricProSwitch::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  return false;
-}
 
 #endif
 

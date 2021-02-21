@@ -1,12 +1,12 @@
-#ifndef _DOORBELLEVENTSOURCE_H_
-#define _DOORBELLEVENTSOURCE_H_
+#ifndef _DOORBELL_H_
+#define _DOORBELL_H_
 
 /**
- * @brief DorbellEventSource
- * @ingroup EventSource
+ * @brief Dorbell
+ * @ingroup Capabilities
  **/
 template <typename T>
-class DoorbellEventSource {
+class Doorbell {
   public:
     bool sendDoorbellEvent(String cause = "PHYSICAL_INTERACTION");
 };
@@ -20,7 +20,7 @@ class DoorbellEventSource {
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
 template <typename T>
-bool DoorbellEventSource<T>::sendDoorbellEvent(String cause) {
+bool Doorbell<T>::sendDoorbellEvent(String cause) {
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("DoorbellPress", cause.c_str());

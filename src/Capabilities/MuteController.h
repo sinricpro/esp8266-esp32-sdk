@@ -1,14 +1,16 @@
 #ifndef _MUTECONTROLLER_H_
 #define _MUTECONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief MuteController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class MuteController {
   public:
-
+    MuteController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&MuteController<T>::handleMuteController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onMute function
      * 
@@ -28,7 +30,7 @@ class MuteController {
     void onMute(MuteCallback cb);
     bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION");
   protected:
-    bool handleMuteController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handleMuteController(SinricProRequest &request);
 
   private:
     MuteCallback muteCallback;
@@ -64,15 +66,15 @@ bool MuteController<T>::sendMuteEvent(bool mute, String cause) {
 }
 
 template <typename T>
-bool MuteController<T>::handleMuteController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool MuteController<T>::handleMuteController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (muteCallback && action == "setMute") {
-    bool mute = request_value["mute"];
+  if (muteCallback && request.action == "setMute") {
+    bool mute = request.request_value["mute"];
     success = muteCallback(device.deviceId, mute);
-    response_value["mute"] = mute;
+    request.response_value["mute"] = mute;
     return success;
   }
   return success;

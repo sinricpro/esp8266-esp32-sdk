@@ -9,8 +9,8 @@
 #define _SINRICCONTACTSENSOR_H_
 
 #include "SinricProDevice.h"
-#include "Controller/PowerStateController.h"
-#include "EventSource/ContactEventSource.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/ContactSensor.h"
 
 /**
  * @class SinricProContactsensor
@@ -23,18 +23,8 @@ class SinricProContactsensor : public SinricProDevice,
                                friend class PowerStateController<SinricProContactsensor>;
                                friend class ContactEventSource<SinricProContactsensor>;
   public:
-	  SinricProContactsensor(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+	  SinricProContactsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 };
-
-SinricProContactsensor::SinricProContactsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
-
-bool SinricProContactsensor::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  return false;
-}
 
 #endif
 

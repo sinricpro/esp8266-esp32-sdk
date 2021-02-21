@@ -9,8 +9,8 @@
 #define _SINRICDIMSWITCH_H_
 
 #include "SinricProDevice.h"
-#include "./Controller/PowerstateController.h"
-#include "./Controller/PowerLevelController.h"
+#include "Capabilities/PowerstateController.h"
+#include "Capabilities/PowerLevelController.h"
 
 /**
  * @class SinricProDimSwitch
@@ -23,21 +23,8 @@ class SinricProDimSwitch :  public SinricProDevice,
                             friend class PowerStateController<SinricProDimSwitch>;
                             friend class PowerLevelController<SinricProDimSwitch>;
   public:
-	  SinricProDimSwitch(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String& instance, JsonObject &request_value, JsonObject &response_value) override;
+    SinricProDimSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "DIMMABLE_SWITCH"){};
 };
-
-SinricProDimSwitch::SinricProDimSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "DIMMABLE_SWITCH") {
-}
-
-bool SinricProDimSwitch::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  if (handlePowerLevelController(action, request_value, response_value)) return true;
-
-  return false;
-}
 
 #endif
 

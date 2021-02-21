@@ -1,13 +1,16 @@
 #ifndef _KEYPADCONTROLLER_H_
 #define _KEYPADCONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief KeypadController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class KeypadController {
   public:
+    KeypadController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onKeystroke function
      * 
@@ -27,7 +30,7 @@ class KeypadController {
     void onKeystroke(KeystrokeCallback cb);
 
   protected:
-    bool handleKeypadController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handleKeypadController(SinricProRequest &request);
 
   private:
     KeystrokeCallback keystrokeCallback;
@@ -45,16 +48,16 @@ void KeypadController<T>::onKeystroke(KeystrokeCallback cb) { keystrokeCallback 
 
 
 template <typename T>
-bool KeypadController<T>::handleKeypadController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
-  if (action != "SendKeystroke") return false;
-  String keystroke = request_value["keystroke"] | "";
+  if (request.action != "SendKeystroke") return false;
 
   if (keystrokeCallback) {
+    String keystroke = request.request_value["keystroke"] | "";
     success = keystrokeCallback(device.deviceId, keystroke);
-    response_value["keystroke"] = keystroke;
+    request.response_value["keystroke"] = keystroke;
     return success;
   }
   

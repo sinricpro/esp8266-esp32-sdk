@@ -1,12 +1,12 @@
-#ifndef _MOTIONEVENTSOURCE_H_
-#define _MOTIONEVENTSOURCE_H_
+#ifndef _MOTIONSENSOR_H_
+#define _MOTIONSENSOR_H_
 
 /**
- * @brief MotionEventSource
- * @ingroup EventSource
+ * @brief MotionSensor
+ * @ingroup Capabilities
  **/
 template <typename T>
-class MotionEventSource {
+class MotionSensor {
   public:
     bool sendMotionEvent(bool detected, String cause = "PHYSICAL_INTERACTION");
 };
@@ -21,7 +21,7 @@ class MotionEventSource {
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
 template <typename T>
-bool MotionEventSource<T>::sendMotionEvent(bool detected, String cause) {
+bool MotionSensor<T>::sendMotionEvent(bool detected, String cause) {
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("motion", cause.c_str());

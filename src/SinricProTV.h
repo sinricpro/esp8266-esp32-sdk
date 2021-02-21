@@ -9,12 +9,12 @@
 #define _SINRICTV_H_
 
 #include "SinricProDevice.h"
-#include "./Controller/PowerStateController.h"
-#include "./Controller/VolumeController.h"
-#include "./Controller/MuteController.h"
-#include "./Controller/MediaController.h"
-#include "./Controller/InputController.h"
-#include "./Controller/ChannelController.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/VolumeController.h"
+#include "Capabilities/MuteController.h"
+#include "Capabilities/MediaController.h"
+#include "Capabilities/InputController.h"
+#include "Capabilities/ChannelController.h"
 
 /**
  * @class SinricProTV
@@ -46,24 +46,8 @@ class SinricProTV : public SinricProDevice,
                     friend class InputController<SinricProTV>;
                     friend class ChannelController<SinricProTV>;
   public:
-	  SinricProTV(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+	  SinricProTV(const DeviceId &deviceId) : SinricProDevice(deviceId, "TV") {}
 };
-
-SinricProTV::SinricProTV(const DeviceId &deviceId) : SinricProDevice(deviceId, "TV") {}
-
-bool SinricProTV::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  if (handleVolumeController(action, request_value, response_value)) return true;
-  if (handleMuteController(action, request_value, response_value)) return true;
-  if (handleMediaController(action, request_value, response_value)) return true;
-  if (handleInputController(action, request_value, response_value)) return true;
-  if (handleChannelController(action, request_value, response_value)) return true;
-
-  return false;
-}
 
 #endif
 

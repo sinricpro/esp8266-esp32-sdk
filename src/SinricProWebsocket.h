@@ -25,10 +25,11 @@
 #include "SinricProQueue.h"
 #include "SinricProInterface.h"
 
+/*
 #if !defined(WEBSOCKETS_VERSION_INT) || (WEBSOCKETS_VERSION_INT < 2003003)
 #error "Wrong WebSockets Version! Minimum Version is 2.3.3!!!"
 #endif
-
+*/
 class AdvWebSocketsClient : public WebSocketsClient {
   public:
     void onPong(std::function<void(uint32_t)> cb) { _rttCb = cb; }

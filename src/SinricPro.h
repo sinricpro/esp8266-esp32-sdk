@@ -311,7 +311,13 @@ void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interfac
 
   for (auto& device : devices) {
     if (device->getDeviceId() == deviceId && success == false) {
-      success = device->handleRequest(action, instance, request_value, response_value);
+      SinricProRequest request {
+        action,
+        instance,
+        request_value,
+        response_value
+      };
+      success = device->handleRequest(request);
       responseMessage["payload"]["success"] = success;
       if (!success) {
         if (responseMessageStr.length() > 0){

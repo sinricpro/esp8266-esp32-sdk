@@ -1,13 +1,16 @@
 #ifndef _RANGECONTROLLER_H_
 #define _RANGECONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief RangeController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class RangeController {
   public:
+    RangeController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&RangeController<T>::handleRangeController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onRangeValue function
      * 
@@ -84,7 +87,7 @@ class RangeController {
     bool sendRangeValueEvent(const String& instance, int rangeValue, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleRangeController(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+    bool handleRangeController(SinricProRequest &request);
 
   private:
     SetRangeValueCallback setRangeValueCallback;
@@ -175,34 +178,34 @@ bool RangeController<T>::sendRangeValueEvent(const String& instance, int rangeVa
 }
 
 template <typename T>
-bool RangeController<T>::handleRangeController(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool RangeController<T>::handleRangeController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (action == "setRangeValue") {
-    int rangeValue = request_value["rangeValue"] | 0;
-    if (instance != "") {
-      if (genericSetRangeValueCallback.find(instance) != genericSetRangeValueCallback.end()) 
-        success = genericSetRangeValueCallback[instance](device.deviceId, instance, rangeValue);
+  if (request.action == "setRangeValue") {
+    int rangeValue = request.request_value["rangeValue"] | 0;
+    if (request.instance != "") {
+      if (genericSetRangeValueCallback.find(request.instance) != genericSetRangeValueCallback.end()) 
+        success = genericSetRangeValueCallback[request.instance](device.deviceId, request.instance, rangeValue);
     } else {
       if (setRangeValueCallback) success = setRangeValueCallback(device.deviceId, rangeValue);
     }
-    response_value["rangeValue"] = rangeValue;
+    request.response_value["rangeValue"] = rangeValue;
     return success;
   }
 
-  if (action == "adjustRangeValue") {
-    int rangeValueDelta = request_value["rangeValueDelta"] | 0;
-    if (instance != "") {
-      if (genericAdjustRangeValueCallback.find(instance) != genericAdjustRangeValueCallback.end()) 
-        success = genericAdjustRangeValueCallback[instance](device.deviceId, instance, rangeValueDelta);
+  if (request.action == "adjustRangeValue") {
+    int rangeValueDelta = request.request_value["rangeValueDelta"] | 0;
+    if (request.instance != "") {
+      if (genericAdjustRangeValueCallback.find(request.instance) != genericAdjustRangeValueCallback.end()) 
+        success = genericAdjustRangeValueCallback[request.instance](device.deviceId, request.instance, rangeValueDelta);
     } else {
       if (adjustRangeValueCallback)
         success = adjustRangeValueCallback(device.deviceId, rangeValueDelta);
     }
     
-    response_value["rangeValue"] = rangeValueDelta;
+    request.response_value["rangeValue"] = rangeValueDelta;
     return success;
   }
 

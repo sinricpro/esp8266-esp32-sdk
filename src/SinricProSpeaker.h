@@ -9,13 +9,13 @@
 #define _SINRICSPEAKER_H_
 
 #include "SinricProDevice.h"
-#include "Controller/PowerStateController.h"
-#include "Controller/MuteController.h"
-#include "Controller/VolumeController.h"
-#include "Controller/MediaController.h"
-#include "Controller/InputController.h"
-#include "Controller/EqualizerController.h"
-#include "Controller/ModeController.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/MuteController.h"
+#include "Capabilities/VolumeController.h"
+#include "Capabilities/MediaController.h"
+#include "Capabilities/InputController.h"
+#include "Capabilities/EqualizerController.h"
+#include "Capabilities/ModeController.h"
 
 /**
  * @class SinricProSpeaker
@@ -53,24 +53,8 @@ class SinricProSpeaker : public SinricProDevice,
                          friend class EqualizerController<SinricProSpeaker>;
                          friend class ModeController<SinricProSpeaker>;
 public:
-  SinricProSpeaker(const DeviceId &deviceId);
-protected:
-  bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+  SinricProSpeaker(const DeviceId &deviceId) : SinricProDevice(deviceId, "SPEAKER") {}
 };
-
-SinricProSpeaker::SinricProSpeaker(const DeviceId &deviceId) : SinricProDevice(deviceId, "SPEAKER") {}
-
-bool SinricProSpeaker::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  if (handleMuteController(action, request_value, response_value)) return true;
-  if (handleVolumeController(action, request_value, response_value)) return true;
-  if (handleMediaController(action, request_value, response_value)) return true;
-  if (handleInputController(action, request_value, response_value)) return true;
-  if (handleEqualizerController(action, request_value, response_value)) return true;
-  if (handleModeController(action, instance, request_value, response_value)) return true;
-
-  return false;
-}
 
 #endif
 

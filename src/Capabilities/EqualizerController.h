@@ -1,13 +1,16 @@
 #ifndef _EQUALIZERCONTROLLER_H_
 #define _EQUALIZERCONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief EqualizerController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class EqualizerController {
 public:
+  EqualizerController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&EqualizerController<T>::handleEqualizerController, this, std::placeholders::_1)); }
   /**
      * @brief Callback definition for onSetBands function
      * 
@@ -68,7 +71,7 @@ public:
   bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION");
 
 protected:
-  bool handleEqualizerController(const String &action, JsonObject &request_value, JsonObject &response_value);
+  bool handleEqualizerController(SinricProRequest &request);
 
 private:
   SetBandsCallback setBandsCallback;
@@ -130,13 +133,13 @@ bool EqualizerController<T>::sendBandsEvent(String bands, int level, String caus
 }
 
 template <typename T>
-bool EqualizerController<T>::handleEqualizerController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
   bool success = false;
 
-  if (setBandsCallback && action == "setBands") {
-    JsonArray bands_array = request_value["bands"];
-    JsonArray response_value_bands = response_value.createNestedArray("bands");
+  if (setBandsCallback && request.action == "setBands") {
+    JsonArray bands_array = request.request_value["bands"];
+    JsonArray response_value_bands = request.response_value.createNestedArray("bands");
 
     for (size_t i = 0; i < bands_array.size(); i++) {
       int level = bands_array[i]["level"] | 0;
@@ -149,9 +152,9 @@ bool EqualizerController<T>::handleEqualizerController(const String &action, Jso
     return success;
   }
 
-  if (adjustBandsCallback && action == "adjustBands") {
-    JsonArray bands_array = request_value["bands"];
-    JsonArray response_value_bands = response_value.createNestedArray("bands");
+  if (adjustBandsCallback && request.action == "adjustBands") {
+    JsonArray bands_array = request.request_value["bands"];
+    JsonArray response_value_bands = request.response_value.createNestedArray("bands");
 
     for (size_t i = 0; i < bands_array.size(); i++)  {
       int levelDelta = bands_array[i]["levelDelta"] | 1;
@@ -167,9 +170,9 @@ bool EqualizerController<T>::handleEqualizerController(const String &action, Jso
     return success;
   }
 
-  if (resetBandsCallback && action == "resetBands") {
-    JsonArray bands_array = request_value["bands"];
-    JsonArray response_value_bands = response_value.createNestedArray("bands");
+  if (resetBandsCallback && request.action == "resetBands") {
+    JsonArray bands_array = request.request_value["bands"];
+    JsonArray response_value_bands = request.response_value.createNestedArray("bands");
 
     for (size_t i = 0; i < bands_array.size(); i++) {
       int level = 0;

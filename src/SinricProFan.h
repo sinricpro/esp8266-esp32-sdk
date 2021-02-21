@@ -11,8 +11,8 @@
 #include "SinricProDevice.h"
 #include "SinricProDimSwitch.h"
 
-#include "./Controller/PowerStateController.h"
-#include "./Controller/PowerLevelController.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/PowerLevelController.h"
 
 /**
  * @class SinricProFan
@@ -25,19 +25,8 @@ class SinricProFan : public SinricProDevice,
                      friend class PowerStateController<SinricProFan>;
                      friend class PowerLevelController<SinricProFan>;
   public:
-	  SinricProFan(const DeviceId &deviceId);
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+	  SinricProFan(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN_NON-US") {}
 };
-
-SinricProFan::SinricProFan(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN_NON-US") {}
-
-bool SinricProFan::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  if (handlePowerLevelController(action, request_value, response_value)) return true;
-
-  return false;
-}
 
 #endif
 

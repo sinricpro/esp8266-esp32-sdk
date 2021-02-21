@@ -1,14 +1,16 @@
 #ifndef _MEDIACONTROLLER_H_
 #define _MEDIACONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief MediaController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class MediaController {
   public:
-
+    MediaController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&MediaController<T>::handleMediaController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onMediaControl function
      * 
@@ -29,7 +31,7 @@ class MediaController {
     bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleMediaController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handleMediaController(SinricProRequest &request);
 
   private:
     MediaControlCallback mediaControlCallback;
@@ -67,15 +69,15 @@ bool MediaController<T>::sendMediaControlEvent(String mediaControl, String cause
 }
 
 template <typename T>
-bool MediaController<T>::handleMediaController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool MediaController<T>::handleMediaController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (mediaControlCallback && action == "mediaControl") {
-    String mediaControl = request_value["control"];
+  if (mediaControlCallback && request.action == "mediaControl") {
+    String mediaControl = request.request_value["control"];
     success = mediaControlCallback(device.deviceId, mediaControl);
-    response_value["control"] = mediaControl;
+    request.response_value["control"] = mediaControl;
     return success;
   }
 

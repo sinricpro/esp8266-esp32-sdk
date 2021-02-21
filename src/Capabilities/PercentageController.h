@@ -1,14 +1,16 @@
 #ifndef _PERCENTAGECONTROLLER_H_
 #define _PERCENTAGECONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief PercentageController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class PercentageController {
   public:
-
+    PercentageController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onSetPercentage function
      * 
@@ -47,7 +49,7 @@ class PercentageController {
     bool sendSetPercentageEvent(int percentage, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handlePercentageController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handlePercentageController(SinricProRequest &request);
 
   private:
     SetPercentageCallback percentageCallback;
@@ -94,22 +96,22 @@ bool PercentageController<T>::sendSetPercentageEvent(int percentage, String caus
 }
 
 template <typename T>
-bool PercentageController<T>::handlePercentageController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool PercentageController<T>::handlePercentageController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (percentageCallback && action == "setPercentage") {
-    int percentage = request_value["percentage"];
+  if (percentageCallback && request.action == "setPercentage") {
+    int percentage = request.request_value["percentage"];
     success = percentageCallback(device.deviceId, percentage);
-    response_value["percentage"] = percentage;
+    request.response_value["percentage"] = percentage;
     return success;
   }
 
-  if (adjustPercentageCallback && action == "adjustPercentage") {
-    int percentage = request_value["percentage"];
+  if (adjustPercentageCallback && request.action == "adjustPercentage") {
+    int percentage = request.request_value["percentage"];
     success = adjustPercentageCallback(device.deviceId, percentage);
-    response_value["percentage"] = percentage;
+    request.response_value["percentage"] = percentage;
     return success;
   }
   return success;

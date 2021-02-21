@@ -9,7 +9,7 @@
 #define _SINRICGARAGEDOOR_H_
 
 #include "SinricProDevice.h"
-#include "Controller/ModeController.h"
+#include "Capabilities/ModeController.h"
 
 /**
  * @class SinricProGarageDoor
@@ -23,17 +23,8 @@ class SinricProGarageDoor : public SinricProDevice,
                             public ModeController<SinricProGarageDoor> {
                             friend class ModeController<SinricProGarageDoor>;
   public:
-	  SinricProGarageDoor(const DeviceId &deviceId);
-
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+	  SinricProGarageDoor(const DeviceId &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR") {}
 };
-
-SinricProGarageDoor::SinricProGarageDoor(const DeviceId &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR") {}
-
-bool SinricProGarageDoor::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  if (handleModeController(action, instance, request_value, response_value)) return true;
-  return false;
-}
 
 #endif
 

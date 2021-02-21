@@ -9,10 +9,10 @@
 #define _SINRICLIGHT_H_
 
 #include "SinricProDevice.h"
-#include "./Controller/PowerStateController.h"
-#include "./Controller/BrightnessController.h"
-#include "./Controller/ColorController.h"
-#include "./Controller/ColorTemperatureController.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/BrightnessController.h"
+#include "Capabilities/ColorController.h"
+#include "Capabilities/ColorTemperatureController.h"
 
 /**
  * @class SinricProLight
@@ -35,22 +35,8 @@ class SinricProLight :  public SinricProDevice,
                         friend class ColorController<SinricProLight>;
                         friend class ColorTemperatureController<SinricProLight>;
   public:
-    SinricProLight(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+    SinricProLight(const DeviceId &deviceId) : SinricProDevice(deviceId, "LIGHT") {}
 };
-
-SinricProLight::SinricProLight(const DeviceId &deviceId) : SinricProDevice(deviceId, "LIGHT") {}
-
-bool SinricProLight::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  if (handleBrightnessController(action, request_value, response_value)) return true;
-  if (handleColorController(action, request_value, response_value)) return true;
-  if (handleColorTemperatureController(action, request_value, response_value)) return true;
-
-  return false;
-}
 
 #endif
 

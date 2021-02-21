@@ -1,14 +1,16 @@
 #ifndef _BRIGHTNESSCONTROLLER_H_
 #define _BRIGHTNESSCONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief BrightnessController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class BrightnessController {
   public:
-
+    BrightnessController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onBrightness function
      * 
@@ -44,7 +46,7 @@ class BrightnessController {
 
     bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
   protected:
-    bool handleBrightnessController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handleBrightnessController(SinricProRequest &request);
 
   private:
     BrightnessCallback brightnessCallback;
@@ -96,21 +98,20 @@ bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) 
 }
 
 template <typename T>
-bool BrightnessController<T>::handleBrightnessController(const String &action, JsonObject &request_value, JsonObject &response_value)
-{
+bool BrightnessController<T>::handleBrightnessController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
   bool success = false;
 
-  if (brightnessCallback && action == "setBrightness") {
-    int brightness = request_value["brightness"];
+  if (brightnessCallback && request.action == "setBrightness") {
+    int brightness = request.request_value["brightness"];
     success = brightnessCallback(device.deviceId, brightness);
-    response_value["brightness"] = brightness;
+    request.response_value["brightness"] = brightness;
   }
 
-  if (adjustBrightnessCallback && action == "adjustBrightness") {
-    int brightnessDelta = request_value["brightnessDelta"];
+  if (adjustBrightnessCallback && request.action == "adjustBrightness") {
+    int brightnessDelta = request.request_value["brightnessDelta"];
     success = adjustBrightnessCallback(device.deviceId, brightnessDelta);
-    response_value["brightness"] = brightnessDelta;
+    request.response_value["brightness"] = brightnessDelta;
   }
 
   return success;

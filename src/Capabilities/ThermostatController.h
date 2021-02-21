@@ -1,13 +1,16 @@
 #ifndef _THERMOSTATCONTROLLER_H_
 #define _THERMOSTATCONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief ThermostatController
- * @ingroup Controller
- **/ 
+ * @ingroup Capabilities
+ **/
 template <typename T>
 class ThermostatController {
   public:
+    ThermostatController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ThermostatController<T>::handleThermostatController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onThermostatMode function
      * 
@@ -64,7 +67,7 @@ class ThermostatController {
     bool sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleThermostatController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handleThermostatController(SinricProRequest &request);
 
   private:
     ThermostatModeCallback thermostatModeCallback;
@@ -147,34 +150,34 @@ bool ThermostatController<T>::sendTargetTemperatureEvent(float temperature, Stri
 }
 
 template <typename T>
-bool ThermostatController<T>::handleThermostatController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool ThermostatController<T>::handleThermostatController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (action == "targetTemperature" && targetTemperatureCallback) {
+  if (request.action == "targetTemperature" && targetTemperatureCallback) {
     float temperature;
-    if (request_value.containsKey("temperature"))  {
-      temperature = request_value["temperature"];
+    if (request.request_value.containsKey("temperature"))  {
+      temperature = request.request_value["temperature"];
     }  else {
       temperature = 1;
     }
     success = targetTemperatureCallback(device.deviceId, temperature);
-    response_value["temperature"] = temperature;
+    request.response_value["temperature"] = temperature;
     return success;
   }
 
-  if (action == "adjustTargetTemperature" && adjustTargetTemperatureCallback) {
-    float temperatureDelta = request_value["temperature"];
+  if (request.action == "adjustTargetTemperature" && adjustTargetTemperatureCallback) {
+    float temperatureDelta = request.request_value["temperature"];
     success = adjustTargetTemperatureCallback(device.deviceId, temperatureDelta);
-    response_value["temperature"] = temperatureDelta;
+    request.response_value["temperature"] = temperatureDelta;
     return success;
   }
 
-  if (action == "setThermostatMode" && thermostatModeCallback) {
-    String thermostatMode = request_value["thermostatMode"] | "";
+  if (request.action == "setThermostatMode" && thermostatModeCallback) {
+    String thermostatMode = request.request_value["thermostatMode"] | "";
     success = thermostatModeCallback(device.deviceId, thermostatMode);
-    response_value["thermostatMode"] = thermostatMode;
+    request.response_value["thermostatMode"] = thermostatMode;
     return success;
   }
 

@@ -9,8 +9,8 @@
 #define _SINRICDOORBELL_H_
 
 #include "SinricProDevice.h"
-#include "Controller/PowerStateController.h"
-#include "EventSource/DoorbellEventSource.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/Doorbell.h"
 
 /**
  * @class SinricProDoorbell
@@ -19,22 +19,12 @@
  **/
 class SinricProDoorbell :  public SinricProDevice,
                            public PowerStateController<SinricProDoorbell>,
-                           public DoorbellEventSource<SinricProDoorbell> {
+                           public Doorbell<SinricProDoorbell> {
                            friend class PowerStateController<SinricProDoorbell>;
-                           friend class DoorbellEventSource<SinricProDoorbell>;
+                           friend class Doorbell<SinricProDoorbell>;
   public:
-	  SinricProDoorbell(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+	  SinricProDoorbell(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 };
-
-SinricProDoorbell::SinricProDoorbell(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
-
-bool SinricProDoorbell::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  return false;
-}
 
 #endif
 

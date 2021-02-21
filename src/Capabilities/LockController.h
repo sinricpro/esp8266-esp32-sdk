@@ -1,15 +1,16 @@
 #ifndef _LOCKCONTROLLER_H_
 #define _LOCKCONTROLLER_H_
 
+#include "SinricProRequest.h"
 
 /**
  * @brief LockController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class LockController {
   public:
-
+    LockController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onLockState function
      * 
@@ -35,7 +36,7 @@ class LockController {
     bool sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleLockController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handleLockController(SinricProRequest &request);
 
   private:
     LockStateCallback lockStateCallback;
@@ -73,15 +74,15 @@ bool LockController<T>::sendLockStateEvent(bool state, String cause) {
 }
 
 template <typename T>
-bool LockController<T>::handleLockController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool LockController<T>::handleLockController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (action == "setLockState" && lockStateCallback)  {
-    bool lockState = request_value["state"] == "lock" ? true : false;
+  if (request.action == "setLockState" && lockStateCallback)  {
+    bool lockState = request.request_value["state"] == "lock" ? true : false;
     success = lockStateCallback(device.deviceId, lockState);
-    response_value["state"] = success ? lockState ? "LOCKED" : "UNLOCKED" : "JAMMED";
+    request.response_value["state"] = success ? lockState ? "LOCKED" : "UNLOCKED" : "JAMMED";
     return success;
   }
   return success;

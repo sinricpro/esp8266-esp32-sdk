@@ -1,14 +1,16 @@
 #ifndef _VOLUMECONTROLLER_H_
 #define _VOLUMECONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief VolumeController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class VolumeController {
   public:
-
+    VolumeController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&VolumeController<T>::handleVolumeController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onSetVolume function
      * 
@@ -48,7 +50,7 @@ class VolumeController {
     bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleVolumeController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handleVolumeController(SinricProRequest &request);
 
   private:
     SetVolumeCallback volumeCallback;
@@ -95,23 +97,23 @@ bool VolumeController<T>::sendVolumeEvent(int volume, String cause) {
 }
 
 template <typename T>
-bool VolumeController<T>::handleVolumeController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool VolumeController<T>::handleVolumeController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (volumeCallback && action == "setVolume") {
-    int volume = request_value["volume"];
+  if (volumeCallback && request.action == "setVolume") {
+    int volume = request.request_value["volume"];
     success = volumeCallback(device.deviceId, volume);
-    response_value["volume"] = volume;
+    request.response_value["volume"] = volume;
     return success;
   }
 
-  if (adjustVolumeCallback && action == "adjustVolume") {
-    int volume = request_value["volume"];
-    bool volumeDefault = request_value["volumeDefault"] | false;
+  if (adjustVolumeCallback && request.action == "adjustVolume") {
+    int volume = request.request_value["volume"];
+    bool volumeDefault = request.request_value["volumeDefault"] | false;
     success = adjustVolumeCallback(device.deviceId, volume, volumeDefault);
-    response_value["volume"] = volume;
+    request.response_value["volume"] = volume;
     return success;
   }
   return success;

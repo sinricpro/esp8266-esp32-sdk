@@ -1,14 +1,16 @@
 #ifndef _COLORCONTROLLER_H_
 #define _COLORCONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief ColorController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class ColorController {
   public:
-
+    ColorController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ColorController<T>::handleColorController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onColor function
      * 
@@ -32,7 +34,7 @@ class ColorController {
     bool sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleColorController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handleColorController(SinricProRequest &request);
 
   private:
     ColorCallback colorCallback;
@@ -75,21 +77,21 @@ bool ColorController<T>::sendColorEvent(byte r, byte g, byte b, String cause) {
 }
 
 template <typename T>
-bool ColorController<T>::handleColorController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool ColorController<T>::handleColorController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (colorCallback && action == "setColor") {
+  if (colorCallback && request.action == "setColor") {
     unsigned char r, g, b;
-    r = request_value["color"]["r"];
-    g = request_value["color"]["g"];
-    b = request_value["color"]["b"];
+    r = request.request_value["color"]["r"];
+    g = request.request_value["color"]["g"];
+    b = request.request_value["color"]["b"];
     success = colorCallback(device.deviceId, r, g, b);
-    response_value.createNestedObject("color");
-    response_value["color"]["r"] = r;
-    response_value["color"]["g"] = g;
-    response_value["color"]["b"] = b;
+    request.response_value.createNestedObject("color");
+    request.response_value["color"]["r"] = r;
+    request.response_value["color"]["g"] = g;
+    request.response_value["color"]["b"] = b;
   }
 
   return success;

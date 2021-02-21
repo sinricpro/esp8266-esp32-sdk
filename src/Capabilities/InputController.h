@@ -1,13 +1,16 @@
 #ifndef _INPUTCONTROLLER_H_
 #define _INPUTCONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief InputController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class InputController {
   public:
+    InputController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onSelectInput function
      * 
@@ -28,7 +31,7 @@ class InputController {
     bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleInputController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handleInputController(SinricProRequest &request);
 
   private: 
     SelectInputCallback selectInputCallback;
@@ -66,15 +69,15 @@ bool InputController<T>::sendSelectInputEvent(String input, String cause) {
 }
 
 template <typename T>
-bool InputController<T>::handleInputController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool InputController<T>::handleInputController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (selectInputCallback && action == "selectInput") {
-    String input = request_value["input"];
+  if (selectInputCallback && request.action == "selectInput") {
+    String input = request.request_value["input"];
     success = selectInputCallback(device.deviceId, input);
-    response_value["input"] = input;
+    request.response_value["input"] = input;
     return success;
   }
 

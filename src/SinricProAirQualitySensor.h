@@ -9,8 +9,8 @@
 #define _SINRICAIRQUALITYSENSOR_H_
 
 #include "SinricProDevice.h"
-#include "./Controller/PowerStateController.h"
-#include "./EventSource/AirQualityEventSource.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/AirQualitySensor.h"
 
 /**
  * @class SinricProAirQualitySensor
@@ -19,23 +19,12 @@
  */
 class SinricProAirQualitySensor : public SinricProDevice,
                                   public PowerStateController<SinricProAirQualitySensor>,
-                                  public AirQualityEventSource<SinricProAirQualitySensor> {
+                                  public AirQualitySensor<SinricProAirQualitySensor> {
                                   friend class PowerStateController<SinricProAirQualitySensor>;
-                                  friend class AirQualityEventSource<SinricProAirQualitySensor>;
+                                  friend class AirQualitySensor<SinricProAirQualitySensor>;
                                   
 public:
-  SinricProAirQualitySensor(const DeviceId &deviceId);
-protected:
-  bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
-};
-
-SinricProAirQualitySensor::SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR") {}
-
-bool SinricProAirQualitySensor::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  return false;
-}
+  SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR"){};
 
 #endif
 

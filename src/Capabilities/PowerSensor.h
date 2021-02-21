@@ -1,12 +1,12 @@
-#ifndef _POWERSENSOREVENTSOURCE_H_
-#define _POWERSENSOREVENTSOURCE_H_
+#ifndef _POWERSENSOR_H_
+#define _POWERSENSOR_H_
 
 /**
- * @brief PowerSensorEventSource
- * @ingroup EventSource
+ * @brief PowerSensor
+ * @ingroup Capabilities
  **/
 template <typename T>
-class PowerSensorEventSource {
+class PowerSensor {
 public:
   bool sendPowerSensorEvent(float voltage, float current, float power = -1.0f, float apparentPower = -1.0f, float reactivePower = -1.0f, float factor = -1.0f, String cause = "PERIODIC_POLL");
 
@@ -30,7 +30,7 @@ private:
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
 template <typename T>
-bool PowerSensorEventSource<T>::sendPowerSensorEvent(float voltage, float current, float power, float apparentPower, float reactivePower, float factor, String cause) {
+bool PowerSensor<T>::sendPowerSensorEvent(float voltage, float current, float power, float apparentPower, float reactivePower, float factor, String cause) {
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("powerUsage", cause.c_str());
@@ -57,7 +57,7 @@ bool PowerSensorEventSource<T>::sendPowerSensorEvent(float voltage, float curren
 }
 
 template <typename T>
-float PowerSensorEventSource<T>::getWattHours(unsigned long currentTimestamp) {
+float PowerSensor<T>::getWattHours(unsigned long currentTimestamp) {
   if (startTime)
     return (currentTimestamp - startTime) * lastPower / 3600.0f;
   return 0;

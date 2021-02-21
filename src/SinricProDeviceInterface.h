@@ -2,12 +2,13 @@
 #define _SINRICPRODEVICEINTERFACE_
 
 #include <SinricProInterface.h>
+#include <SinricProRequest.h>
 #include <SinricProId.h>
 
 class SinricProDeviceInterface {
   friend class SinricProClass;
   protected:
-    virtual bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) = 0;
+    virtual bool handleRequest(SinricProRequest &request) = 0;
     virtual DeviceId getDeviceId() = 0;
     virtual String getProductType() = 0;
     virtual void begin(SinricProInterface* eventSender) = 0;

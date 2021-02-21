@@ -9,8 +9,8 @@
 #define _SINRICFANUS_H_
 
 #include "SinricProDevice.h"
-#include "./Controller/PowerStateController.h"
-#include "./Controller/RangeController.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/RangeController.h"
 
 /**
  * @class SinricProFanUS
@@ -23,19 +23,8 @@ class SinricProFanUS :  public SinricProDevice,
                         friend class PowerStateController<SinricProFanUS>;
                         friend class RangeController<SinricProFanUS>;
   public:
-	  SinricProFanUS(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+	  SinricProFanUS(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN") {}
 };
-
-SinricProFanUS::SinricProFanUS(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN") {}
-
-bool SinricProFanUS::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  if (handleRangeController(action, instance, request_value, response_value)) return true;
-
-  return false;
-}
 
 #endif
 

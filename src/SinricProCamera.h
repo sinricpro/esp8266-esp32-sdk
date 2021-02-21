@@ -10,7 +10,7 @@
 #define _SINRICCAMERA_H_
 
 #include "SinricProDevice.h"
-#include "./Controller/PowerStateController.h"
+#include "Capabilities/PowerStateController.h"
 
 /**
  * @class SinricProCamera
@@ -21,17 +21,8 @@ class SinricProCamera : public SinricProDevice,
                         public PowerStateController<SinricProCamera> {
                         friend class PowerStateController<SinricProCamera>;
   public:
-	  SinricProCamera(const DeviceId &deviceId);
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+	  SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId, "CAMERA") {}
 };
-
-SinricProCamera::SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId, "CAMERA") {}
-
-bool SinricProCamera::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  return false;
-}
 
 #endif
 

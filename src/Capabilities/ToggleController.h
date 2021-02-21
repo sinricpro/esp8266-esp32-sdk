@@ -1,14 +1,16 @@
 #ifndef _TOGGLECONTROLLER_H_
 #define _TOGGLECONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief ToggleController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class ToggleController {
 public:
-
+  ToggleController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); }
   /**
      * @brief Callback definition for onToggleState function
      * 
@@ -29,7 +31,7 @@ public:
   bool sendToggleStateEvent(const String &instance, bool state, String cause = "PHYSICAL_INTERACTION");
 
 protected:
-  bool handleToggleController(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+  bool handleToggleController(SinricProRequest &request);
 
 private:
   std::map<String, GenericToggleStateCallback> genericToggleStateCallback;
@@ -71,16 +73,16 @@ bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool stat
 }
 
 template <typename T>
-bool ToggleController<T>::handleToggleController(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (action == "setToggleState")  {
-    bool powerState = request_value["state"] == "On" ? true : false;
-    if (genericToggleStateCallback.find(instance) != genericToggleStateCallback.end())
-      success = genericToggleStateCallback[instance](device.deviceId, instance, powerState);
-    response_value["state"] = powerState ? "On" : "Off";
+  if (request.action == "setToggleState")  {
+    bool powerState = request.request_value["state"] == "On" ? true : false;
+    if (genericToggleStateCallback.find(request.instance) != genericToggleStateCallback.end())
+      success = genericToggleStateCallback[request.instance](device.deviceId, request.instance, powerState);
+    request.response_value["state"] = powerState ? "On" : "Off";
     return success;
   }
   return success;

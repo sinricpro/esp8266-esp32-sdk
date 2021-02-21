@@ -9,9 +9,9 @@
 #define _SINRICTHERMOSTAT_H_
 
 #include "SinricProDevice.h"
-#include "./Controller/PowerStateController.h"
-#include "./Controller/ThermostatController.h"
-#include "./EventSource/TemperatureEventSource.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/ThermostatController.h"
+#include "Capabilities/TemperatureSensor.h"
 
 /**
  * @class SinricProThermostat
@@ -27,25 +27,13 @@
 class SinricProThermostat :  public SinricProDevice,
                              public PowerStateController<SinricProThermostat>,
                              public ThermostatController<SinricProThermostat>,
-                             public TemperatureEventSource<SinricProThermostat> {
+                             public TemperatureSensor<SinricProThermostat> {
                              friend class PowerStateController<SinricProThermostat>;
                              friend class ThermostatController<SinricProThermostat>;
-                             friend class TemperatureEventSource<SinricProThermostat>;
+                             friend class TemperatureSensor<SinricProThermostat>;
   public:
-	  SinricProThermostat(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+	  SinricProThermostat(const DeviceId &deviceId) : SinricProDevice(deviceId, "THERMOSTAT") {}
 };
-
-SinricProThermostat::SinricProThermostat(const DeviceId &deviceId) : SinricProDevice(deviceId, "THERMOSTAT") {}
-
-bool SinricProThermostat::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  if (handleThermostatController(action, request_value, response_value)) return true;
-
-  return false;
-}
 
 #endif
 

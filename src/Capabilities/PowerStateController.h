@@ -1,13 +1,16 @@
 #ifndef _POWERSTATECONTROLLER_H_
 #define _POWERSTATECONTROLLER_H_
 
+#include "SinricProRequest.h"
+
 /**
  * @brief PowerStateController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class PowerStateController {
   public:
+    PowerStateController() { static_cast<T&>(*this).requestHandlers.push_back(std::bind(&PowerStateController<T>::handlePowerStateController, this, std::placeholders::_1));}
     /**
      * @brief Callback definition for onPowerState function
      * 
@@ -27,7 +30,7 @@ class PowerStateController {
     bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handlePowerStateController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handlePowerStateController(SinricProRequest &request);
 
   private:
     PowerStateCallback powerStateCallback;
@@ -65,16 +68,16 @@ bool PowerStateController<T>::sendPowerStateEvent(bool state, String cause) {
 }
 
 template <typename T>
-bool PowerStateController<T>::handlePowerStateController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool PowerStateController<T>::handlePowerStateController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (action == "setPowerState" && powerStateCallback)  {
-    bool powerState = request_value["state"] == "On" ? true : false;
+  if (request.action == "setPowerState" && powerStateCallback)  {
+    bool powerState = request.request_value["state"] == "On" ? true : false;
 //    success = powerStateCallback(device.deviceId, powerState);
     success = powerStateCallback(device.deviceId, powerState);
-    response_value["state"] = powerState ? "On" : "Off";
+    request.response_value["state"] = powerState ? "On" : "Off";
     return success;
   }
   return success;

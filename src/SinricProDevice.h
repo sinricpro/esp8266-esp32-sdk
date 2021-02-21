@@ -8,6 +8,7 @@
 #ifndef _SINRICDEVICE_H_
 #define _SINRICDEVICE_H_
 
+#include "SinricProRequest.h"
 #include "SinricProDeviceInterface.h"
 #include "LeakyBucket.h"
 #include "SinricProId.h"
@@ -35,10 +36,11 @@ protected:
   virtual ~SinricProDevice();
   virtual String getProductType();
   virtual void begin(SinricProInterface *eventSender);
+  bool handleRequest(SinricProRequest &request);
   DeviceId deviceId;
+  std::vector<SinricProRequestHandler> requestHandlers;
 
-private:
-  SinricProInterface *eventSender;
+private : SinricProInterface *eventSender;
   std::map<String, LeakyBucket_t> eventFilter;
   String productType;
 };
@@ -103,5 +105,13 @@ unsigned long SinricProDevice::getTimestamp() {
 String SinricProDevice::getProductType()  { 
   return String("sinric.device.type.")+productType; 
 }
+
+bool SinricProDevice::handleRequest(SinricProRequest &request) {
+  for (auto& requestHandler : requestHandlers) {
+    if (requestHandler(request)) return true;
+  }
+  return false;
+}
+
 
 #endif

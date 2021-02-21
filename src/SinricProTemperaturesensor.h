@@ -9,8 +9,8 @@
 #define _SINRICTEMPERATURESENSOR_H_
 
 #include "SinricProDevice.h"
-#include "./Controller/PowerStateController.h"
-#include "./EventSource/TemperatureEventSource.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/TemperatureEventSource.h"
 
 /**
  * @class SinricProTemperaturesensor
@@ -19,22 +19,12 @@
  */
 class SinricProTemperaturesensor :  public SinricProDevice,
                                     public PowerStateController<SinricProTemperaturesensor>,
-                                    public TemperatureEventSource<SinricProTemperaturesensor> {
+                                    public TemperatureSensor<SinricProTemperaturesensor> {
                                     friend class PowerStateController<SinricProTemperaturesensor>;
-                                    friend class TemperatureEventSource<SinricProTemperaturesensor>;
+                                    friend class TemperatureSensor<SinricProTemperaturesensor>;
   public:
-	  SinricProTemperaturesensor(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+	  SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "TEMPERATURESENSOR") {}
 };
-
-SinricProTemperaturesensor::SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "TEMPERATURESENSOR") {}
-
-bool SinricProTemperaturesensor::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  (void) instance;
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  return false;
-}
 
 #endif
 

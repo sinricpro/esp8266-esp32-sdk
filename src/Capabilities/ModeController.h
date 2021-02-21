@@ -1,14 +1,16 @@
 #ifndef _MODECONTROLLER_H_
 #define _MODECONTROLLER_H_
 
+#include "SinricProRequest.h"
 
 /**
  * @brief ModeController
- * @ingroup Controller
+ * @ingroup Capabilities
  **/
 template <typename T>
 class ModeController {
   public:
+    ModeController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ModeController<T>::handleModeController, this, std::placeholders::_1)); }
     /**
      * @brief Callback definition for onSetMode function
      * 
@@ -49,7 +51,7 @@ class ModeController {
     bool sendModeEvent(String instance, String mode, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handleModeController(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value);
+    bool handleModeController(SinricProRequest &request);
 
   private:
     ModeCallback setModeCallback;
@@ -120,23 +122,23 @@ bool ModeController<T>::sendModeEvent(String instance, String mode, String cause
 }
 
 template <typename T>
-bool ModeController<T>::handleModeController(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
+bool ModeController<T>::handleModeController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
-  if (action != "setMode") return false;
-  String mode = request_value["mode"] | "";
+  if (request.action != "setMode") return false;
+  String mode = request.request_value["mode"] | "";
 
-  if (instance != "") {
-    if (genericModeCallback.find(instance) != genericModeCallback.end()) {
-      success = genericModeCallback[instance](device.deviceId, instance, mode);
-      response_value["mode"] = mode;
+  if (request.instance != "") {
+    if (genericModeCallback.find(request.instance) != genericModeCallback.end()) {
+      success = genericModeCallback[request.instance](device.deviceId, request.instance, mode);
+      request.response_value["mode"] = mode;
       return success;
     } else return false;
   } else {
     if (setModeCallback) {
       success = setModeCallback(device.deviceId, mode);
-      response_value["mode"] = mode;
+      request.response_value["mode"] = mode;
       return success;
     }
   }

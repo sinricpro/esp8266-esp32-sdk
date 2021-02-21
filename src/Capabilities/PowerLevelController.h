@@ -1,13 +1,16 @@
 #ifndef _POWERLEVELCONTROLLER_H_
 #define _POWERLEVELCONTROLLER_H_
 
+#include "./SinricProRequest.h"
+
 /**
  * @brief PowerLevelController
- * @ingroup Controller
- **/ 
+ * @ingroup Capabilities
+ **/
 template <typename T>
 class PowerLevelController {
   public:
+    PowerLevelController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&PowerLevelController<T>::handlePowerLevelController, this, std::placeholders::_1)); }
     /**
      * @brief Definition for setPowerLevel callback
      * 
@@ -45,7 +48,7 @@ class PowerLevelController {
     bool sendPowerLevelEvent(int powerLevel, String cause = "PHYSICAL_INTERACTION");
 
   protected:
-    bool handlePowerLevelController(const String &action, JsonObject &request_value, JsonObject &response_value);
+    bool handlePowerLevelController(SinricProRequest &request);
 
   private:
     SetPowerLevelCallback setPowerLevelCallback;
@@ -96,21 +99,21 @@ bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause)
 }
 
 template <typename T>
-bool PowerLevelController<T>::handlePowerLevelController(const String &action, JsonObject &request_value, JsonObject &response_value) {
+bool PowerLevelController<T>::handlePowerLevelController(SinricProRequest &request) {
   T &device = static_cast<T &>(*this);
 
   bool success = false;
 
-  if (setPowerLevelCallback && action == "setPowerLevel") {
-    int powerLevel = request_value["powerLevel"];
+  if (setPowerLevelCallback && request.action == "setPowerLevel") {
+    int powerLevel = request.request_value["powerLevel"];
     success = setPowerLevelCallback(device.deviceId, powerLevel);
-    response_value["powerLevel"] = powerLevel;
+    request.response_value["powerLevel"] = powerLevel;
   }
 
-  if (adjustPowerLevelCallback && action == "adjustPowerLevel") {
-    int powerLevelDelta = request_value["powerLevelDelta"];
+  if (adjustPowerLevelCallback && request.action == "adjustPowerLevel") {
+    int powerLevelDelta = request.request_value["powerLevelDelta"];
     success = adjustPowerLevelCallback(device.deviceId, powerLevelDelta);
-    response_value["powerLevel"] = powerLevelDelta;
+    request.response_value["powerLevel"] = powerLevelDelta;
   }
   return success;
 }

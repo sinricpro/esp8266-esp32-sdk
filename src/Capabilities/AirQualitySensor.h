@@ -1,12 +1,12 @@
-#ifndef _AIRQUALITYEVENTSOURCE_H_
-#define _AIRQUALITYEVENTSOURCE_H_
+#ifndef _AIRQUALITYSENSOR_H_
+#define _AIRQUALITYSENSOR_H_
 
 /**
- * @brief AirQualityEventSource
- * @ingroup EventSource
+ * @brief AirQuality
+ * @ingroup Capabilities
  **/
 template <typename T>
-class AirQualityEventSource {
+class AirQualitySensor {
   public:
     bool sendAirQualityEvent(int pm1 = 0, int pm2_5 = 0, int pm10 = 0, String cause = "PERIODIC_POLL");
 };
@@ -23,7 +23,7 @@ class AirQualityEventSource {
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
 template <typename T>
-bool AirQualityEventSource<T>::sendAirQualityEvent(int pm1, int pm2_5, int pm10, String cause) {
+bool AirQualitySensor<T>::sendAirQualityEvent(int pm1, int pm2_5, int pm10, String cause) {
   T& device = static_cast<T&>(*this);
   
   DynamicJsonDocument eventMessage = device.prepareEvent("airQuality", cause.c_str());

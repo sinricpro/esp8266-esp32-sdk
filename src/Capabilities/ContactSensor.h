@@ -1,12 +1,12 @@
-#ifndef _CONTACTEVENTSOURCE_H_
-#define _CONTACTEVENTSOURCE_H_
+#ifndef _CONTACTSENSOR_H_
+#define _CONTACTSENSOR_H_
 
 /**
- * @brief ContactEventSource
- * @ingroup EventSource
+ * @brief ContactSensor
+ * @ingroup Capabilities
  **/
 template <typename T>
-class ContactEventSource {
+class ContactSensor {
   public:
     bool sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION");
 };
@@ -20,7 +20,7 @@ class ContactEventSource {
  * @return `false` event has not been sent, maybe you sent to much events in a short distance of time
  **/
 template <typename T>
-bool ContactEventSource<T>::sendContactEvent(bool detected, String cause) {
+bool ContactSensor<T>::sendContactEvent(bool detected, String cause) {
   T& device = static_cast<T&>(*this);
   
   DynamicJsonDocument eventMessage = device.prepareEvent("setContactState", cause.c_str());

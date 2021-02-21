@@ -9,9 +9,9 @@
 #define _SINRICWINDOWAC_H_
 
 #include "SinricProDevice.h"
-#include "./Controller/PowerStateController.h"
-#include "./Controller/RangeController.h"
-#include "./Controller/ThermostatController.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/RangeController.h"
+#include "Capabilities/ThermostatController.h"
 
 /**
  * @class SinricProWindowAC
@@ -34,19 +34,7 @@ class SinricProWindowAC :  public SinricProDevice,
                            friend class public RangeController<SinricProWindowAC>;
                            friend class public ThermostatController<SinricProWindowAC>;
   public:
-	  SinricProWindowAC(const DeviceId &deviceId);
-  protected:
-    bool handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) override;
+	  SinricProWindowAC(const DeviceId &deviceId) : SinricProDevice(deviceId, "AC_UNIT") {}
 };
-
-SinricProWindowAC::SinricProWindowAC(const DeviceId &deviceId) : SinricProDevice(deviceId, "AC_UNIT") {}
-
-bool SinricProWindowAC::handleRequest(const String &action, const String &instance, JsonObject &request_value, JsonObject &response_value) {
-  if (handlePowerStateController(action, request_value, response_value)) return true;
-  if (handleRangeController(action, instance, request_value, response_value)) return true;
-  if (handleThermostatController(action, request_value, response_value)) return true;
-
-  return false;
-}
 
 #endif
