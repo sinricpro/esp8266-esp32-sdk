@@ -170,7 +170,7 @@ bool RangeController<T>::sendRangeValueEvent(const String& instance, int rangeVa
   T &device = static_cast<T &>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setRangeValue", cause.c_str());
-  eventMessage["instance"] = instance;
+  eventMessage["payload"]["instanceId"] = instance;
 
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["rangeValue"] = rangeValue;

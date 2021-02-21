@@ -66,7 +66,7 @@ bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool stat
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setToggleState", cause.c_str());
-  eventMessage["payload"]["instance"] = instance;
+  eventMessage["payload"]["instanceId"] = instance;
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state ? "On" : "Off";
   return device.sendEvent(eventMessage);

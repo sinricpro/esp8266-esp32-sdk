@@ -115,7 +115,7 @@ bool ModeController<T>::sendModeEvent(String instance, String mode, String cause
   T &device = static_cast<T &>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setMode", cause.c_str());
-  eventMessage["instance"] = instance;
+  eventMessage["payload"]["instanceId"] = instance;
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["mode"] = mode;
   return device.sendEvent(eventMessage);
