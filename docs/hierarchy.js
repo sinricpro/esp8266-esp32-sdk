@@ -1,9 +1,6 @@
 var hierarchy =
 [
-    [ "AirQualityEventSource< T >", "class_air_quality_event_source.html", null ],
-    [ "AirQualityEventSource< SinricProAirQualitySensor >", "class_air_quality_event_source.html", [
-      [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ]
-    ] ],
+    [ "AirQualitySensor< T >", "class_air_quality_sensor.html", null ],
     [ "BrightnessController< T >", "class_brightness_controller.html", null ],
     [ "BrightnessController< SinricProLight >", "class_brightness_controller.html", [
       [ "SinricProLight", "class_sinric_pro_light.html", null ]
@@ -20,12 +17,9 @@ var hierarchy =
     [ "ColorTemperatureController< SinricProLight >", "class_color_temperature_controller.html", [
       [ "SinricProLight", "class_sinric_pro_light.html", null ]
     ] ],
-    [ "ContactEventSource< T >", "class_contact_event_source.html", null ],
-    [ "ContactEventSource< SinricProContactsensor >", "class_contact_event_source.html", [
-      [ "SinricProContactsensor", "class_sinric_pro_contactsensor.html", null ]
-    ] ],
-    [ "DoorbellEventSource< T >", "class_doorbell_event_source.html", null ],
-    [ "DoorbellEventSource< SinricProDoorbell >", "class_doorbell_event_source.html", [
+    [ "ContactSensor< T >", "class_contact_sensor.html", null ],
+    [ "Doorbell< T >", "class_doorbell.html", null ],
+    [ "Doorbell< SinricProDoorbell >", "class_doorbell.html", [
       [ "SinricProDoorbell", "class_sinric_pro_doorbell.html", null ]
     ] ],
     [ "EqualizerController< T >", "class_equalizer_controller.html", null ],
@@ -58,8 +52,8 @@ var hierarchy =
     [ "ModeController< SinricProSpeaker >", "class_mode_controller.html", [
       [ "SinricProSpeaker", "class_sinric_pro_speaker.html", null ]
     ] ],
-    [ "MotionEventSource< T >", "class_motion_event_source.html", null ],
-    [ "MotionEventSource< SinricProMotionsensor >", "class_motion_event_source.html", [
+    [ "MotionSensor< T >", "class_motion_sensor.html", null ],
+    [ "MotionSensor< SinricProMotionsensor >", "class_motion_sensor.html", [
       [ "SinricProMotionsensor", "class_sinric_pro_motionsensor.html", null ]
     ] ],
     [ "MuteController< T >", "class_mute_controller.html", null ],
@@ -77,14 +71,11 @@ var hierarchy =
     [ "PowerLevelController< SinricProFan >", "class_power_level_controller.html", [
       [ "SinricProFan", "class_sinric_pro_fan.html", null ]
     ] ],
-    [ "PowerSensorEventSource< T >", "class_power_sensor_event_source.html", null ],
-    [ "PowerSensorEventSource< SinricProPowerSensor >", "class_power_sensor_event_source.html", [
+    [ "PowerSensor< T >", "class_power_sensor.html", null ],
+    [ "PowerSensor< SinricProPowerSensor >", "class_power_sensor.html", [
       [ "SinricProPowerSensor", "class_sinric_pro_power_sensor.html", null ]
     ] ],
     [ "PowerStateController< T >", "class_power_state_controller.html", null ],
-    [ "PowerStateController< SinricProAirQualitySensor >", "class_power_state_controller.html", [
-      [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ]
-    ] ],
     [ "PowerStateController< SinricProBlinds >", "class_power_state_controller.html", [
       [ "SinricProBlinds", "class_sinric_pro_blinds.html", null ]
     ] ],
@@ -141,9 +132,9 @@ var hierarchy =
       [ "SinricProWindowAC", "class_sinric_pro_window_a_c.html", null ]
     ] ],
     [ "SinricPro", "class_sinric_pro.html", null ],
+    [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ],
     [ "SinricProClass", "class_sinric_pro_class.html", null ],
     [ "SinricProDevice", "class_sinric_pro_device.html", [
-      [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ],
       [ "SinricProBlinds", "class_sinric_pro_blinds.html", null ],
       [ "SinricProCamera", "class_sinric_pro_camera.html", null ],
       [ "SinricProContactsensor", "class_sinric_pro_contactsensor.html", null ],
@@ -163,11 +154,11 @@ var hierarchy =
       [ "SinricProThermostat", "class_sinric_pro_thermostat.html", null ],
       [ "SinricProWindowAC", "class_sinric_pro_window_a_c.html", null ]
     ] ],
-    [ "TemperatureEventSource< T >", "class_temperature_event_source.html", null ],
-    [ "TemperatureEventSource< SinricProTemperaturesensor >", "class_temperature_event_source.html", [
+    [ "TemperatureSensor< T >", "class_temperature_sensor.html", null ],
+    [ "TemperatureSensor< SinricProTemperaturesensor >", "class_temperature_sensor.html", [
       [ "SinricProTemperaturesensor", "class_sinric_pro_temperaturesensor.html", null ]
     ] ],
-    [ "TemperatureEventSource< SinricProThermostat >", "class_temperature_event_source.html", [
+    [ "TemperatureSensor< SinricProThermostat >", "class_temperature_sensor.html", [
       [ "SinricProThermostat", "class_sinric_pro_thermostat.html", null ]
     ] ],
     [ "ThermostatController< T >", "class_thermostat_controller.html", null ],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['eventsource_386',['EventSource',['../group___event_source.html',1,'']]]
+  ['sinricpro_379',['SinricPro',['../group___sinric_pro.html',1,'']]]
 ];

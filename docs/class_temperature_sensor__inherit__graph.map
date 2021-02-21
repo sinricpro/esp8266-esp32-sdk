@@ -1,0 +1,7 @@
+<map id="TemperatureSensor&lt; T &gt;" name="TemperatureSensor&lt; T &gt;">
+<area shape="rect" id="node1" title="TemperatureSensor." alt="" coords="5,46,172,73"/>
+<area shape="rect" id="node2" href="$class_temperature_sensor.html" title=" " alt="" coords="413,5,616,47"/>
+<area shape="rect" id="node4" href="$class_temperature_sensor.html" title=" " alt="" coords="437,71,593,112"/>
+<area shape="rect" id="node3" href="$class_sinric_pro_temperaturesensor.html" title="Device to report actual temperature and humidity." alt="" coords="665,13,852,39"/>
+<area shape="rect" id="node5" href="$class_sinric_pro_thermostat.html" title="Device to control Thermostat." alt="" coords="689,78,829,105"/>
+</map>

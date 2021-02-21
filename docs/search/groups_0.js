@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['controller_384',['Controller',['../group___controller.html',1,'']]]
+  ['capabilities_377',['Capabilities',['../group___capabilities.html',1,'']]]
 ];

@@ -97,12 +97,10 @@ Inheritance diagram for SinricProContactsensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_sinric_pro_contactsensor__inherit__graph.png" border="0" usemap="#a_sinric_pro_contactsensor_inherit__map" alt="Inheritance graph"/></div>
 <map name="a_sinric_pro_contactsensor_inherit__map" id="a_sinric_pro_contactsensor_inherit__map">
-<area shape="rect" title="Device to report contact sensor events." alt="" coords="625,64,784,91"/>
-<area shape="rect" href="class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="428,5,541,32"/>
-<area shape="rect" href="class_power_state_controller.html" title=" " alt="" coords="393,57,576,98"/>
-<area shape="rect" href="class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
-<area shape="rect" href="class_contact_event_source.html" title=" " alt="" coords="393,122,576,163"/>
-<area shape="rect" href="class_contact_event_source.html" title="ContactEventSource." alt="" coords="7,129,178,156"/>
+<area shape="rect" title="Device to report contact sensor events." alt="" coords="33,185,192,212"/>
+<area shape="rect" href="class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="5,102,119,129"/>
+<area shape="rect" href="class_power_state_controller.html" title=" " alt="" coords="143,95,325,136"/>
+<area shape="rect" href="class_power_state_controller.html" title="PowerStateController." alt="" coords="147,5,321,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -120,9 +118,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8006e256414deac0f9a4e28774b47773"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_power_state_controller.html#a8006e256414deac0f9a4e28774b47773">sendPowerStateEvent</a> (bool state, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
 <tr class="memdesc:a8006e256414deac0f9a4e28774b47773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>setPowerState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state.  <a href="class_power_state_controller.html#a8006e256414deac0f9a4e28774b47773">More...</a><br /></td></tr>
 <tr class="separator:a8006e256414deac0f9a4e28774b47773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b4b9006c0be003c615848bcc2b690fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_contact_event_source.html#a0b4b9006c0be003c615848bcc2b690fd">sendContactEvent</a> (bool detected, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
-<tr class="memdesc:a0b4b9006c0be003c615848bcc2b690fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>setContactState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state.  <a href="class_contact_event_source.html#a0b4b9006c0be003c615848bcc2b690fd">More...</a><br /></td></tr>
-<tr class="separator:a0b4b9006c0be003c615848bcc2b690fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Device to report contact sensor events. </p>
@@ -173,7 +168,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProContactsensor &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:44</div></div>
+<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProContactsensor &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:47</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -211,55 +206,6 @@ Example-Code</h1>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_power_state_controller.html#aad370bc6b280bbdeac98181a31f22df4" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
-
-</div>
-</div>
-<a id="a0b4b9006c0be003c615848bcc2b690fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b4b9006c0be003c615848bcc2b690fd">&#9670;&nbsp;</a></span>sendContactEvent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sendContactEvent </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>detected</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Send <code>setContactState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">detected</td><td>[in] <code>bool</code><code>true</code> = contact is closed <br  />
- [in] <code>false</code> = contact is open </td></tr>
-    <tr><td class="paramname">cause</td><td>[in] <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><code>true</code> event has been sent successfully </dd>
-<dd>
-<code>false</code> event has not been sent, maybe you sent to much events in a short distance of time </dd></dl>
 
 </div>
 </div>

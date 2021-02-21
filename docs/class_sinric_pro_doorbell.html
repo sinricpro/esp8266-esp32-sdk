@@ -97,12 +97,12 @@ Inheritance diagram for SinricProDoorbell:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_sinric_pro_doorbell__inherit__graph.png" border="0" usemap="#a_sinric_pro_doorbell_inherit__map" alt="Inheritance graph"/></div>
 <map name="a_sinric_pro_doorbell_inherit__map" id="a_sinric_pro_doorbell_inherit__map">
-<area shape="rect" title="Device to report doorbell events." alt="" coords="553,64,676,91"/>
-<area shape="rect" href="class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="374,5,487,32"/>
-<area shape="rect" href="class_power_state_controller.html" title=" " alt="" coords="357,57,504,98"/>
+<area shape="rect" title="Device to report doorbell events." alt="" coords="600,64,723,91"/>
+<area shape="rect" href="class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="397,5,511,32"/>
+<area shape="rect" href="class_power_state_controller.html" title=" " alt="" coords="381,57,527,98"/>
 <area shape="rect" href="class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
-<area shape="rect" href="class_doorbell_event_source.html" title=" " alt="" coords="357,122,504,163"/>
-<area shape="rect" href="class_doorbell_event_source.html" title="DorbellEventSource." alt="" coords="6,129,179,156"/>
+<area shape="rect" href="class_doorbell.html" title=" " alt="" coords="357,123,551,149"/>
+<area shape="rect" href="class_doorbell.html" title="Dorbell." alt="" coords="43,123,143,149"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -120,8 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8006e256414deac0f9a4e28774b47773"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_power_state_controller.html#a8006e256414deac0f9a4e28774b47773">sendPowerStateEvent</a> (bool state, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
 <tr class="memdesc:a8006e256414deac0f9a4e28774b47773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>setPowerState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state.  <a href="class_power_state_controller.html#a8006e256414deac0f9a4e28774b47773">More...</a><br /></td></tr>
 <tr class="separator:a8006e256414deac0f9a4e28774b47773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a084a5475db7127784c452deb3a080f62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_doorbell_event_source.html#a084a5475db7127784c452deb3a080f62">sendDoorbellEvent</a> (String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
-<tr class="memdesc:a084a5475db7127784c452deb3a080f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send Doorbell event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating someone pressed the doorbell button.  <a href="class_doorbell_event_source.html#a084a5475db7127784c452deb3a080f62">More...</a><br /></td></tr>
+<tr class="memitem:a084a5475db7127784c452deb3a080f62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_doorbell.html#a084a5475db7127784c452deb3a080f62">sendDoorbellEvent</a> (String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
+<tr class="memdesc:a084a5475db7127784c452deb3a080f62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <a class="el" href="class_doorbell.html" title="Dorbell.">Doorbell</a> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating someone pressed the doorbell button.  <a href="class_doorbell.html#a084a5475db7127784c452deb3a080f62">More...</a><br /></td></tr>
 <tr class="separator:a084a5475db7127784c452deb3a080f62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -173,7 +173,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProDoorbell &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:44</div></div>
+<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProDoorbell &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:47</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -238,7 +238,7 @@ Example-Code</h1>
 </table>
 </div><div class="memdoc">
 
-<p>Send Doorbell event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating someone pressed the doorbell button. </p>
+<p>Send <a class="el" href="class_doorbell.html" title="Dorbell.">Doorbell</a> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating someone pressed the doorbell button. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cause</td><td><code>String</code> (optional) Reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>

@@ -97,12 +97,12 @@ Inheritance diagram for SinricProMotionsensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_sinric_pro_motionsensor__inherit__graph.png" border="0" usemap="#a_sinric_pro_motionsensor_inherit__map" alt="Inheritance graph"/></div>
 <map name="a_sinric_pro_motionsensor_inherit__map" id="a_sinric_pro_motionsensor_inherit__map">
-<area shape="rect" title="Device to report motion detection events." alt="" coords="615,64,768,91"/>
-<area shape="rect" href="class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="420,5,533,32"/>
-<area shape="rect" href="class_power_state_controller.html" title=" " alt="" coords="388,57,565,98"/>
+<area shape="rect" title="Device to report motion detection events." alt="" coords="695,64,848,91"/>
+<area shape="rect" href="class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="460,5,573,32"/>
+<area shape="rect" href="class_power_state_controller.html" title=" " alt="" coords="428,57,605,98"/>
 <area shape="rect" href="class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
-<area shape="rect" href="class_motion_event_source.html" title=" " alt="" coords="392,122,561,163"/>
-<area shape="rect" href="class_motion_event_source.html" title="MotionEventSource." alt="" coords="10,129,175,156"/>
+<area shape="rect" href="class_motion_sensor.html" title=" " alt="" coords="388,123,645,149"/>
+<area shape="rect" href="class_motion_sensor.html" title="MotionSensor." alt="" coords="26,123,159,149"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -120,8 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8006e256414deac0f9a4e28774b47773"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_power_state_controller.html#a8006e256414deac0f9a4e28774b47773">sendPowerStateEvent</a> (bool state, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
 <tr class="memdesc:a8006e256414deac0f9a4e28774b47773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>setPowerState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state.  <a href="class_power_state_controller.html#a8006e256414deac0f9a4e28774b47773">More...</a><br /></td></tr>
 <tr class="separator:a8006e256414deac0f9a4e28774b47773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab28a28a17768a38eea033ba700095672"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motion_event_source.html#ab28a28a17768a38eea033ba700095672">sendMotionEvent</a> (bool detected, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
-<tr class="memdesc:ab28a28a17768a38eea033ba700095672"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sending motion detection state to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server.  <a href="class_motion_event_source.html#ab28a28a17768a38eea033ba700095672">More...</a><br /></td></tr>
+<tr class="memitem:ab28a28a17768a38eea033ba700095672"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_motion_sensor.html#ab28a28a17768a38eea033ba700095672">sendMotionEvent</a> (bool detected, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
+<tr class="memdesc:ab28a28a17768a38eea033ba700095672"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sending motion detection state to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server.  <a href="class_motion_sensor.html#ab28a28a17768a38eea033ba700095672">More...</a><br /></td></tr>
 <tr class="separator:ab28a28a17768a38eea033ba700095672"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -173,7 +173,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProMotionsensor &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:44</div></div>
+<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProMotionsensor &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:47</div></div>
 </div><!-- fragment -->
 </div>
 </div>

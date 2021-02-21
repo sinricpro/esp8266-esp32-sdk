@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resetbandscallback_374',['ResetBandsCallback',['../class_equalizer_controller.html#aa8c78de42c40ee03966f3c96cdc05bab',1,'EqualizerController']]]
+  ['resetbandscallback_367',['ResetBandsCallback',['../class_equalizer_controller.html#aa8c78de42c40ee03966f3c96cdc05bab',1,'EqualizerController']]]
 ];

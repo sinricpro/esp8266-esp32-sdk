@@ -5,10 +5,7 @@
  * @defgroup Devices Devices
  * @brief Available devices
  *
- * @defgroup Controller Controller
- * @brief Controllers
- * 
- * @defgroup EventSource EventSource
- * @brief Event sources
+ * @defgroup Capabilities Capabilities
+ * @brief Capabilities
  * 
  **/ 

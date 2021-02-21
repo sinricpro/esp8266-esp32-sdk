@@ -97,12 +97,12 @@ Inheritance diagram for SinricProTemperaturesensor:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_sinric_pro_temperaturesensor__inherit__graph.png" border="0" usemap="#a_sinric_pro_temperaturesensor_inherit__map" alt="Inheritance graph"/></div>
 <map name="a_sinric_pro_temperaturesensor_inherit__map" id="a_sinric_pro_temperaturesensor_inherit__map">
-<area shape="rect" title="Device to report actual temperature and humidity." alt="" coords="705,64,892,91"/>
-<area shape="rect" href="class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="494,5,607,32"/>
-<area shape="rect" href="class_power_state_controller.html" title=" " alt="" coords="445,57,656,98"/>
-<area shape="rect" href="class_power_state_controller.html" title="PowerStateController." alt="" coords="17,64,192,91"/>
-<area shape="rect" href="class_temperature_event_source.html" title=" " alt="" coords="445,122,656,163"/>
-<area shape="rect" href="class_temperature_event_source.html" title="TemperatureEventSource." alt="" coords="5,129,204,156"/>
+<area shape="rect" title="Device to report actual temperature and humidity." alt="" coords="681,64,868,91"/>
+<area shape="rect" href="class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="470,5,583,32"/>
+<area shape="rect" href="class_power_state_controller.html" title=" " alt="" coords="421,57,632,98"/>
+<area shape="rect" href="class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
+<area shape="rect" href="class_temperature_sensor.html" title=" " alt="" coords="425,122,628,163"/>
+<area shape="rect" href="class_temperature_sensor.html" title="TemperatureSensor." alt="" coords="9,129,176,156"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -120,8 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8006e256414deac0f9a4e28774b47773"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_power_state_controller.html#a8006e256414deac0f9a4e28774b47773">sendPowerStateEvent</a> (bool state, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
 <tr class="memdesc:a8006e256414deac0f9a4e28774b47773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>setPowerState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state.  <a href="class_power_state_controller.html#a8006e256414deac0f9a4e28774b47773">More...</a><br /></td></tr>
 <tr class="separator:a8006e256414deac0f9a4e28774b47773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9545808dacd9efc40a05f16e09d79b4e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_temperature_event_source.html#a9545808dacd9efc40a05f16e09d79b4e">sendTemperatureEvent</a> (float temperature, float humidity=-1, String cause=&quot;PERIODIC_POLL&quot;)</td></tr>
-<tr class="memdesc:a9545808dacd9efc40a05f16e09d79b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>currentTemperature</code> event to report actual temperature (measured by a sensor)  <a href="class_temperature_event_source.html#a9545808dacd9efc40a05f16e09d79b4e">More...</a><br /></td></tr>
+<tr class="memitem:a9545808dacd9efc40a05f16e09d79b4e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_temperature_sensor.html#a9545808dacd9efc40a05f16e09d79b4e">sendTemperatureEvent</a> (float temperature, float humidity=-1, String cause=&quot;PERIODIC_POLL&quot;)</td></tr>
+<tr class="memdesc:a9545808dacd9efc40a05f16e09d79b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>currentTemperature</code> event to report actual temperature (measured by a sensor)  <a href="class_temperature_sensor.html#a9545808dacd9efc40a05f16e09d79b4e">More...</a><br /></td></tr>
 <tr class="separator:a9545808dacd9efc40a05f16e09d79b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -173,7 +173,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProTemperaturesensor &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:44</div></div>
+<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProTemperaturesensor &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:47</div></div>
 </div><!-- fragment -->
 </div>
 </div>

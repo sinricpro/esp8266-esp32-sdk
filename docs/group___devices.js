@@ -1,11 +1,6 @@
 var group___devices =
 [
-    [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", [
-      [ "PowerStateCallback", "class_sinric_pro_air_quality_sensor.html#aad370bc6b280bbdeac98181a31f22df4", null ],
-      [ "onPowerState", "class_sinric_pro_air_quality_sensor.html#a32f3257da431a1035f23a265ff0cc4cf", null ],
-      [ "sendAirQualityEvent", "class_sinric_pro_air_quality_sensor.html#a3836e4dca79c1563fcdae880bb368323", null ],
-      [ "sendPowerStateEvent", "class_sinric_pro_air_quality_sensor.html#a8006e256414deac0f9a4e28774b47773", null ]
-    ] ],
+    [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ],
     [ "SinricProBlinds", "class_sinric_pro_blinds.html", [
       [ "AdjustRangeValueCallback", "class_sinric_pro_blinds.html#aada655606f2ba7ba0cecc5fe82cbc2e7", null ],
       [ "GenericAdjustRangeValueCallback", "class_sinric_pro_blinds.html#a90fe7dc0c27988409efcfb91f0803a5c", null ],
@@ -28,7 +23,6 @@ var group___devices =
     [ "SinricProContactsensor", "class_sinric_pro_contactsensor.html", [
       [ "PowerStateCallback", "class_sinric_pro_contactsensor.html#aad370bc6b280bbdeac98181a31f22df4", null ],
       [ "onPowerState", "class_sinric_pro_contactsensor.html#a32f3257da431a1035f23a265ff0cc4cf", null ],
-      [ "sendContactEvent", "class_sinric_pro_contactsensor.html#a0b4b9006c0be003c615848bcc2b690fd", null ],
       [ "sendPowerStateEvent", "class_sinric_pro_contactsensor.html#a8006e256414deac0f9a4e28774b47773", null ]
     ] ],
     [ "SinricProDimSwitch", "class_sinric_pro_dim_switch.html", [

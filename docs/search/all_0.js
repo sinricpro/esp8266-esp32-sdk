@@ -7,6 +7,5 @@ var searchData=
   ['adjustrangevaluecallback_4',['AdjustRangeValueCallback',['../class_range_controller.html#aada655606f2ba7ba0cecc5fe82cbc2e7',1,'RangeController']]],
   ['adjusttargettemperaturecallback_5',['AdjustTargetTemperatureCallback',['../class_thermostat_controller.html#a8d55dffbb520779ef95fc29e49032886',1,'ThermostatController']]],
   ['adjustvolumecallback_6',['AdjustVolumeCallback',['../class_volume_controller.html#ac6304129491317f85cee56ca5925dfab',1,'VolumeController']]],
-  ['airqualityeventsource_7',['AirQualityEventSource',['../class_air_quality_event_source.html',1,'']]],
-  ['airqualityeventsource_3c_20sinricproairqualitysensor_20_3e_8',['AirQualityEventSource&lt; SinricProAirQualitySensor &gt;',['../class_air_quality_event_source.html',1,'']]]
+  ['airqualitysensor_7',['AirQualitySensor',['../class_air_quality_sensor.html',1,'']]]
 ];

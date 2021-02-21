@@ -259,7 +259,7 @@ Example-Code</h1>
 <div class="line">  volumeDelta = absoluteVolume; <span class="comment">// return absolute volume</span></div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_volume_controller_html_a2c868c87f96e3924c8b309e1bcfb507e"><div class="ttname"><a href="class_volume_controller.html#a2c868c87f96e3924c8b309e1bcfb507e">VolumeController&lt; SinricProTV &gt;::onAdjustVolume</a></div><div class="ttdeci">void onAdjustVolume(AdjustVolumeCallback cb)</div><div class="ttdoc">Set callback function for adjustVolume request.</div><div class="ttdef"><b>Definition:</b> VolumeController.h:76</div></div>
+<div class="ttc" id="aclass_volume_controller_html_a2c868c87f96e3924c8b309e1bcfb507e"><div class="ttname"><a href="class_volume_controller.html#a2c868c87f96e3924c8b309e1bcfb507e">VolumeController&lt; SinricProTV &gt;::onAdjustVolume</a></div><div class="ttdeci">void onAdjustVolume(AdjustVolumeCallback cb)</div><div class="ttdoc">Set callback function for adjustVolume request.</div><div class="ttdef"><b>Definition:</b> VolumeController.h:78</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -340,7 +340,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Change channel to \&quot;%s\&quot; (channel number %d)\r\n&quot;</span>, channel.c_str(), tvChannel);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_channel_controller_html_a92f3b83744b5bb82d32628eef39c1eb9"><div class="ttname"><a href="class_channel_controller.html#a92f3b83744b5bb82d32628eef39c1eb9">ChannelController&lt; SinricProTV &gt;::onChangeChannel</a></div><div class="ttdeci">void onChangeChannel(ChangeChannelCallback cb)</div><div class="ttdoc">Set callback function for changeChannel request.</div><div class="ttdef"><b>Definition:</b> ChannelController.h:84</div></div>
+<div class="ttc" id="aclass_channel_controller_html_a92f3b83744b5bb82d32628eef39c1eb9"><div class="ttname"><a href="class_channel_controller.html#a92f3b83744b5bb82d32628eef39c1eb9">ChannelController&lt; SinricProTV &gt;::onChangeChannel</a></div><div class="ttdeci">void onChangeChannel(ChangeChannelCallback cb)</div><div class="ttdoc">Set callback function for changeChannel request.</div><div class="ttdef"><b>Definition:</b> ChannelController.h:85</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -426,7 +426,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Change to channel to %d (channel name \&quot;%s\&quot;)\r\n&quot;</span>, tvChannel, channelName.c_str());</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_channel_controller_html_afd8aee20590bfadec181c6ee515125ec"><div class="ttname"><a href="class_channel_controller.html#afd8aee20590bfadec181c6ee515125ec">ChannelController&lt; SinricProTV &gt;::onChangeChannelNumber</a></div><div class="ttdeci">void onChangeChannelNumber(ChangeChannelNumberCallback cb)</div><div class="ttdoc">Set callback function for changeChannel request.</div><div class="ttdef"><b>Definition:</b> ChannelController.h:96</div></div>
+<div class="ttc" id="aclass_channel_controller_html_afd8aee20590bfadec181c6ee515125ec"><div class="ttname"><a href="class_channel_controller.html#afd8aee20590bfadec181c6ee515125ec">ChannelController&lt; SinricProTV &gt;::onChangeChannelNumber</a></div><div class="ttdeci">void onChangeChannelNumber(ChangeChannelNumberCallback cb)</div><div class="ttdoc">Set callback function for changeChannel request.</div><div class="ttdef"><b>Definition:</b> ChannelController.h:97</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -476,7 +476,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s: %s\r\n&quot;</span>, deviceId.c_str(), control.c_str());</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_media_controller_html_afc2620621377fff928737b5a8a537020"><div class="ttname"><a href="class_media_controller.html#afc2620621377fff928737b5a8a537020">MediaController&lt; SinricProTV &gt;::onMediaControl</a></div><div class="ttdeci">void onMediaControl(MediaControlCallback cb)</div><div class="ttdoc">Set callback function for mediaControl request.</div><div class="ttdef"><b>Definition:</b> MediaController.h:46</div></div>
+<div class="ttc" id="aclass_media_controller_html_afc2620621377fff928737b5a8a537020"><div class="ttname"><a href="class_media_controller.html#afc2620621377fff928737b5a8a537020">MediaController&lt; SinricProTV &gt;::onMediaControl</a></div><div class="ttdeci">void onMediaControl(MediaControlCallback cb)</div><div class="ttdoc">Set callback function for mediaControl request.</div><div class="ttdef"><b>Definition:</b> MediaController.h:48</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -526,7 +526,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s is %s\r\n&quot;</span>, deviceId.c_str(), mute?<span class="stringliteral">&quot;muted&quot;</span>:<span class="stringliteral">&quot;unmuted&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_mute_controller_html_ab5fc79cc8903c3ccc1c106abf61d7cfd"><div class="ttname"><a href="class_mute_controller.html#ab5fc79cc8903c3ccc1c106abf61d7cfd">MuteController&lt; SinricProTV &gt;::onMute</a></div><div class="ttdeci">void onMute(MuteCallback cb)</div><div class="ttdoc">Set callback function for setMute request.</div><div class="ttdef"><b>Definition:</b> MuteController.h:45</div></div>
+<div class="ttc" id="aclass_mute_controller_html_ab5fc79cc8903c3ccc1c106abf61d7cfd"><div class="ttname"><a href="class_mute_controller.html#ab5fc79cc8903c3ccc1c106abf61d7cfd">MuteController&lt; SinricProTV &gt;::onMute</a></div><div class="ttdeci">void onMute(MuteCallback cb)</div><div class="ttdoc">Set callback function for setMute request.</div><div class="ttdef"><b>Definition:</b> MuteController.h:47</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -576,7 +576,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProTV &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:44</div></div>
+<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProTV &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:47</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -626,7 +626,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s input changed to %s\r\n&quot;</span>, deviceId.c_str(), input.c_str());</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_input_controller_html_a18f8f71ecf0d7292a63d9486f94e5180"><div class="ttname"><a href="class_input_controller.html#a18f8f71ecf0d7292a63d9486f94e5180">InputController&lt; SinricProTV &gt;::onSelectInput</a></div><div class="ttdeci">void onSelectInput(SelectInputCallback cb)</div><div class="ttdoc">Set callback function for selectInput request.</div><div class="ttdef"><b>Definition:</b> InputController.h:45</div></div>
+<div class="ttc" id="aclass_input_controller_html_a18f8f71ecf0d7292a63d9486f94e5180"><div class="ttname"><a href="class_input_controller.html#a18f8f71ecf0d7292a63d9486f94e5180">InputController&lt; SinricProTV &gt;::onSelectInput</a></div><div class="ttdeci">void onSelectInput(SelectInputCallback cb)</div><div class="ttdoc">Set callback function for selectInput request.</div><div class="ttdef"><b>Definition:</b> InputController.h:48</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -674,7 +674,7 @@ Example-Code</h1>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s volume set to %d\r\n&quot;</span>, deviceId.c_str(), volume);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_volume_controller_html_a5db8c85f222debbece54c794015f9402"><div class="ttname"><a href="class_volume_controller.html#a5db8c85f222debbece54c794015f9402">VolumeController&lt; SinricProTV &gt;::onSetVolume</a></div><div class="ttdeci">void onSetVolume(SetVolumeCallback cb)</div><div class="ttdoc">Set callback function for setVolume request.</div><div class="ttdef"><b>Definition:</b> VolumeController.h:66</div></div>
+<div class="ttc" id="aclass_volume_controller_html_a5db8c85f222debbece54c794015f9402"><div class="ttname"><a href="class_volume_controller.html#a5db8c85f222debbece54c794015f9402">VolumeController&lt; SinricProTV &gt;::onSetVolume</a></div><div class="ttdeci">void onSetVolume(SetVolumeCallback cb)</div><div class="ttdoc">Set callback function for setVolume request.</div><div class="ttdef"><b>Definition:</b> VolumeController.h:68</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -760,7 +760,7 @@ Example-Code</h1>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_channel_controller_html_ab1123d03d471fad4896eb2960ed41855"><div class="ttname"><a href="class_channel_controller.html#ab1123d03d471fad4896eb2960ed41855">ChannelController&lt; SinricProTV &gt;::onSkipChannels</a></div><div class="ttdeci">void onSkipChannels(SkipChannelsCallback cb)</div><div class="ttdoc">Set callback function for skipChannels request.</div><div class="ttdef"><b>Definition:</b> ChannelController.h:108</div></div>
+<div class="ttc" id="aclass_channel_controller_html_ab1123d03d471fad4896eb2960ed41855"><div class="ttname"><a href="class_channel_controller.html#ab1123d03d471fad4896eb2960ed41855">ChannelController&lt; SinricProTV &gt;::onSkipChannels</a></div><div class="ttdeci">void onSkipChannels(SkipChannelsCallback cb)</div><div class="ttdoc">Set callback function for skipChannels request.</div><div class="ttdef"><b>Definition:</b> ChannelController.h:109</div></div>
 </div><!-- fragment -->
 </div>
 </div>

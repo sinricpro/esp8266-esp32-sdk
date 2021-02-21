@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['capabilities_12',['Capabilities',['../group___capabilities.html',1,'']]],
   ['changechannelcallback_13',['ChangeChannelCallback',['../class_channel_controller.html#a8bc108630d532266ae36cda5ec7b4857',1,'ChannelController']]],
   ['changechannelnumbercallback_14',['ChangeChannelNumberCallback',['../class_channel_controller.html#ab21b05b6f4a6be7e89a7173b7fafb552',1,'ChannelController']]],
   ['channelcontroller_15',['ChannelController',['../class_channel_controller.html',1,'']]],
@@ -11,7 +12,5 @@ var searchData=
   ['colortemperaturecontroller_21',['ColorTemperatureController',['../class_color_temperature_controller.html',1,'']]],
   ['colortemperaturecontroller_3c_20sinricprolight_20_3e_22',['ColorTemperatureController&lt; SinricProLight &gt;',['../class_color_temperature_controller.html',1,'']]],
   ['connectedcallbackhandler_23',['ConnectedCallbackHandler',['../class_sinric_pro_class.html#a4d7d8547a83d53c20cbd9aa7768e99f5',1,'SinricProClass']]],
-  ['contacteventsource_24',['ContactEventSource',['../class_contact_event_source.html',1,'']]],
-  ['contacteventsource_3c_20sinricprocontactsensor_20_3e_25',['ContactEventSource&lt; SinricProContactsensor &gt;',['../class_contact_event_source.html',1,'']]],
-  ['controller_26',['Controller',['../group___controller.html',1,'']]]
+  ['contactsensor_24',['ContactSensor',['../class_contact_sensor.html',1,'']]]
 ];
