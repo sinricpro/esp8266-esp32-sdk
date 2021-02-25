@@ -62,9 +62,6 @@ DeviceId SinricProDevice::getDeviceId() {
   return deviceId;
 }
 
-/** @brief Checks if deviceId matches the deviceId of this device
- *  @return `true` if device id match /`false` if it doesnt match
- */
 bool SinricProDevice::operator==(const DeviceId &other) { 
   return other == deviceId; 
 }
