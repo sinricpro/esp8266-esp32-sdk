@@ -1,4 +1,12 @@
 # Changelog
+## Version 2.9.0
+New:
+- support custom devices
+- check for minimum websockets version
+
+Fixed:
+- MultiRelays example
+
 ## Version 2.8.1
 - New Example: MultiRelays_advance (see examples/Relay)
 - Moved existing relay example to new folder (examples/Relay)
