@@ -99,6 +99,10 @@ var NAVTREEINDEX0 =
 "class_range_controller.html#af676bb2b419c4321d0a678cf9446da0c":[1,2,19,8],
 "class_sinric_pro.html":[2,0,20],
 "class_sinric_pro_air_quality_sensor.html":[1,1,0],
+"class_sinric_pro_air_quality_sensor.html#a32f3257da431a1035f23a265ff0cc4cf":[1,1,0,1],
+"class_sinric_pro_air_quality_sensor.html#a3836e4dca79c1563fcdae880bb368323":[1,1,0,2],
+"class_sinric_pro_air_quality_sensor.html#a8006e256414deac0f9a4e28774b47773":[1,1,0,3],
+"class_sinric_pro_air_quality_sensor.html#aad370bc6b280bbdeac98181a31f22df4":[1,1,0,0],
 "class_sinric_pro_blinds.html":[1,1,1],
 "class_sinric_pro_blinds.html#a32f3257da431a1035f23a265ff0cc4cf":[1,1,1,6],
 "class_sinric_pro_blinds.html#a60998b10a31b66e92d6b292a60b26c2e":[1,1,1,10],
@@ -245,9 +249,5 @@ var NAVTREEINDEX0 =
 "class_sinric_pro_t_v.html#a18f8f71ecf0d7292a63d9486f94e5180":[1,1,17,15],
 "class_sinric_pro_t_v.html#a2c868c87f96e3924c8b309e1bcfb507e":[1,1,17,9],
 "class_sinric_pro_t_v.html#a2f7a91a480cd401f4df2f7ddda4a8f13":[1,1,17,6],
-"class_sinric_pro_t_v.html#a32f3257da431a1035f23a265ff0cc4cf":[1,1,17,14],
-"class_sinric_pro_t_v.html#a434616b976d1339be63540d16977fa3d":[1,1,17,8],
-"class_sinric_pro_t_v.html#a5744ad6a31085c216c2193b0f2d86673":[1,1,17,7],
-"class_sinric_pro_t_v.html#a5db8c85f222debbece54c794015f9402":[1,1,17,16],
-"class_sinric_pro_t_v.html#a8006e256414deac0f9a4e28774b47773":[1,1,17,21]
+"class_sinric_pro_t_v.html#a32f3257da431a1035f23a265ff0cc4cf":[1,1,17,14]
 };

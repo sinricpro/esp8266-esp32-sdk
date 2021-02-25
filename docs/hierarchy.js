@@ -1,6 +1,9 @@
 var hierarchy =
 [
     [ "AirQualitySensor< T >", "class_air_quality_sensor.html", null ],
+    [ "AirQualitySensor< SinricProAirQualitySensor >", "class_air_quality_sensor.html", [
+      [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ]
+    ] ],
     [ "BrightnessController< T >", "class_brightness_controller.html", null ],
     [ "BrightnessController< SinricProLight >", "class_brightness_controller.html", [
       [ "SinricProLight", "class_sinric_pro_light.html", null ]
@@ -76,6 +79,9 @@ var hierarchy =
       [ "SinricProPowerSensor", "class_sinric_pro_power_sensor.html", null ]
     ] ],
     [ "PowerStateController< T >", "class_power_state_controller.html", null ],
+    [ "PowerStateController< SinricProAirQualitySensor >", "class_power_state_controller.html", [
+      [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ]
+    ] ],
     [ "PowerStateController< SinricProBlinds >", "class_power_state_controller.html", [
       [ "SinricProBlinds", "class_sinric_pro_blinds.html", null ]
     ] ],
@@ -132,9 +138,9 @@ var hierarchy =
       [ "SinricProWindowAC", "class_sinric_pro_window_a_c.html", null ]
     ] ],
     [ "SinricPro", "class_sinric_pro.html", null ],
-    [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ],
     [ "SinricProClass", "class_sinric_pro_class.html", null ],
     [ "SinricProDevice", "class_sinric_pro_device.html", [
+      [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ],
       [ "SinricProBlinds", "class_sinric_pro_blinds.html", null ],
       [ "SinricProCamera", "class_sinric_pro_camera.html", null ],
       [ "SinricProContactsensor", "class_sinric_pro_contactsensor.html", null ],

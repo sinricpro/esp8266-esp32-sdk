@@ -81,6 +81,10 @@ $(document).ready(function(){initNavTree('class_sinric_pro_air_quality_sensor.ht
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="class_sinric_pro_air_quality_sensor-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">SinricProAirQualitySensor<div class="ingroups"><a class="el" href="group___devices.html">Devices</a></div></div>  </div>
 </div><!--header-->
@@ -88,9 +92,250 @@ $(document).ready(function(){initNavTree('class_sinric_pro_air_quality_sensor.ht
 
 <p>Device to report air quality events.  
  <a href="class_sinric_pro_air_quality_sensor.html#details">More...</a></p>
+<div class="dynheader">
+Inheritance diagram for SinricProAirQualitySensor:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_sinric_pro_air_quality_sensor__inherit__graph.png" border="0" usemap="#a_sinric_pro_air_quality_sensor_inherit__map" alt="Inheritance graph"/></div>
+<map name="a_sinric_pro_air_quality_sensor_inherit__map" id="a_sinric_pro_air_quality_sensor_inherit__map">
+<area shape="rect" title="Device to report air quality events." alt="" coords="655,64,828,91"/>
+<area shape="rect" href="class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="450,5,563,32"/>
+<area shape="rect" href="class_power_state_controller.html" title=" " alt="" coords="408,57,605,98"/>
+<area shape="rect" href="class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
+<area shape="rect" href="class_air_quality_sensor.html" title=" " alt="" coords="424,122,589,163"/>
+<area shape="rect" href="class_air_quality_sensor.html" title="AirQuality." alt="" coords="17,129,168,156"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aad370bc6b280bbdeac98181a31f22df4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_power_state_controller.html#aad370bc6b280bbdeac98181a31f22df4">PowerStateCallback</a> = std::function&lt; bool(const String &amp;, bool &amp;)&gt;</td></tr>
+<tr class="memdesc:aad370bc6b280bbdeac98181a31f22df4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback definition for onPowerState function.  <a href="class_power_state_controller.html#aad370bc6b280bbdeac98181a31f22df4">More...</a><br /></td></tr>
+<tr class="separator:aad370bc6b280bbdeac98181a31f22df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a32f3257da431a1035f23a265ff0cc4cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a> (<a class="el" href="class_power_state_controller.html#aad370bc6b280bbdeac98181a31f22df4">PowerStateCallback</a> cb)</td></tr>
+<tr class="memdesc:a32f3257da431a1035f23a265ff0cc4cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function for <code>powerState</code> request.  <a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">More...</a><br /></td></tr>
+<tr class="separator:a32f3257da431a1035f23a265ff0cc4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8006e256414deac0f9a4e28774b47773"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_power_state_controller.html#a8006e256414deac0f9a4e28774b47773">sendPowerStateEvent</a> (bool state, String cause=&quot;PHYSICAL_INTERACTION&quot;)</td></tr>
+<tr class="memdesc:a8006e256414deac0f9a4e28774b47773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send <code>setPowerState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state.  <a href="class_power_state_controller.html#a8006e256414deac0f9a4e28774b47773">More...</a><br /></td></tr>
+<tr class="separator:a8006e256414deac0f9a4e28774b47773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3836e4dca79c1563fcdae880bb368323"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_air_quality_sensor.html#a3836e4dca79c1563fcdae880bb368323">sendAirQualityEvent</a> (int pm1=0, int pm2_5=0, int pm10=0, String cause=&quot;PERIODIC_POLL&quot;)</td></tr>
+<tr class="memdesc:a3836e4dca79c1563fcdae880bb368323"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sending air quality to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server.  <a href="class_air_quality_sensor.html#a3836e4dca79c1563fcdae880bb368323">More...</a><br /></td></tr>
+<tr class="separator:a3836e4dca79c1563fcdae880bb368323"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Device to report air quality events. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="aad370bc6b280bbdeac98181a31f22df4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad370bc6b280bbdeac98181a31f22df4">&#9670;&nbsp;</a></span>PowerStateCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="class_power_state_controller.html#aad370bc6b280bbdeac98181a31f22df4">PowerStateCallback</a> =  std::function&lt;bool(const String &amp;, bool &amp;)&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Callback definition for onPowerState function. </p>
+<p>Gets called when device receive a <code>setPowerState</code> reuqest <br  />
+</p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">deviceId</td><td>String which contains the ID of device </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td><code>true</code> = device is requested to turn on <br  />
+ <code>false</code> = device is requested to turn off </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">state</td><td><code>true</code> = device has been turned on <br  />
+ <code>false</code> = device has been turned off </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of the request </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>request handled properly </td></tr>
+    <tr><td class="paramname">false</td><td>request was not handled properly because of some error </td></tr>
+  </table>
+  </dd>
+</dl>
+<h1><a class="anchor" id="PowerStateCallback"></a>
+Example-Code</h1>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">onPowerState</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keywordtype">bool</span> &amp;state) {</div>
+<div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s turned %s\r\n&quot;</span>, deviceId.c_str(), state?<span class="stringliteral">&quot;on&quot;</span>:<span class="stringliteral">&quot;off&quot;</span>);</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// request handled properly</span></div>
+<div class="line">}</div>
+<div class="ttc" id="aclass_power_state_controller_html_a32f3257da431a1035f23a265ff0cc4cf"><div class="ttname"><a href="class_power_state_controller.html#a32f3257da431a1035f23a265ff0cc4cf">PowerStateController&lt; SinricProAirQualitySensor &gt;::onPowerState</a></div><div class="ttdeci">void onPowerState(PowerStateCallback cb)</div><div class="ttdoc">Set callback function for powerState request.</div><div class="ttdef"><b>Definition:</b> PowerStateController.h:47</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a32f3257da431a1035f23a265ff0cc4cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32f3257da431a1035f23a265ff0cc4cf">&#9670;&nbsp;</a></span>onPowerState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onPowerState </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_power_state_controller.html#aad370bc6b280bbdeac98181a31f22df4">PowerStateCallback</a>&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set callback function for <code>powerState</code> request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cb</td><td>Function pointer to a <code>PowerStateCallback</code> function </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_power_state_controller.html#aad370bc6b280bbdeac98181a31f22df4" title="Callback definition for onPowerState function.">PowerStateCallback</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3836e4dca79c1563fcdae880bb368323"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3836e4dca79c1563fcdae880bb368323">&#9670;&nbsp;</a></span>sendAirQualityEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendAirQualityEvent </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pm1</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pm2_5</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pm10</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PERIODIC_POLL&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sending air quality to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pm1</td><td><code>int</code> 1.0 μm particle pollutant in μg/m3 </td></tr>
+    <tr><td class="paramname">pm2_5</td><td><code>int</code> 2.5 μm particle pollutant in μg/m3 </td></tr>
+    <tr><td class="paramname">pm10</td><td><code>int</code> 10 μm particle pollutant in μg/m3 </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PERIODIC_POLL"</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of sending the event </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
+    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8006e256414deac0f9a4e28774b47773"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8006e256414deac0f9a4e28774b47773">&#9670;&nbsp;</a></span>sendPowerStateEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sendPowerStateEvent </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>cause</em> = <code>&quot;PHYSICAL_INTERACTION&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Send <code>setPowerState</code> event to <a class="el" href="class_sinric_pro.html" title="The main instance of SinricProClass.">SinricPro</a> Server indicating actual power state. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td><code>true</code> = device turned on <br  />
+ <code>false</code> = device turned off </td></tr>
+    <tr><td class="paramname">cause</td><td>(optional) <code>String</code> reason why event is sent (default = <code>"PHYSICAL_INTERACTION"</code>) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the success of sending the even </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>event has been sent successfully </td></tr>
+    <tr><td class="paramname">false</td><td>event has not been sent, maybe you sent to much events in a short distance of time </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -21,7 +21,7 @@ var annotated_dup =
     [ "PowerStateController", "class_power_state_controller.html", "class_power_state_controller" ],
     [ "RangeController", "class_range_controller.html", "class_range_controller" ],
     [ "SinricPro", "class_sinric_pro.html", null ],
-    [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", null ],
+    [ "SinricProAirQualitySensor", "class_sinric_pro_air_quality_sensor.html", "class_sinric_pro_air_quality_sensor" ],
     [ "SinricProBlinds", "class_sinric_pro_blinds.html", "class_sinric_pro_blinds" ],
     [ "SinricProCamera", "class_sinric_pro_camera.html", "class_sinric_pro_camera" ],
     [ "SinricProClass", "class_sinric_pro_class.html", "class_sinric_pro_class" ],

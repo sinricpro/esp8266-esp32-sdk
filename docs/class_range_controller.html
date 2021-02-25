@@ -226,7 +226,7 @@ Example-Code</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> globalRangeValue;</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">bool</span> <a class="code" href="class_range_controller.html#ae85696d55112ae7343f9807faee6e064">onAdjustRangeValue</a>(<span class="keyword">const</span> String &amp;deviceId, <span class="keyword">const</span> String&amp; instance, <span class="keywordtype">int</span> &amp;rangeValueDelta) {</div>
-<div class="line">  globalRangeValue += rangeValue; <span class="comment">// calculate absolute rangeValue</span></div>
+<div class="line">  globalRangeValue += rangeValueDelta; <span class="comment">// calculate absolute rangeValue</span></div>
 <div class="line">  Serial.printf(<span class="stringliteral">&quot;Device %s range value for %s has been changed about %i to %d\r\n&quot;</span>, deviceId.c_str(), instance.c_str(), rangeValueDelta, globalRangeValue);</div>
 <div class="line">  rangeValueDelta = globalRangeValue; <span class="comment">// return absolute rangeValue</span></div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;                        <span class="comment">// request handled properly</span></div>

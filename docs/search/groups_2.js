@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sinricpro_379',['SinricPro',['../group___sinric_pro.html',1,'']]]
+  ['sinricpro_383',['SinricPro',['../group___sinric_pro.html',1,'']]]
 ];

@@ -1,5 +1,9 @@
 var NAVTREEINDEX1 =
 {
+"class_sinric_pro_t_v.html#a434616b976d1339be63540d16977fa3d":[1,1,17,8],
+"class_sinric_pro_t_v.html#a5744ad6a31085c216c2193b0f2d86673":[1,1,17,7],
+"class_sinric_pro_t_v.html#a5db8c85f222debbece54c794015f9402":[1,1,17,16],
+"class_sinric_pro_t_v.html#a8006e256414deac0f9a4e28774b47773":[1,1,17,21],
 "class_sinric_pro_t_v.html#a8bc108630d532266ae36cda5ec7b4857":[1,1,17,1],
 "class_sinric_pro_t_v.html#a8d79220a3a06331442d36524ceac1db3":[1,1,17,22],
 "class_sinric_pro_t_v.html#a92f3b83744b5bb82d32628eef39c1eb9":[1,1,17,10],

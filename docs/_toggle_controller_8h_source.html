@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('_toggle_controller_8h_source.html','')
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  T&amp; device = <span class="keyword">static_cast&lt;</span>T&amp;<span class="keyword">&gt;</span>(*this);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  DynamicJsonDocument eventMessage = device.prepareEvent(<span class="stringliteral">&quot;setToggleState&quot;</span>, cause.c_str());</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;instance&quot;</span>] = instance;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;instanceId&quot;</span>] = instance;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  JsonObject event_value = eventMessage[<span class="stringliteral">&quot;payload&quot;</span>][<span class="stringliteral">&quot;value&quot;</span>];</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  event_value[<span class="stringliteral">&quot;state&quot;</span>] = state ? <span class="stringliteral">&quot;On&quot;</span> : <span class="stringliteral">&quot;Off&quot;</span>;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">return</span> device.sendEvent(eventMessage);</div>
