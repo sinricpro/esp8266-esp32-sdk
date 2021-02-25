@@ -17,8 +17,8 @@ bool onPowerState(const String &deviceId, bool &state) {
 //! [onPowerState]
 
 //! [onToggleState]
-bool onToggleState(const String &deviceId, bool &state) {
-  Serial.printf("Function turned %s\r\n", state ? "on" : "off");
+bool onToggleState(const String &deviceId, const String &instance, bool &state) {
+  Serial.printf("Device %s state \"%s\" turned %s\r\n", deviceId.c_str(), instance.c_str(), state ? "on" : "off");
   return true; // request handled properly
 }
 //! [onToggleState]
@@ -125,7 +125,7 @@ bool onAdjustRangeValue(const String &deviceId, int &rangeValueDelta) {
 int globalRangeValue;
 
 bool onAdjustRangeValue(const String &deviceId, const String& instance, int &rangeValueDelta) {
-  globalRangeValue += rangeValue; // calculate absolute rangeValue
+  globalRangeValue += rangeValueDelta; // calculate absolute rangeValue
   Serial.printf("Device %s range value for %s has been changed about %i to %d\r\n", deviceId.c_str(), instance.c_str(), rangeValueDelta, globalRangeValue);
   rangeValueDelta = globalRangeValue; // return absolute rangeValue
   return true;                        // request handled properly
