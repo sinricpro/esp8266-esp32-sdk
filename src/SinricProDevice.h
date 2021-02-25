@@ -26,6 +26,7 @@ class SinricProDevice : public SinricProDeviceInterface {
   friend class SinricProClass;
 public:
   SinricProDevice(const DeviceId &deviceId, const String &productType = "");
+  bool operator==(const DeviceId& other);
 
 protected:
   virtual DeviceId getDeviceId();
@@ -51,8 +52,7 @@ SinricProDevice::SinricProDevice(const DeviceId &deviceId, const String &product
   productType(productType) {
 }
 
-SinricProDevice::~SinricProDevice() {
-}
+SinricProDevice::~SinricProDevice() {}
 
 void SinricProDevice::begin(SinricProInterface* eventSender) {
   this->eventSender = eventSender;
@@ -62,6 +62,12 @@ DeviceId SinricProDevice::getDeviceId() {
   return deviceId;
 }
 
+/** @brief Checks if deviceId matches the deviceId of this device
+ *  @return `true` if device id match /`false` if it doesnt match
+ */
+bool SinricProDevice::operator==(const DeviceId &other) { 
+  return other == deviceId; 
+}
 
 DynamicJsonDocument SinricProDevice::prepareEvent(const char* action, const char* cause) {
   if (eventSender) return eventSender->prepareEvent(deviceId, action, cause);
