@@ -25,6 +25,7 @@ class SinricProAirQualitySensor : public SinricProDevice,
                                   
 public:
   SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR"){};
+};
 
 #endif
 
