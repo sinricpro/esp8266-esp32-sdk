@@ -1,0 +1,18 @@
+<map id="SinricProSpeaker" name="SinricProSpeaker">
+<area shape="rect" id="node1" title="Device to control a smart speaker." alt="" coords="584,220,707,247"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="389,5,503,32"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="373,57,519,98"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
+<area shape="rect" id="node5" href="$class_mute_controller.html" title=" " alt="" coords="361,122,531,163"/>
+<area shape="rect" id="node6" href="$class_mute_controller.html" title="MuteController." alt="" coords="24,129,161,156"/>
+<area shape="rect" id="node7" href="$class_volume_controller.html" title=" " alt="" coords="363,187,529,229"/>
+<area shape="rect" id="node8" href="$class_volume_controller.html" title="VolumeController." alt="" coords="17,195,169,221"/>
+<area shape="rect" id="node9" href="$class_media_controller.html" title=" " alt="" coords="357,253,535,294"/>
+<area shape="rect" id="node10" href="$class_media_controller.html" title="MediaController." alt="" coords="21,260,164,287"/>
+<area shape="rect" id="node11" href="$class_input_controller.html" title=" " alt="" coords="361,318,531,359"/>
+<area shape="rect" id="node12" href="$class_input_controller.html" title="InputController." alt="" coords="25,325,161,352"/>
+<area shape="rect" id="node13" href="$class_equalizer_controller.html" title=" " alt="" coords="373,383,519,425"/>
+<area shape="rect" id="node14" href="$class_equalizer_controller.html" title="EqualizerController." alt="" coords="11,391,174,417"/>
+<area shape="rect" id="node15" href="$class_mode_controller.html" title=" " alt="" coords="359,449,533,490"/>
+<area shape="rect" id="node16" href="$class_mode_controller.html" title="ModeController." alt="" coords="23,456,163,483"/>
+</map>

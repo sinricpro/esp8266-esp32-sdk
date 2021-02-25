@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['adjustbandscallback_199',['AdjustBandsCallback',['../class_sinric_pro_speaker.html#a9fd3e3ebbb960707aa11e4fe77961368',1,'SinricProSpeaker']]],
-  ['adjustbrightnesscallback_200',['AdjustBrightnessCallback',['../class_sinric_pro_light.html#ab2267f4b655928122371dcc0bc960e88',1,'SinricProLight']]],
-  ['adjustpositioncallback_201',['AdjustPositionCallback',['../class_sinric_pro_blinds.html#a4f6fdf591b948dc44154c33df5b8fb97',1,'SinricProBlinds']]],
-  ['adjustpowerlevelcallback_202',['AdjustPowerLevelCallback',['../class_sinric_pro_dim_switch.html#a014ffde9f69bdc85629806073ee1ab7a',1,'SinricProDimSwitch']]],
-  ['adjustrangevaluecallback_203',['AdjustRangeValueCallback',['../class_sinric_pro_fan_u_s.html#a8977055ae213732aaa3ef430259208f4',1,'SinricProFanUS::AdjustRangeValueCallback()'],['../class_sinric_pro_window_a_c.html#a8977055ae213732aaa3ef430259208f4',1,'SinricProWindowAC::AdjustRangeValueCallback()']]],
-  ['adjusttargettemperaturecallback_204',['AdjustTargetTemperatureCallback',['../class_sinric_pro_thermostat.html#aeae1f9b5872cf8dcba7efc2548a671fa',1,'SinricProThermostat::AdjustTargetTemperatureCallback()'],['../class_sinric_pro_window_a_c.html#aeae1f9b5872cf8dcba7efc2548a671fa',1,'SinricProWindowAC::AdjustTargetTemperatureCallback()']]],
-  ['adjustvolumecallback_205',['AdjustVolumeCallback',['../class_sinric_pro_speaker.html#ae89a822920b205b05131de3a853b1c0d',1,'SinricProSpeaker::AdjustVolumeCallback()'],['../class_sinric_pro_t_v.html#ae89a822920b205b05131de3a853b1c0d',1,'SinricProTV::AdjustVolumeCallback()']]]
+  ['adjustbandscallback_345',['AdjustBandsCallback',['../class_equalizer_controller.html#a28446c362f1f44e269b50619761c9e9b',1,'EqualizerController']]],
+  ['adjustbrightnesscallback_346',['AdjustBrightnessCallback',['../class_brightness_controller.html#a3ff8d93d9483f41bf8504fd3e9cc8f49',1,'BrightnessController']]],
+  ['adjustpercentagecallback_347',['AdjustPercentageCallback',['../class_percentage_controller.html#a088a491b8656c376085bc31d558fd05d',1,'PercentageController']]],
+  ['adjustpowerlevelcallback_348',['AdjustPowerLevelCallback',['../class_power_level_controller.html#a3ec3aad26d06f5b943a6906e11afc1f3',1,'PowerLevelController']]],
+  ['adjustrangevaluecallback_349',['AdjustRangeValueCallback',['../class_range_controller.html#aada655606f2ba7ba0cecc5fe82cbc2e7',1,'RangeController']]],
+  ['adjusttargettemperaturecallback_350',['AdjustTargetTemperatureCallback',['../class_thermostat_controller.html#a8d55dffbb520779ef95fc29e49032886',1,'ThermostatController']]],
+  ['adjustvolumecallback_351',['AdjustVolumeCallback',['../class_volume_controller.html#ac6304129491317f85cee56ca5925dfab',1,'VolumeController']]]
 ];

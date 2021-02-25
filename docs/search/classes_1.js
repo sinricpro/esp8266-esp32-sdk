@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['windowac_99',['WindowAC',['../class_window_a_c.html',1,'']]]
+  ['brightnesscontroller_194',['BrightnessController',['../class_brightness_controller.html',1,'']]],
+  ['brightnesscontroller_3c_20sinricprolight_20_3e_195',['BrightnessController&lt; SinricProLight &gt;',['../class_brightness_controller.html',1,'']]]
 ];

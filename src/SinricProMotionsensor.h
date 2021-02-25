@@ -9,38 +9,22 @@
 #define _SINRICMOTIONSENSOR_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/MotionSensor.h"
 
 /**
  * @class SinricProMotionsensor
  * @brief Device to report motion detection events
+ * @ingroup Devices
  */
-class SinricProMotionsensor :  public SinricProDevice {
+class SinricProMotionsensor : public SinricProDevice,
+                              public PowerStateController<SinricProMotionsensor>,
+                              public MotionSensor<SinricProMotionsensor> {
+                              friend class PowerStateController<SinricProMotionsensor>;
+                              friend class MotionSensor<SinricProMotionsensor>;
   public:
-	  SinricProMotionsensor(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("MOTION_SENSOR"); }
-
-    // event
-    bool sendMotionEvent(bool detected, String cause = "PHYSICAL_INTERACTION");
-  private:
+    SinricProMotionsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "MOTION_SENSOR") {}
 };
-
-SinricProMotionsensor::SinricProMotionsensor(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
-
-/**
- * @brief Sending motion detection state to SinricPro server
- * 
- * @param   state         `true` if motion has been detected \n 'false' if no motion has been detected
- * @param   cause         (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
- * @return  the success of sending the event
- * @retval  true          event has been sent successfully
- * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
- **/
-bool SinricProMotionsensor::sendMotionEvent(bool state, String cause) {
-  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "motion", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state?"detected":"notDetected";
-  return sendEvent(eventMessage);
-}
 
 #endif
 

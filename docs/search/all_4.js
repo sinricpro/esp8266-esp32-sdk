@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['gettimestamp_17',['getTimestamp',['../class_sinric_pro_class.html#afb2be26eef972203404140612fa31326',1,'SinricProClass']]]
+  ['equalizercontroller_31',['EqualizerController',['../class_equalizer_controller.html',1,'']]],
+  ['equalizercontroller_3c_20sinricprospeaker_20_3e_32',['EqualizerController&lt; SinricProSpeaker &gt;',['../class_equalizer_controller.html',1,'']]]
 ];

@@ -9,37 +9,22 @@
 #define _SINRICCONTACTSENSOR_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/ContactSensor.h"
 
 /**
  * @class SinricProContactsensor
  * @brief Device to report contact sensor events
+ * @ingroup Devices
  **/
-class SinricProContactsensor :  public SinricProDevice {
+class SinricProContactsensor : public SinricProDevice,
+                               public PowerStateController<SinricProContactsensor>,
+                               public ContactEventSource<SinricProContactsensor> {
+                               friend class PowerStateController<SinricProContactsensor>;
+                               friend class ContactEventSource<SinricProContactsensor>;
   public:
-	  SinricProContactsensor(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("CONTACT_SENSOR"); }
-
-    // event
-    bool sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION");
-  private:
+	  SinricProContactsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 };
-
-SinricProContactsensor::SinricProContactsensor(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
-
-/**
- * \brief Send `setContactState` event to SinricPro Server indicating actual power state
- * 
- * @param state [in] `true` = contact is closed \n [in] `false` = contact is open
- * @param cause [in] `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
- * @return `true` event has been sent successfully
- * @return `false` event has not been sent, maybe you sent to much events in a short distance of time
- **/
-bool SinricProContactsensor::sendContactEvent(bool state, String cause) {
-  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "setContactState", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state?"closed":"open";
-  return sendEvent(eventMessage);
-}
 
 #endif
 

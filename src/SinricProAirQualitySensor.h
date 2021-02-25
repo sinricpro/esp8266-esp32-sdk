@@ -9,44 +9,23 @@
 #define _SINRICAIRQUALITYSENSOR_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/AirQualitySensor.h"
 
 /**
  * @class SinricProAirQualitySensor
  * @brief Device to report air quality events
+ * @ingroup Devices
  */
-class SinricProAirQualitySensor :  public SinricProDevice {
-  public:
-	  SinricProAirQualitySensor(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("AIR_QUALITY_SENSOR"); }
-
-    // event
-    bool sendAirQualityEvent(int pm1=0, int pm2_5=0, int pm10=0, String cause = "PERIODIC_POLL");
-  private:
+class SinricProAirQualitySensor : public SinricProDevice,
+                                  public PowerStateController<SinricProAirQualitySensor>,
+                                  public AirQualitySensor<SinricProAirQualitySensor> {
+                                  friend class PowerStateController<SinricProAirQualitySensor>;
+                                  friend class AirQualitySensor<SinricProAirQualitySensor>;
+                                  
+public:
+  SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR"){};
 };
-
-SinricProAirQualitySensor::SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
-
-/**
- * @brief Sending air quality to SinricPro server
- * 
- * @param   pm1           1.0 μm particle pollutant	in μg/m3
- * @param   pm2_5         2.5 μm particle pollutant	in μg/m3
- * @param   pm10          10 μm particle pollutant in μg/m3
- * @param   cause         (optional) `String` reason why event is sent (default = `"PERIODIC_POLL"`)
- * @return  the success of sending the event
- * @retval  true          event has been sent successfully
- * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
- **/
-bool SinricProAirQualitySensor::sendAirQualityEvent(int pm1, int pm2_5, int pm10, String cause) {
-  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "airQuality", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-
-  event_value["pm1"] = limitValue(pm1, 0, 999);
-  event_value["pm2_5"] = limitValue(pm2_5, 0, 999);
-  event_value["pm10"] = limitValue(pm10, 0, 999);
-  
-  return sendEvent(eventMessage);
-}
 
 #endif
 

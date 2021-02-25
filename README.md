@@ -1,5 +1,9 @@
 
-# SinricPro (ESP8266 / ESP32 SDK) {#mainpage}
+# SinricPro (ESP8266 / ESP32 SDK)
+
+## Note
+1. Use the latest ESP Arduino Core!
+2. Use the latest WebSocktes library!
 
 ## Installation
 
@@ -23,7 +27,7 @@
 
 ## Dependencies
 [ArduinoJson](https://github.com/bblanchon/ArduinoJson) by Benoit Blanchon (minimum Version 6.12.0)   
-[WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version 2.2.0)  
+[WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version 2.3.2)
 
 ---
 
@@ -38,26 +42,28 @@ See [examples](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/exampl
 ---
 
 ## Usage
-#### Include SinricPro-Library (SinricPro.h) and SinricPro-Device-Libraries (eg. SinricProSwitch.h)
+### Include SinricPro-Library (SinricPro.h) and SinricPro-Device-Libraries (eg. SinricProSwitch.h)
 ```C++
 #include <SinricPro.h>
 #include <SinricProSwitch.h>
 ```
-#### Define your credentials from SinricPro-Portal (portal.sinric.pro)
+
+### Define your credentials from SinricPro-Portal (portal.sinric.pro)
 ```C++
 #define APP_KEY    "YOUR-APP-KEY"    // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET "YOUR-APP-SECRET" // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
 #define SWITCH_ID  "YOUR-DEVICE-ID"  // Should look like "5dc1564130xxxxxxxxxxxxxx"
 ```
 
-#### Define callback routine(s)
+### Define callback routine(s)
 ```C++
 bool onPowerState(const String &deviceId, bool &state) {
   Serial.printf("device %s turned %s\r\n", deviceId.c_str(), state?"on":"off");
   return true; // indicate that callback handled correctly
 }
 ```
-#### In setup()
+
+### In setup()
 ```C++
   // create and add a switch to SinricPro
   SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
@@ -68,7 +74,7 @@ bool onPowerState(const String &deviceId, bool &state) {
 
 ```
 
-#### In loop()
+### In loop()
 ```C++
   SinricPro.handle();
 ```

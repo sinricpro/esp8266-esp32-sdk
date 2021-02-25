@@ -1,0 +1,6 @@
+<map id="SinricProLock" name="SinricProLock">
+<area shape="rect" id="node1" title="Device to control a smart lock." alt="" coords="27,185,129,212"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="5,102,119,129"/>
+<area shape="rect" id="node3" href="$class_lock_controller.html" title=" " alt="" coords="143,95,314,136"/>
+<area shape="rect" id="node4" href="$class_lock_controller.html" title="LockController." alt="" coords="161,5,297,32"/>
+</map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['thermostatmodecallback_230',['ThermostatModeCallback',['../class_sinric_pro_thermostat.html#abe5ced42c285b52c2414e788dc8b63b3',1,'SinricProThermostat::ThermostatModeCallback()'],['../class_sinric_pro_window_a_c.html#abe5ced42c285b52c2414e788dc8b63b3',1,'SinricProWindowAC::ThermostatModeCallback()']]]
+  ['resetbandscallback_371',['ResetBandsCallback',['../class_equalizer_controller.html#aa8c78de42c40ee03966f3c96cdc05bab',1,'EqualizerController']]]
 ];

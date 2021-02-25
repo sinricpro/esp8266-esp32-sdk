@@ -9,40 +9,22 @@
 #define _SINRICTEMPERATURESENSOR_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/TemperatureEventSource.h"
 
 /**
  * @class SinricProTemperaturesensor
  * @brief Device to report actual temperature and humidity
+ * @ingroup Devices
  */
-class SinricProTemperaturesensor :  public SinricProDevice {
+class SinricProTemperaturesensor :  public SinricProDevice,
+                                    public PowerStateController<SinricProTemperaturesensor>,
+                                    public TemperatureSensor<SinricProTemperaturesensor> {
+                                    friend class PowerStateController<SinricProTemperaturesensor>;
+                                    friend class TemperatureSensor<SinricProTemperaturesensor>;
   public:
-	  SinricProTemperaturesensor(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("TEMPERATURESENSOR"); }
-
-    // event
-    bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
-  private:
+	  SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "TEMPERATURESENSOR") {}
 };
-
-SinricProTemperaturesensor::SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
-
-/**
- * @brief Sending current temperature and humidity to SinricPro server
- * 
- * @param   temperature   float representing current temperature
- * @param   humidity      (optional) float representing current humidity (default = `-1` meaning not supported)
- * @param   cause         (optional) `String` reason why event is sent (default = `"PERIODIC_POLL"`)
- * @return  the success of sending the event
- * @retval  true          event has been sent successfully
- * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
- **/
-bool SinricProTemperaturesensor::sendTemperatureEvent(float temperature, float humidity, String cause) {
-  DynamicJsonDocument eventMessage = prepareEvent(deviceId, "currentTemperature", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["humidity"] = roundf(humidity * 10) / 10.0;
-  event_value["temperature"] = roundf(temperature * 10) / 10.0;
-  return sendEvent(eventMessage);
-}
 
 #endif
 

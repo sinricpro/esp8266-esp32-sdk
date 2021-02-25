@@ -10,19 +10,19 @@
 #define _SINRICCAMERA_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/PowerStateController.h"
 
 /**
  * @class SinricProCamera
  * @brief Camera suporting basic on / off command
+ * @ingroup Devices
  **/
-class SinricProCamera :  public SinricProDevice {
+class SinricProCamera : public SinricProDevice,
+                        public PowerStateController<SinricProCamera> {
+                        friend class PowerStateController<SinricProCamera>;
   public:
-	  SinricProCamera(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("CAMERA"); }    
+	  SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId, "CAMERA") {}
 };
-
-SinricProCamera::SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
-
 
 #endif
 

@@ -16,6 +16,13 @@ bool onPowerState(const String &deviceId, bool &state) {
 }
 //! [onPowerState]
 
+//! [onToggleState]
+bool onToggleState(const String &deviceId, const String &instance, bool &state) {
+  Serial.printf("Device %s state \"%s\" turned %s\r\n", deviceId.c_str(), instance.c_str(), state ? "on" : "off");
+  return true; // request handled properly
+}
+//! [onToggleState]
+
 //! [onPowerLevel]
 bool onPowerLevel(const String &deviceId, int &powerLevel) {
   Serial.printf("Device %s powerlevel %d\r\n", deviceId.c_str(), powerLevel);
@@ -91,21 +98,39 @@ bool onDecreaseColorTemperature(const String &deviceId, int &colorTemperature) {
 
 //! [onRangeValue]
 bool onRangeValue(const String &deviceId, int &rangeValue) {
-  Serial.printf("Device %s range value has been set to %d\r\n", rangeValue);
+  Serial.printf("Device %s range value has been set to %d\r\n", deviceId.c_str(), rangeValue);
   return true; // request handled properly
 }
 //! [onRangeValue]
+
+//! [onRangeValueGeneric]
+bool onRangeValue(const String &deviceId, const String &instance, int &rangeValue) {
+  Serial.printf("Device %s range value for %s has been set to %d\r\n", deviceId.c_str(), instance.c_str(), rangeValue);
+  return true; // request handled properly
+}
+//! [onRangeValueGeneric]
 
 //! [onAdjustRangeValue]
 int globalRangeValue;
 
 bool onAdjustRangeValue(const String &deviceId, int &rangeValueDelta) {
   globalRangeValue += rangeValue; // calculate absolute rangeValue
-  Serial.printf("Device %s range value has been changed about %i to %d\r\n", rangeValueDelta, globalRangeValue);
+  Serial.printf("Device %s range value has been changed about %i to %d\r\n", deviceId.c_str(), rangeValueDelta, globalRangeValue);
   rangeValueDelta = globalRangeValue; // return absolute rangeValue
   return true; // request handled properly
 }
 //! [onAdjustRangeValue]
+
+//! [onAdjustRangeValueGeneric]
+int globalRangeValue;
+
+bool onAdjustRangeValue(const String &deviceId, const String& instance, int &rangeValueDelta) {
+  globalRangeValue += rangeValueDelta; // calculate absolute rangeValue
+  Serial.printf("Device %s range value for %s has been changed about %i to %d\r\n", deviceId.c_str(), instance.c_str(), rangeValueDelta, globalRangeValue);
+  rangeValueDelta = globalRangeValue; // return absolute rangeValue
+  return true;                        // request handled properly
+}
+//! [onAdjustRangeValueGeneric]
 
 //! [onTargetTemperature]
 bool onTargetTemperature(const String &deviceId, float &targetTemp) { 
@@ -160,61 +185,39 @@ bool onMute(const String &deviceId, bool &mute) {
 
 //! [onMediaControl]
 bool onMediaControl(const String &deviceId, String &control) {
-  Serial.printf("Device %s: %s\r\n", deviceId.c_str(), control);
+  Serial.printf("Device %s: %s\r\n", deviceId.c_str(), control.c_str());
   return true; // request handled properly
 }
 //! [onMediaControl]
 
 //! [onSetBands]
+std::map<String, int> equalizerBands;
+
 bool onSetBands(const String &deviceId, String &bands, int &level) {
   Serial.printf("Device %s bands %s set to %d\r\n", deviceId.c_str(), bands.c_str(), level);
+  equalizerBands[bands] = level; 
   return true; // request handled properly
 }
 //! [onSetBands]
 
 //! [onAdjustBands]
-int globalBass;
-int globalMidrange;
-int globalTrebble;
+std::map<String, int> equalizerBands;
 
 bool onAdjustBands(const String &deviceId, String &bands, int &levelDelta) {
-  if (bands == "BASS") {
-    globalBass += levelDelta; // calculate absolute bass level
-    levelDelta = globalBass; // return absolute bass level
-  }
-  if (bands == "MIDRANGE") {
-    globalMidrange += levelDelta; // calculate absolute midrange level
-    levelDelta = globalMidrange; // return absolute midrange level
-  }
-  if (bands == "TREBBLE") {
-    globalMidrange += levelDelta; // calculate absolute trebble level
-    levelDelta = globalMidrange; // return absolute trebble level
-  }
-  Serial.printf("Device %s bands set to\r\n - BASS: %d\r\n - MIDRANGE: %d\r\n - TREBBLE: %d\r\n", deviceId.c_str(), globalBass, globalMidrange, globalTrebble);
+  equalizerBands[bands] += levelDelta; // calculate absolute bands level
+  Serial.printf("Device %s bands %s changed about %d to %d\r\n", deviceId.c_str(), bands.c_str(), levelDelta, equalizerBands[bands]);
+  levelDelta = equalizerBands[bands]; // return absolute bands level
   return true; // request handled properly
 }
 //! [onAdjustBands]
 
 
 //! [onResetBands]
-int globalBass;
-int globalMidrange;
-int globalTrebble;
+std::map<String, int> equalizerBands;
 
-bool onAdjustBands(const String &deviceId, String &bands, int &level) {
-  if (bands == "BASS") {
-    globalBass = 0; // reset bass level to 0
-    level = globalBass; // return bass level
-  }
-  if (bands == "MIDRANGE") {
-    globalMidrange = 0; // reset midrange level to 0
-    level = globalMidrange; // return midrange level
-  }
-  if (bands == "TREBBLE") {
-    globalMidrange = 0; // reset trebble level to 0
-    level = globalMidrange; // return trebble level
-  }
-  Serial.printf("Device %s bands reset to\r\n - BASS: %d\r\n - MIDRANGE: %d\r\n - TREBBLE: %d\r\n", deviceId.c_str(), globalBass, globalMidrange, globalTrebble);
+bool onResetBands(const String &deviceId, String &bands, int &level) {
+  equalizerBands[bands] = 0; // reset bands level to 0
+  Serial.printf("Device %s bands %s reset to %d\r\n", deviceId.c_str(), bands.c_str(), equalizerBands[bands]);
   return true; // request handled properly
 }
 //! [onResetBands]
@@ -226,6 +229,13 @@ bool onSetMode(const String &deviceId, String &mode) {
   return true; // request handled properly
 }
 //! [onSetMode]
+
+//! [onSetModeGeneric] 
+bool onSetMode(const String &deviceId, const String &instance, String &mode) {
+  Serial.printf("Device %s mode %s set to %s\r\n", deviceId.c_str(), instance.c_str(), mode);
+  return true; // request handled properly
+}
+//! [onSetModeGeneric]
 
 //! [onChangeChannel]
 // channelNames used to convert channelNumber into channelName
@@ -402,3 +412,27 @@ bool onDoorState(const String &deviceId, bool &doorState) {
 }
 //! [onDoorState]
 
+//! [onKeystroke]
+bool onKeystroke(const String& deviceId, String &keystroke) {
+  Serial.printf("Device %s, key %s pressed\r\n", deviceId.c_str(), keystroke.c_str());
+  return true;
+}
+//! [onKeystroke]
+
+//! [onSetPercentage]
+bool onSetPercentage(const String &deviceId, int &percentage) {
+  Serial.printf("Device %s percentage %d\r\n", deviceId.c_str(), percentage);
+  return true; // request handled properly
+}
+//! [onSetPercentage]
+
+//! [onAdjustPercentage]
+int absolutePercentage;
+
+bool onAdjustPercentage(const String &deviceId, int &percentageDelta) {
+  absolutePercentage += percentageDelta; // calculate absolute percentage
+  Serial.printf("Device %s percentage changed about %i to %d\r\n", deviceId.c_str(), percentageDelta, absolutePercentage);
+  percentageDelta = absolutePercentage; // return absolute percentage
+  return true;                     // request handled properly
+}
+//! [onAdjustPercentage]

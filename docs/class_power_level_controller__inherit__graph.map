@@ -1,0 +1,7 @@
+<map id="PowerLevelController&lt; T &gt;" name="PowerLevelController&lt; T &gt;">
+<area shape="rect" id="node1" title="PowerLevelController." alt="" coords="86,5,259,32"/>
+<area shape="rect" id="node2" href="$class_power_level_controller.html" title=" " alt="" coords="5,95,167,136"/>
+<area shape="rect" id="node4" href="$class_power_level_controller.html" title=" " alt="" coords="191,95,333,136"/>
+<area shape="rect" id="node3" href="$class_sinric_pro_dim_switch.html" title="Device which supports on / off and dimming commands." alt="" coords="17,185,155,212"/>
+<area shape="rect" id="node5" href="$class_sinric_pro_fan.html" title="Device to turn on / off a fan and change it&#39;s speed by using powerlevel." alt="" coords="213,185,311,212"/>
+</map>

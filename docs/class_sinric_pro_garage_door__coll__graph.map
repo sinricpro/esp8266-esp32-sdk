@@ -1,0 +1,6 @@
+<map id="SinricProGarageDoor" name="SinricProGarageDoor">
+<area shape="rect" id="node1" title="Device to control a garage door." alt="" coords="39,185,183,212"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="5,102,119,129"/>
+<area shape="rect" id="node3" href="$class_mode_controller.html" title=" " alt="" coords="143,95,317,136"/>
+<area shape="rect" id="node4" href="$class_mode_controller.html" title="ModeController." alt="" coords="160,5,300,32"/>
+</map>

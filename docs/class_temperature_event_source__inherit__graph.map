@@ -1,0 +1,7 @@
+<map id="TemperatureEventSource&lt; T &gt;" name="TemperatureEventSource&lt; T &gt;">
+<area shape="rect" id="node1" title="TemperatureEventSource." alt="" coords="5,46,204,73"/>
+<area shape="rect" id="node2" href="$class_temperature_event_source.html" title=" " alt="" coords="445,5,656,47"/>
+<area shape="rect" id="node4" href="$class_temperature_event_source.html" title=" " alt="" coords="467,71,634,112"/>
+<area shape="rect" id="node3" href="$class_sinric_pro_temperaturesensor.html" title="Device to report actual temperature and humidity." alt="" coords="705,13,892,39"/>
+<area shape="rect" id="node5" href="$class_sinric_pro_thermostat.html" title="Device to control Thermostat." alt="" coords="729,78,869,105"/>
+</map>

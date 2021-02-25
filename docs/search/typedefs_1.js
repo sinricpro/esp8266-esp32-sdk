@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['brightnesscallback_206',['BrightnessCallback',['../class_sinric_pro_light.html#a1bf03bd01ae1f4ddf164260435dc2026',1,'SinricProLight']]]
+  ['brightnesscallback_352',['BrightnessCallback',['../class_brightness_controller.html#aff9938ddc803e4339a3db9b31503e12d',1,'BrightnessController']]]
 ];

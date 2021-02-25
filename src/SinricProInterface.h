@@ -13,7 +13,8 @@
 #include "SinricProId.h"
 
 class SinricProInterface {
-  public:
+  friend class SinricProDevice;
+  protected:
     virtual void sendMessage(JsonDocument& jsonEvent);
     virtual DynamicJsonDocument prepareEvent(DeviceId deviceId, const char* action, const char* cause);
     virtual unsigned long getTimestamp(); 

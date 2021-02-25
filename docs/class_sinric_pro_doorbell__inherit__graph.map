@@ -1,0 +1,8 @@
+<map id="SinricProDoorbell" name="SinricProDoorbell">
+<area shape="rect" id="node1" title="Device to report doorbell events." alt="" coords="600,64,723,91"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="397,5,511,32"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="381,57,527,98"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
+<area shape="rect" id="node5" href="$class_doorbell.html" title=" " alt="" coords="357,123,551,149"/>
+<area shape="rect" id="node6" href="$class_doorbell.html" title="Dorbell." alt="" coords="43,123,143,149"/>
+</map>

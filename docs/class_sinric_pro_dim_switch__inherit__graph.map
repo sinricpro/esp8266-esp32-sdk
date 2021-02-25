@@ -1,0 +1,8 @@
+<map id="SinricProDimSwitch" name="SinricProDimSwitch">
+<area shape="rect" id="node1" title="Device which supports on / off and dimming commands." alt="" coords="583,64,720,91"/>
+<area shape="rect" id="node2" href="$class_sinric_pro_device.html" title="Base class for all device types." alt="" coords="396,5,509,32"/>
+<area shape="rect" id="node3" href="$class_power_state_controller.html" title=" " alt="" coords="372,57,533,98"/>
+<area shape="rect" id="node4" href="$class_power_state_controller.html" title="PowerStateController." alt="" coords="5,64,180,91"/>
+<area shape="rect" id="node5" href="$class_power_level_controller.html" title=" " alt="" coords="372,122,533,163"/>
+<area shape="rect" id="node6" href="$class_power_level_controller.html" title="PowerLevelController." alt="" coords="6,129,179,156"/>
+</map>

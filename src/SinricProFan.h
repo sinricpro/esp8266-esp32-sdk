@@ -11,16 +11,22 @@
 #include "SinricProDevice.h"
 #include "SinricProDimSwitch.h"
 
+#include "Capabilities/PowerStateController.h"
+#include "Capabilities/PowerLevelController.h"
+
 /**
  * @class SinricProFan
  * @brief Device to turn on / off a fan and change it's speed by using powerlevel
+ * @ingroup Devices
  **/
-class SinricProFan :  public SinricProDimSwitch {
+class SinricProFan : public SinricProDevice,
+                     public PowerStateController<SinricProFan>,
+                     public PowerLevelController<SinricProFan> {
+                     friend class PowerStateController<SinricProFan>;
+                     friend class PowerLevelController<SinricProFan>;
   public:
-	  SinricProFan(const DeviceId &deviceId);
+	  SinricProFan(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN_NON-US") {}
 };
-
-SinricProFan::SinricProFan(const DeviceId &deviceId) : SinricProDimSwitch(deviceId) {}
 
 #endif
 

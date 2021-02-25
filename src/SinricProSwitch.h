@@ -9,19 +9,19 @@
 #define _SINRICSWITCH_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/PowerStateController.h"
 
 /**
  * @class SinricProSwitch
  * @brief Device suporting basic on / off command
+ * @ingroup Devices
  **/
-class SinricProSwitch :  public SinricProDevice {
+class SinricProSwitch : public SinricProDevice,
+                        public PowerStateController<SinricProSwitch> {
+                        friend class PowerStateController<SinricProSwitch>;
   public:
-	  SinricProSwitch(const DeviceId &deviceId);
-    String getProductType() { return SinricProDevice::getProductType() + String("SWITCH"); }    
+    SinricProSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "SWITCH") {};
 };
-
-SinricProSwitch::SinricProSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId) {}
-
 
 #endif
 

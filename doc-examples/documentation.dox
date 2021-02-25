@@ -1,0 +1,11 @@
+/**
+ * @defgroup SinricPro SinricPro
+ * @brief Main instance of SinricProClass
+ *
+ * @defgroup Devices Devices
+ * @brief Available devices
+ *
+ * @defgroup Capabilities Capabilities
+ * @brief Capabilities
+ * 
+ **/ 
