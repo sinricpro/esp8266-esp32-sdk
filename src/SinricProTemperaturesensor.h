@@ -10,7 +10,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/PowerStateController.h"
-#include "Capabilities/TemperatureEventSource.h"
+#include "Capabilities/TemperatureSensor.h"
 
 /**
  * @class SinricProTemperaturesensor

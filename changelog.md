@@ -1,4 +1,10 @@
 # Changelog
+## Version 2.9.1
+Bugfix
+- SinricProTemperatureSensor (fixed wrong include)
+- SinricProWindowAC (fixed copy & paste error)
+- SinricProDevice (getDeviceId was accedently proteced)
+
 ## Version 2.9.0
 New:
 - support custom devices

@@ -30,9 +30,9 @@ class SinricProWindowAC :  public SinricProDevice,
                            public PowerStateController<SinricProWindowAC>,
                            public RangeController<SinricProWindowAC>,
                            public ThermostatController<SinricProWindowAC> {
-                           friend class public PowerStateController<SinricProWindowAC>;
-                           friend class public RangeController<SinricProWindowAC>;
-                           friend class public ThermostatController<SinricProWindowAC>;
+                           friend class PowerStateController<SinricProWindowAC>;
+                           friend class RangeController<SinricProWindowAC>;
+                           friend class ThermostatController<SinricProWindowAC>;
   public:
 	  SinricProWindowAC(const DeviceId &deviceId) : SinricProDevice(deviceId, "AC_UNIT") {}
 };

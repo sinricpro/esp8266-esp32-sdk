@@ -28,8 +28,8 @@ public:
   SinricProDevice(const DeviceId &deviceId, const String &productType = "");
   bool operator==(const DeviceId& other);
 
-protected:
   virtual DeviceId getDeviceId();
+protected:
   unsigned long getTimestamp();
   virtual bool sendEvent(JsonDocument &event);
   virtual DynamicJsonDocument prepareEvent(const char *action, const char *cause);
