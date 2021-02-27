@@ -28,8 +28,8 @@ bool TemperatureSensor<T>::sendTemperatureEvent(float temperature, float humidit
 
   DynamicJsonDocument eventMessage = device.prepareEvent("currentTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["humidity"] = humidity;
-  event_value["temperature"] = roundf(temperature * 10) / 10;
+  event_value["humidity"] = roundf(humidity * 100) / 100.0;
+  event_value["temperature"] = roundf(temperature * 10) / 10.0;
   return device.sendEvent(eventMessage);
 }
 
