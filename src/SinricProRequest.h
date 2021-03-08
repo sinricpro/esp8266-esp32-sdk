@@ -3,6 +3,7 @@
 
 #include <WString.h>
 #include <ArduinoJson.h>
+#include <functional>
 
 struct SinricProRequest {
   const String &action;
