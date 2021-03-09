@@ -124,7 +124,7 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
     stop();
   }
   setExtraHeaders();
-  webSocket.onEvent(std::bind(&websocketListener::webSocketEvent, *this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  webSocket.onEvent([&](WStype_t type, uint8_t * payload, size_t length) { webSocketEvent(type, payload, length); });
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
 #ifdef WEBSOCKET_SSL
   webSocket.beginSSL(server.c_str(), SINRICPRO_SERVER_SSL_PORT, "/");
