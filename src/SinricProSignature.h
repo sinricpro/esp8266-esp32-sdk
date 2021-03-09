@@ -31,7 +31,7 @@ String HMACbase64(const String &message, const String &key) {
   br_hmac_out(&hmacContext, hmacResult);
 
   base64 encoded;
-  return encoded.encode((const uint8_t *)hmacResult, 32, false);
+  return encoded.encode((const uint8_t *) hmacResult, 32, false);
 #endif
 
 #if defined(ESP32)
@@ -46,8 +46,8 @@ String HMACbase64(const String &message, const String &key) {
   mbedtls_md_free(&ctx);
 
   unsigned char encoded[100];
-  size_t written;
-  mbedtls_base64_encode(encoded, 100, &written, (const unsigned char *) encoded, 100);
+  size_t outputLen;
+  mbedtls_base64_encode(encoded, 100, &outputLen, (const unsigned char *) hmacResult, 32);
   return String{ (char*) encoded};
 
 #endif
