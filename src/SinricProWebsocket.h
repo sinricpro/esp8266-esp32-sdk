@@ -26,8 +26,8 @@
 #include "SinricProInterface.h"
 
 
-#if !defined(WEBSOCKETS_VERSION_INT) || (WEBSOCKETS_VERSION_INT < 2003003)
-#error "Wrong WebSockets Version! Minimum Version is 2.3.3!!!"
+#if !defined(WEBSOCKETS_VERSION_INT) || (WEBSOCKETS_VERSION_INT < 2003005)
+#error "Wrong WebSockets Version! Minimum Version is 2.3.5!!!"
 #endif
 
 class AdvWebSocketsClient : public WebSocketsClient {
