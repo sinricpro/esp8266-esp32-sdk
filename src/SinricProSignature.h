@@ -19,7 +19,6 @@
 
 String HMACbase64(const String &message, const String &key) {
   byte hmacResult[32];
-  char base64encodedHMAC[base64_encode_expected_len(32)+1];
 #if defined(ESP8266)
   br_hmac_key_context keyContext; // Holds general HMAC info
   br_hmac_context hmacContext;    // Holds general HMAC info + specific info for the current operation
@@ -42,12 +41,13 @@ String HMACbase64(const String &message, const String &key) {
   mbedtls_md_free(&ctx);
 
 #endif
-  
+
   base64_encodestate _state;
-#if defined(ESP8266)
-  _state.stepsnewline = -1;
-#endif
   base64_init_encodestate(&_state);
+#if defined(base64_encode_expected_len_nonewlines)
+  _state.stepsnewline = -1;
+#endif  
+  char base64encodedHMAC[base64_encode_expected_len(32) + 1];
   int len = base64_encode_block((const char *)hmacResult, 32, base64encodedHMAC, &_state);
   base64_encode_blockend((base64encodedHMAC + len), &_state);
   
