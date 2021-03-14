@@ -9,6 +9,7 @@
 #define _SINRICTHERMOSTAT_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/ThermostatController.h"
 #include "Capabilities/TemperatureSensor.h"
@@ -25,9 +26,11 @@
  * * Set thermostat mode `AUTO`, `COOL`, `HEAT`
  **/
 class SinricProThermostat :  public SinricProDevice,
+                             public SettingController<SinricProThermostat>,
                              public PowerStateController<SinricProThermostat>,
                              public ThermostatController<SinricProThermostat>,
                              public TemperatureSensor<SinricProThermostat> {
+                             friend class SettingController<SinricProThermostat>;
                              friend class PowerStateController<SinricProThermostat>;
                              friend class ThermostatController<SinricProThermostat>;
                              friend class TemperatureSensor<SinricProThermostat>;

@@ -9,6 +9,7 @@
 #define _SINRICTEMPERATURESENSOR_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/TemperatureSensor.h"
 
@@ -18,8 +19,10 @@
  * @ingroup Devices
  */
 class SinricProTemperaturesensor :  public SinricProDevice,
+                                    public SettingController<SinricProTemperaturesensor>,
                                     public PowerStateController<SinricProTemperaturesensor>,
                                     public TemperatureSensor<SinricProTemperaturesensor> {
+                                    friend class SettingController<SinricProTemperaturesensor>;
                                     friend class PowerStateController<SinricProTemperaturesensor>;
                                     friend class TemperatureSensor<SinricProTemperaturesensor>;
   public:

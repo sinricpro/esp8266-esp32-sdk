@@ -9,6 +9,7 @@
 #define _SINRICFANUS_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/RangeController.h"
 
@@ -18,8 +19,10 @@
  * @ingroup Devices
  */
 class SinricProFanUS :  public SinricProDevice,
+                        public SettingController<SinricProFanUS>,
                         public PowerStateController<SinricProFanUS>,
                         public RangeController<SinricProFanUS> {
+                        friend class SettingController<SinricProFanUS>;
                         friend class PowerStateController<SinricProFanUS>;
                         friend class RangeController<SinricProFanUS>;
   public:

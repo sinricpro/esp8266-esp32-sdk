@@ -9,6 +9,7 @@
 #define _SINRICSPEAKER_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/MuteController.h"
 #include "Capabilities/VolumeController.h"
@@ -38,6 +39,7 @@
  * * set mode (TV, MOVIE, ...)
  */
 class SinricProSpeaker : public SinricProDevice,
+                         public SettingController<SinricProSpeaker>,
                          public PowerStateController<SinricProSpeaker>,
                          public MuteController<SinricProSpeaker>,
                          public VolumeController<SinricProSpeaker>,
@@ -45,6 +47,7 @@ class SinricProSpeaker : public SinricProDevice,
                          public InputController<SinricProSpeaker>,
                          public EqualizerController<SinricProSpeaker>,
                          public ModeController<SinricProSpeaker> {
+                         friend class SettingController<SinricProSpeaker>;
                          friend class PowerStateController<SinricProSpeaker>;
                          friend class MuteController<SinricProSpeaker>;
                          friend class VolumeController<SinricProSpeaker>;

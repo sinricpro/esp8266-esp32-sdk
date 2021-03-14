@@ -9,6 +9,7 @@
 #define _SINRICCONTACTSENSOR_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/ContactSensor.h"
 
@@ -18,10 +19,12 @@
  * @ingroup Devices
  **/
 class SinricProContactsensor : public SinricProDevice,
+                               public SettingController<SinricProContactsensor>,
                                public PowerStateController<SinricProContactsensor>,
-                               public ContactEventSource<SinricProContactsensor> {
+                               public ContactSensor<SinricProContactsensor> {
+                               friend class SettingController<SinricProContactsensor>;
                                friend class PowerStateController<SinricProContactsensor>;
-                               friend class ContactEventSource<SinricProContactsensor>;
+                               friend class ContactSensor<SinricProContactsensor>;
   public:
 	  SinricProContactsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 };

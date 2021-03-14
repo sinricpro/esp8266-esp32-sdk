@@ -9,6 +9,7 @@
 #define _SINRICGARAGEDOOR_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/DoorController.h"
 
 /**
@@ -20,7 +21,9 @@
  * * open / close 
  **/
 class SinricProGarageDoor : public SinricProDevice,
+                            public SettingController<SinricProGarageDoor>,
                             public DoorController<SinricProGarageDoor> {
+                            friend class SettingController<SinricProGarageDoor>;
                             friend class DoorController<SinricProGarageDoor>;
   public:
 	  SinricProGarageDoor(const DeviceId &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR") {}

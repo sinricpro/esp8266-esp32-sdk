@@ -9,6 +9,7 @@
 #define _SINRICTV_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/VolumeController.h"
 #include "Capabilities/MuteController.h"
@@ -33,12 +34,14 @@
  * * Skip channels
  */
 class SinricProTV : public SinricProDevice,
+                    public SettingController<SinricProTV>,
                     public PowerStateController<SinricProTV>,
                     public VolumeController<SinricProTV>,
                     public MuteController<SinricProTV>,
                     public MediaController<SinricProTV>,
                     public InputController<SinricProTV>,
                     public ChannelController<SinricProTV> {
+                    friend class SettingController<SinricProTV>;
                     friend class PowerStateController<SinricProTV>;
                     friend class VolumeController<SinricProTV>;
                     friend class MuteController<SinricProTV>;

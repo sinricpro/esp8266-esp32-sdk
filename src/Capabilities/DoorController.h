@@ -4,8 +4,8 @@
 #include "SinricProRequest.h"
 
 /**
- * @brief DoorController
- * @ingroup Capabilities
+ * @brief DoorController - only used for GarageDoor device and cannot used as capability for a custom device!
+ * 
  **/
 template <typename T>
 class DoorController {

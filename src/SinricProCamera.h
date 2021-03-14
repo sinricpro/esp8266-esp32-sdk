@@ -10,6 +10,7 @@
 #define _SINRICCAMERA_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 
 /**
@@ -18,7 +19,9 @@
  * @ingroup Devices
  **/
 class SinricProCamera : public SinricProDevice,
+                        public SettingController<SinricProCamera>,
                         public PowerStateController<SinricProCamera> {
+                        friend class SettingController<SinricProCamera>;
                         friend class PowerStateController<SinricProCamera>;
   public:
 	  SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId, "CAMERA") {}

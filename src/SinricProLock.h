@@ -9,6 +9,7 @@
 #define _SINRICLOCK_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/LockController.h"
 
 /**
@@ -21,7 +22,9 @@
  * * lock / unlock
  **/
 class SinricProLock :  public SinricProDevice,
+                       public SettingController<SinricProLock>,
                        public LockController<SinricProLock> {
+                       friend class SettingController<SinricProLock>;
                        friend class LockController<SinricProLock>;
   public:
 	  SinricProLock(const DeviceId &deviceId) : SinricProDevice(deviceId, "SMARTLOCK") {}
