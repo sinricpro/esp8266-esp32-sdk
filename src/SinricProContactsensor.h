@@ -19,7 +19,7 @@
  **/
 class SinricProContactsensor : public SinricProDevice,
                                public PowerStateController<SinricProContactsensor>,
-                               public ContactEventSource<SinricProContactsensor> {
+                               public ContactSensor<SinricProContactsensor> {
                                friend class PowerStateController<SinricProContactsensor>;
                                friend class ContactSensor<SinricProContactsensor>;
   public:
