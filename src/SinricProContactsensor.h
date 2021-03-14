@@ -21,7 +21,7 @@ class SinricProContactsensor : public SinricProDevice,
                                public PowerStateController<SinricProContactsensor>,
                                public ContactEventSource<SinricProContactsensor> {
                                friend class PowerStateController<SinricProContactsensor>;
-                               friend class ContactEventSource<SinricProContactsensor>;
+                               friend class ContactSensor<SinricProContactsensor>;
   public:
 	  SinricProContactsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 };
