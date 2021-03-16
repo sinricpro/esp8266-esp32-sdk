@@ -26,23 +26,24 @@ var NAVTREE =
 [
   [ "SinricPro Library", "index.html", [
     [ "SinricPro (ESP8266 / ESP32 SDK)", "index.html", [
-      [ "Installation", "index.html#autotoc_md1", [
-        [ "VS Code & PlatformIO:", "index.html#autotoc_md2", null ],
-        [ "ArduinoIDE", "index.html#autotoc_md3", null ]
+      [ "Note", "index.html#autotoc_md1", null ],
+      [ "Installation", "index.html#autotoc_md2", [
+        [ "VS Code & PlatformIO:", "index.html#autotoc_md3", null ],
+        [ "ArduinoIDE", "index.html#autotoc_md4", null ]
       ] ],
-      [ "Dependencies", "index.html#autotoc_md5", null ],
-      [ "Full user documentation", "index.html#autotoc_md7", null ],
-      [ "Examples", "index.html#autotoc_md9", null ],
-      [ "Usage", "index.html#autotoc_md11", [
-        [ "Include SinricPro-Library (SinricPro.h) and SinricPro-Device-Libraries (eg. SinricProSwitch.h)", "index.html#autotoc_md12", null ],
-        [ "Define your credentials from SinricPro-Portal (portal.sinric.pro)", "index.html#autotoc_md13", null ],
-        [ "Define callback routine(s)", "index.html#autotoc_md14", null ],
-        [ "In setup()", "index.html#autotoc_md15", null ],
-        [ "In loop()", "index.html#autotoc_md16", null ]
+      [ "Dependencies", "index.html#autotoc_md6", null ],
+      [ "Full user documentation", "index.html#autotoc_md8", null ],
+      [ "Examples", "index.html#autotoc_md10", null ],
+      [ "Usage", "index.html#autotoc_md12", [
+        [ "Include SinricPro-Library (SinricPro.h) and SinricPro-Device-Libraries (eg. SinricProSwitch.h)", "index.html#autotoc_md13", null ],
+        [ "Define your credentials from SinricPro-Portal (portal.sinric.pro)", "index.html#autotoc_md14", null ],
+        [ "Define callback routine(s)", "index.html#autotoc_md15", null ],
+        [ "In setup()", "index.html#autotoc_md16", null ],
+        [ "In loop()", "index.html#autotoc_md17", null ]
       ] ],
-      [ "How to add a device?", "index.html#autotoc_md18", null ],
-      [ "How to retrieve a device for sending an event?", "index.html#autotoc_md20", null ],
-      [ "Devices", "index.html#autotoc_md22", null ]
+      [ "How to add a device?", "index.html#autotoc_md19", null ],
+      [ "How to retrieve a device for sending an event?", "index.html#autotoc_md21", null ],
+      [ "Devices", "index.html#autotoc_md23", null ]
     ] ],
     [ "Modules", "modules.html", "modules" ],
     [ "Classes", "annotated.html", [
@@ -61,7 +62,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"class_sinric_pro_t_v.html#a434616b976d1339be63540d16977fa3d"
+"class_sinric_pro_t_v.html#a2f7a91a480cd401f4df2f7ddda4a8f13"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

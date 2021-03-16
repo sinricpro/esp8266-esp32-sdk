@@ -12,5 +12,6 @@ var searchData=
   ['colortemperaturecontroller_22',['ColorTemperatureController',['../class_color_temperature_controller.html',1,'']]],
   ['colortemperaturecontroller_3c_20sinricprolight_20_3e_23',['ColorTemperatureController&lt; SinricProLight &gt;',['../class_color_temperature_controller.html',1,'']]],
   ['connectedcallbackhandler_24',['ConnectedCallbackHandler',['../class_sinric_pro_class.html#a4d7d8547a83d53c20cbd9aa7768e99f5',1,'SinricProClass']]],
-  ['contactsensor_25',['ContactSensor',['../class_contact_sensor.html',1,'']]]
+  ['contactsensor_25',['ContactSensor',['../class_contact_sensor.html',1,'']]],
+  ['contactsensor_3c_20sinricprocontactsensor_20_3e_26',['ContactSensor&lt; SinricProContactsensor &gt;',['../class_contact_sensor.html',1,'']]]
 ];

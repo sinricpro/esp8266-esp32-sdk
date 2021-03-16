@@ -96,18 +96,17 @@ $(document).ready(function(){initNavTree('_sinric_pro_garage_door_8h_source.html
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define _SINRICGARAGEDOOR_H_</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;SinricProDevice.h&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;Capabilities/ModeController.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;Capabilities/DoorController.h&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="class_sinric_pro_garage_door.html">   22</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_sinric_pro_garage_door.html">SinricProGarageDoor</a> : <span class="keyword">public</span> <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>,</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                            <span class="keyword">public</span> <a class="code" href="class_mode_controller.html">ModeController</a>&lt;SinricProGarageDoor&gt; {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                            <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_mode_controller.html">ModeController</a>&lt;<a class="code" href="class_sinric_pro_garage_door.html">SinricProGarageDoor</a>&gt;;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                            <span class="keyword">public</span> <a class="code" href="class_door_controller.html">DoorController</a>&lt;SinricProGarageDoor&gt; {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                            <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_door_controller.html">DoorController</a>&lt;<a class="code" href="class_sinric_pro_garage_door.html">SinricProGarageDoor</a>&gt;;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      <a class="code" href="class_sinric_pro_garage_door.html">SinricProGarageDoor</a>(<span class="keyword">const</span> DeviceId &amp;deviceId) : <a class="code" href="class_sinric_pro_device.html">SinricProDevice</a>(deviceId, <span class="stringliteral">&quot;GARAGE_DOOR&quot;</span>) {}</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;};</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="ttc" id="aclass_mode_controller_html"><div class="ttname"><a href="class_mode_controller.html">ModeController</a></div><div class="ttdoc">ModeController.</div><div class="ttdef"><b>Definition:</b> ModeController.h:11</div></div>
+<div class="ttc" id="aclass_door_controller_html"><div class="ttname"><a href="class_door_controller.html">DoorController</a></div><div class="ttdoc">DoorController.</div><div class="ttdef"><b>Definition:</b> DoorController.h:11</div></div>
 <div class="ttc" id="aclass_sinric_pro_device_html"><div class="ttname"><a href="class_sinric_pro_device.html">SinricProDevice</a></div><div class="ttdoc">Base class for all device types.</div><div class="ttdef"><b>Definition:</b> SinricProDevice.h:25</div></div>
 <div class="ttc" id="aclass_sinric_pro_garage_door_html"><div class="ttname"><a href="class_sinric_pro_garage_door.html">SinricProGarageDoor</a></div><div class="ttdoc">Device to control a garage door.</div><div class="ttdef"><b>Definition:</b> SinricProGarageDoor.h:23</div></div>
 </div><!-- fragment --></div><!-- contents -->

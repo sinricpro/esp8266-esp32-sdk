@@ -28,6 +28,7 @@ var group___devices =
     [ "SinricProContactsensor", "class_sinric_pro_contactsensor.html", [
       [ "PowerStateCallback", "class_sinric_pro_contactsensor.html#aad370bc6b280bbdeac98181a31f22df4", null ],
       [ "onPowerState", "class_sinric_pro_contactsensor.html#a32f3257da431a1035f23a265ff0cc4cf", null ],
+      [ "sendContactEvent", "class_sinric_pro_contactsensor.html#a0b4b9006c0be003c615848bcc2b690fd", null ],
       [ "sendPowerStateEvent", "class_sinric_pro_contactsensor.html#a8006e256414deac0f9a4e28774b47773", null ]
     ] ],
     [ "SinricProDimSwitch", "class_sinric_pro_dim_switch.html", [
@@ -71,12 +72,9 @@ var group___devices =
       [ "sendRangeValueEvent", "class_sinric_pro_fan_u_s.html#af676bb2b419c4321d0a678cf9446da0c", null ]
     ] ],
     [ "SinricProGarageDoor", "class_sinric_pro_garage_door.html", [
-      [ "GenericModeCallback", "class_sinric_pro_garage_door.html#ac29fade927b50eac618999f84b29d02b", null ],
-      [ "ModeCallback", "class_sinric_pro_garage_door.html#aa2d0fe1a7983a8ec5e8fb3e69a5af60f", null ],
-      [ "onSetMode", "class_sinric_pro_garage_door.html#a6b15ba168b3a673b98da43ac5e4ef76c", null ],
-      [ "onSetMode", "class_sinric_pro_garage_door.html#ada087c948c3ab923bdb7818daa6b2b79", null ],
-      [ "sendModeEvent", "class_sinric_pro_garage_door.html#a69c8897b4bc8c2f1b72ed3295d16ec9a", null ],
-      [ "sendModeEvent", "class_sinric_pro_garage_door.html#a6ddd0a2abe7ab6d46e786057694ebb49", null ]
+      [ "DoorCallback", "class_sinric_pro_garage_door.html#aaa6633dc67bd8f69e2f14cc0dc0a4466", null ],
+      [ "onDoorState", "class_sinric_pro_garage_door.html#a6b536531ab89b39f1a48cb107e22185e", null ],
+      [ "sendDoorStateEvent", "class_sinric_pro_garage_door.html#a54e5b81baedd99d5e03383eab7da909e", null ]
     ] ],
     [ "SinricProLight", "class_sinric_pro_light.html", [
       [ "AdjustBrightnessCallback", "class_sinric_pro_light.html#a3ff8d93d9483f41bf8504fd3e9cc8f49", null ],

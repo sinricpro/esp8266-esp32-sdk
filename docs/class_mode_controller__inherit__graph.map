@@ -1,7 +1,5 @@
 <map id="ModeController&lt; T &gt;" name="ModeController&lt; T &gt;">
-<area shape="rect" id="node1" title="ModeController." alt="" coords="121,5,261,32"/>
+<area shape="rect" id="node1" title="ModeController." alt="" coords="23,5,163,32"/>
 <area shape="rect" id="node2" href="$class_mode_controller.html" title=" " alt="" coords="5,95,180,136"/>
-<area shape="rect" id="node4" href="$class_mode_controller.html" title=" " alt="" coords="204,95,379,136"/>
 <area shape="rect" id="node3" href="$class_sinric_pro_speaker.html" title="Device to control a smart speaker." alt="" coords="31,185,154,212"/>
-<area shape="rect" id="node5" href="$class_sinric_pro_garage_door.html" title="Device to control a garage door." alt="" coords="219,185,363,212"/>
 </map>

@@ -39,6 +39,11 @@ var group___capabilities =
     [ "Doorbell", "class_doorbell.html", [
       [ "sendDoorbellEvent", "class_doorbell.html#a084a5475db7127784c452deb3a080f62", null ]
     ] ],
+    [ "DoorController", "class_door_controller.html", [
+      [ "DoorCallback", "class_door_controller.html#aaa6633dc67bd8f69e2f14cc0dc0a4466", null ],
+      [ "onDoorState", "class_door_controller.html#a6b536531ab89b39f1a48cb107e22185e", null ],
+      [ "sendDoorStateEvent", "class_door_controller.html#a54e5b81baedd99d5e03383eab7da909e", null ]
+    ] ],
     [ "EqualizerController", "class_equalizer_controller.html", [
       [ "AdjustBandsCallback", "class_equalizer_controller.html#a28446c362f1f44e269b50619761c9e9b", null ],
       [ "ResetBandsCallback", "class_equalizer_controller.html#aa8c78de42c40ee03966f3c96cdc05bab", null ],

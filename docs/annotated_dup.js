@@ -7,6 +7,7 @@ var annotated_dup =
     [ "ColorTemperatureController", "class_color_temperature_controller.html", "class_color_temperature_controller" ],
     [ "ContactSensor", "class_contact_sensor.html", "class_contact_sensor" ],
     [ "Doorbell", "class_doorbell.html", "class_doorbell" ],
+    [ "DoorController", "class_door_controller.html", "class_door_controller" ],
     [ "EqualizerController", "class_equalizer_controller.html", "class_equalizer_controller" ],
     [ "InputController", "class_input_controller.html", "class_input_controller" ],
     [ "KeypadController", "class_keypad_controller.html", "class_keypad_controller" ],

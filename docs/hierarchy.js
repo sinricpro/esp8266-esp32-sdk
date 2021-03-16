@@ -21,9 +21,16 @@ var hierarchy =
       [ "SinricProLight", "class_sinric_pro_light.html", null ]
     ] ],
     [ "ContactSensor< T >", "class_contact_sensor.html", null ],
+    [ "ContactSensor< SinricProContactsensor >", "class_contact_sensor.html", [
+      [ "SinricProContactsensor", "class_sinric_pro_contactsensor.html", null ]
+    ] ],
     [ "Doorbell< T >", "class_doorbell.html", null ],
     [ "Doorbell< SinricProDoorbell >", "class_doorbell.html", [
       [ "SinricProDoorbell", "class_sinric_pro_doorbell.html", null ]
+    ] ],
+    [ "DoorController< T >", "class_door_controller.html", null ],
+    [ "DoorController< SinricProGarageDoor >", "class_door_controller.html", [
+      [ "SinricProGarageDoor", "class_sinric_pro_garage_door.html", null ]
     ] ],
     [ "EqualizerController< T >", "class_equalizer_controller.html", null ],
     [ "EqualizerController< SinricProSpeaker >", "class_equalizer_controller.html", [
@@ -49,9 +56,6 @@ var hierarchy =
       [ "SinricProTV", "class_sinric_pro_t_v.html", null ]
     ] ],
     [ "ModeController< T >", "class_mode_controller.html", null ],
-    [ "ModeController< SinricProGarageDoor >", "class_mode_controller.html", [
-      [ "SinricProGarageDoor", "class_sinric_pro_garage_door.html", null ]
-    ] ],
     [ "ModeController< SinricProSpeaker >", "class_mode_controller.html", [
       [ "SinricProSpeaker", "class_sinric_pro_speaker.html", null ]
     ] ],
