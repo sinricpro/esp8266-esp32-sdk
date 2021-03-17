@@ -95,6 +95,9 @@ class SinricProClass : public SinricProInterface {
 
     void add(SinricProDeviceInterface &newDevice);
     void add(SinricProDeviceInterface *newDevice);
+#if defined(SINRICPRO_OO)    
+    void remove(SinricProDeviceInterface *oldDevice);
+#endif    
 
     DynamicJsonDocument prepareResponse(JsonDocument &requestMessage);
     DynamicJsonDocument prepareEvent(DeviceId deviceId, const char *action, const char *cause) override;
@@ -217,12 +220,20 @@ DeviceType& SinricProClass::add(DeviceId deviceId) {
   return *newDevice;
 }
 
+#if !defined(SINRICPRO_OO)
 __attribute__ ((deprecated("Please use DeviceType& myDevice = SinricPro.add<DeviceType>(DeviceId);")))
+#endif
 void SinricProClass::add(SinricProDeviceInterface* newDevice) {
   if (!newDevice->getDeviceId().isValid()) return;
   newDevice->begin(this);
   devices.push_back(newDevice);
 }
+
+#if defined(SINRICPRO_OO)
+void SinricProClass::remove(SinricProDeviceInterface *oldDevice) {
+  devices.erase(std::remove(devices.begin(), devices.end(), oldDevice), devices.end());
+}
+#endif
 
 __attribute__ ((deprecated("Please use DeviceType& myDevice = SinricPro.add<DeviceType>(DeviceId);")))
 void SinricProClass::add(SinricProDeviceInterface& newDevice) {
