@@ -50,9 +50,16 @@ SinricProDevice::SinricProDevice(const DeviceId &deviceId, const String &product
   deviceId(deviceId),
   eventSender(nullptr),
   productType(productType) {
+#if defined(SINRICPRO_OO)
+  SinricPro.add(this);
+#endif
 }
 
-SinricProDevice::~SinricProDevice() {}
+SinricProDevice::~SinricProDevice() {
+#if defined(SINRICPRO_OO)
+  SinricPro.remove(this);
+#endif
+}
 
 void SinricProDevice::begin(SinricProInterface* eventSender) {
   this->eventSender = eventSender;
