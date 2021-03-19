@@ -1,4 +1,9 @@
 # Changelog
+## Version 2.9.2
+- Removed external crypto libraries
+- Changed & fixed signature calculation
+- use std::bind instead lambda functions for member callbacks (SinricProWesockets.h)
+
 ## Version 2.9.1
 Bugfix
 - SinricProTemperatureSensor (fixed wrong include)
