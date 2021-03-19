@@ -9,6 +9,7 @@
 #define _SINRICWINDOWAC_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/RangeController.h"
 #include "Capabilities/ThermostatController.h"
@@ -27,9 +28,11 @@
  **/
 
 class SinricProWindowAC :  public SinricProDevice,
+                           public SettingController<SinricProWindowAC>,
                            public PowerStateController<SinricProWindowAC>,
                            public RangeController<SinricProWindowAC>,
                            public ThermostatController<SinricProWindowAC> {
+                           friend class SettingController<SinricProWindowAC>;
                            friend class PowerStateController<SinricProWindowAC>;
                            friend class RangeController<SinricProWindowAC>;
                            friend class ThermostatController<SinricProWindowAC>;

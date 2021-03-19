@@ -350,7 +350,10 @@ void SinricProClass::handleReceiveQueue() {
     if (strncmp(rawMessage->getMessage(), "{\"timestamp\":", 13) == 0 && strlen(rawMessage->getMessage()) <= 26) {
       sigMatch=true; // timestamp message has no signature...ignore sigMatch for this!
     } else {
-      sigMatch = verifyMessage(signingKey.toString(), jsonMessage);
+      String signature = jsonMessage["signature"]["HMAC"] | "";
+      String payload = extractPayload(rawMessage->getMessage());
+      String calculatedSignature = calculateSignature(signingKey.toString().c_str(), payload);
+      sigMatch = (calculatedSignature == signature);
     }
 
     String messageType = jsonMessage["payload"]["type"];

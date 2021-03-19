@@ -9,6 +9,7 @@
 #define _SINRICMOTIONSENSOR_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/MotionSensor.h"
 
@@ -18,8 +19,10 @@
  * @ingroup Devices
  */
 class SinricProMotionsensor : public SinricProDevice,
+                              public SettingController<SinricProMotionsensor>,
                               public PowerStateController<SinricProMotionsensor>,
                               public MotionSensor<SinricProMotionsensor> {
+                              friend class SettingController<SinricProMotionsensor>;
                               friend class PowerStateController<SinricProMotionsensor>;
                               friend class MotionSensor<SinricProMotionsensor>;
   public:

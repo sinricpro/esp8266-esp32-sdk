@@ -26,8 +26,8 @@
 #include "SinricProInterface.h"
 
 
-#if !defined(WEBSOCKETS_VERSION_INT) || (WEBSOCKETS_VERSION_INT < 2003003)
-#error "Wrong WebSockets Version! Minimum Version is 2.3.3!!!"
+#if !defined(WEBSOCKETS_VERSION_INT) || (WEBSOCKETS_VERSION_INT < 2003005)
+#error "Wrong WebSockets Version! Minimum Version is 2.3.5!!!"
 #endif
 
 class AdvWebSocketsClient : public WebSocketsClient {
@@ -124,7 +124,7 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
     stop();
   }
   setExtraHeaders();
-  webSocket.onEvent([&](WStype_t type, uint8_t * payload, size_t length) { webSocketEvent(type, payload, length); });
+  webSocket.onEvent(std::bind(&websocketListener::webSocketEvent, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
 #ifdef WEBSOCKET_SSL
   webSocket.beginSSL(server.c_str(), SINRICPRO_SERVER_SSL_PORT, "/");
@@ -148,7 +148,6 @@ void websocketListener::sendMessage(String &message) {
   webSocket.sendTXT(message);
 }
  
-
 void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t length)
 {
   (void) length;

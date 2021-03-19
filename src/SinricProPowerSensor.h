@@ -9,7 +9,8 @@
 #define _SINRICPOWERSENSOR_H_
 
 #include "SinricProDevice.h"
-#include "Capabilities/PowerSensorEventSource.h"
+#include "Capabilities/SettingController.h"
+#include "Capabilities/PowerSensor.h"
 
 /**
  * @class SinricProPowerSensor
@@ -17,7 +18,9 @@
  * @ingroup Devices
  **/
 class SinricProPowerSensor :  public SinricProDevice,
+                              public SettingController<SinricProPowerSensor>,
                               public PowerSensor<SinricProPowerSensor> {
+                              friend class SettingController<SinricProPowerSensor>;
                               friend class PowerSensor<SinricProPowerSensor>;
   public:
 	  SinricProPowerSensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "POWER_SENSOR") {}

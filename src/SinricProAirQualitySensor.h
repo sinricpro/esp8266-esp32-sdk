@@ -9,6 +9,7 @@
 #define _SINRICAIRQUALITYSENSOR_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/AirQualitySensor.h"
 
@@ -18,8 +19,10 @@
  * @ingroup Devices
  */
 class SinricProAirQualitySensor : public SinricProDevice,
+                                  public SettingController<SinricProAirQualitySensor>,
                                   public PowerStateController<SinricProAirQualitySensor>,
                                   public AirQualitySensor<SinricProAirQualitySensor> {
+                                  friend class SettingController<SinricProAirQualitySensor>;
                                   friend class PowerStateController<SinricProAirQualitySensor>;
                                   friend class AirQualitySensor<SinricProAirQualitySensor>;
                                   

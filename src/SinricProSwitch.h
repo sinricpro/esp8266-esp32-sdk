@@ -9,6 +9,7 @@
 #define _SINRICSWITCH_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 
 /**
@@ -17,7 +18,9 @@
  * @ingroup Devices
  **/
 class SinricProSwitch : public SinricProDevice,
+                        public SettingController<SinricProSwitch>,
                         public PowerStateController<SinricProSwitch> {
+                        friend class SettingController<SinricProSwitch>;
                         friend class PowerStateController<SinricProSwitch>;
   public:
     SinricProSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "SWITCH") {};

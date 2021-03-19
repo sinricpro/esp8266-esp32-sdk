@@ -9,8 +9,7 @@
 #define _SINRICFAN_H_
 
 #include "SinricProDevice.h"
-#include "SinricProDimSwitch.h"
-
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/PowerLevelController.h"
 
@@ -20,8 +19,10 @@
  * @ingroup Devices
  **/
 class SinricProFan : public SinricProDevice,
+                     public SettingController<SinricProFan>,
                      public PowerStateController<SinricProFan>,
                      public PowerLevelController<SinricProFan> {
+                     friend class SettingController<SinricProFan>;
                      friend class PowerStateController<SinricProFan>;
                      friend class PowerLevelController<SinricProFan>;
   public:

@@ -9,6 +9,7 @@
 #define _SINRICDOORBELL_H_
 
 #include "SinricProDevice.h"
+#include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/Doorbell.h"
 
@@ -18,8 +19,10 @@
  * @ingroup Devices
  **/
 class SinricProDoorbell :  public SinricProDevice,
+                           public SettingController<SinricProDoorbell>,
                            public PowerStateController<SinricProDoorbell>,
                            public Doorbell<SinricProDoorbell> {
+                           friend class SettingController<SinricProDoorbell>;
                            friend class PowerStateController<SinricProDoorbell>;
                            friend class Doorbell<SinricProDoorbell>;
   public:
