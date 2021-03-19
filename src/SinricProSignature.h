@@ -54,20 +54,22 @@ String HMACbase64(const String &message, const String &key) {
   return String { base64encodedHMAC };
 }
 
-String calculateSignature(const char* key, JsonDocument &jsonMessage) {
-  if (!jsonMessage.containsKey("payload")) return String("");
-  String jsonPayload; serializeJson(jsonMessage["payload"], jsonPayload);
-  return HMACbase64(jsonPayload, String(key));
+String extractPayload(const char *message) {
+  String messageStr(message);
+  int beginPayload = messageStr.indexOf("\"payload\":");
+  int endPayload = messageStr.indexOf(",\"signature\"", beginPayload);
+  if (beginPayload >0 && endPayload >0) return messageStr.substring(beginPayload+10, endPayload);
+  return "";
 }
-bool verifyMessage(String key, JsonDocument &jsonMessage) {
-  String jsonHash = jsonMessage["signature"]["HMAC"];
-  String calculatedHash = calculateSignature(key.c_str(), jsonMessage);
-  return jsonHash == calculatedHash;
+
+String calculateSignature(const char* key, String payload) {
+  if (payload != "") return HMACbase64(payload, String(key));
+  return "";
 }
 
 String signMessage(String key, JsonDocument &jsonMessage) {
   if (!jsonMessage.containsKey("signature")) jsonMessage.createNestedObject("signature");
-  jsonMessage["signature"]["HMAC"] = calculateSignature(key.c_str(), jsonMessage);
+  jsonMessage["signature"]["HMAC"] = calculateSignature(key.c_str(), jsonMessage["payload"]);
   String signedMessageString;
   serializeJson(jsonMessage, signedMessageString);
   return signedMessageString;
