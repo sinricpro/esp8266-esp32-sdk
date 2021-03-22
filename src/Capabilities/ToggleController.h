@@ -2,7 +2,7 @@
 #define _TOGGLECONTROLLER_H_
 
 #include "SinricProRequest.h"
-
+#if !defined(SINRICPRO_OO)
 /**
  * @brief ToggleController
  * @ingroup Capabilities
@@ -87,5 +87,46 @@ bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
   }
   return success;
 }
+
+#else
+
+template <typename T>
+class ToggleController {
+public:
+  ToggleController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); }
+
+  virtual bool onToggleState(const String& instance, bool &state) { return false; }
+  bool sendToggleStateEvent(const String &instance, bool state, String cause = "PHYSICAL_INTERACTION");
+
+protected:
+  bool handleToggleController(SinricProRequest &request);
+};
+
+template <typename T>
+bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool state, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setToggleState", cause.c_str());
+  eventMessage["payload"]["instanceId"] = instance;
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["state"] = state ? "On" : "Off";
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setToggleState")  {
+    bool state = request.request_value["state"] == "On" ? true : false;
+    success = onToggleState(request.instance, state);
+    request.response_value["state"] = state ? "On" : "Off";
+    return success;
+  }
+  return success;
+}
+
+#endif
+
 
 #endif
