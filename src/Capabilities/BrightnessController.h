@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief BrightnessController
  * @ingroup Capabilities
@@ -116,5 +117,52 @@ bool BrightnessController<T>::handleBrightnessController(SinricProRequest &reque
 
   return success;
 }
+
+#else
+
+template <typename T>
+class BrightnessController {
+  public:
+    BrightnessController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); }
+
+    virtual bool onBrightness(int &brightness) { return false; }
+    virtual bool onAdjustBrightness(int &brightnessDelta) { return false; }
+
+    bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
+  protected:
+    bool handleBrightnessController(SinricProRequest &request);
+};
+
+
+template <typename T>
+bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setBrightness", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["brightness"] = brightness;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool BrightnessController<T>::handleBrightnessController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setBrightness") {
+    int brightness = request.request_value["brightness"];
+    success = onBrightness(brightness);
+    request.response_value["brightness"] = brightness;
+  }
+
+  if (request.action == "adjustBrightness") {
+    int brightnessDelta = request.request_value["brightnessDelta"];
+    success = onAdjustBrightness(brightnessDelta);
+    request.response_value["brightness"] = brightnessDelta;
+  }
+
+  return success;
+}
+
+#endif
 
 #endif
