@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief PowerStateController
  * @ingroup Capabilities
@@ -82,5 +83,44 @@ bool PowerStateController<T>::handlePowerStateController(SinricProRequest &reque
   }
   return success;
 }
+
+#else
+
+template <typename T>
+class PowerStateController {
+  public:
+    PowerStateController() { static_cast<T&>(*this).requestHandlers.push_back(std::bind(&PowerStateController<T>::handlePowerStateController, this, std::placeholders::_1));}
+
+    virtual bool onPowerState(bool &state) { return false;};
+    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+
+  protected:
+    bool handlePowerStateController(SinricProRequest &request);
+};
+
+template <typename T>
+bool PowerStateController<T>::sendPowerStateEvent(bool state, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setPowerState", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["state"] = state ? "On" : "Off";
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool PowerStateController<T>::handlePowerStateController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setPowerState" && powerStateCallback)  {
+    bool powerState = request.request_value["state"] == "On" ? true : false;
+    success = onPowerState(powerState);
+    request.response_value["state"] = powerState ? "On" : "Off";
+    return success;
+  }
+  return success;
+}
+
+#endif
 
 #endif
