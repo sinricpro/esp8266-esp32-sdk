@@ -2,7 +2,7 @@
 #define _RANGECONTROLLER_H_
 
 #include "SinricProRequest.h"
-
+#if !defined(SINRICPRO_OO)
 /**
  * @brief RangeControllerFloatInt
  * @ingroup Capabilities
@@ -295,5 +295,128 @@ bool RangeController<T>::handleRangeController(SinricProRequest &request) {
 
   return false;
 }
+#else
+
+template <typename T>
+class RangeController
+{
+public:
+  RangeController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&RangeController<T>::handleRangeController, this, std::placeholders::_1)); }
+
+  virtual bool onRangeValue(int &value) { return false; }
+  virtual bool onRangeValue(const String &instance, int &value) { return false; }
+  virtual bool onRangeValue(const String &instance, float &value) { return false; }
+
+  virtual bool onAdjustRangeValue(int &value) { return false; }
+  virtual bool onAdjustRangeValue(const String &instance, int &value) { return false; }
+  virtual bool onAdjustRangeValue(const String &instance, float &value) { return false; }
+
+  bool sendRangeValueEvent(int rangeValue, String cause = "PHYSICAL_INTERACTION");
+  bool sendRangeValueEvent(const String &instance, int rangeValue, String cause = "PHYSICAL_INTERACTION");
+  bool sendRangeValueEvent(const String &instance, float rangeValue, String cause = "PHYSICAL_INTERACTION");
+
+protected:
+  bool handleRangeController(SinricProRequest &request);
+};
+
+template <typename T>
+bool RangeController<T>::sendRangeValueEvent(int rangeValue, String cause) {
+  T &device = static_cast<T &>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setRangeValue", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["rangeValue"] = rangeValue;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool RangeController<T>::sendRangeValueEvent(const String &instance, int rangeValue, String cause) {
+  T &device = static_cast<T &>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setRangeValue", cause.c_str());
+  eventMessage["payload"]["instanceId"] = instance;
+
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["rangeValue"] = rangeValue;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool RangeController<T>::sendRangeValueEvent(const String &instance, float rangeValue, String cause) {
+  T &device = static_cast<T &>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setRangeValue", cause.c_str());
+  eventMessage["payload"]["instanceId"] = instance;
+
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["rangeValue"] = rangeValue;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool RangeController<T>::handleRangeController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setRangeValue") {
+
+    if (request.instance == "") {
+
+      int value = request.request_value["rangeValue"];
+      success = onRangeValue(value);
+      request.response_value["rangeValue"] = value;
+      return success;
+
+    } else {
+
+      if (request.request_value["rangeValue"].is<int>()) {
+
+        int value = request.request_value["rangeValue"];
+        success = onRangeValue(request.instance, value);
+        request.response_value["rangeValue"] = value;
+        return success;
+
+      } else {
+
+        float value = request.request_value["rangeValue"];
+        success = onRangeValue(request.instance, value);
+        request.response_value["rangeValue"] = value;
+        return success;
+
+      }
+    }
+  }
+
+  if (request.action == "adjustRangeValue") {
+
+    if (request.instance == "") {
+
+      int value = request.request_value["rangeValueDelta"];
+      success = onAdjustRangeValue(value);
+      request.response_value["rangeValue"] = value;
+      return success;
+    
+    } else {
+
+      if (request.request_value["rangeValueDelta"].is<int>()) {
+
+        int value = request.request_value["rangeValueDelta"];
+        success = onRangeValue(request.instance, value);
+        request.response_value["rangeValue"] = value;
+        return success;
+
+      } else {
+
+        float value = request.request_value["rangeValueDelta"];
+        success = onRangeValue(request.instance, value);
+        request.response_value["rangeValue"] = value;
+        return success;
+      }
+    }
+  }
+
+  return false;
+}
+
+#endif
 
 #endif
