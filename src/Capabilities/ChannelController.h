@@ -11,7 +11,6 @@ template <typename T>
 class ChannelController {
   public:
     ChannelController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ChannelController<T>::handleChannelController, this, std::placeholders::_1)); }
-#if !defined(SINRICPRO_OO)
     /**
      * @brief Callback definition for onChangeChannel function
      * 
@@ -63,23 +62,18 @@ class ChannelController {
     void onChangeChannel(ChangeChannelCallback cb);
     void onChangeChannelNumber(ChangeChannelNumberCallback cb);
     void onSkipChannels(SkipChannelsCallback cb);
-#else
-    virtual bool onChangeChannel(String& channelName) { return false; }
-    virtual bool onChangeChannelNumber(int channelNumber, String& channelName) { return false; }
-    virtual bool onSkipChannels(int channelCount, String& channelName) { return false; }
-#endif
+
     bool sendChangeChannelEvent(String channelName, String cause = "PHYSICAL_INTERACTION");
   protected:
     bool handleChannelController(SinricProRequest &request);
-#if !defined(SINRICPRO_OO)
+
   private:
     ChangeChannelCallback changeChannelCallback;
     ChangeChannelNumberCallback changeChannelNumberCallback;
     SkipChannelsCallback skipChannelsCallback;
-#endif    
 };
 
-#if !defined(SINRICPRO_OO)
+
 /**
  * @brief Set callback function for `changeChannel` request
  * 
@@ -115,7 +109,6 @@ template <typename T>
 void ChannelController<T>::onSkipChannels(SkipChannelsCallback cb) {
   skipChannelsCallback = cb;
 }
-#endif
 
 /**
  * @brief Send `changeChannel` event to SinricPro Server to report selected channel
@@ -138,57 +131,31 @@ bool ChannelController<T>::sendChangeChannelEvent(String channelName, String cau
 
 template <typename T>
 bool ChannelController<T>::handleChannelController(SinricProRequest &request) {
-#if !defined(SINRICPRO_OO)
   T &device = static_cast<T &>(*this);
-#endif
 
   bool success = false;
 
   if (request.action == "changeChannel") {
 
-#if !defined(SINRICPRO_OO)
     if (changeChannelCallback && request.request_value["channel"].containsKey("name")) {
-#else
-    if (request.request_value["channel"].containsKey("name")) {
-#endif      
       String channelName = request.request_value["channel"]["name"] | "";
-#if !defined(SINRICPRO_OO)
       success = changeChannelCallback(device.deviceId, channelName);
-#else
-      success = onChangeChannel(channelName);
-#endif
       request.response_value["channel"]["name"] = channelName;
     }
 
-#if !defined(SINRICPRO_OO)
     if (changeChannelNumberCallback && request.request_value["channel"].containsKey("number")) {
-#else
-    if (request.request_value["channel"].containsKey("number")) {
-#endif      
       int channelNumber = request.request_value["channel"]["number"];
       String channelName("");
-#if !defined(SINRICPRO_OO)
       success = changeChannelNumberCallback(device.deviceId, channelNumber, channelName);
-#else
-      success = onChangeChannelNumber(channelNumber, channelName);
-#endif
       request.response_value["channel"]["name"] = channelName;
     }
     return success;
   }
 
-#if !defined(SINRICPRO_OO)
   if (skipChannelsCallback && request.action == "skipChannels") {
-#else
-  if (request.action == "skipChannels") {
-#endif    
     int channelCount = request.request_value["channelCount"] | 0;
     String channelName;
-#if !defined(SINRICPRO_OO)
     success = skipChannelsCallback(device.deviceId, channelCount, channelName);
-#else
-    success = onSkipChannels(channelCount, channelName);
-#endif
     request.response_value["channel"]["name"] = channelName;
     return success;
   }
