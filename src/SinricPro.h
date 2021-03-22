@@ -26,7 +26,7 @@ class SinricProClass : public SinricProInterface {
   friend class SinricProDevice;
   public:
     void begin(AppKey socketAuthToken, AppSecret signingKey, String serverURL = SINRICPRO_SERVER_URL);
-//    void begin(String socketAuthToken, String signingKey, String serverURL = SINRICPRO_SERVER_URL);
+
     void handle();
     void stop();
     bool isConnected();
@@ -52,7 +52,7 @@ class SinricProClass : public SinricProInterface {
     void onPong(std::function<void(uint32_t)> cb) { _websocketListener.onPong(cb); }
 
     void restoreDeviceStates(bool flag);
-
+#if !defined(SINRICPRO_OO)
     struct proxy {
       proxy(SinricProClass* ptr, DeviceId deviceId) : ptr(ptr), deviceId(deviceId) {}
       SinricProClass* ptr;
@@ -79,7 +79,7 @@ class SinricProClass : public SinricProInterface {
      * @endcode
      **/ 
     proxy operator[](const DeviceId deviceId) { return proxy(this, deviceId); }
-
+#endif
     // setResponseMessage is is just a workaround until verison 3.x.x will be released
     void setResponseMessage(String &&message) { responseMessageStr = message; }
 
@@ -121,10 +121,12 @@ class SinricProClass : public SinricProInterface {
 
     void extractTimestamp(JsonDocument &message);
 
+#if !defined(SINRICPRO_OO)
     SinricProDeviceInterface* getDevice(DeviceId deviceId);
 
     template <typename DeviceType>
     DeviceType& getDeviceInstance(DeviceId deviceId);
+#endif
 
     std::vector<SinricProDeviceInterface*> devices;
 
@@ -143,6 +145,7 @@ class SinricProClass : public SinricProInterface {
     String responseMessageStr = "";
 };
 
+#if !defined(SINRICPRO_OO)
 SinricProDeviceInterface* SinricProClass::getDevice(DeviceId deviceId) {
   for (auto& device : devices) {
     if (deviceId == device->getDeviceId()) return device;
@@ -165,6 +168,7 @@ DeviceType& SinricProClass::getDeviceInstance(DeviceId deviceId) {
 
   return tmp_deviceInstance;
 }
+#endif
 
 /**
  * @brief Initializing SinricProClass to be able to connect to SinricPro Server
@@ -270,7 +274,7 @@ void SinricProClass::handle() {
   }
 
 
-  if (!isConnected()) connect();
+  if (!isConnected() && WiFi.isConnected()) connect();
   _websocketListener.handle();
   _udpListener.handle();
 
