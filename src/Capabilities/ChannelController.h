@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief ChannelController
  * @ingroup Capabilities
@@ -162,5 +163,64 @@ bool ChannelController<T>::handleChannelController(SinricProRequest &request) {
 
   return success;
 }
+
+#else
+
+template <typename T>
+class ChannelController {
+  public:
+    ChannelController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ChannelController<T>::handleChannelController, this, std::placeholders::_1)); }
+    virtual bool onChangeChannel(String &channelName) { return false; }
+    virtual bool onChangeChannelNumber(int channelNumber, String &channelName) { return false; }
+    virtual bool onSkipChannels(int channelCount, String &channelName) { return false; }
+
+    bool sendChangeChannelEvent(String channelName, String cause = "PHYSICAL_INTERACTION");
+  protected:
+    bool handleChannelController(SinricProRequest &request);
+};
+
+template <typename T>
+bool ChannelController<T>::sendChangeChannelEvent(String channelName, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("changeChannel", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["channel"]["name"] = channelName;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool ChannelController<T>::handleChannelController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "changeChannel") {
+
+    if (request.request_value["channel"].containsKey("name")) {
+      String channelName = request.request_value["channel"]["name"] | "";
+      success = onChangeChannel(channelName);
+      request.response_value["channel"]["name"] = channelName;
+    }
+
+    if (request.request_value["channel"].containsKey("number")) {
+      int channelNumber = request.request_value["channel"]["number"];
+      String channelName("");
+      success = onChangeChannelNumber(channelNumber, channelName);
+      request.response_value["channel"]["name"] = channelName;
+    }
+    return success;
+  }
+
+  if (request.action == "skipChannels") {
+    int channelCount = request.request_value["channelCount"] | 0;
+    String channelName;
+    success = onSkipChannels(channelCount, channelName);
+    request.response_value["channel"]["name"] = channelName;
+    return success;
+  }
+
+  return success;
+}
+
+#endif
 
 #endif

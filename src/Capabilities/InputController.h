@@ -3,6 +3,8 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
+
 /**
  * @brief InputController
  * @ingroup Capabilities
@@ -83,5 +85,45 @@ bool InputController<T>::handleInputController(SinricProRequest &request) {
 
   return success;
 }
+
+#else
+
+template <typename T>
+class InputController {
+  public:
+    InputController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1)); }
+
+    virtual bool onSelectInput(String &input) { return false; }
+    bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION");
+
+  protected:
+    bool handleInputController(SinricProRequest &request);
+};
+
+template <typename T>
+bool InputController<T>::sendSelectInputEvent(String input, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("selectInput", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["input"] = input;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool InputController<T>::handleInputController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "selectInput") {
+    String input = request.request_value["input"];
+    success = onSelectInput(input);
+    request.response_value["input"] = input;
+    return success;
+  }
+
+  return success;
+}
+
+#endif
 
 #endif

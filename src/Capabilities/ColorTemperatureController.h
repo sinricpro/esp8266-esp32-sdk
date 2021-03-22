@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief ColorTemperatureController
  * @ingroup Capabilities
@@ -152,5 +153,58 @@ bool ColorTemperatureController<T>::handleColorTemperatureController(SinricProRe
 
   return success;
 }
+
+#else
+
+template <typename T>
+class ColorTemperatureController {
+  public:
+    ColorTemperatureController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ColorTemperatureController<T>::handleColorTemperatureController, this, std::placeholders::_1)); }
+    virtual bool onColorTemperature(int &colorTemperature) { return false; }
+    virtual bool onIncreaseColorTemperature(int &colorTemperatureDelta) { return false; }
+    virtual bool onDecreaseColorTemperature(int &colorTemperatureDelta) { return false; }
+
+    bool sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION");
+
+  protected:
+    bool handleColorTemperatureController(SinricProRequest &request);
+};
+
+template <typename T>
+bool ColorTemperatureController<T>::sendColorTemperatureEvent(int colorTemperature, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setColorTemperature", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["colorTemperature"] = colorTemperature;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool ColorTemperatureController<T>::handleColorTemperatureController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setColorTemperature") {
+    int colorTemperature = request.request_value["colorTemperature"];
+    success = onColorTemperature(colorTemperature);
+    request.response_value["colorTemperature"] = colorTemperature;
+  }
+
+  if (request.action == "increaseColorTemperature") {
+    int colorTemperature = 1;
+    success = onIncreaseColorTemperature(colorTemperature);
+    request.response_value["colorTemperature"] = colorTemperature;
+  }
+
+  if (request.action == "decreaseColorTemperature") {
+    int colorTemperature = -1;
+    success = onDecreaseColorTemperature(colorTemperature);
+    request.response_value["colorTemperature"] = colorTemperature;
+  }
+
+  return success;
+}
+
+#endif
 
 #endif

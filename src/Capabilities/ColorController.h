@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief ColorController
  * @ingroup Capabilities
@@ -96,5 +97,53 @@ bool ColorController<T>::handleColorController(SinricProRequest &request) {
 
   return success;
 }
+
+#else
+
+template <typename T>
+class ColorController {
+  public:
+    ColorController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ColorController<T>::handleColorController, this, std::placeholders::_1)); }
+
+    virtual bool onColor(byte &r, byte &g, byte &b) { return false; }
+    bool sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION");
+
+  protected:
+    bool handleColorController(SinricProRequest &request);
+};
+
+template <typename T>
+bool ColorController<T>::sendColorEvent(byte r, byte g, byte b, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setColor", cause.c_str());
+  JsonObject event_color = eventMessage["payload"]["value"].createNestedObject("color");
+  event_color["r"] = r;
+  event_color["g"] = g;
+  event_color["b"] = b;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool ColorController<T>::handleColorController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setColor") {
+    unsigned char r, g, b;
+    r = request.request_value["color"]["r"];
+    g = request.request_value["color"]["g"];
+    b = request.request_value["color"]["b"];
+    success = onColor(r, g, b);
+    request.response_value.createNestedObject("color");
+    request.response_value["color"]["r"] = r;
+    request.response_value["color"]["g"] = g;
+    request.response_value["color"]["b"] = b;
+  }
+
+  return success;
+}
+
+
+#endif
 
 #endif

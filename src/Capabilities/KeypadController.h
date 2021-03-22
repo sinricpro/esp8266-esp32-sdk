@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief KeypadController
  * @ingroup Capabilities
@@ -63,5 +64,31 @@ bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
   
   return success;
 }
+
+#else
+
+template <typename T>
+class KeypadController {
+  public:
+    KeypadController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); }
+
+    virtual bool onKeystroke(String &keyStroke) { return false; }
+
+  protected:
+    bool handleKeypadController(SinricProRequest &request);
+};
+
+template <typename T>
+bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
+  if (request.action != "SendKeystroke") return false;
+
+  String keystroke = request.request_value["keystroke"] | "";
+  bool success = onKeystroke(keystroke);
+  request.response_value["keystroke"] = keystroke;
+  return success;
+}
+
+
+#endif
 
 #endif

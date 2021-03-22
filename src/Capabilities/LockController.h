@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief LockController
  * @ingroup Capabilities
@@ -87,5 +88,44 @@ bool LockController<T>::handleLockController(SinricProRequest &request) {
   }
   return success;
 }
+
+#else
+
+template <typename T>
+class LockController {
+  public:
+    LockController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1)); }
+
+    virtual bool onLockState(bool &LockState) { return false; };
+    bool sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+
+  protected:
+    bool handleLockController(SinricProRequest &request);
+};
+
+template <typename T>
+bool LockController<T>::sendLockStateEvent(bool state, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setLockState", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  state ? event_value["state"] = "LOCKED" : event_value["state"] = "UNLOCKED";
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool LockController<T>::handleLockController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setLockState")  {
+    bool lockState = request.request_value["state"] == "lock" ? true : false;
+    success = onLockState(lockState);
+    request.response_value["state"] = success ? lockState ? "LOCKED" : "UNLOCKED" : "JAMMED";
+    return success;
+  }
+  return success;
+}
+
+#endif
 
 #endif

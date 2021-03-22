@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief ModeController
  * @ingroup Capabilities
@@ -145,5 +146,66 @@ bool ModeController<T>::handleModeController(SinricProRequest &request) {
   
   return success;
 }
+
+#else
+
+template <typename T>
+class ModeController {
+  public:
+    ModeController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ModeController<T>::handleModeController, this, std::placeholders::_1)); }
+
+    virtual bool onSetMode(String& mode) { return false; }
+    virtual bool onSetMode(const String& instance, String &mode) { return false; }
+
+    bool sendModeEvent(String mode, String cause = "PHYSICAL_INTERACTION");
+    bool sendModeEvent(String instance, String mode, String cause = "PHYSICAL_INTERACTION");
+
+  protected:
+    bool handleModeController(SinricProRequest &request);
+};
+
+template <typename T>
+bool ModeController<T>::sendModeEvent(String mode, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setMode", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["mode"] = mode;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool ModeController<T>::sendModeEvent(String instance, String mode, String cause) {
+  T &device = static_cast<T &>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setMode", cause.c_str());
+  eventMessage["payload"]["instanceId"] = instance;
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["mode"] = mode;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool ModeController<T>::handleModeController(SinricProRequest &request) {
+  bool success = false;
+  if (request.action != "setMode") return false;
+  String mode = request.request_value["mode"] | "";
+
+  if (request.instance != "") {
+    success = onSetMode(request.instance, mode);
+    request.response_value["mode"] = mode;
+    return success;
+
+  } else {
+
+    success = onSetMode(mode);
+    request.response_value["mode"] = mode;
+    return success;
+  }
+  
+  return success;
+}
+
+#endif
 
 #endif

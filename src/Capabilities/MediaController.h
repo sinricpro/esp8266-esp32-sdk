@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief MediaController
  * @ingroup Capabilities
@@ -83,5 +84,46 @@ bool MediaController<T>::handleMediaController(SinricProRequest &request) {
 
   return success;
 }
+
+#else
+
+template <typename T>
+class MediaController {
+  public:
+    MediaController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&MediaController<T>::handleMediaController, this, std::placeholders::_1)); }
+
+    virtual bool onMediaControl(const String &mediaControl) { return false; };
+    bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION");
+
+  protected:
+    bool handleMediaController(SinricProRequest &request);
+};
+
+template <typename T>
+bool MediaController<T>::sendMediaControlEvent(String mediaControl, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("mediaControl", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["control"] = mediaControl;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool MediaController<T>::handleMediaController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "mediaControl") {
+    String mediaControl = request.request_value["control"];
+    success = onMediaControl(mediaControl);
+    request.response_value["control"] = mediaControl;
+    return success;
+  }
+
+  return success;
+}
+
+
+#endif
 
 #endif
