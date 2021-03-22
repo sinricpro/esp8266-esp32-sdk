@@ -3,6 +3,7 @@
 
 #include "./SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief PowerLevelController
  * @ingroup Capabilities
@@ -117,5 +118,52 @@ bool PowerLevelController<T>::handlePowerLevelController(SinricProRequest &reque
   }
   return success;
 }
+
+#else
+
+template <typename T>
+class PowerLevelController {
+  public:
+    PowerLevelController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&PowerLevelController<T>::handlePowerLevelController, this, std::placeholders::_1)); }
+
+    virtual bool onPowerLevel(int &value) { return false;}
+    virtual bool onAdjustPowerLevel(int &valueDelta) { return false;}
+
+    bool sendPowerLevelEvent(int powerLevel, String cause = "PHYSICAL_INTERACTION");
+
+  protected:
+    bool handlePowerLevelController(SinricProRequest &request);
+};
+
+template <typename T>
+bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setPowerLevel", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["powerLevel"] = powerLevel;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool PowerLevelController<T>::handlePowerLevelController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setPowerLevel") {
+    int powerLevel = request.request_value["powerLevel"];
+    success = onPowerLevel(powerLevel);
+    request.response_value["powerLevel"] = powerLevel;
+  }
+
+  if (request.action == "adjustPowerLevel") {
+    int powerLevelDelta = request.request_value["powerLevelDelta"];
+    success = onAdjustPowerLevel(powerLevelDelta);
+    request.response_value["powerLevel"] = powerLevelDelta;
+  }
+  return success;
+}
+
+
+#endif
 
 #endif

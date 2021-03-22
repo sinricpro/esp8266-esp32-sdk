@@ -112,7 +112,7 @@ template <typename T>
 bool PowerStateController<T>::handlePowerStateController(SinricProRequest &request) {
   bool success = false;
 
-  if (request.action == "setPowerState" && powerStateCallback)  {
+  if (request.action == "setPowerState")  {
     bool powerState = request.request_value["state"] == "On" ? true : false;
     success = onPowerState(powerState);
     request.response_value["state"] = powerState ? "On" : "Off";
