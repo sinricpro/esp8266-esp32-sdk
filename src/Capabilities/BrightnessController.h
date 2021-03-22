@@ -11,8 +11,6 @@ template <typename T>
 class BrightnessController {
   public:
     BrightnessController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); }
-
-#if !defined(SINRICPRO_OO)  
     /**
      * @brief Callback definition for onBrightness function
      * 
@@ -45,22 +43,17 @@ class BrightnessController {
 
     void onBrightness(BrightnessCallback cb);
     void onAdjustBrightness(AdjustBrightnessCallback cb);
-#else
-    virtual bool onBrightness(int&) { return false; }
-    virtual bool onAdjustBrightness(int&) { return false; }
-#endif
+
     bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
   protected:
     bool handleBrightnessController(SinricProRequest &request);
 
-#if !defined(SINRICPRO_OO)
   private:
     BrightnessCallback brightnessCallback;
     AdjustBrightnessCallback adjustBrightnessCallback;
-#endif    
 };
 
-#if !defined(SINRICPRO_OO)
+
 /**
  * @brief Set callback function for `setBrightness` request
  * 
@@ -84,7 +77,6 @@ template <typename T>
 void BrightnessController<T>::onAdjustBrightness(AdjustBrightnessCallback cb) {
   adjustBrightnessCallback = cb;
 }
-#endif
 
 /**
  * @brief Send `setBrightness` event to SinricPro Server indicating actual brightness
@@ -107,37 +99,21 @@ bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) 
 
 template <typename T>
 bool BrightnessController<T>::handleBrightnessController(SinricProRequest &request) {
+  T &device = static_cast<T &>(*this);
   bool success = false;
 
-#if !defined(SINRICPRO_OO)
   if (brightnessCallback && request.action == "setBrightness") {
-    T &device = static_cast<T &>(*this);
-#else
-  if (request.action == "setBrightness") {
-#endif
     int brightness = request.request_value["brightness"];
-#if !defined(SINRICPRO_OO)
     success = brightnessCallback(device.deviceId, brightness);
-#else
-    success = onBrightness(brightness);
-#endif
     request.response_value["brightness"] = brightness;
   }
 
-#if !defined(SINRICPRO_OO)
   if (adjustBrightnessCallback && request.action == "adjustBrightness") {
-    T &device = static_cast<T &>(*this);
-#else
-  if (request.action == "adjustBrightness") {
-#endif    
     int brightnessDelta = request.request_value["brightnessDelta"];
-#if !defined(SINRICPRO_OO)
     success = adjustBrightnessCallback(device.deviceId, brightnessDelta);
-#else
-    success = onAdjustBrightness(brightnessDelta);
-#endif    
     request.response_value["brightness"] = brightnessDelta;
   }
+
   return success;
 }
 
