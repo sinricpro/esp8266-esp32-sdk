@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief MuteController
  * @ingroup Capabilities
@@ -79,5 +80,43 @@ bool MuteController<T>::handleMuteController(SinricProRequest &request) {
   }
   return success;
 }
+
+#else 
+
+template <typename T>
+class MuteController {
+  public:
+    MuteController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&MuteController<T>::handleMuteController, this, std::placeholders::_1)); }
+
+    virtual bool onMute(bool &muteState) { return false; }
+    bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION");
+  protected:
+    bool handleMuteController(SinricProRequest &request);
+};
+
+template <typename T>
+bool MuteController<T>::sendMuteEvent(bool mute, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setMute", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["mute"] = mute;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool MuteController<T>::handleMuteController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setMute") {
+    bool muteState = request.request_value["mute"];
+    success = onMute(muteState);
+    request.response_value["mute"] = muteState;
+    return success;
+  }
+  return success;
+}
+
+#endif
 
 #endif
