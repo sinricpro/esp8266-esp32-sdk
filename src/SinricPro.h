@@ -229,7 +229,9 @@ __attribute__ ((deprecated("Please use DeviceType& myDevice = SinricPro.add<Devi
 #endif
 void SinricProClass::add(SinricProDeviceInterface* newDevice) {
   if (!newDevice->getDeviceId().isValid()) return;
+#if !defined(SINRICPRO_OO)  
   newDevice->begin(this);
+#endif
   devices.push_back(newDevice);
 }
 
@@ -242,7 +244,9 @@ void SinricProClass::remove(SinricProDeviceInterface *oldDevice) {
 __attribute__ ((deprecated("Please use DeviceType& myDevice = SinricPro.add<DeviceType>(DeviceId);")))
 void SinricProClass::add(SinricProDeviceInterface& newDevice) {
   if (!newDevice.getDeviceId().isValid()) return;
+#if !defined(SINRICPRO_OO)  
   newDevice.begin(this);
+#endif  
   devices.push_back(&newDevice);
 }
 
