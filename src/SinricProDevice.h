@@ -29,13 +29,13 @@ public:
   bool operator==(const DeviceId& other);
 
   virtual DeviceId getDeviceId();
+  virtual String getProductType();
 protected:
   unsigned long getTimestamp();
   virtual bool sendEvent(JsonDocument &event);
   virtual DynamicJsonDocument prepareEvent(const char *action, const char *cause);
 
   virtual ~SinricProDevice();
-  virtual String getProductType();
   virtual void begin(SinricProInterface *eventSender);
   bool handleRequest(SinricProRequest &request);
   DeviceId deviceId;
