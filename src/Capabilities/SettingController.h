@@ -3,6 +3,8 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
+
 template <typename T>
 class SettingController {
   public:
@@ -39,5 +41,36 @@ bool SettingController<T>::handleSettingController(SinricProRequest &request) {
 
   return success;
 }
+
+#else
+
+template <typename T>
+class SettingController {
+  public:
+    SettingController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&SettingController<T>::handleSettingController, this, std::placeholders::_1)); }
+
+    virtual bool onSetSetting(const String &settingId, String &settingValue) { return false; };
+
+  protected:
+    bool handleSettingController(SinricProRequest &request);
+};
+
+template <typename T>
+bool SettingController<T>::handleSettingController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setSetting") {
+    String settingId    = request.request_value["id"] | "";
+    String settingValue = request.request_value["value"] | "";
+    success = onSetSetting(settingId, settingValue);
+    request.response_value["id"]    = settingId;
+    request.response_value["value"] = settingValue;
+    return success;
+  }
+
+  return success;
+}
+
+#endif
 
 #endif
