@@ -3,6 +3,7 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
 /**
  * @brief PercentageController
  * @ingroup Capabilities
@@ -116,5 +117,53 @@ bool PercentageController<T>::handlePercentageController(SinricProRequest &reque
   }
   return success;
 }
+
+#else
+
+template <typename T>
+class PercentageController {
+  public:
+    PercentageController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1)); }
+
+    virtual bool onSetPercentage(int &percentage) { return false; }
+    virtual bool onAdjustPercentage(int &percentageDelta) { return false; }
+
+    bool sendSetPercentageEvent(int percentage, String cause = F("PHYSICAL_INTERACTION"));
+
+  protected:
+    bool handlePercentageController(SinricProRequest &request);
+};
+
+template <typename T>
+bool PercentageController<T>::sendSetPercentageEvent(int percentage, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setPercentage", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["percentage"] = percentage;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool PercentageController<T>::handlePercentageController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setPercentage") {
+    int percentage = request.request_value["percentage"];
+    success = onSetPercentage(percentage);
+    request.response_value["percentage"] = percentage;
+    return success;
+  }
+
+  if (request.action == "adjustPercentage") {
+    int percentageDelta = request.request_value["percentage"];
+    success = onAdjustPercentage(percentageDelta);
+    request.response_value["percentage"] = percentageDelta;
+    return success;
+  }
+  return success;
+}
+
+#endif
 
 #endif
