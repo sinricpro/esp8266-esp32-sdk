@@ -3,6 +3,8 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
+
 /**
  * @brief VolumeController
  * @ingroup Capabilities
@@ -118,5 +120,54 @@ bool VolumeController<T>::handleVolumeController(SinricProRequest &request) {
   }
   return success;
 }
+
+#else
+
+template <typename T>
+class VolumeController {
+  public:
+    VolumeController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&VolumeController<T>::handleVolumeController, this, std::placeholders::_1)); }
+
+    virtual bool onSetVolume(int &volume) { return false; }
+    virtual bool onAdjustVolume(int &volumeDelta, bool volumeDefault) { return false; }
+
+    bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION");
+
+  protected:
+    bool handleVolumeController(SinricProRequest &request);
+};
+
+template <typename T>
+bool VolumeController<T>::sendVolumeEvent(int volume, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setVolume", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["volume"] = volume;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool VolumeController<T>::handleVolumeController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "setVolume") {
+    int volume = request.request_value["volume"];
+    success = onSetVolume(volume);
+    request.response_value["volume"] = volume;
+    return success;
+  }
+
+  if (request.action == "adjustVolume") {
+    int volume = request.request_value["volume"];
+    bool volumeDefault = request.request_value["volumeDefault"] | false;
+    success = onAdjustVolume(volume, volumeDefault);
+    request.response_value["volume"] = volume;
+    return success;
+  }
+  return success;
+}
+
+#endif
 
 #endif
