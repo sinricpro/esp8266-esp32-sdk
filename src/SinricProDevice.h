@@ -25,7 +25,7 @@
 class SinricProDevice : public SinricProDeviceInterface {
   friend class SinricProClass;
 public:
-  SinricProDevice(const DeviceId &deviceId, const String &productType = "");
+  SinricProDevice(const DeviceId &deviceId, const String &productType = "CUSTOM");
   bool operator==(const DeviceId& other);
 
   virtual DeviceId getDeviceId();
