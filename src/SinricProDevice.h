@@ -25,17 +25,17 @@
 class SinricProDevice : public SinricProDeviceInterface {
   friend class SinricProClass;
 public:
-  SinricProDevice(const DeviceId &deviceId, const String &productType = "");
+  SinricProDevice(const DeviceId &deviceId, const String &productType = "CUSTOM");
   bool operator==(const DeviceId& other);
 
   virtual DeviceId getDeviceId();
+  virtual String getProductType();
 protected:
   unsigned long getTimestamp();
   virtual bool sendEvent(JsonDocument &event);
   virtual DynamicJsonDocument prepareEvent(const char *action, const char *cause);
 
   virtual ~SinricProDevice();
-  virtual String getProductType();
 #if !defined(SINRICPRO_OO)  
   virtual void begin(SinricProInterface *eventSender);
 #endif  
