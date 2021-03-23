@@ -3,6 +3,8 @@
 
 #include "SinricProRequest.h"
 
+#if !defined(SINRICPRO_OO)
+
 /**
  * @brief ThermostatController
  * @ingroup Capabilities
@@ -183,5 +185,78 @@ bool ThermostatController<T>::handleThermostatController(SinricProRequest &reque
 
   return success;
 }
+
+#else
+
+template <typename T>
+class ThermostatController {
+  public:
+    ThermostatController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ThermostatController<T>::handleThermostatController, this, std::placeholders::_1)); }
+
+    virtual bool onThermostatMode(String &mode) { return false; }
+    virtual bool onTargetTemperature(float &targetTemperature) { return false; }
+    virtual bool onAdjustTargetTemperature(float &targetTemperatureDelta) { return false; }
+
+    bool sendThermostatModeEvent(String thermostatMode, String cause = "PHYSICAL_INTERACTION");
+    bool sendTargetTemperatureEvent(float temperature, String cause = "PHYSICAL_INTERACTION");
+
+  protected:
+    bool handleThermostatController(SinricProRequest &request);
+};
+
+template <typename T>
+bool ThermostatController<T>::sendThermostatModeEvent(String thermostatMode, String cause) {
+  T &device = static_cast<T &>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("setThermostatMode", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["thermostatMode"] = thermostatMode;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool ThermostatController<T>::sendTargetTemperatureEvent(float temperature, String cause) {
+  T& device = static_cast<T&>(*this);
+
+  DynamicJsonDocument eventMessage = device.prepareEvent("targetTemperature", cause.c_str());
+  JsonObject event_value = eventMessage["payload"]["value"];
+  event_value["temperature"] = roundf(temperature * 10) / 10.0;
+  return device.sendEvent(eventMessage);
+}
+
+template <typename T>
+bool ThermostatController<T>::handleThermostatController(SinricProRequest &request) {
+  bool success = false;
+
+  if (request.action == "targetTemperature") {
+    float temperature;
+    if (request.request_value.containsKey("temperature"))  {
+      temperature = request.request_value["temperature"];
+    }  else {
+      temperature = 1;
+    }
+    success = onTargetTemperature(temperature);
+    request.response_value["temperature"] = temperature;
+    return success;
+  }
+
+  if (request.action == "adjustTargetTemperature") {
+    float temperatureDelta = request.request_value["temperature"];
+    success = onAdjustTargetTemperature(temperatureDelta);
+    request.response_value["temperature"] = temperatureDelta;
+    return success;
+  }
+
+  if (request.action == "setThermostatMode") {
+    String thermostatMode = request.request_value["thermostatMode"] | "";
+    success = onThermostatMode(thermostatMode);
+    request.response_value["thermostatMode"] = thermostatMode;
+    return success;
+  }
+
+  return success;
+}
+
+#endif
 
 #endif
