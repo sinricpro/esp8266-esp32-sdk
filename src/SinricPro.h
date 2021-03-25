@@ -233,6 +233,9 @@ void SinricProClass::add(SinricProDeviceInterface* newDevice) {
   newDevice->begin(this);
 #endif
   devices.push_back(newDevice);
+#if defined(SINRICPRO_OO)
+  if (isConnected()) reconnect();
+#endif
 }
 
 #if defined(SINRICPRO_OO)
@@ -445,7 +448,7 @@ void SinricProClass::connect() {
 
 
 void SinricProClass::stop() {
-  _begin = false;
+//  _begin = false;
   DEBUG_SINRIC("[SinricPro:stop()\r\n");
   _websocketListener.stop();
 }
