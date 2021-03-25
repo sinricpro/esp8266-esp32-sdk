@@ -276,7 +276,9 @@ void SinricProClass::handle() {
     }
     return;
   }
-
+#if defined(SINRICPRO_OO)
+  for (auto& device : devices) device->loop();
+#endif  
 
   if (!isConnected() && WiFi.isConnected()) connect();
   _websocketListener.handle();

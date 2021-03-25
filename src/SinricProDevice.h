@@ -34,6 +34,9 @@ protected:
   unsigned long getTimestamp();
   virtual bool sendEvent(JsonDocument &event);
   virtual DynamicJsonDocument prepareEvent(const char *action, const char *cause);
+#if defined(SINRICPRO_OO)  
+  virtual void loop() {};
+#endif  
 
   virtual ~SinricProDevice();
 #if !defined(SINRICPRO_OO)  
