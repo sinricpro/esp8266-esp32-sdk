@@ -80,7 +80,9 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
     return false;
   }
   String eventName = event["payload"]["action"] | ""; // get event name
-
+  String eventInstance = event["payload"]["instanceId"] | "";
+  if (eventInstance != "") eventName += "_" + eventInstance;
+  
   LeakyBucket_t bucket; // leaky bucket algorithm is used to prevent flooding the server
 
   // get leaky bucket for event from eventFilter
