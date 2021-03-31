@@ -130,6 +130,6 @@ Example 1
 * Windows Air Conditioner
 * Interior Blinds
 * Garage Door
-
+* Custom devices
 ---
 
