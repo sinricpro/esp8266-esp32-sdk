@@ -10,15 +10,15 @@ exemptLabels:
 staleLabel: stale
 # Comment to post when marking an issue as stale. Set to `false` to disable
 markComment: >
-  This issue has gone quiet. Spooky quiet. 👻
+  This issue has gone quiet. Spooky quiet.
   We currently close issues after 14 days of inactivity. It’s been at least 7 days since the last update here.
   If we missed this issue or if you want to keep it open, please reply here.
   As a friendly reminder, the best way to fix this or any other problem is to provide a detailed error description including a serial log.
-  Thanks for being a part of the SinricPro community! 💜
+  Thanks for being a part of the SinricPro community!
 # Comment to post when closing a stale issue. Set to `false` to disable
 closeComment: >
   Hey again!
   It’s been 14 days since anything happened on this issue, so our friendly robot (that’s me!) is going to close it.
   Please keep in mind that I’m only a robot, so if I’ve closed this issue in error, I’m `HUMAN_EMOTION_SORRY`. Please feel free to comment on this issue or create a new one if you need anything else.
   As a friendly reminder, the best way to fix this or any other problem is to provide a detailed error description including a serial log.
-  Thanks again for being a part of the SinricPro community! 💜
+  Thanks again for being a part of the SinricPro community!
