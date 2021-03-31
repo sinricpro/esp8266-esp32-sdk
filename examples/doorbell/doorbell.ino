@@ -82,7 +82,7 @@ void setupWiFi() {
 // setup function for SinricPro
 void setupSinricPro() {
   // add doorbell device to SinricPro
-  SinricPro.add<SinricProDoorbell>(DOORBELL_ID);
+  SinricProDoorbell& myDoorbell = SinricPro[DOORBELL_ID];
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
