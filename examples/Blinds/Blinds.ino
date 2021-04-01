@@ -47,12 +47,12 @@ bool onPowerState(const String &deviceId, bool &state) {
   return true; // request handled properly
 }
 
-bool onSetPosition(const String &deviceId, int &position) {
+bool onRangeValue(const String &deviceId, int &position) {
   Serial.printf("Device %s set position to %d\r\n", deviceId.c_str(), position);
   return true; // request handled properly
 }
 
-bool onAdjustPosition(const String &deviceId, int &positionDelta) {
+bool onAdjustRangeValue(const String &deviceId, int &positionDelta) {
   blindsPosition += positionDelta;
   Serial.printf("Device %s position changed about %i to %d\r\n", deviceId.c_str(), positionDelta, blindsPosition);
   positionDelta = blindsPosition; // calculate and return absolute position
@@ -77,8 +77,8 @@ void setupSinricPro() {
   // get a new Blinds device from SinricPro
   SinricProBlinds &myBlinds = SinricPro[BLINDS_ID];
   myBlinds.onPowerState(onPowerState);
-  myBlinds.onSetPosition(onSetPosition);
-  myBlinds.onAdjustPosition(onAdjustPosition);
+  myBlinds.onRangeValue(onRangeValue);
+  myBlinds.onAdjustRangeValue(onAdjustRangeValue);
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
