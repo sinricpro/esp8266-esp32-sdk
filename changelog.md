@@ -1,4 +1,9 @@
 # Changelog
+## Version 2.9.3
+- RangeController accepts callbacks for integer and floating point values
+- Event limitation takes into account different instances for generic controllers 
+- SettingController implemented for future use
+
 ## Version 2.9.2
 - Removed external crypto libraries
 - Changed & fixed signature calculation
