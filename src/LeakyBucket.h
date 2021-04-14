@@ -25,7 +25,8 @@ bool LeakyBucket_t::addDrop() {
   leak();
   unsigned long actualMillis = millis();
 
-  if (dropsInBucket < BUCKET_SIZE && actualMillis-lastDrop > dropsInBucket + DROP_IN_TIME) { // new drop can be placed into bucket?
+//  if (dropsInBucket < BUCKET_SIZE && actualMillis-lastDrop > dropsInBucket + DROP_IN_TIME) { // new drop can be placed into bucket?
+  if (dropsInBucket < BUCKET_SIZE) {
     dropsInBucket++;                                                                          // place drop in bucket
     lastDrop = actualMillis;                                                                  // store last drop time
     return true;
@@ -47,6 +48,9 @@ bool LeakyBucket_t::addDrop() {
 void LeakyBucket_t::leak() {
 // leack bucket...
   unsigned long actualMillis = millis();
+  if (actualMillis - lastDrop < DROP_OUT_TIME) return;
+  dropsInBucket = 0;
+/*  
   int drops_to_leak = (actualMillis - lastDrop) / DROP_OUT_TIME;
   if (drops_to_leak > 0) {
     if (dropsInBucket <= drops_to_leak) {
@@ -55,6 +59,7 @@ void LeakyBucket_t::leak() {
       dropsInBucket -= drops_to_leak;
     }
   }
+  */
 }
 
 
