@@ -21,11 +21,11 @@
   ],
   "dependencies":[
     { 
-      "name": "ArduinoJson@~6.11",
+      "name": "ArduinoJson",
       "platforms":["espressif32","espressif8266"]
     },
     {
-      "name": "WebSockets@~2.3.6",
+      "name": "WebSockets",
       "platforms":["espressif32","espressif8266"]
     }
   ],
