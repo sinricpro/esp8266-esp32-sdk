@@ -19,6 +19,16 @@
     "espressif8266",
     "espressif32"
   ],
+  "dependencies":[
+    { 
+      "name": "ArduinoJson@~6.11",
+      "platforms":["espressif32","espressif8266"]
+    },
+    {
+      "name": "WebSockets@~2.3.6",
+      "platforms":["espressif32","espressif8266"]
+    }
+  ],
   "examples":[
     "examples/*/*.ino",
     "examples/*/*/*.ino"
