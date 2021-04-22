@@ -1,4 +1,7 @@
 # Changelog
+## Version 2.9.4
+- Fixed: Compiler error on libb64/cencode.h when ESP8266WebServer is included before SinricPro.h.
+
 ## Version 2.9.3
 - RangeController accepts callbacks for integer and floating point values
 - Event limitation takes into account different instances for generic controllers 
