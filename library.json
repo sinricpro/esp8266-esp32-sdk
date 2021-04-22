@@ -23,10 +23,10 @@
     { 
       "name": "ArduinoJson",
       "platforms":["espressif32","espressif8266"]
-    {
     },
-      "platforms":["espressif32","espressif8266"]
-      "name": "WebSockets",
+    {
+      "platforms":["espressif32","espressif8266"],
+      "name": "WebSockets"
     }
   ],
   "examples":[
