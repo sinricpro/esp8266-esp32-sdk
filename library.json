@@ -13,7 +13,7 @@
       "maintainer": true
     }
   ],
-  "version": "2.9.3",
+  "version": "2.9.4",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",
@@ -21,12 +21,12 @@
   ],
   "dependencies":[
     { 
-      "name": "ArduinoJson@~6.11",
+      "name": "ArduinoJson",
       "platforms":["espressif32","espressif8266"]
-    },
     {
-      "name": "WebSockets@~2.3.6",
+    },
       "platforms":["espressif32","espressif8266"]
+      "name": "WebSockets",
     }
   ],
   "examples":[
