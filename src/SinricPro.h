@@ -280,7 +280,12 @@ void SinricProClass::handle() {
     return;
   }
 #if defined(SINRICPRO_OO)
-  for (auto& device : devices) device->loop();
+  if (devices.size()) {
+    for (auto& device : devices) {
+      device->loop();
+      yield();
+    }
+  }
 #endif  
 
   if (!isConnected() && WiFi.isConnected()) connect();
