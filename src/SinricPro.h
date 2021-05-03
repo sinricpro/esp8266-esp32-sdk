@@ -233,7 +233,7 @@ void SinricProClass::add(SinricProDeviceInterface* newDevice) {
   newDevice->begin(this);
 #endif
   devices.push_back(newDevice);
-#if defined(SINRICPRO_OO)
+#if !defined(SINRICPRO_OO)
   if (isConnected()) reconnect();
 #endif
 }
