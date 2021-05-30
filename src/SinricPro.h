@@ -353,7 +353,7 @@ void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interfac
           responseMessage["payload"]["message"] = responseMessageStr;
           responseMessageStr = ""; 
         } else {
-          responseMessage["payload"]["message"] = "Device returned an error while processing the request!";
+          responseMessage["payload"]["message"] = "Device did not handle \""+ action + "\"";
         }
       }
     }

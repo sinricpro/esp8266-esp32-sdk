@@ -11,6 +11,7 @@
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerSensor.h"
+#include "Capabilities/PowerStateController.h"
 
 /**
  * @class SinricProPowerSensor
@@ -19,9 +20,11 @@
  **/
 class SinricProPowerSensor :  public SinricProDevice,
                               public SettingController<SinricProPowerSensor>,
-                              public PowerSensor<SinricProPowerSensor> {
+                              public PowerSensor<SinricProPowerSensor>,
+                              public PowerStateController<SinricProPowerSensor> {
                               friend class SettingController<SinricProPowerSensor>;
                               friend class PowerSensor<SinricProPowerSensor>;
+                              friend class PowerStateController<SinricProPowerSensor>;
   public:
 	  SinricProPowerSensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "POWER_SENSOR") {}
 };
