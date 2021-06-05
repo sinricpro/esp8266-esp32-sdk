@@ -5,8 +5,7 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICTV_H_
-#define _SINRICTV_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
@@ -16,6 +15,10 @@
 #include "Capabilities/MediaController.h"
 #include "Capabilities/InputController.h"
 #include "Capabilities/ChannelController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
 
 /**
  * @class SinricProTV
@@ -52,5 +55,4 @@ class SinricProTV : public SinricProDevice,
 	  SinricProTV(const DeviceId &deviceId) : SinricProDevice(deviceId, "TV") {}
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

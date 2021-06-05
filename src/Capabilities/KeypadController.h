@@ -1,82 +1,47 @@
-#ifndef _KEYPADCONTROLLER_H_
-#define _KEYPADCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+#include "../EventLimiter.h"
 
-#if !defined(SINRICPRO_OO)
-/**
- * @brief KeypadController
- * @ingroup Capabilities
- **/
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
+using KeystrokeCallback = std::function<bool(const String &, String &)>;
+
 template <typename T>
 class KeypadController {
   public:
-    KeypadController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); }
-    /**
-     * @brief Callback definition for onKeystroke function
-     * 
-     * Gets called when device receive a `setBands` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   keystroke   String keystroke \n `INFO`, `MORE`, `SELECT`, `UP`, `DOWN`, `LEFT`, `RIGHT`, `PAGE_UP`, `PAGE_DOWN`, `PAGE_LEFT`, `PAGE_RIGHT`
-     * @param[out]  keystroke   String keystroke \n `INFO`, `MORE`, `SELECT`, `UP`, `DOWN`, `LEFT`, `RIGHT`, `PAGE_UP`, `PAGE_DOWN`, `PAGE_LEFT`, `PAGE_RIGHT`
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section KeystrokeCallback Example-Code
-     * @snippet callbacks.cpp onKeystroke
-     **/
-    using KeystrokeCallback = std::function<bool(const String &, String &)>;
-
+    KeypadController();
     void onKeystroke(KeystrokeCallback cb);
 
   protected:
+    virtual bool onKeystroke(String &keyStroke);
     bool handleKeypadController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     KeystrokeCallback keystrokeCallback;
 };
 
-/**
- * @brief Set callback function for `SendKeystroke` request
- * 
- * @param cb Function pointer to a `KeystrokeCallback` function
- * @return void
- * @see KeystrokeCallback
- **/
 template <typename T>
-void KeypadController<T>::onKeystroke(KeystrokeCallback cb) { keystrokeCallback = cb; }
-
-
-template <typename T>
-bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
-
-  bool success = false;
-  if (request.action != "SendKeystroke") return false;
-
-  if (keystrokeCallback) {
-    String keystroke = request.request_value["keystroke"] | "";
-    success = keystrokeCallback(device.deviceId, keystroke);
-    request.response_value["keystroke"] = keystroke;
-    return success;
-  }
-  
-  return success;
+KeypadController<T>::KeypadController() 
+: event_limiter(EVENT_LIMIT_STATE) { 
+  T* device = static_cast<T*>(this);
+  device->registerRequestHandler(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); 
 }
 
-#else
+template <typename T>
+void KeypadController<T>::onKeystroke(KeystrokeCallback cb) {
+  keystrokeCallback = cb;
+}
 
 template <typename T>
-class KeypadController {
-  public:
-    KeypadController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); }
-
-    virtual bool onKeystroke(String &keyStroke) { return false; }
-
-  protected:
-    bool handleKeypadController(SinricProRequest &request);
-};
+bool KeypadController<T>::onKeystroke(String &keyStroke) { 
+  if (event_limiter) return false;
+  T* device = static_cast<T*>(this);
+  if (keystrokeCallback) return keystrokeCallback(device->deviceId, keyStroke);
+  return false;
+}
 
 template <typename T>
 bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
@@ -88,7 +53,4 @@ bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
   return success;
 }
 
-
-#endif
-
-#endif
+} // SINRICPRO_NAMESPACE

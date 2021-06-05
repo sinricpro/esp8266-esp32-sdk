@@ -5,9 +5,7 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-
-#ifndef _SINRICPRO_WEBSOCKET_H__
-#define _SINRICPRO_WEBSOCKET_H__
+#pragma once
 
 #if defined ESP8266
   #include <ESP8266WiFi.h>
@@ -18,12 +16,16 @@
 
 //#include <WebSockets.h>
 #include <WebSocketsClient.h>
-
 #include <ArduinoJson.h>
+#include <functional>
+
 #include "SinricProDebug.h"
 #include "SinricProConfig.h"
 #include "SinricProQueue.h"
 #include "SinricProInterface.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 
 #if !defined(WEBSOCKETS_VERSION_INT) || (WEBSOCKETS_VERSION_INT < 2003005)
@@ -53,7 +55,7 @@ class websocketListener
     websocketListener();
     ~websocketListener();
 
-    void begin(String server, String socketAuthToken, String deviceIds, SinricProQueue_t* receiveQueue);
+    void begin(String server, String socketAuthToken, SinricProQueue_t* receiveQueue);
     void handle();
     void stop();
     bool isConnected() { return _isConnected; }
@@ -79,13 +81,11 @@ class websocketListener
     void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
     void setExtraHeaders();
     SinricProQueue_t* receiveQueue;
-    String deviceIds;
     String socketAuthToken;
 };
 
 void websocketListener::setExtraHeaders() {
   String headers  = "appkey:" + socketAuthToken + "\r\n";
-         headers += "deviceids:" + deviceIds + "\r\n";
          headers += "restoredevicestates:" + String(restoreDeviceStates?"true":"false") + "\r\n";
          headers += "ip:" + WiFi.localIP().toString() + "\r\n";
          headers += "mac:" + WiFi.macAddress() + "\r\n";
@@ -106,13 +106,12 @@ websocketListener::~websocketListener() {
   stop();
 }
 
-void websocketListener::begin(String server, String socketAuthToken, String deviceIds, SinricProQueue_t* receiveQueue) {
+void websocketListener::begin(String server, String socketAuthToken, SinricProQueue_t* receiveQueue) {
   if (_begin) return;
   _begin = true;
 
   this->receiveQueue = receiveQueue;
   this->socketAuthToken = socketAuthToken;
-  this->deviceIds = deviceIds;
 
 #ifdef WEBSOCKET_SSL
   DEBUG_SINRIC("[SinricPro:Websocket]: Connecting to WebSocket Server using SSL (%s)\r\n", server.c_str());
@@ -178,4 +177,4 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
   }
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

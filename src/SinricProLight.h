@@ -5,8 +5,7 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICLIGHT_H_
-#define _SINRICLIGHT_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
@@ -14,6 +13,10 @@
 #include "Capabilities/BrightnessController.h"
 #include "Capabilities/ColorController.h"
 #include "Capabilities/ColorTemperatureController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
 
 /**
  * @class SinricProLight
@@ -41,5 +44,5 @@ class SinricProLight :  public SinricProDevice,
     SinricProLight(const DeviceId &deviceId) : SinricProDevice(deviceId, "LIGHT") {}
 };
 
-#endif
+} // SINRICPRO_NAMESPACE
 

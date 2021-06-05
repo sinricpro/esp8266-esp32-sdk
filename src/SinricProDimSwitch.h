@@ -5,13 +5,16 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICDIMSWITCH_H_
-#define _SINRICDIMSWITCH_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerstateController.h"
 #include "Capabilities/PowerLevelController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
 
 /**
  * @class SinricProDimSwitch
@@ -29,5 +32,4 @@ class SinricProDimSwitch :  public SinricProDevice,
     SinricProDimSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "DIMMABLE_SWITCH"){};
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

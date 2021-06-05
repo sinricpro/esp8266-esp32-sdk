@@ -5,13 +5,16 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICMOTIONSENSOR_H_
-#define _SINRICMOTIONSENSOR_H_
+#pragma once
 
-#include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/MotionSensor.h"
+#include "SinricProDevice.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
 
 /**
  * @class SinricProMotionsensor
@@ -29,5 +32,4 @@ class SinricProMotionsensor : public SinricProDevice,
     SinricProMotionsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "MOTION_SENSOR") {}
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

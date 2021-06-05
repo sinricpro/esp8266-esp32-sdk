@@ -1,116 +1,60 @@
-#ifndef _TOGGLECONTROLLER_H_
-#define _TOGGLECONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
-#if !defined(SINRICPRO_OO)
-/**
- * @brief ToggleController
- * @ingroup Capabilities
- **/
+#include "../SinricProRequest.h"
+#include "../EventLimiter.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
+using GenericToggleStateCallback = std::function<bool(const String &, const String&, bool &)>;
+
 template <typename T>
 class ToggleController {
-public:
-  ToggleController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); }
-  /**
-     * @brief Callback definition for onToggleState function
-     * 
-     * Gets called when device receive a `setPowerState` reuqest \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   instance    String which instance is requested
-     * @param[in]   state       `true` = device is requested to turn on \n `false` = device is requested to turn off
-     * @param[out]  state       `true` = device has been turned on \n `false` = device has been turned off
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section ToggleStateCallback Example-Code
-     * @snippet callbacks.cpp onToggleState
-     **/
-  using GenericToggleStateCallback = std::function<bool(const String &, const String&, bool &)>;
+  public:
+    ToggleController();
 
-  void onToggleState(const String& instance, GenericToggleStateCallback cb);
-  bool sendToggleStateEvent(const String &instance, bool state, String cause = "PHYSICAL_INTERACTION");
+    void onToggleState(const String& instance, GenericToggleStateCallback cb);
+    bool sendToggleStateEvent(const String &instance, bool state, String cause = "PHYSICAL_INTERACTION");
 
-protected:
-  bool handleToggleController(SinricProRequest &request);
-
-private:
-  std::map<String, GenericToggleStateCallback> genericToggleStateCallback;
+  protected:
+    virtual bool onToggleState(const String& instance, bool &state);
+    bool handleToggleController(SinricProRequest &request);
+  
+  private:
+    std::map<String, EventLimiter> event_limiter;
+    std::map<String, GenericToggleStateCallback> genericToggleStateCallback;
 };
 
-
-/**
- * @brief Set callback function for `toggleState` request
- * 
- * @param instance String instance name (custom device)
- * @param cb Function pointer to a `ToggleStateCallback` function
- * @return void
- * @see ToggleStateCallback
- **/
 template <typename T>
-void ToggleController<T>::onToggleState(const String &instance, GenericToggleStateCallback cb) {
+ToggleController<T>::ToggleController() { 
+  T* device = static_cast<T*>(this);
+  device->registerRequestHandler(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); 
+}
+
+template <typename T>
+void ToggleController<T>::onToggleState(const String& instance, GenericToggleStateCallback cb) {
   genericToggleStateCallback[instance] = cb;
 }
 
-/**
- * @brief Send `setToggleState` event to SinricPro Server indicating actual toggle state
- * 
- * @param instance String instance name (custom device)
- * @param state   `true` = state turned on \n `false` = tate turned off
- * @param cause   (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
- * @return the success of sending the even
- * @retval true   event has been sent successfully
- * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
- **/
 template <typename T>
-bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool state, String cause) {
-  T& device = static_cast<T&>(*this);
-
-  DynamicJsonDocument eventMessage = device.prepareEvent("setToggleState", cause.c_str());
-  eventMessage["payload"]["instanceId"] = instance;
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state ? "On" : "Off";
-  return device.sendEvent(eventMessage);
+bool ToggleController<T>::onToggleState(const String& instance, bool &state) {
+  T* device = static_cast<T*>(this);
+  if (genericToggleStateCallback[instance]) genericToggleStateCallback[instance](device->deviceId, instance, state);
+  return false;  
 }
 
 template <typename T>
-bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
-
-  bool success = false;
-
-  if (request.action == "setToggleState")  {
-    bool powerState = request.request_value["state"] == "On" ? true : false;
-    if (genericToggleStateCallback.find(request.instance) != genericToggleStateCallback.end())
-      success = genericToggleStateCallback[request.instance](device.deviceId, request.instance, powerState);
-    request.response_value["state"] = powerState ? "On" : "Off";
-    return success;
-  }
-  return success;
-}
-
-#else
-
-template <typename T>
-class ToggleController {
-public:
-  ToggleController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); }
-
-  virtual bool onToggleState(const String& instance, bool &state) { return false; }
-  bool sendToggleStateEvent(const String &instance, bool state, String cause = "PHYSICAL_INTERACTION");
-
-protected:
-  bool handleToggleController(SinricProRequest &request);
-};
-
-template <typename T>
 bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool state, String cause) {
-  T& device = static_cast<T&>(*this);
+  if (event_limiter.find(instance) == event_limiter.end()) event_limiter[instance] = EventLimiter(EVENT_LIMIT_STATE);
+  if (event_limiter[instance]) return false;
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setToggleState", cause.c_str());
+  T* device = static_cast<T*>(this);
+
+  DynamicJsonDocument eventMessage = device->prepareEvent("setToggleState", cause.c_str());
   eventMessage["payload"]["instanceId"] = instance;
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state ? "On" : "Off";
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
@@ -126,7 +70,5 @@ bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
   return success;
 }
 
-#endif
 
-
-#endif
+} // SINRICPRO_NAMESPACE

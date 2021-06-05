@@ -5,8 +5,8 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef __SINRIC_PRO_UDP_H__
-#define __SINRIC_PRO_UDP_H__
+#pragma once
+
 
 #if defined ESP8266
   #include <ESP8266WiFi.h>
@@ -16,7 +16,12 @@
 #endif
 
 #include <WiFiUdp.h>
+
 #include "SinricProQueue.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
 
 class udpListener {
 public:
@@ -79,4 +84,4 @@ void udpListener::stop() {
   _udp.stop();
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

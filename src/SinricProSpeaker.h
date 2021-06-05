@@ -5,8 +5,7 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICSPEAKER_H_
-#define _SINRICSPEAKER_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
@@ -17,6 +16,10 @@
 #include "Capabilities/InputController.h"
 #include "Capabilities/EqualizerController.h"
 #include "Capabilities/ModeController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
 
 /**
  * @class SinricProSpeaker
@@ -59,5 +62,4 @@ public:
   SinricProSpeaker(const DeviceId &deviceId) : SinricProDevice(deviceId, "SPEAKER") {}
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

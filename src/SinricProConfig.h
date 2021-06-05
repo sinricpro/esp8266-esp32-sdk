@@ -5,8 +5,6 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef __SINRICPRO_CONFIG_H__
-#define __SINRICPRO_CONFIG_H__
 /* 
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  * !!                                                 !!
@@ -19,16 +17,7 @@
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
-
-// Version Configuration
-#define SINRICPRO_VERSION_MAJOR     2
-#define SINRICPRO_VERSION_MINOR     9
-#define SINRICPRO_VERSION_REVISION  5
-#define SINRICPRO_VERSION STR(SINRICPRO_VERSION_MAJOR) "." STR(SINRICPRO_VERSION_MINOR) "." STR(SINRICPRO_VERSION_REVISION)
-#define SINRICPRO_VERSION_STR "SinricPro (v" SINRICPRO_VERSION ")"
-#define SINRICPRO_VERISON_INT SINRICPRO_VERSION_MAJOR * 1000000 + SINRICPRO_VERSION_MINOR * 1000 + SINRICPRO_VERSION_REVISION
+#pragma once
 
 // Server Configuration
 #ifndef SINRICPRO_NOSSL
@@ -52,9 +41,6 @@
 #define WEBSOCKET_PING_TIMEOUT 10000
 #define WEBSOCKET_RETRY_COUNT 2
 
-// LeakyBucket Configuration
-#define BUCKET_SIZE 10
-#define DROP_OUT_TIME 60000
-#define DROP_IN_TIME 1000u
-
-#endif
+#define EVENT_LIMIT_STATE         5000
+#define EVENT_LIMIT_SENSOR_STATE  EVENT_LIMIT_STATE
+#define EVENT_LIMIT_SENSOR_VALUE  60000

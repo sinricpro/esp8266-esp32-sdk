@@ -5,13 +5,16 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICFANUS_H_
-#define _SINRICFANUS_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/RangeController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
 
 /**
  * @class SinricProFanUS
@@ -29,5 +32,4 @@ class SinricProFanUS :  public SinricProDevice,
 	  SinricProFanUS(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN") {}
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

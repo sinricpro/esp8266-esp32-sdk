@@ -1,23 +1,20 @@
-#ifndef _SINRICPRODEVICEINTERFACE_
-#define _SINRICPRODEVICEINTERFACE_
+#pragma once
 
-#include <SinricProInterface.h>
-#include <SinricProRequest.h>
-#include <SinricProId.h>
+#include "SinricProInterface.h"
+#include "SinricProRequest.h"
+#include "SinricProId.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 class SinricProDeviceInterface {
   friend class SinricProClass;
   protected:
     virtual bool handleRequest(SinricProRequest &request) = 0;
-    virtual DeviceId getDeviceId() = 0;
-    virtual String getProductType() = 0;
-    virtual unsigned long getTimestamp();
-#if !defined(SINRICPRO_OO)
-    virtual void begin(SinricProInterface* eventSender) = 0;
-#endif    
-#if defined(SINRICPRO_OO)
-    virtual void loop();
-#endif
+    virtual const DeviceId getDeviceId() const = 0;
+    virtual const String getProductType() const = 0;
+    virtual const unsigned long getTimestamp() const = 0;
+    virtual void loop() = 0;
 };
 
-#endif
+} // SINRICPRO_NAMESPACE

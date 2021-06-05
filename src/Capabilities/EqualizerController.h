@@ -1,223 +1,96 @@
-#ifndef _EQUALIZERCONTROLLER_H_
-#define _EQUALIZERCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+#include "../EventLimiter.h"
 
-#if !defined(SINRICPRO_OO)
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
-/**
- * @brief EqualizerController
- * @ingroup Capabilities
- **/
+using SetBandsCallback    = std::function<bool(const String &, const String &, int &)>;
+using AdjustBandsCallback = std::function<bool(const String &, const String &, int &)>;
+using ResetBandsCallback  = std::function<bool(const String &, const String &, int &)>;
+
 template <typename T>
 class EqualizerController {
-public:
-  EqualizerController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&EqualizerController<T>::handleEqualizerController, this, std::placeholders::_1)); }
-  /**
-     * @brief Callback definition for onSetBands function
-     * 
-     * Gets called when device receive a `setBands` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   bands       String with requested bands to change \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[in]   level       Integer value with level bands should set to
-     * @param[out]  bands       String with changed bands \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[out]  level       Integer value with level bands changed to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section SetBandsCallback Example-Code
-     * @snippet callbacks.cpp onSetBands
-     **/
-  using SetBandsCallback = std::function<bool(const String &, const String &, int &)>;
+  public:
+    EqualizerController();
 
-  /**
-     * @brief Callback definition for onAdjustBands function
-     * 
-     * Gets called when device receive a `adjustBands` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   bands       String with requested bands to change \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[in]   levelDelta  Integer with relative level value device should change bands about
-     * @param[out]  bands       String with changed bands \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[out]  levelDelta  Integer value with level bands changed to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section AdjustBandsCallback Example-Code
-     * @snippet callbacks.cpp onAdjustBands
-     **/
-  using AdjustBandsCallback = std::function<bool(const String &, const String &, int &)>;
+    void onSetBands(SetBandsCallback cb);
+    void onAdjustBands(AdjustBandsCallback cb);
+    void onResetBands(ResetBandsCallback cb);
 
-  /**
-     * @brief Callback definition for onResetBands function
-     * 
-     * Gets called when device receive a `onResetBands` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   bands       String with requested bands to reset \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[out]  bands       String with changed bands \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[out]  level       Integer value with level bands changed to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section ResetBandsCallback Example-Code
-     * @snippet callbacks.cpp onResetBands
-     **/
-  using ResetBandsCallback = std::function<bool(const String &, const String &, int &)>;
+    bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION");
 
-  void onSetBands(SetBandsCallback cb);
-  void onAdjustBands(AdjustBandsCallback cb);
-  void onResetBands(ResetBandsCallback cb);
+  protected:
+    virtual bool onSetBands(const String& bands, int &level);
+    virtual bool onAdjustBands(const String &bands, int &levelDelta);
+    virtual bool onResetBands(const String &bands, int &level);
 
-  bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION");
-
-protected:
-  bool handleEqualizerController(SinricProRequest &request);
-
-private:
-  SetBandsCallback setBandsCallback;
-  AdjustBandsCallback adjustBandsCallback;
-  ResetBandsCallback resetBandsCallback;
+    bool handleEqualizerController(SinricProRequest &request);
+  private:
+    EventLimiter event_limiter;
+    SetBandsCallback setBandsCallback;
+    AdjustBandsCallback adjustBandsCallback;
+    ResetBandsCallback resetBandsCallback;
 };
 
-/**
- * @brief Set callback function for `setBands` request
- * 
- * @param cb Function pointer to a `SetBandsCallback` function
- * @return void
- * @see SetBandsCallback
- **/
 template <typename T>
-void EqualizerController<T>::onSetBands(SetBandsCallback cb) { setBandsCallback = cb; }
+EqualizerController<T>::EqualizerController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  T* device = static_cast<T*>(this);
+  device->registerRequestHandler(std::bind(&EqualizerController<T>::handleEqualizerController, this, std::placeholders::_1)); 
+}
 
-/**
- * @brief Set callback function for `adjustBands` request
- * 
- * @param cb Function pointer to a `AdjustBandsCallback` function
- * @return void
- * @see AdjustBandsCallback
- **/
+
 template <typename T>
-void EqualizerController<T>::onAdjustBands(AdjustBandsCallback cb) { adjustBandsCallback = cb; }
+void EqualizerController<T>::onSetBands(SetBandsCallback cb) {
+  setBandsCallback = cb;
+}
 
-/**
- * @brief Set callback function for `resetBands` request
- * 
- * @param cb Function pointer to a `ResetBandsCallback` function
- * @return void
- * @see ResetBandsCallback
- **/
 template <typename T>
-void EqualizerController<T>::onResetBands(ResetBandsCallback cb) { resetBandsCallback = cb; }
+void EqualizerController<T>::onAdjustBands(AdjustBandsCallback cb) {
+  adjustBandsCallback = cb;
+}
 
-/**
- * @brief Send `setBands` event to SinricPro Server indicating bands level has changed
- * 
- * @param bands   String which bands has changed \n `BASS`, `MIDRANGE`, `TREBBLE`
- * @param level   Integer with changed bands level
- * @param cause   (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
- * @return the success of sending the even
- * @retval true   event has been sent successfully
- * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
- **/
+template <typename T>
+void EqualizerController<T>::onResetBands(ResetBandsCallback cb) {
+  resetBandsCallback = cb;
+}
+
+template <typename T>
+bool EqualizerController<T>::onSetBands(const String& bands, int &level) {
+  T* device = static_cast<T*>(this);
+  if (setBandsCallback) return setBandsCallback(device->deviceId, bands, level);
+  return false;
+ 
+}
+
+template <typename T>
+bool EqualizerController<T>::onAdjustBands(const String &bands, int &levelDelta) {
+  T* device = static_cast<T*>(this);
+  if (adjustBandsCallback) return adjustBandsCallback(device->deviceId, bands, levelDelta);
+  return false;
+}
+
+template <typename T>
+bool EqualizerController<T>::onResetBands(const String &bands, int &level) {
+  T* device = static_cast<T*>(this);
+  if (resetBandsCallback) return resetBandsCallback(device->deviceId, bands, level);
+  return false;
+}
+
 template <typename T>
 bool EqualizerController<T>::sendBandsEvent(String bands, int level, String cause) {
-  T& device = static_cast<T&>(*this);
+  if (event_limiter) return false;
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setBands", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setBands", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   JsonArray event_value_bands = event_value.createNestedArray("bands");
   JsonObject event_bands = event_value_bands.createNestedObject();
   event_bands["name"] = bands;
   event_bands["value"] = level;
-  return device.sendEvent(eventMessage);
-}
-
-template <typename T>
-bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
-  bool success = false;
-
-  if (setBandsCallback && request.action == "setBands") {
-    JsonArray bands_array = request.request_value["bands"];
-    JsonArray response_value_bands = request.response_value.createNestedArray("bands");
-
-    for (size_t i = 0; i < bands_array.size(); i++) {
-      int level = bands_array[i]["level"] | 0;
-      String bandsName = bands_array[i]["name"] | "";
-      success = setBandsCallback(device.deviceId, bandsName, level);
-      JsonObject response_value_bands_i = response_value_bands.createNestedObject();
-      response_value_bands_i["name"] = bandsName;
-      response_value_bands_i["level"] = level;
-    }
-    return success;
-  }
-
-  if (adjustBandsCallback && request.action == "adjustBands") {
-    JsonArray bands_array = request.request_value["bands"];
-    JsonArray response_value_bands = request.response_value.createNestedArray("bands");
-
-    for (size_t i = 0; i < bands_array.size(); i++)  {
-      int levelDelta = bands_array[i]["levelDelta"] | 1;
-      String direction = bands_array[i]["levelDirection"];
-      if (direction == "DOWN")
-        levelDelta *= -1;
-      String bandsName = bands_array[i]["name"] | "";
-      success = adjustBandsCallback(device.deviceId, bandsName, levelDelta);
-      JsonObject response_value_bands_i = response_value_bands.createNestedObject();
-      response_value_bands_i["name"] = bandsName;
-      response_value_bands_i["level"] = levelDelta;
-    }
-    return success;
-  }
-
-  if (resetBandsCallback && request.action == "resetBands") {
-    JsonArray bands_array = request.request_value["bands"];
-    JsonArray response_value_bands = request.response_value.createNestedArray("bands");
-
-    for (size_t i = 0; i < bands_array.size(); i++) {
-      int level = 0;
-      String bandsName = bands_array[i]["name"] | "";
-      success = adjustBandsCallback(device.deviceId, bandsName, level);
-      JsonObject response_value_bands_i = response_value_bands.createNestedObject();
-      response_value_bands_i["name"] = bandsName;
-      response_value_bands_i["level"] = level;
-    }
-    return success;
-  }
-
-  return success;
-}
-
-#else
-
-template <typename T>
-class EqualizerController {
-public:
-  EqualizerController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&EqualizerController<T>::handleEqualizerController, this, std::placeholders::_1)); }
-
-  virtual bool onSetBands(const String& bands, int &level) { return false; }
-  virtual bool onAdjustBands(const String &bands, int &levelDelta) { return false; }
-  virtual bool onResetBands(const String &bands, int &level) { return false; }
-
-  bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION");
-
-protected:
-  bool handleEqualizerController(SinricProRequest &request);
-};
-
-template <typename T>
-bool EqualizerController<T>::sendBandsEvent(String bands, int level, String cause) {
-  T& device = static_cast<T&>(*this);
-
-  DynamicJsonDocument eventMessage = device.prepareEvent("setBands", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  JsonArray event_value_bands = event_value.createNestedArray("bands");
-  JsonObject event_bands = event_value_bands.createNestedObject();
-  event_bands["name"] = bands;
-  event_bands["value"] = level;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
@@ -274,6 +147,4 @@ bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request
   return success;
 }
 
-#endif
-
-#endif
+} // SINRICPRO_NAMESPACE

@@ -1,5 +1,7 @@
-#ifndef _SINRICID_H_
-#define _SINRICID_H_
+#pragma once
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 #define DEVICEID_BINLEN 12 // 12 bytes long
 #define DEVICEID_STRLEN 24 // string needs to hold 24 characters
@@ -134,8 +136,8 @@ class SinricProId {
     T _data;
 };
 
-typedef SinricProId<DeviceId_Bin_t> DeviceId;
-typedef SinricProId<AppKey_Bin_t> AppKey;
-typedef SinricProId<AppSecret_Bin_t> AppSecret;
+} // SINRICPRO_NAMESPACE
 
-#endif
+typedef SINRICPRO_NAMESPACE::SinricProId<SINRICPRO_NAMESPACE::DeviceId_Bin_t> DeviceId;
+typedef SINRICPRO_NAMESPACE::SinricProId<SINRICPRO_NAMESPACE::AppKey_Bin_t> AppKey;
+typedef SINRICPRO_NAMESPACE::SinricProId<SINRICPRO_NAMESPACE::AppSecret_Bin_t> AppSecret;

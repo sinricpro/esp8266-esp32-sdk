@@ -5,13 +5,16 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICPOWERSENSOR_H_
-#define _SINRICPOWERSENSOR_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerSensor.h"
 #include "Capabilities/PowerStateController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
 
 /**
  * @class SinricProPowerSensor
@@ -29,4 +32,4 @@ class SinricProPowerSensor :  public SinricProDevice,
 	  SinricProPowerSensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "POWER_SENSOR") {}
 };
 
-#endif
+} // SINRICPRO_NAMESPACE

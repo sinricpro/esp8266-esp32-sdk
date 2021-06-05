@@ -7,7 +7,6 @@
 
 #include <WString.h>
 #include <ArduinoJson.h>
-#include "SinricProSignature.h"
 
 #if defined (ESP8266)
   #include <bearssl/bearssl_hmac.h>
@@ -17,6 +16,10 @@
 #endif
   #include <libb64/cencode.h>
 
+#include "SinricProSignature.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 String HMACbase64(const String &message, const String &key) {
   byte hmacResult[32];
@@ -75,3 +78,5 @@ String signMessage(String key, JsonDocument &jsonMessage) {
   serializeJson(jsonMessage, signedMessageString);
   return signedMessageString;
 }
+
+} // SINRICPRO_NAMESPACE

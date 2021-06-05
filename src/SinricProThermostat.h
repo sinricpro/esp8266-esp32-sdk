@@ -5,14 +5,17 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICTHERMOSTAT_H_
-#define _SINRICTHERMOSTAT_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/ThermostatController.h"
 #include "Capabilities/TemperatureSensor.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
 
 /**
  * @class SinricProThermostat
@@ -38,5 +41,4 @@ class SinricProThermostat :  public SinricProDevice,
 	  SinricProThermostat(const DeviceId &deviceId) : SinricProDevice(deviceId, "THERMOSTAT") {}
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

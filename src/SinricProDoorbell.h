@@ -5,13 +5,15 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICDOORBELL_H_
-#define _SINRICDOORBELL_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/Doorbell.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProDoorbell
@@ -29,5 +31,5 @@ class SinricProDoorbell :  public SinricProDevice,
 	  SinricProDoorbell(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 };
 
-#endif
+} // SINRICPRO_NAMESPACE
 

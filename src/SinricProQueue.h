@@ -5,10 +5,12 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef __SINRICPRO_QUEUE_H__
-#define __SINRICPRO_QUEUE_H__
+#pragma once
 
 #include <queue>
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 typedef enum {
   IF_UNKNOWN    = 0,
@@ -44,7 +46,6 @@ interface_t SinricProMessage::getInterface() const {
   return _interface; 
 };
 
-
 typedef std::queue<SinricProMessage*> SinricProQueue_t;
 
-#endif
+} // SINRICPRO_NAMESPACE
