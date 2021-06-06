@@ -30,7 +30,7 @@ class SinricProLock :  public SinricProDevice,
                        friend class SettingController<SinricProLock>;
                        friend class LockController<SinricProLock>;
   public:
-	  SinricProLock(const DeviceId &deviceId) : SinricProDevice(deviceId, "SMARTLOCK") {}
+	  SinricProLock(const String &deviceId) : SinricProDevice(deviceId, "SMARTLOCK") {}
 };
 
 } // SINRICPRO_NAMESPACE

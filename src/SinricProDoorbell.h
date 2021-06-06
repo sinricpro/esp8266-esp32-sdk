@@ -28,7 +28,7 @@ class SinricProDoorbell :  public SinricProDevice,
                            friend class PowerStateController<SinricProDoorbell>;
                            friend class Doorbell<SinricProDoorbell>;
   public:
-	  SinricProDoorbell(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
+	  SinricProDoorbell(const String &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 };
 
 } // SINRICPRO_NAMESPACE

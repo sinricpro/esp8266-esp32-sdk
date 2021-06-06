@@ -9,7 +9,6 @@
 
 #include <ArduinoJson.h>
 #include "SinricProQueue.h"
-#include "SinricProId.h"
 
 #include "SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
@@ -19,7 +18,7 @@ class SinricProInterface {
   friend class SinricProDevice;
   protected:
     virtual void sendMessage(JsonDocument& jsonEvent);
-    virtual DynamicJsonDocument prepareEvent(DeviceId deviceId, const char* action, const char* cause);
+    virtual DynamicJsonDocument prepareEvent(const String &deviceId, const char* action, const char* cause);
     virtual unsigned long getTimestamp(); 
     virtual bool isConnected();
 };

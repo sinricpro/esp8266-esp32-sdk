@@ -33,7 +33,7 @@ class SinricProBlinds : public SinricProDevice,
                         friend class PowerStateController<SinricProBlinds>;
                         friend class RangeController<SinricProBlinds>;
   public:
-    SinricProBlinds(const DeviceId &deviceId) : SinricProDevice(deviceId, "BLIND"){};
+    SinricProBlinds(const String &deviceId) : SinricProDevice(deviceId, "BLIND"){};
 };
 
 } // SINRICPRO_NAMESPACE

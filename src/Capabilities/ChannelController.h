@@ -6,6 +6,15 @@
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
+/**
+ * @ingroup Callbacks
+ * @param deviceId deviceId
+ * @param channelName name of the channel
+ * @return true     request was handled
+ * @return false    request could not be handled
+ * #### Example
+ * @include callbacks/onChangeChannel.cpp
+ */
 using ChangeChannelCallback = std::function<bool(const String &, String &)>;
 using ChangeChannelNumberCallback = std::function<bool(const String &, int, String &)>;
 using SkipChannelsCallback = std::function<bool(const String &, int, String &)>;

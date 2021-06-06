@@ -15,7 +15,6 @@
 #include "SinricProSignature.h"
 #include "SinricProMessageid.h"
 #include "SinricProQueue.h"
-#include "SinricProId.h"
 
 #include "SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
@@ -26,7 +25,7 @@ using DisconnectedCallbackHandler = std::function<void(void)>;
 class SinricProClass : public SinricProInterface {
   friend class SinricProDevice;
   public:
-    void begin(AppKey socketAuthToken, AppSecret signingKey, String serverURL = SINRICPRO_SERVER_URL);
+    void begin(const String &appKey, const String &appSecret, const String &serverURL = SINRICPRO_SERVER_URL);
 
     void handle();
     void stop();
@@ -39,21 +38,21 @@ class SinricProClass : public SinricProInterface {
     void restoreDeviceStates(bool flag);
 
     struct proxy {
-      proxy(SinricProClass* ptr, DeviceId deviceId) : ptr(ptr), deviceId(deviceId) {}
+      proxy(SinricProClass* ptr, const String &deviceId) : ptr(ptr), deviceId(deviceId) {}
       SinricProClass* ptr;
-      DeviceId deviceId;
+      String deviceId;
       template <typename DeviceType>
       operator DeviceType&() { return as<DeviceType>(); }
       template <typename DeviceType>
       DeviceType& as() { return ptr->getDeviceInstance<DeviceType>(deviceId); }
     };
-    proxy operator[](const DeviceId deviceId) { return proxy(this, deviceId); }
+    proxy operator[](const String &deviceId) { return proxy(this, deviceId); }
 
     void setResponseMessage(String &&message) { responseMessageStr = message; }
     unsigned long getTimestamp() override { return baseTimestamp + (millis()/1000); }
   protected:
     template <typename DeviceType>
-    DeviceType &add(DeviceId deviceId);
+    DeviceType &add(const String &deviceId);
 
     void add(SinricProDeviceInterface *newDevice);
 
@@ -61,7 +60,7 @@ class SinricProClass : public SinricProInterface {
     void unregisterDevice(SinricProDeviceInterface *device);
 
     DynamicJsonDocument prepareResponse(JsonDocument &requestMessage);
-    DynamicJsonDocument prepareEvent(DeviceId deviceId, const char *action, const char *cause) override;
+    DynamicJsonDocument prepareEvent(const String &deviceId, const char *action, const char *cause) override;
     void sendMessage(JsonDocument &jsonMessage) override;
 
   private:
@@ -71,7 +70,7 @@ class SinricProClass : public SinricProInterface {
     void handleRequest(DynamicJsonDocument& requestMessage, interface_t Interface);
     void handleResponse(DynamicJsonDocument& responseMessage);
 
-    DynamicJsonDocument prepareRequest(DeviceId deviceId, const char* action);
+    DynamicJsonDocument prepareRequest(const String &deviceId, const char* action);
 
     void connect();
     void disconnect();
@@ -82,18 +81,19 @@ class SinricProClass : public SinricProInterface {
 
     void extractTimestamp(JsonDocument &message);
 
-    SinricProDeviceInterface* getDevice(DeviceId deviceId);
+    SinricProDeviceInterface* getDevice(const String &deviceId);
 
     template <typename DeviceType>
-    DeviceType& getDeviceInstance(DeviceId deviceId);
+    DeviceType& getDeviceInstance(const String &deviceId);
 
     std::vector<SinricProDeviceInterface*> devices;
 
-    AppKey socketAuthToken;
-    AppSecret signingKey;
+    String socketAuthToken;
+    String appKey;
+    String appSecret;
     String serverURL;
 
-    websocketListener _websocketListener;
+    WebsocketListener _websocketListener;
     udpListener _udpListener;
     SinricProQueue_t receiveQueue;
     SinricProQueue_t sendQueue;
@@ -104,7 +104,7 @@ class SinricProClass : public SinricProInterface {
     String responseMessageStr = "";
 };
 
-SinricProDeviceInterface* SinricProClass::getDevice(DeviceId deviceId) {
+SinricProDeviceInterface* SinricProClass::getDevice(const String &deviceId) {
   for (auto& device : devices) {
     if (deviceId == device->getDeviceId()) return device;
   }
@@ -112,48 +112,27 @@ SinricProDeviceInterface* SinricProClass::getDevice(DeviceId deviceId) {
 }
 
 template <typename DeviceType>
-DeviceType& SinricProClass::getDeviceInstance(DeviceId deviceId) { 
+DeviceType& SinricProClass::getDeviceInstance(const String &deviceId) { 
   DeviceType* tmp_device = (DeviceType*) getDevice(deviceId);
   if (tmp_device) return *tmp_device;
   
-  DEBUG_SINRIC("[SinricPro]: Device \"%s\" does not exist. Creating new device\r\n", deviceId.toString().c_str());
+  DEBUG_SINRIC("[SinricPro]: Device \"%s\" does not exist. Creating new device\r\n", deviceId.c_str());
   DeviceType& tmp_deviceInstance = add<DeviceType>(deviceId);
 
   return tmp_deviceInstance;
 }
 
-void SinricProClass::begin(AppKey socketAuthToken, AppSecret signingKey, String serverURL) {
-  bool success = true;
-  if (!socketAuthToken.isValid()) {
-    DEBUG_SINRIC("[SinricPro:begin()]: App-Key \"%s\" is invalid!! Please check your app-key!! SinricPro will not work!\r\n", socketAuthToken.toString().c_str());
-    success = false;
-  }
-  if (!signingKey.isValid()) {
-    DEBUG_SINRIC("[SinricPro:begin()]: App-Secret \"%s\" is invalid!! Please check your app-secret!! SinricPro will not work!\r\n", signingKey.toString().c_str());
-    success = false;
-  }
-
-  if(!success) {
-    _begin = false;
-    return;
-  }
-
-  this->socketAuthToken = socketAuthToken;
-  this->signingKey = signingKey;
+void SinricProClass::begin(const String &appKey, const String &appSecret, const String &serverURL) {
+  this->appKey    = appKey;
+  this->appSecret = appSecret;
   this->serverURL = serverURL;
   _begin = true;
   _udpListener.begin(&receiveQueue);
 }
 
 template <typename DeviceType>
-DeviceType& SinricProClass::add(DeviceId deviceId) {
+DeviceType& SinricProClass::add(const String &deviceId) {
   DeviceType* newDevice = new DeviceType(deviceId);
-  if (DeviceId(deviceId).isValid()){
-    DEBUG_SINRIC("[SinricPro:add()]: Adding device with id \"%s\".\r\n", deviceId.toString().c_str());
-    if (socketAuthToken.isValid() && signingKey.isValid()) _begin = true;
-  } else {
-    DEBUG_SINRIC("[SinricPro:add()]: DeviceId \"%s\" is invalid!! Device will be ignored and will NOT WORK!\r\n", deviceId.toString().c_str());
-  }
   return *newDevice;
 }
 
@@ -166,17 +145,6 @@ void SinricProClass::unregisterDevice(SinricProDeviceInterface *device) {
 }
 
 void SinricProClass::handle() {
-  static bool begin_error = false;
-  if (!_begin) {
-    if (!begin_error) { // print this only once!
-      DEBUG_SINRIC("[SinricPro:handle()]: ERROR! SinricPro.begin() failed or was not called prior to event handler\r\n");
-      DEBUG_SINRIC("[SinricPro:handle()]:    -Reasons include an invalid app-key, invalid app-secret or no valid deviceIds)\r\n");
-      DEBUG_SINRIC("[SinricPro:handle()]:    -SinricPro is disabled! Check earlier log messages for details.\r\n");
-      begin_error = true;
-    }
-    return;
-  }
-
   if (devices.size()) {
     for (auto& device : devices) {
       device->loop();
@@ -192,7 +160,7 @@ void SinricProClass::handle() {
   handleSendQueue();
 }
 
-DynamicJsonDocument SinricProClass::prepareRequest(DeviceId deviceId, const char* action) {
+DynamicJsonDocument SinricProClass::prepareRequest(const String &deviceId, const char* action) {
   DynamicJsonDocument requestMessage(1024);
   JsonObject header = requestMessage.createNestedObject("header");
   header["payloadVersion"] = 2;
@@ -201,7 +169,7 @@ DynamicJsonDocument SinricProClass::prepareRequest(DeviceId deviceId, const char
   JsonObject payload = requestMessage.createNestedObject("payload");
   payload["action"] = action;
   payload["createdAt"] = 0;
-  payload["deviceId"] = deviceId.toString();
+  payload["deviceId"] = deviceId;
   payload["replyToken"] = MessageID().getID();
   payload["type"] = "request";
   payload.createNestedObject("value");
@@ -277,7 +245,7 @@ void SinricProClass::handleReceiveQueue() {
     } else {
       String signature = jsonMessage["signature"]["HMAC"] | "";
       String payload = extractPayload(rawMessage->getMessage());
-      String calculatedSignature = calculateSignature(signingKey.toString().c_str(), payload);
+      String calculatedSignature = calculateSignature(appSecret.c_str(), payload);
       sigMatch = (calculatedSignature == signature);
     }
 
@@ -307,7 +275,7 @@ void SinricProClass::handleSendQueue() {
     DynamicJsonDocument jsonMessage(1024);
     deserializeJson(jsonMessage, rawMessage->getMessage());
     jsonMessage["payload"]["createdAt"] = getTimestamp();
-    signMessage(signingKey.toString(), jsonMessage);
+    signMessage(appSecret, jsonMessage);
 
     String messageStr;
 
@@ -328,7 +296,7 @@ void SinricProClass::handleSendQueue() {
 }
 
 void SinricProClass::connect() {
-  _websocketListener.begin(serverURL, socketAuthToken.toString(), &receiveQueue);
+  _websocketListener.begin(serverURL, appKey, &receiveQueue);
 }
 
 void SinricProClass::stop() {
@@ -409,7 +377,7 @@ DynamicJsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage
 }
 
 
-DynamicJsonDocument SinricProClass::prepareEvent(DeviceId deviceId, const char* action, const char* cause) {
+DynamicJsonDocument SinricProClass::prepareEvent(const String &deviceId, const char* action, const char* cause) {
   DynamicJsonDocument eventMessage(1024);
   JsonObject header = eventMessage.createNestedObject("header");
   header["payloadVersion"] = 2;
@@ -420,7 +388,7 @@ DynamicJsonDocument SinricProClass::prepareEvent(DeviceId deviceId, const char* 
   payload["cause"].createNestedObject("type");
   payload["cause"]["type"] = cause;
   payload["createdAt"] = 0;
-  payload["deviceId"] = deviceId.toString();
+  payload["deviceId"] = deviceId;
   payload["replyToken"] = MessageID().getID();
   payload["type"] = "event";
   payload.createNestedObject("value");

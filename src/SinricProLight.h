@@ -41,7 +41,7 @@ class SinricProLight :  public SinricProDevice,
                         friend class ColorController<SinricProLight>;
                         friend class ColorTemperatureController<SinricProLight>;
   public:
-    SinricProLight(const DeviceId &deviceId) : SinricProDevice(deviceId, "LIGHT") {}
+    SinricProLight(const String &deviceId) : SinricProDevice(deviceId, "LIGHT") {}
 };
 
 } // SINRICPRO_NAMESPACE

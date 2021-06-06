@@ -40,7 +40,7 @@ class SinricProWindowAC :  public SinricProDevice,
                            friend class RangeController<SinricProWindowAC>;
                            friend class ThermostatController<SinricProWindowAC>;
   public:
-	  SinricProWindowAC(const DeviceId &deviceId) : SinricProDevice(deviceId, "AC_UNIT") {}
+	  SinricProWindowAC(const String &deviceId) : SinricProDevice(deviceId, "AC_UNIT") {}
 };
 
 } // SINRICPRO_NAMESPACE

@@ -26,7 +26,7 @@ class SinricProSwitch : public SinricProDevice,
                         friend class SettingController<SinricProSwitch>;
                         friend class PowerStateController<SinricProSwitch>;
   public:
-    SinricProSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "SWITCH") {};
+    SinricProSwitch(const String &deviceId) : SinricProDevice(deviceId, "SWITCH") {};
 };
 
 } // SINRICPRO_NAMESPACE

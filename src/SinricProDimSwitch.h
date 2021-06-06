@@ -29,7 +29,7 @@ class SinricProDimSwitch :  public SinricProDevice,
                             friend class PowerStateController<SinricProDimSwitch>;
                             friend class PowerLevelController<SinricProDimSwitch>;
   public:
-    SinricProDimSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "DIMMABLE_SWITCH"){};
+    SinricProDimSwitch(const String &deviceId) : SinricProDevice(deviceId, "DIMMABLE_SWITCH"){};
 };
 
 } // SINRICPRO_NAMESPACE

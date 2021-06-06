@@ -27,6 +27,8 @@
 #include "SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
+using wsConnectedCallback    = std::function<void(void)>;
+using wsDisconnectedCallback = std::function<void(void)>;
 
 #if !defined(WEBSOCKETS_VERSION_INT) || (WEBSOCKETS_VERSION_INT < 2003005)
 #error "Wrong WebSockets Version! Minimum Version is 2.3.5!!!"
@@ -37,25 +39,19 @@ class AdvWebSocketsClient : public WebSocketsClient {
     void onPong(std::function<void(uint32_t)> cb) { _rttCb = cb; }
   protected:
     void messageReceived(WSclient_t * client, WSopcode_t opcode, uint8_t * payload, size_t length, bool fin) {
-      if ((opcode == WSop_pong)&& (_rttCb)) {
-        _rttCb(millis()-_client.lastPing);
-      }
+      if ((opcode == WSop_pong) && (_rttCb)) _rttCb( millis() - _client.lastPing );
       WebSocketsClient::messageReceived(client, opcode, payload, length, fin);
     }
   private:
     std::function<void(uint32_t)> _rttCb = nullptr;
 };
 
-class websocketListener
-{
+class WebsocketListener {
   public:
-    typedef std::function<void(void)> wsConnectedCallback;
-    typedef std::function<void(void)> wsDisconnectedCallback;
+    WebsocketListener();
+    ~WebsocketListener();
 
-    websocketListener();
-    ~websocketListener();
-
-    void begin(String server, String socketAuthToken, SinricProQueue_t* receiveQueue);
+    void begin(String server, String appKey, SinricProQueue_t* receiveQueue);
     void handle();
     void stop();
     bool isConnected() { return _isConnected; }
@@ -81,11 +77,11 @@ class websocketListener
     void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
     void setExtraHeaders();
     SinricProQueue_t* receiveQueue;
-    String socketAuthToken;
+    String appKey;
 };
 
-void websocketListener::setExtraHeaders() {
-  String headers  = "appkey:" + socketAuthToken + "\r\n";
+void WebsocketListener::setExtraHeaders() {
+  String headers  = "appkey:" + appKey + "\r\n";
          headers += "restoredevicestates:" + String(restoreDeviceStates?"true":"false") + "\r\n";
          headers += "ip:" + WiFi.localIP().toString() + "\r\n";
          headers += "mac:" + WiFi.macAddress() + "\r\n";
@@ -100,18 +96,20 @@ void websocketListener::setExtraHeaders() {
   webSocket.setExtraHeaders(headers.c_str());
 }
 
-websocketListener::websocketListener() : _isConnected(false) {}
+WebsocketListener::WebsocketListener() : _isConnected(false) {
 
-websocketListener::~websocketListener() {
+}
+
+WebsocketListener::~WebsocketListener() {
   stop();
 }
 
-void websocketListener::begin(String server, String socketAuthToken, SinricProQueue_t* receiveQueue) {
+void WebsocketListener::begin(String server, String appKey, SinricProQueue_t* receiveQueue) {
   if (_begin) return;
   _begin = true;
 
   this->receiveQueue = receiveQueue;
-  this->socketAuthToken = socketAuthToken;
+  this->appKey = appKey;
 
 #ifdef WEBSOCKET_SSL
   DEBUG_SINRIC("[SinricPro:Websocket]: Connecting to WebSocket Server using SSL (%s)\r\n", server.c_str());
@@ -119,12 +117,12 @@ void websocketListener::begin(String server, String socketAuthToken, SinricProQu
   DEBUG_SINRIC("[SinricPro:Websocket]: Connecting to WebSocket Server (%s)\r\n", server.c_str());
 #endif
 
-  if (_isConnected) {
-    stop();
-  }
+  if (_isConnected) stop();
+
   setExtraHeaders();
-  webSocket.onEvent(std::bind(&websocketListener::webSocketEvent, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  webSocket.onEvent(std::bind(&WebsocketListener::webSocketEvent, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
+
 #ifdef WEBSOCKET_SSL
   webSocket.beginSSL(server.c_str(), SINRICPRO_SERVER_SSL_PORT, "/");
 #else
@@ -132,47 +130,47 @@ void websocketListener::begin(String server, String socketAuthToken, SinricProQu
 #endif
 }
 
-void websocketListener::handle() {
+void WebsocketListener::handle() {
   webSocket.loop();
 }
 
-void websocketListener::stop() {
-  if (_isConnected) {
-    webSocket.disconnect();
-  }
+void WebsocketListener::stop() {
+  if (_isConnected) webSocket.disconnect();
   _begin = false;
 }
 
-void websocketListener::sendMessage(String &message) {
+void WebsocketListener::sendMessage(String &message) {
   webSocket.sendTXT(message);
 }
  
-void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t length)
-{
+void WebsocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
   (void) length;
+
   switch (type) {
-    case WStype_DISCONNECTED:
-      if (_isConnected) {
-        DEBUG_SINRIC("[SinricPro:Websocket]: disconnected\r\n");
-        if (_wsDisconnectedCb) _wsDisconnectedCb();
-        _isConnected = false;
-      }
-      break;
-    case WStype_CONNECTED:
-      _isConnected = true;
-      DEBUG_SINRIC("[SinricPro:Websocket]: connected\r\n");
-      if (_wsConnectedCb) _wsConnectedCb();
-      if (restoreDeviceStates) {
-        restoreDeviceStates=false; 
-        setExtraHeaders();
-      }
-      break;
-    case WStype_TEXT: {
-      SinricProMessage* request = new SinricProMessage(IF_WEBSOCKET, (char*)payload);
-      DEBUG_SINRIC("[SinricPro:Websocket]: receiving data\r\n");
-      receiveQueue->push(request);
-      break;
-    }
+    
+    case WStype_DISCONNECTED:   if (_isConnected) {
+                                  DEBUG_SINRIC("[SinricPro:Websocket]: disconnected\r\n");
+                                  if (_wsDisconnectedCb) _wsDisconnectedCb();
+                                  _isConnected = false;
+                                }
+                                break;
+
+    
+    case WStype_CONNECTED:      _isConnected = true;
+                                DEBUG_SINRIC("[SinricPro:Websocket]: connected\r\n");
+                                if (_wsConnectedCb) _wsConnectedCb();
+                                if (restoreDeviceStates) {
+                                  restoreDeviceStates=false; 
+                                  setExtraHeaders();
+                                }
+                                break;
+
+    case WStype_TEXT:           {
+                                  SinricProMessage* request = new SinricProMessage(IF_WEBSOCKET, (char*)payload);
+                                  DEBUG_SINRIC("[SinricPro:Websocket]: receiving data\r\n");
+                                  receiveQueue->push(request);
+                                  break;
+                                }
     default: break;
   }
 }

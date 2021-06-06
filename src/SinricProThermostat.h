@@ -38,7 +38,7 @@ class SinricProThermostat :  public SinricProDevice,
                              friend class ThermostatController<SinricProThermostat>;
                              friend class TemperatureSensor<SinricProThermostat>;
   public:
-	  SinricProThermostat(const DeviceId &deviceId) : SinricProDevice(deviceId, "THERMOSTAT") {}
+	  SinricProThermostat(const String &deviceId) : SinricProDevice(deviceId, "THERMOSTAT") {}
 };
 
 } // SINRICPRO_NAMESPACE

@@ -10,7 +10,6 @@
 #include <map>
 #include "SinricProRequest.h"
 #include "SinricProDeviceInterface.h"
-#include "SinricProId.h"
 
 #include "SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
@@ -18,11 +17,11 @@ namespace SINRICPRO_NAMESPACE {
 class SinricProDevice : public SinricProDeviceInterface {
   friend class SinricProClass;
 public:
-                              SinricProDevice(const DeviceId &deviceId, const String &productType = "CUSTOM");
+  SinricProDevice(const String &deviceId, const String &productType = "CUSTOM");
   virtual                     ~SinricProDevice();
-  bool                        operator==(const DeviceId& other) const;
+  bool                        operator==(const String& other) const;
 
-  virtual const DeviceId      getDeviceId() const;
+  virtual const String        getDeviceId() const;
   virtual const String        getProductType() const;
 protected:
   void                        registerRequestHandler(const SinricProRequestHandler &requestHandler);
@@ -33,14 +32,14 @@ protected:
   virtual void                loop() {};
 
   bool                        handleRequest(SinricProRequest &request);
-  DeviceId deviceId;
+  String deviceId;
   std::vector<SinricProRequestHandler> requestHandlers;
 
 private: 
   String productType;
 };
 
-SinricProDevice::SinricProDevice(const DeviceId &deviceId, const String &productType) 
+SinricProDevice::SinricProDevice(const String &deviceId, const String &productType) 
 : deviceId(deviceId)
 , productType(productType) {
   SinricPro.registerDevice(this);
@@ -50,11 +49,11 @@ SinricProDevice::~SinricProDevice() {
   SinricPro.unregisterDevice(this);
 }
 
-const DeviceId SinricProDevice::getDeviceId() const {
+const String SinricProDevice::getDeviceId() const {
   return deviceId;
 }
 
-bool SinricProDevice::operator==(const DeviceId &other) const { 
+bool SinricProDevice::operator==(const String &other) const { 
   return other == deviceId; 
 }
 

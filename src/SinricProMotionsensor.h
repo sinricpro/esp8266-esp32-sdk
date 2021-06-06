@@ -29,7 +29,7 @@ class SinricProMotionsensor : public SinricProDevice,
                               friend class PowerStateController<SinricProMotionsensor>;
                               friend class MotionSensor<SinricProMotionsensor>;
   public:
-    SinricProMotionsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "MOTION_SENSOR") {}
+    SinricProMotionsensor(const String &deviceId) : SinricProDevice(deviceId, "MOTION_SENSOR") {}
 };
 
 } // SINRICPRO_NAMESPACE

@@ -9,7 +9,8 @@ namespace SINRICPRO_NAMESPACE {
 /**
  * @ingroup Callbacks
  * @param deviceId `const String&`  deviceId
- * @param state    `bool&`          state (`true`: on / `false`:off)
+ * @param[in] state true:on / false:off
+ * @param[out] state true:device turned on / false:device turned off
  * @return true     request was handled
  * @return false    request could not be handled
  * #### Example

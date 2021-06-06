@@ -29,7 +29,7 @@ class SinricProFanUS :  public SinricProDevice,
                         friend class PowerStateController<SinricProFanUS>;
                         friend class RangeController<SinricProFanUS>;
   public:
-	  SinricProFanUS(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN") {}
+	  SinricProFanUS(const String &deviceId) : SinricProDevice(deviceId, "FAN") {}
 };
 
 } // SINRICPRO_NAMESPACE
