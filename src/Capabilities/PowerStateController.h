@@ -6,8 +6,21 @@
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
+/**
+ * @ingroup Callbacks
+ * @param deviceId `const String&`  deviceId
+ * @param state    `bool&`          state (`true`: on / `false`:off)
+ * @return true     request was handled
+ * @return false    request could not be handled
+ * #### Example
+ * @include callbacks/onPowerState.cpp
+ */
 using PowerStateCallback = std::function<bool(const String &, bool &)>;
 
+/**
+ * @brief PowerStateController
+ * @ingroup Capabilities
+ */
 template <typename T>
 class PowerStateController {
   public:
@@ -32,6 +45,10 @@ PowerStateController<T>::PowerStateController()
   device->registerRequestHandler(std::bind(&PowerStateController<T>::handlePowerStateController, this, std::placeholders::_1));
 }
 
+/**
+ * @brief Set callback function for PowerState request
+ * @param cb Function pointer to a @ref PowerStateCallback
+ */
 template <typename T>
 void PowerStateController<T>::onPowerState(PowerStateCallback cb) {
   powerStateCallback = cb;

@@ -1,3 +1,13 @@
+/**
+ * @file ToggleController.h
+ * @author Boris Jäger (boris.jaeger@sinric.com)
+ * @brief 
+ * @version 3.0.0
+ * @date 2021-06-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #pragma once
 
 #include "../SinricProRequest.h"
@@ -6,8 +16,22 @@
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
+/**
+ * @ingroup Callbacks
+ * @param deviceId `const String&`  deviceId
+ * @param instance `const String&`  instanceId
+ * @param state    `bool&`          state (`true`: on / `false`:off)
+ * @return true     request was handled
+ * @return false    request could not be handled
+ * #### Example
+ * @include callbacks/onToggleState.cpp
+ */
 using GenericToggleStateCallback = std::function<bool(const String &, const String&, bool &)>;
 
+/**
+ * @brief ToggleController
+ * @ingroup Capabilities
+ */
 template <typename T>
 class ToggleController {
   public:
@@ -31,6 +55,11 @@ ToggleController<T>::ToggleController() {
   device->registerRequestHandler(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); 
 }
 
+/**
+ * @brief Set onToggleStateCallback 
+ * @param instance The InstanceID to which the callback should be attached.
+ * @param cb       Function pointer to a @ref GenericToggleStateCallback
+ */
 template <typename T>
 void ToggleController<T>::onToggleState(const String& instance, GenericToggleStateCallback cb) {
   genericToggleStateCallback[instance] = cb;

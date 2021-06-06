@@ -7,9 +7,36 @@
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
+/**
+ * @ingroup Callbacks
+ * @param deviceId deviceId
+ * @param brightness Value [0..100]
+ * @return true     request was handled
+ * @return false    request could not be handled
+ * #### Example
+ * @include callbacks/onBrightness.cpp
+ */
 using BrightnessCallback       = std::function<bool(const String &, int &)>;
+
+/**
+ * @ingroup Callbacks
+ * @param deviceId deviceId
+ * @param brightnessDelta value between [-100..+100] 
+ * @return true     request was handled
+ * @return false    request could not be handled
+ * #### Example
+ * @include callbacks/onAdjustBrightness.cpp
+ */
 using AdjustBrightnessCallback = std::function<bool(const String &, int &)>;
 
+/**
+ * @brief BrightnessController
+ * @ingroup Capabilities
+ * Supports
+ * @ref onBrightness
+ * @ref onAdjustBrightness
+ * @ref sendBrightnessEvent
+ */
 template <typename T>
 class BrightnessController {
   public:
@@ -38,11 +65,19 @@ BrightnessController<T>::BrightnessController()
   device->registerRequestHandler(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); 
 }
 
+/**
+ * @brief Set callback function for Brightness request
+ * @param cb Function pointer to a @ref BrightnessCallback
+ */
 template <typename T>
 void BrightnessController<T>::onBrightness(BrightnessCallback cb) {
   brightnessCallback = cb;
 }
 
+/**
+ * @brief Set callback function for adjust brightness request
+ * @param cb Function pointer to an @ref AdjustBrightnessCallback
+ */
 template <typename T>
 void BrightnessController<T>::onAdjustBrightness(AdjustBrightnessCallback cb) {
   adjustBrightnessCallback = cb;
@@ -62,7 +97,13 @@ bool BrightnessController<T>::onAdjustBrightness(int &brightnessDelta) {
   return false;
 }
 
-
+/**
+ * @brief Update the brightness on SinricPro Server
+ * @param brightness new brightness level
+ * @param cause default "PHYSICAL_INTERACTION"
+ * @return true event was sent to SinricProServer
+ * @return false event could not be send to SinricProServer
+ */
 template <typename T>
 bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) {
   if (event_limiter) return false;

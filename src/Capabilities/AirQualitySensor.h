@@ -6,6 +6,12 @@
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
+/**
+ * @brief AirQualitySensor
+ * @ingroup Capabilities
+ * Supports
+ * - @ref sendAirQualityEvent
+ */
 template <typename T>
 class AirQualitySensor {
   public:
@@ -19,6 +25,16 @@ template <typename T>
 AirQualitySensor<T>::AirQualitySensor()
 : event_limiter(EVENT_LIMIT_SENSOR_VALUE) {}
 
+/**
+ * @brief Update the AirQuality on SinricPro Server
+ * 
+ * @param pm1 pm1 level
+ * @param pm2_5  pm2.5 level
+ * @param pm10 pm10 level
+ * @param cause default: "PERIODIC_POLL"
+ * @return true event was sent to SinricProServer
+ * @return false event could not be send to SinricProServer
+ */
 template <typename T>
 bool AirQualitySensor<T>::sendAirQualityEvent(int pm1, int pm2_5, int pm10, String cause) {
   if (event_limiter) return false;
