@@ -2,9 +2,15 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(POWERLEVEL, setPowerLevel);
+FSTR(POWERLEVEL, powerLevel);
+FSTR(POWERLEVEL, adjustPowerLevel);
+FSTR(POWERLEVEL, powerLevelDelta);
 
 using SetPowerLevelCallback    = std::function<bool(const String &, int &)>;
 using AdjustPowerLevelCallback = std::function<bool(const String &, int &)>;
@@ -17,7 +23,7 @@ class PowerLevelController {
     void onPowerLevel(SetPowerLevelCallback cb);
     void onAdjustPowerLevel(AdjustPowerLevelCallback cb);
 
-    bool sendPowerLevelEvent(int powerLevel, String cause = "PHYSICAL_INTERACTION");
+    bool sendPowerLevelEvent(int powerLevel, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     virtual bool onPowerLevel(int &value);
@@ -66,9 +72,9 @@ bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause) 
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setPowerLevel", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["powerLevel"] = powerLevel;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERLEVEL_setPowerLevel, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_POWERLEVEL_powerLevel] = powerLevel;
   return device->sendEvent(eventMessage);
 }
 
@@ -76,16 +82,16 @@ template <typename T>
 bool PowerLevelController<T>::handlePowerLevelController(SinricProRequest &request) {
   bool success = false;
 
-  if (request.action == "setPowerLevel") {
-    int powerLevel = request.request_value["powerLevel"];
+  if (request.action == FSTR_POWERLEVEL_setPowerLevel) {
+    int powerLevel = request.request_value[FSTR_POWERLEVEL_powerLevel];
     success = onPowerLevel(powerLevel);
-    request.response_value["powerLevel"] = powerLevel;
+    request.response_value[FSTR_POWERLEVEL_powerLevel] = powerLevel;
   }
 
-  if (request.action == "adjustPowerLevel") {
-    int powerLevelDelta = request.request_value["powerLevelDelta"];
+  if (request.action == FSTR_POWERLEVEL_adjustPowerLevel) {
+    int powerLevelDelta = request.request_value[FSTR_POWERLEVEL_powerLevelDelta];
     success = onAdjustPowerLevel(powerLevelDelta);
-    request.response_value["powerLevel"] = powerLevelDelta;
+    request.response_value[FSTR_POWERLEVEL_powerLevel] = powerLevelDelta;
   }
   return success;
 }

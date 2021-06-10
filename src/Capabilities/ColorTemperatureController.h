@@ -2,9 +2,15 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(COLORTEMPERATURE, colorTemperature);
+FSTR(COLORTEMPERATURE, setColorTemperature);
+FSTR(COLORTEMPERATURE, increaseColorTemperature);
+FSTR(COLORTEMPERATURE, decreaseColorTemperature);
 
 using ColorTemperatureCallback = std::function<bool(const String &, int &)>;
 using IncreaseColorTemperatureCallback = std::function<bool(const String &, int &)>;
@@ -19,7 +25,7 @@ class ColorTemperatureController {
     void onIncreaseColorTemperature(IncreaseColorTemperatureCallback cb);
     void onDecreaseColorTemperature(DecreaseColorTemperatureCallback cb);
 
-    bool sendColorTemperatureEvent(int colorTemperature, String cause = "PHYSICAL_INTERACTION");
+    bool sendColorTemperatureEvent(int colorTemperature, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     virtual bool onColorTemperature(int &colorTemperature);
@@ -83,9 +89,9 @@ bool ColorTemperatureController<T>::sendColorTemperatureEvent(int colorTemperatu
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setColorTemperature", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["colorTemperature"] = colorTemperature;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_COLORTEMPERATURE_setColorTemperature, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_COLORTEMPERATURE_colorTemperature] = colorTemperature;
   return device->sendEvent(eventMessage);
 }
 
@@ -93,22 +99,22 @@ template <typename T>
 bool ColorTemperatureController<T>::handleColorTemperatureController(SinricProRequest &request) {
   bool success = false;
 
-  if (request.action == "setColorTemperature") {
-    int colorTemperature = request.request_value["colorTemperature"];
+  if (request.action == FSTR_COLORTEMPERATURE_setColorTemperature) {
+    int colorTemperature = request.request_value[FSTR_COLORTEMPERATURE_colorTemperature];
     success = onColorTemperature(colorTemperature);
-    request.response_value["colorTemperature"] = colorTemperature;
+    request.response_value[FSTR_COLORTEMPERATURE_colorTemperature] = colorTemperature;
   }
 
-  if (request.action == "increaseColorTemperature") {
+  if (request.action == FSTR_COLORTEMPERATURE_increaseColorTemperature) {
     int colorTemperature = 1;
     success = onIncreaseColorTemperature(colorTemperature);
-    request.response_value["colorTemperature"] = colorTemperature;
+    request.response_value[FSTR_COLORTEMPERATURE_colorTemperature] = colorTemperature;
   }
 
-  if (request.action == "decreaseColorTemperature") {
+  if (request.action == FSTR_COLORTEMPERATURE_decreaseColorTemperature) {
     int colorTemperature = -1;
     success = onDecreaseColorTemperature(colorTemperature);
-    request.response_value["colorTemperature"] = colorTemperature;
+    request.response_value[FSTR_COLORTEMPERATURE_colorTemperature] = colorTemperature;
   }
 
   return success;

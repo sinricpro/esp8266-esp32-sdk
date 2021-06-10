@@ -2,9 +2,13 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(MUTE, mute);
+FSTR(MUTE, setMute);
 
 using MuteCallback = std::function<bool(const String &, bool &)>;
 
@@ -14,7 +18,7 @@ class MuteController {
     MuteController();
 
     void onMute(MuteCallback cb);
-    bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION");
+    bool sendMuteEvent(bool mute, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
   
   protected:
     virtual bool onMute(bool &muteState);
@@ -49,9 +53,9 @@ bool MuteController<T>::sendMuteEvent(bool mute, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setMute", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["mute"] = mute;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MUTE_setMute, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_MUTE_mute] = mute;
   return device->sendEvent(eventMessage);
 }
 
@@ -59,10 +63,10 @@ template <typename T>
 bool MuteController<T>::handleMuteController(SinricProRequest &request) {
   bool success = false;
 
-  if (request.action == "setMute") {
-    bool muteState = request.request_value["mute"];
+  if (request.action == FSTR_MUTE_setMute) {
+    bool muteState = request.request_value[FSTR_MUTE_mute];
     success = onMute(muteState);
-    request.response_value["mute"] = muteState;
+    request.response_value[FSTR_MUTE_mute] = muteState;
     return success;
   }
   return success;

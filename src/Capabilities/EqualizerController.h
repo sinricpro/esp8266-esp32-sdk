@@ -2,9 +2,21 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(EQUALIZER, setBands);
+FSTR(EQUALIZER, bands);
+FSTR(EQUALIZER, name);
+FSTR(EQUALIZER, value);
+FSTR(EQUALIZER, level);
+FSTR(EQUALIZER, adjustBands);
+FSTR(EQUALIZER, levelDelta);
+FSTR(EQUALIZER, levelDirection);
+FSTR(EQUALIZER, DOWN);
+FSTR(EQUALIZER, resetBands);
 
 using SetBandsCallback    = std::function<bool(const String &, const String &, int &)>;
 using AdjustBandsCallback = std::function<bool(const String &, const String &, int &)>;
@@ -19,7 +31,7 @@ class EqualizerController {
     void onAdjustBands(AdjustBandsCallback cb);
     void onResetBands(ResetBandsCallback cb);
 
-    bool sendBandsEvent(String bands, int level, String cause = "PHYSICAL_INTERACTION");
+    bool sendBandsEvent(String bands, int level, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     virtual bool onSetBands(const String& bands, int &level);
@@ -84,12 +96,12 @@ bool EqualizerController<T>::sendBandsEvent(String bands, int level, String caus
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setBands", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  JsonArray event_value_bands = event_value.createNestedArray("bands");
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_EQUALIZER_setBands, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  JsonArray event_value_bands = event_value.createNestedArray(FSTR_EQUALIZER_bands);
   JsonObject event_bands = event_value_bands.createNestedObject();
-  event_bands["name"] = bands;
-  event_bands["value"] = level;
+  event_bands[FSTR_EQUALIZER_name] = bands;
+  event_bands[FSTR_EQUALIZER_value] = level;
   return device->sendEvent(eventMessage);
 }
 
@@ -97,49 +109,49 @@ template <typename T>
 bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request) {
   bool success = false;
 
-  if (request.action == "setBands") {
-    JsonArray bands_array = request.request_value["bands"];
-    JsonArray response_value_bands = request.response_value.createNestedArray("bands");
+  if (request.action == FSTR_EQUALIZER_setBands) {
+    JsonArray bands_array = request.request_value[FSTR_EQUALIZER_bands];
+    JsonArray response_value_bands = request.response_value.createNestedArray(FSTR_EQUALIZER_bands);
 
     for (size_t i = 0; i < bands_array.size(); i++) {
-      int level = bands_array[i]["level"] | 0;
-      String bandsName = bands_array[i]["name"] | "";
+      int level = bands_array[i][FSTR_EQUALIZER_level] | 0;
+      String bandsName = bands_array[i][FSTR_EQUALIZER_name] | "";
       success = onSetBands(bandsName, level);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
-      response_value_bands_i["name"] = bandsName;
-      response_value_bands_i["level"] = level;
+      response_value_bands_i[FSTR_EQUALIZER_name] = bandsName;
+      response_value_bands_i[FSTR_EQUALIZER_level] = level;
     }
     return success;
   }
 
-  if (request.action == "adjustBands") {
-    JsonArray bands_array = request.request_value["bands"];
-    JsonArray response_value_bands = request.response_value.createNestedArray("bands");
+  if (request.action == FSTR_EQUALIZER_adjustBands) {
+    JsonArray bands_array = request.request_value[FSTR_EQUALIZER_bands];
+    JsonArray response_value_bands = request.response_value.createNestedArray(FSTR_EQUALIZER_bands);
 
     for (size_t i = 0; i < bands_array.size(); i++)  {
-      int levelDelta = bands_array[i]["levelDelta"] | 1;
-      String direction = bands_array[i]["levelDirection"];
-      if (direction == "DOWN") levelDelta *= -1;
-      String bandsName = bands_array[i]["name"] | "";
+      int levelDelta = bands_array[i][FSTR_EQUALIZER_levelDelta] | 1;
+      String direction = bands_array[i][FSTR_EQUALIZER_levelDirection];
+      if (direction == FSTR_EQUALIZER_DOWN) levelDelta *= -1;
+      String bandsName = bands_array[i][FSTR_EQUALIZER_name] | "";
       success = onAdjustBands(bandsName, levelDelta);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
-      response_value_bands_i["name"] = bandsName;
-      response_value_bands_i["level"] = levelDelta;
+      response_value_bands_i[FSTR_EQUALIZER_name] = bandsName;
+      response_value_bands_i[FSTR_EQUALIZER_level] = levelDelta;
     }
     return success;
   }
 
-  if (request.action == "resetBands") {
-    JsonArray bands_array = request.request_value["bands"];
-    JsonArray response_value_bands = request.response_value.createNestedArray("bands");
+  if (request.action == FSTR_EQUALIZER_resetBands) {
+    JsonArray bands_array = request.request_value[FSTR_EQUALIZER_bands];
+    JsonArray response_value_bands = request.response_value.createNestedArray(FSTR_EQUALIZER_bands);
 
     for (size_t i = 0; i < bands_array.size(); i++) {
       int level = 0;
-      String bandsName = bands_array[i]["name"] | "";
+      String bandsName = bands_array[i][FSTR_EQUALIZER_name] | "";
       success = onResetBands(bandsName, level);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
-      response_value_bands_i["name"] = bandsName;
-      response_value_bands_i["level"] = level;
+      response_value_bands_i[FSTR_EQUALIZER_name] = bandsName;
+      response_value_bands_i[FSTR_EQUALIZER_level] = level;
     }
     return success;
   }

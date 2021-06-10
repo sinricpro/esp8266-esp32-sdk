@@ -2,9 +2,13 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(MODE, setMode);
+FSTR(MODE, mode);
 
 using ModeCallback = std::function<bool(const String &, String &)>;
 using GenericModeCallback = std::function<bool(const String &, const String &, String &)>;
@@ -16,8 +20,8 @@ class ModeController {
 
     void onSetMode(ModeCallback cb);
     void onSetMode(const String& instance, GenericModeCallback cb);
-    bool sendModeEvent(String mode, String cause = "PHYSICAL_INTERACTION");
-    bool sendModeEvent(String instance, String mode, String cause = "PHYSICAL_INTERACTION");
+    bool sendModeEvent(String mode, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
+    bool sendModeEvent(String instance, String mode, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     virtual bool onSetMode(String& mode);
@@ -67,9 +71,9 @@ bool ModeController<T>::sendModeEvent(String mode, String cause) {
   if (event_limiter) return false;
   T *device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setMode", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["mode"] = mode;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MODE_setMode, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_MODE_mode] = mode;
   return device->sendEvent(eventMessage);
 }
 
@@ -79,27 +83,27 @@ bool ModeController<T>::sendModeEvent(String instance, String mode, String cause
   if (generic_event_limiter[instance]) return false;
   T *device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setMode", cause.c_str());
-  eventMessage["payload"]["instanceId"] = instance;
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["mode"] = mode;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MODE_setMode, cause.c_str());
+  eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_MODE_mode] = mode;
   return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool ModeController<T>::handleModeController(SinricProRequest &request) {
   bool success = false;
-  if (request.action != "setMode") return false;
-  String mode = request.request_value["mode"] | "";
+  if (request.action != FSTR_MODE_setMode) return false;
+  String mode = request.request_value[FSTR_MODE_mode] | "";
 
   if (request.instance != "") {
     success = onSetMode(request.instance, mode);
-    request.response_value["mode"] = mode;
+    request.response_value[FSTR_MODE_mode] = mode;
     return success;
 
   } else {
     success = onSetMode(mode);
-    request.response_value["mode"] = mode;
+    request.response_value[FSTR_MODE_mode] = mode;
     return success;
   }
   

@@ -2,9 +2,15 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(POWERSTATE, state);
+FSTR(POWERSTATE, On);
+FSTR(POWERSTATE, Off);
+FSTR(POWERSTATE, setPowerState);
 
 /**
  * @ingroup Callbacks
@@ -28,7 +34,7 @@ class PowerStateController {
     PowerStateController();
 
     void onPowerState(PowerStateCallback cb);
-    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendPowerStateEvent(bool state, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     virtual bool onPowerState(bool &state);
@@ -67,9 +73,9 @@ bool PowerStateController<T>::sendPowerStateEvent(bool state, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setPowerState", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state ? "On" : "Off";
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERSTATE_setPowerState, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_POWERSTATE_state] = state ? FSTR_POWERSTATE_On : FSTR_POWERSTATE_Off;
   return device->sendEvent(eventMessage);
 }
 
@@ -77,10 +83,10 @@ template <typename T>
 bool PowerStateController<T>::handlePowerStateController(SinricProRequest &request) {
   bool success = false;
 
-  if (request.action == "setPowerState")  {
-    bool powerState = request.request_value["state"] == "On" ? true : false;
+  if (request.action == FSTR_POWERSTATE_setPowerState)  {
+    bool powerState = request.request_value[FSTR_POWERSTATE_state] == FSTR_POWERSTATE_On ? true : false;
     success = onPowerState(powerState);
-    request.response_value["state"] = powerState ? "On" : "Off";
+    request.response_value[FSTR_POWERSTATE_state] = powerState ? FSTR_POWERSTATE_On : FSTR_POWERSTATE_Off;
     return success;
   }
   return success;

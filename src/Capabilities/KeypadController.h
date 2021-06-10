@@ -2,9 +2,13 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(KEYPAD, SendKeystroke);
+FSTR(KEYPAD, keystroke);
 
 using KeystrokeCallback = std::function<bool(const String &, String &)>;
 
@@ -45,11 +49,11 @@ bool KeypadController<T>::onKeystroke(String &keyStroke) {
 
 template <typename T>
 bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
-  if (request.action != "SendKeystroke") return false;
+  if (request.action != FSTR_KEYPAD_SendKeystroke) return false;
 
-  String keystroke = request.request_value["keystroke"] | "";
+  String keystroke = request.request_value[FSTR_KEYPAD_keystroke] | "";
   bool success = onKeystroke(keystroke);
-  request.response_value["keystroke"] = keystroke;
+  request.response_value[FSTR_KEYPAD_keystroke] = keystroke;
   return success;
 }
 

@@ -3,9 +3,15 @@
 #include "../SinricProRequest.h"
 #include "../SinricProConfig.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(BRIGHTNESS, setBrightness);
+FSTR(BRIGHTNESS, brightness);
+FSTR(BRIGHTNESS, adjustBrightness);
+FSTR(BRIGHTNESS, brightnessDelta);
 
 /**
  * @ingroup Callbacks
@@ -45,7 +51,7 @@ class BrightnessController {
     void onBrightness(BrightnessCallback cb);
     void onAdjustBrightness(AdjustBrightnessCallback cb);
 
-    bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
+    bool sendBrightnessEvent(int brightness, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     virtual bool onBrightness(int &brightness);
@@ -109,9 +115,9 @@ bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) 
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setBrightness", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["brightness"] = brightness;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_BRIGHTNESS_setBrightness, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_BRIGHTNESS_brightness] = brightness;
   return device->sendEvent(eventMessage);
 }
 
@@ -119,16 +125,16 @@ template <typename T>
 bool BrightnessController<T>::handleBrightnessController(SinricProRequest &request) {
   bool success = false;
 
-  if (request.action == "setBrightness") {
-    int brightness = request.request_value["brightness"];
+  if (request.action == FSTR_BRIGHTNESS_setBrightness) {
+    int brightness = request.request_value[FSTR_BRIGHTNESS_brightness];
     success = onBrightness(brightness);
-    request.response_value["brightness"] = brightness;
+    request.response_value[FSTR_BRIGHTNESS_brightness] = brightness;
   }
 
-  if (request.action == "adjustBrightness") {
-    int brightnessDelta = request.request_value["brightnessDelta"];
+  if (request.action == FSTR_BRIGHTNESS_adjustBrightness) {
+    int brightnessDelta = request.request_value[FSTR_BRIGHTNESS_brightnessDelta];
     success = onAdjustBrightness(brightnessDelta);
-    request.response_value["brightness"] = brightnessDelta;
+    request.response_value[FSTR_BRIGHTNESS_brightness] = brightnessDelta;
   }
 
   return success;

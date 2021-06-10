@@ -2,9 +2,14 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(PERCENTAGE, setPercentage);
+FSTR(PERCENTAGE, percentage);
+FSTR(PERCENTAGE, adjustPercentage);
 
 using SetPercentageCallback = std::function<bool(const String &, int &)>;
 using AdjustPercentageCallback = std::function<bool(const String &, int &)>;
@@ -16,7 +21,7 @@ class PercentageController {
 
     void onSetPercentage(SetPercentageCallback cb);
     void onAdjustPercentage(AdjustPercentageCallback cb);
-    bool sendSetPercentageEvent(int percentage, String cause = F("PHYSICAL_INTERACTION"));
+    bool sendSetPercentageEvent(int percentage, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     virtual bool onSetPercentage(int &percentage);
@@ -66,9 +71,9 @@ bool PercentageController<T>::sendSetPercentageEvent(int percentage, String caus
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setPercentage", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["percentage"] = percentage;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_PERCENTAGE_setPercentage, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_PERCENTAGE_percentage] = percentage;
   return device->sendEvent(eventMessage);
 }
 
@@ -76,17 +81,17 @@ template <typename T>
 bool PercentageController<T>::handlePercentageController(SinricProRequest &request) {
   bool success = false;
 
-  if (request.action == "setPercentage") {
-    int percentage = request.request_value["percentage"];
+  if (request.action == FSTR_PERCENTAGE_setPercentage) {
+    int percentage = request.request_value[FSTR_PERCENTAGE_percentage];
     success = onSetPercentage(percentage);
-    request.response_value["percentage"] = percentage;
+    request.response_value[FSTR_PERCENTAGE_percentage] = percentage;
     return success;
   }
 
-  if (request.action == "adjustPercentage") {
-    int percentageDelta = request.request_value["percentage"];
+  if (request.action == FSTR_PERCENTAGE_adjustPercentage) {
+    int percentageDelta = request.request_value[FSTR_PERCENTAGE_percentage];
     success = onAdjustPercentage(percentageDelta);
-    request.response_value["percentage"] = percentageDelta;
+    request.response_value[FSTR_PERCENTAGE_percentage] = percentageDelta;
     return success;
   }
   return success;

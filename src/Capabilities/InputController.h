@@ -2,9 +2,13 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(INPUT, selectInput);
+FSTR(INPUT, input);
 
 using SelectInputCallback = std::function<bool(const String &, String &)>;
 
@@ -14,7 +18,7 @@ class InputController {
     InputController();
 
     void onSelectInput(SelectInputCallback cb);
-    bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION");
+    bool sendSelectInputEvent(String intput, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     virtual bool onSelectInput(String &input);
@@ -50,9 +54,9 @@ bool InputController<T>::sendSelectInputEvent(String input, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("selectInput", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["input"] = input;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_INPUT_selectInput, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_INPUT_input] = input;
   return device->sendEvent(eventMessage);
 }
 
@@ -60,10 +64,10 @@ template <typename T>
 bool InputController<T>::handleInputController(SinricProRequest &request) {
   bool success = false;
 
-  if (request.action == "selectInput") {
-    String input = request.request_value["input"];
+  if (request.action == FSTR_INPUT_selectInput) {
+    String input = request.request_value[FSTR_INPUT_input];
     success = onSelectInput(input);
-    request.response_value["input"] = input;
+    request.response_value[FSTR_INPUT_input] = input;
     return success;
   }
 
