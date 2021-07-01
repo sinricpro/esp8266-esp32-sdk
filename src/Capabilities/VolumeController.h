@@ -65,7 +65,8 @@ class VolumeController {
 template <typename T>
 VolumeController<T>::VolumeController()
 : event_limiter(EVENT_LIMIT_STATE) { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&VolumeController<T>::handleVolumeController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&VolumeController<T>::handleVolumeController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -100,23 +101,23 @@ void VolumeController<T>::onAdjustVolume(AdjustVolumeCallback cb) { adjustVolume
 template <typename T>
 bool VolumeController<T>::sendVolumeEvent(int volume, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setVolume", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setVolume", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["volume"] = volume;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool VolumeController<T>::handleVolumeController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
   if (volumeCallback && request.action == "setVolume") {
     int volume = request.request_value["volume"];
-    success = volumeCallback(device.deviceId, volume);
+    success = volumeCallback(device->deviceId, volume);
     request.response_value["volume"] = volume;
     return success;
   }
@@ -124,7 +125,7 @@ bool VolumeController<T>::handleVolumeController(SinricProRequest &request) {
   if (adjustVolumeCallback && request.action == "adjustVolume") {
     int volume = request.request_value["volume"];
     bool volumeDefault = request.request_value["volumeDefault"] | false;
-    success = adjustVolumeCallback(device.deviceId, volume, volumeDefault);
+    success = adjustVolumeCallback(device->deviceId, volume, volumeDefault);
     request.response_value["volume"] = volume;
     return success;
   }

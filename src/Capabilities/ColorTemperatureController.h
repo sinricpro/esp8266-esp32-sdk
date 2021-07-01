@@ -80,7 +80,8 @@ class ColorTemperatureController {
 template <typename T>
 ColorTemperatureController<T>::ColorTemperatureController() 
 : event_limiter(EVENT_LIMIT_STATE) { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ColorTemperatureController<T>::handleColorTemperatureController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&ColorTemperatureController<T>::handleColorTemperatureController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -131,35 +132,35 @@ void ColorTemperatureController<T>::onDecreaseColorTemperature(DecreaseColorTemp
 template <typename T>
 bool ColorTemperatureController<T>::sendColorTemperatureEvent(int colorTemperature, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setColorTemperature", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setColorTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["colorTemperature"] = colorTemperature;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool ColorTemperatureController<T>::handleColorTemperatureController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
   if (colorTemperatureCallback && request.action == "setColorTemperature") {
     int colorTemperature = request.request_value["colorTemperature"];
-    success = colorTemperatureCallback(device.deviceId, colorTemperature);
+    success = colorTemperatureCallback(device->deviceId, colorTemperature);
     request.response_value["colorTemperature"] = colorTemperature;
   }
 
   if (increaseColorTemperatureCallback && request.action == "increaseColorTemperature") {
     int colorTemperature = 1;
-    success = increaseColorTemperatureCallback(device.deviceId, colorTemperature);
+    success = increaseColorTemperatureCallback(device->deviceId, colorTemperature);
     request.response_value["colorTemperature"] = colorTemperature;
   }
 
   if (decreaseColorTemperatureCallback && request.action == "decreaseColorTemperature") {
     int colorTemperature = -1;
-    success = decreaseColorTemperatureCallback(device.deviceId, colorTemperature);
+    success = decreaseColorTemperatureCallback(device->deviceId, colorTemperature);
     request.response_value["colorTemperature"] = colorTemperature;
   }
 

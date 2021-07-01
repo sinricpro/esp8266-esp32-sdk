@@ -41,16 +41,16 @@ PowerSensor<T>::PowerSensor()
 template <typename T>
 bool PowerSensor<T>::sendPowerSensorEvent(float voltage, float current, float power, float apparentPower, float reactivePower, float factor, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("powerUsage", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("powerUsage", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   if (power == -1)
     power = voltage * current;
   if (apparentPower != -1)
     factor = power / apparentPower;
 
-  unsigned long currentTimestamp = device.getTimestamp();
+  unsigned long currentTimestamp = device->getTimestamp();
 
   event_value["startTime"] = startTime;
   event_value["voltage"] = voltage;
@@ -63,7 +63,7 @@ bool PowerSensor<T>::sendPowerSensorEvent(float voltage, float current, float po
 
   startTime = currentTimestamp;
   lastPower = power;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>

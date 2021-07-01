@@ -85,7 +85,8 @@ template <typename T>
 ThermostatController<T>::ThermostatController()
 : event_limiter_thermostatMode(EVENT_LIMIT_STATE)
 , event_limiter_targetTemperature(EVENT_LIMIT_STATE) { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ThermostatController<T>::handleThermostatController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&ThermostatController<T>::handleThermostatController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -136,12 +137,12 @@ void ThermostatController<T>::onAdjustTargetTemperature(AdjustTargetTemperatureC
 template <typename T>
 bool ThermostatController<T>::sendThermostatModeEvent(String thermostatMode, String cause) {
   if (event_limiter_thermostatMode) return false;
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setThermostatMode", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setThermostatMode", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["thermostatMode"] = thermostatMode;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 /**
@@ -156,17 +157,17 @@ bool ThermostatController<T>::sendThermostatModeEvent(String thermostatMode, Str
 template <typename T>
 bool ThermostatController<T>::sendTargetTemperatureEvent(float temperature, String cause) {
   if (event_limiter_targetTemperature) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("targetTemperature", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("targetTemperature", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["temperature"] = roundf(temperature * 10) / 10.0;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool ThermostatController<T>::handleThermostatController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
@@ -177,21 +178,21 @@ bool ThermostatController<T>::handleThermostatController(SinricProRequest &reque
     }  else {
       temperature = 1;
     }
-    success = targetTemperatureCallback(device.deviceId, temperature);
+    success = targetTemperatureCallback(device->deviceId, temperature);
     request.response_value["temperature"] = temperature;
     return success;
   }
 
   if (request.action == "adjustTargetTemperature" && adjustTargetTemperatureCallback) {
     float temperatureDelta = request.request_value["temperature"];
-    success = adjustTargetTemperatureCallback(device.deviceId, temperatureDelta);
+    success = adjustTargetTemperatureCallback(device->deviceId, temperatureDelta);
     request.response_value["temperature"] = temperatureDelta;
     return success;
   }
 
   if (request.action == "setThermostatMode" && thermostatModeCallback) {
     String thermostatMode = request.request_value["thermostatMode"] | "";
-    success = thermostatModeCallback(device.deviceId, thermostatMode);
+    success = thermostatModeCallback(device->deviceId, thermostatMode);
     request.response_value["thermostatMode"] = thermostatMode;
     return success;
   }

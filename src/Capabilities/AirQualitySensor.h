@@ -35,16 +35,16 @@ AirQualitySensor<T>::AirQualitySensor()
 template <typename T>
 bool AirQualitySensor<T>::sendAirQualityEvent(int pm1, int pm2_5, int pm10, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
   
-  DynamicJsonDocument eventMessage = device.prepareEvent("airQuality", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("airQuality", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
 
   event_value["pm1"] = pm1;
   event_value["pm2_5"] = pm2_5;
   event_value["pm10"] = pm10;
 
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 } // SINRICPRO_NAMESPACE

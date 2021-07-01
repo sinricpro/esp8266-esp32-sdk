@@ -63,7 +63,8 @@ class PowerLevelController {
 template <typename T>
 PowerLevelController<T>::PowerLevelController()
 : event_limiter(EVENT_LIMIT_STATE) { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&PowerLevelController<T>::handlePowerLevelController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&PowerLevelController<T>::handlePowerLevelController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -101,29 +102,29 @@ void PowerLevelController<T>::onAdjustPowerLevel(AdjustPowerLevelCallback cb)
 template <typename T>
 bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause)
 {
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setPowerLevel", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setPowerLevel", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["powerLevel"] = powerLevel;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool PowerLevelController<T>::handlePowerLevelController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
   if (setPowerLevelCallback && request.action == "setPowerLevel") {
     int powerLevel = request.request_value["powerLevel"];
-    success = setPowerLevelCallback(device.deviceId, powerLevel);
+    success = setPowerLevelCallback(device->deviceId, powerLevel);
     request.response_value["powerLevel"] = powerLevel;
   }
 
   if (adjustPowerLevelCallback && request.action == "adjustPowerLevel") {
     int powerLevelDelta = request.request_value["powerLevelDelta"];
-    success = adjustPowerLevelCallback(device.deviceId, powerLevelDelta);
+    success = adjustPowerLevelCallback(device->deviceId, powerLevelDelta);
     request.response_value["powerLevel"] = powerLevelDelta;
   }
   return success;

@@ -64,7 +64,8 @@ class PercentageController {
 template <typename T>
 PercentageController<T>::PercentageController()
 : event_limiter(EVENT_LIMIT_STATE) { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -99,30 +100,30 @@ void PercentageController<T>::onAdjustPercentage(AdjustPercentageCallback cb) { 
 template <typename T>
 bool PercentageController<T>::sendSetPercentageEvent(int percentage, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setPercentage", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setPercentage", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["percentage"] = percentage;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool PercentageController<T>::handlePercentageController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
   if (percentageCallback && request.action == "setPercentage") {
     int percentage = request.request_value["percentage"];
-    success = percentageCallback(device.deviceId, percentage);
+    success = percentageCallback(device->deviceId, percentage);
     request.response_value["percentage"] = percentage;
     return success;
   }
 
   if (adjustPercentageCallback && request.action == "adjustPercentage") {
     int percentage = request.request_value["percentage"];
-    success = adjustPercentageCallback(device.deviceId, percentage);
+    success = adjustPercentageCallback(device->deviceId, percentage);
     request.response_value["percentage"] = percentage;
     return success;
   }

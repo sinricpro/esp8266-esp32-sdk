@@ -32,12 +32,12 @@ Doorbell<T>::Doorbell()
 template <typename T>
 bool Doorbell<T>::sendDoorbellEvent(String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("DoorbellPress", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("DoorbellPress", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = "pressed";
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 } // SINRICPRO_NAMESPACE

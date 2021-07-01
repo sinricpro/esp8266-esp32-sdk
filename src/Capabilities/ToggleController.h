@@ -44,7 +44,8 @@ class ToggleController {
 
 template <typename T>
 ToggleController<T>::ToggleController() { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -75,25 +76,25 @@ bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool stat
   if (event_limiter.find(instance) == event_limiter.end()) event_limiter[instance] = EventLimiter(EVENT_LIMIT_STATE);
   if (event_limiter[instance]) return false;
   
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setToggleState", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setToggleState", cause.c_str());
   eventMessage["payload"]["instanceId"] = instance;
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["state"] = state ? "On" : "Off";
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
   if (request.action == "setToggleState")  {
     bool powerState = request.request_value["state"] == "On" ? true : false;
     if (genericToggleStateCallback.find(request.instance) != genericToggleStateCallback.end())
-      success = genericToggleStateCallback[request.instance](device.deviceId, request.instance, powerState);
+      success = genericToggleStateCallback[request.instance](device->deviceId, request.instance, powerState);
     request.response_value["state"] = powerState ? "On" : "Off";
     return success;
   }

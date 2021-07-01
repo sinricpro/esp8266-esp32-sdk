@@ -60,7 +60,8 @@ class BrightnessController {
 template <typename T>
 BrightnessController<T>::BrightnessController() 
 : event_limiter (EVENT_LIMIT_STATE) { 
-  static_cast<T&>(*this).requestHandlers.push_back(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -99,28 +100,28 @@ void BrightnessController<T>::onAdjustBrightness(AdjustBrightnessCallback cb) {
 template <typename T>
 bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setBrightness", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setBrightness", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["brightness"] = brightness;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool BrightnessController<T>::handleBrightnessController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
   bool success = false;
 
   if (brightnessCallback && request.action == "setBrightness") {
     int brightness = request.request_value["brightness"];
-    success = brightnessCallback(device.deviceId, brightness);
+    success = brightnessCallback(device->deviceId, brightness);
     request.response_value["brightness"] = brightness;
   }
 
   if (adjustBrightnessCallback && request.action == "adjustBrightness") {
     int brightnessDelta = request.request_value["brightnessDelta"];
-    success = adjustBrightnessCallback(device.deviceId, brightnessDelta);
+    success = adjustBrightnessCallback(device->deviceId, brightnessDelta);
     request.response_value["brightness"] = brightnessDelta;
   }
 

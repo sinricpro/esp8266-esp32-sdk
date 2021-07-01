@@ -44,7 +44,8 @@ class MuteController {
 template <typename T>
 MuteController<T>::MuteController()
 :event_limiter(EVENT_LIMIT_STATE) { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&MuteController<T>::handleMuteController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&MuteController<T>::handleMuteController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -69,23 +70,23 @@ void MuteController<T>::onMute(MuteCallback cb) { muteCallback = cb; }
 template <typename T>
 bool MuteController<T>::sendMuteEvent(bool mute, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setMute", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setMute", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["mute"] = mute;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool MuteController<T>::handleMuteController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
   if (muteCallback && request.action == "setMute") {
     bool mute = request.request_value["mute"];
-    success = muteCallback(device.deviceId, mute);
+    success = muteCallback(device->deviceId, mute);
     request.response_value["mute"] = mute;
     return success;
   }

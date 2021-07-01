@@ -50,7 +50,8 @@ class LockController {
 template <typename T>
 LockController<T>::LockController()
 : event_limiter(EVENT_LIMIT_STATE) { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -77,23 +78,23 @@ void LockController<T>::onLockState(LockStateCallback cb) {
 template <typename T>
 bool LockController<T>::sendLockStateEvent(bool state, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setLockState", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setLockState", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   state ? event_value["state"] = "LOCKED" : event_value["state"] = "UNLOCKED";
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool LockController<T>::handleLockController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
   if (request.action == "setLockState" && lockStateCallback)  {
     bool lockState = request.request_value["state"] == "lock" ? true : false;
-    success = lockStateCallback(device.deviceId, lockState);
+    success = lockStateCallback(device->deviceId, lockState);
     request.response_value["state"] = success ? lockState ? "LOCKED" : "UNLOCKED" : "JAMMED";
     return success;
   }

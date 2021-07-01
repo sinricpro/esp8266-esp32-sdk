@@ -41,7 +41,8 @@ class KeypadController {
 
 template <typename T>
 KeypadController<T>::KeypadController() {
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -57,14 +58,14 @@ void KeypadController<T>::onKeystroke(KeystrokeCallback cb) { keystrokeCallback 
 
 template <typename T>
 bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
   if (request.action != "SendKeystroke") return false;
 
   if (keystrokeCallback) {
     String keystroke = request.request_value["keystroke"] | "";
-    success = keystrokeCallback(device.deviceId, keystroke);
+    success = keystrokeCallback(device->deviceId, keystroke);
     request.response_value["keystroke"] = keystroke;
     return success;
   }

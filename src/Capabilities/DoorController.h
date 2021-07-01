@@ -43,7 +43,8 @@ class DoorController {
 template <typename T>
 DoorController<T>::DoorController()
 : event_limiter(EVENT_LIMIT_STATE) { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&DoorController<T>::handleDoorController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&DoorController<T>::handleDoorController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -68,23 +69,23 @@ void DoorController<T>::onDoorState(DoorCallback cb) { doorCallback = cb; }
 template <typename T>
 bool DoorController<T>::sendDoorStateEvent(bool state, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setMode", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setMode", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   state ? event_value["mode"] = "Close" : event_value["mode"] = "Open";
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool DoorController<T>::handleDoorController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
   if (request.action == "setMode" && doorCallback) {
     String mode = request.request_value["mode"] | "";
     bool state = mode == "Close";
-    success = doorCallback(device.deviceId, state);
+    success = doorCallback(device->deviceId, state);
     request.response_value["mode"] = state ? "Close" : "Open";
   }
   return success;

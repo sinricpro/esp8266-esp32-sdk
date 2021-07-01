@@ -45,7 +45,8 @@ class MediaController {
 template <typename T>
 MediaController<T>::MediaController()
 : event_limiter(EVENT_LIMIT_STATE) { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&MediaController<T>::handleMediaController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&MediaController<T>::handleMediaController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -72,23 +73,23 @@ void MediaController<T>::onMediaControl(MediaControlCallback cb) {
 template <typename T>
 bool MediaController<T>::sendMediaControlEvent(String mediaControl, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("mediaControl", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("mediaControl", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["control"] = mediaControl;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool MediaController<T>::handleMediaController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
   if (mediaControlCallback && request.action == "mediaControl") {
     String mediaControl = request.request_value["control"];
-    success = mediaControlCallback(device.deviceId, mediaControl);
+    success = mediaControlCallback(device->deviceId, mediaControl);
     request.response_value["control"] = mediaControl;
     return success;
   }

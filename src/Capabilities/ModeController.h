@@ -69,7 +69,8 @@ class ModeController {
 template <typename T>
 ModeController<T>::ModeController()
 : event_limiter(EVENT_LIMIT_STATE) { 
-  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ModeController<T>::handleModeController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&ModeController<T>::handleModeController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -107,12 +108,12 @@ void ModeController<T>::onSetMode(const String& instance, GenericModeCallback cb
 template <typename T>
 bool ModeController<T>::sendModeEvent(String mode, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setMode", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setMode", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["mode"] = mode;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 /**
@@ -130,18 +131,18 @@ bool ModeController<T>::sendModeEvent(String instance, String mode, String cause
   if (event_limiter_generic.find(instance) == event_limiter_generic.end()) event_limiter_generic[instance] = EventLimiter(EVENT_LIMIT_STATE);
   if (event_limiter_generic[instance]) return false;
 
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setMode", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setMode", cause.c_str());
   eventMessage["payload"]["instanceId"] = instance;
   JsonObject event_value = eventMessage["payload"]["value"];
   event_value["mode"] = mode;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool ModeController<T>::handleModeController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
   if (request.action != "setMode") return false;
@@ -149,13 +150,13 @@ bool ModeController<T>::handleModeController(SinricProRequest &request) {
 
   if (request.instance != "") {
     if (genericModeCallback.find(request.instance) != genericModeCallback.end()) {
-      success = genericModeCallback[request.instance](device.deviceId, request.instance, mode);
+      success = genericModeCallback[request.instance](device->deviceId, request.instance, mode);
       request.response_value["mode"] = mode;
       return success;
     } else return false;
   } else {
     if (setModeCallback) {
-      success = setModeCallback(device.deviceId, mode);
+      success = setModeCallback(device->deviceId, mode);
       request.response_value["mode"] = mode;
       return success;
     }

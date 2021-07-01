@@ -86,7 +86,8 @@ private:
 template <typename T>
 EqualizerController<T>::EqualizerController()
 : event_limiter(EVENT_LIMIT_STATE) { 
-  static_cast<T*>(this)->requestHandlers.push_back(std::bind(&EqualizerController<T>::handleEqualizerController, this, std::placeholders::_1)); 
+  T* device = static_cast<T*>(this);
+  device->requestHandlers.push_back(std::bind(&EqualizerController<T>::handleEqualizerController, this, std::placeholders::_1)); 
 }
 
 /**
@@ -132,20 +133,20 @@ void EqualizerController<T>::onResetBands(ResetBandsCallback cb) { resetBandsCal
 template <typename T>
 bool EqualizerController<T>::sendBandsEvent(String bands, int level, String cause) {
   if (event_limiter) return false;
-  T& device = static_cast<T&>(*this);
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setBands", cause.c_str());
+  DynamicJsonDocument eventMessage = device->prepareEvent("setBands", cause.c_str());
   JsonObject event_value = eventMessage["payload"]["value"];
   JsonArray event_value_bands = event_value.createNestedArray("bands");
   JsonObject event_bands = event_value_bands.createNestedObject();
   event_bands["name"] = bands;
   event_bands["value"] = level;
-  return device.sendEvent(eventMessage);
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
   bool success = false;
 
   if (setBandsCallback && request.action == "setBands") {
@@ -155,7 +156,7 @@ bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request
     for (size_t i = 0; i < bands_array.size(); i++) {
       int level = bands_array[i]["level"] | 0;
       String bandsName = bands_array[i]["name"] | "";
-      success = setBandsCallback(device.deviceId, bandsName, level);
+      success = setBandsCallback(device->deviceId, bandsName, level);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
       response_value_bands_i["level"] = level;
@@ -173,7 +174,7 @@ bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request
       if (direction == "DOWN")
         levelDelta *= -1;
       String bandsName = bands_array[i]["name"] | "";
-      success = adjustBandsCallback(device.deviceId, bandsName, levelDelta);
+      success = adjustBandsCallback(device->deviceId, bandsName, levelDelta);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
       response_value_bands_i["level"] = levelDelta;
@@ -188,7 +189,7 @@ bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request
     for (size_t i = 0; i < bands_array.size(); i++) {
       int level = 0;
       String bandsName = bands_array[i]["name"] | "";
-      success = adjustBandsCallback(device.deviceId, bandsName, level);
+      success = adjustBandsCallback(device->deviceId, bandsName, level);
       JsonObject response_value_bands_i = response_value_bands.createNestedObject();
       response_value_bands_i["name"] = bandsName;
       response_value_bands_i["level"] = level;
