@@ -20,6 +20,24 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onConnected function
+ * 
+ * Gets called when device is connected to SinricPro server
+ * @param void
+ * @return void
+ */
+using ConnectedCallbackHandler = std::function<void(void)>;
+
+/**
+ * @brief Callback definition for onDisconnected function
+ * 
+ * Gets called when device is disconnected from SinricPro server
+ * @param void
+ * @return void
+ */
+using DisconnectedCallbackHandler = std::function<void(void)>;
+
+/**
  * @class SinricProClass
  * @ingroup SinricPro
  * @brief The main class of this library, handling communication between SinricPro Server and your devices
@@ -28,27 +46,10 @@ class SinricProClass : public SinricProInterface {
   friend class SinricProDevice;
   public:
     void begin(AppKey socketAuthToken, AppSecret signingKey, String serverURL = SINRICPRO_SERVER_URL);
-//    void begin(String socketAuthToken, String signingKey, String serverURL = SINRICPRO_SERVER_URL);
     void handle();
     void stop();
     bool isConnected();
 
-    /**
-     * @brief Callback definition for onConnected function
-     * 
-     * Gets called when device is connected to SinricPro server
-     * @param void
-     * @return void
-     */
-    typedef std::function<void(void)> ConnectedCallbackHandler;
-    /**
-     * @brief Callback definition for onDisconnected function
-     * 
-     * Gets called when device is disconnected from SinricPro server
-     * @param void
-     * @return void
-     */
-    typedef std::function<void(void)> DisconnectedCallbackHandler;
     void onConnected(ConnectedCallbackHandler cb);
     void onDisconnected(DisconnectedCallbackHandler cb);
     void onPong(std::function<void(uint32_t)> cb) { _websocketListener.onPong(cb); }
