@@ -5,8 +5,7 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICDEVICE_H_
-#define _SINRICDEVICE_H_
+#pragma once
 
 #include "SinricProRequest.h"
 #include "SinricProDeviceInterface.h"
@@ -14,6 +13,9 @@
 #include "SinricProId.h"
 
 #include <map>
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProDevice
@@ -118,5 +120,4 @@ bool SinricProDevice::handleRequest(SinricProRequest &request) {
   return false;
 }
 
-
-#endif
+} // SINRICPRO_NAMESPACE

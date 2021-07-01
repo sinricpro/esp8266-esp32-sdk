@@ -1,7 +1,9 @@
-#ifndef _THERMOSTATCONTROLLER_H_
-#define _THERMOSTATCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief ThermostatController
@@ -184,4 +186,4 @@ bool ThermostatController<T>::handleThermostatController(SinricProRequest &reque
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

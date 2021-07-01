@@ -1,5 +1,7 @@
-#ifndef _DOORBELL_H_
-#define _DOORBELL_H_
+#pragma once
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief Dorbell
@@ -29,4 +31,4 @@ bool Doorbell<T>::sendDoorbellEvent(String cause) {
   return device.sendEvent(eventMessage);
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

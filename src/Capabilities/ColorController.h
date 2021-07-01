@@ -1,7 +1,9 @@
-#ifndef _COLORCONTROLLER_H_
-#define _COLORCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief ColorController
@@ -97,4 +99,4 @@ bool ColorController<T>::handleColorController(SinricProRequest &request) {
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

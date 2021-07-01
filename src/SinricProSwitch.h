@@ -5,12 +5,14 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICSWITCH_H_
-#define _SINRICSWITCH_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProSwitch
@@ -26,5 +28,4 @@ class SinricProSwitch : public SinricProDevice,
     SinricProSwitch(const DeviceId &deviceId) : SinricProDevice(deviceId, "SWITCH") {};
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

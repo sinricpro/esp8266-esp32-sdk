@@ -6,8 +6,11 @@
  */
 
 
-#ifndef _LEAKY_BUCKET_H_
-#define _LEAKY_BUCKET_H_
+#pragma once
+
+#include "SinricProNamespace.h"
+
+namespace SINRICPRO_NAMESPACE {
 
 class LeakyBucket_t {
   public:
@@ -57,5 +60,4 @@ void LeakyBucket_t::leak() {
   }
 }
 
-
-#endif
+} // SINRICPRO_NAMESPACE

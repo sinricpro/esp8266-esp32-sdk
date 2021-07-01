@@ -1,6 +1,7 @@
+#pragma once
 
-#ifndef _TEMPERATURESENSOR_H_
-#define _TEMPERATURESENSOR_H_
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief TemperatureSensor
@@ -33,4 +34,4 @@ bool TemperatureSensor<T>::sendTemperatureEvent(float temperature, float humidit
   return device.sendEvent(eventMessage);
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

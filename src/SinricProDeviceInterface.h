@@ -1,9 +1,11 @@
-#ifndef _SINRICPRODEVICEINTERFACE_
-#define _SINRICPRODEVICEINTERFACE_
+#pragma once
 
 #include <SinricProInterface.h>
 #include <SinricProRequest.h>
 #include <SinricProId.h>
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 class SinricProDeviceInterface {
   friend class SinricProClass;
@@ -17,4 +19,4 @@ class SinricProDeviceInterface {
     virtual unsigned long getTimestamp();
 };
 
-#endif
+} // SINRICPRO_NAMESPACE

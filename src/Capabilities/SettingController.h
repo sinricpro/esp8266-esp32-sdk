@@ -1,7 +1,9 @@
-#ifndef _SETTINGCONTROLLER_H_
-#define _SETTINGCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 template <typename T>
 class SettingController {
@@ -40,4 +42,4 @@ bool SettingController<T>::handleSettingController(SinricProRequest &request) {
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

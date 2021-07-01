@@ -1,7 +1,9 @@
-#ifndef _KEYPADCONTROLLER_H_
-#define _KEYPADCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief KeypadController
@@ -64,4 +66,4 @@ bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

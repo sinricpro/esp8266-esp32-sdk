@@ -5,12 +5,14 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICPRO_INTERFACE_H_
-#define _SINRICPRO_INTERFACE_H_
+#pragma once
 
 #include "ArduinoJson.h"
 #include "SinricProQueue.h"
 #include "SinricProId.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 class SinricProInterface {
   friend class SinricProDevice;
@@ -21,5 +23,4 @@ class SinricProInterface {
     virtual bool isConnected();
 };
 
-
-#endif
+} // SINRICPRO_NAMESPACE

@@ -1,7 +1,9 @@
-#ifndef _COLORTEMPERATURECONTROLLER_H_
-#define _COLORTEMPERATURECONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief ColorTemperatureController
@@ -153,4 +155,4 @@ bool ColorTemperatureController<T>::handleColorTemperatureController(SinricProRe
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

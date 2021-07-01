@@ -5,9 +5,7 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-
-#ifndef _SINRICPRO_WEBSOCKET_H__
-#define _SINRICPRO_WEBSOCKET_H__
+#pragma once
 
 #if defined ESP8266
   #include <ESP8266WiFi.h>
@@ -25,6 +23,8 @@
 #include "SinricProQueue.h"
 #include "SinricProInterface.h"
 
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 #if !defined(WEBSOCKETS_VERSION_INT) || (WEBSOCKETS_VERSION_INT < 2003005)
 #error "Wrong WebSockets Version! Minimum Version is 2.3.5!!!"
@@ -178,4 +178,4 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
   }
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

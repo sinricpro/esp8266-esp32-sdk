@@ -4,14 +4,15 @@
  *
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
-
-#ifndef _SINRICCONTACTSENSOR_H_
-#define _SINRICCONTACTSENSOR_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/ContactSensor.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProContactsensor
@@ -29,5 +30,4 @@ class SinricProContactsensor : public SinricProDevice,
 	  SinricProContactsensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "CONTACT_SENSOR") {}
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

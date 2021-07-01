@@ -1,7 +1,9 @@
-#ifndef _POWERSTATECONTROLLER_H_
-#define _POWERSTATECONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief PowerStateController

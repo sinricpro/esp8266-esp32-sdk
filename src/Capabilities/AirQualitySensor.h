@@ -1,5 +1,7 @@
-#ifndef _AIRQUALITYSENSOR_H_
-#define _AIRQUALITYSENSOR_H_
+#pragma once
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief AirQuality
@@ -36,4 +38,4 @@ bool AirQualitySensor<T>::sendAirQualityEvent(int pm1, int pm2_5, int pm10, Stri
   return device.sendEvent(eventMessage);
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

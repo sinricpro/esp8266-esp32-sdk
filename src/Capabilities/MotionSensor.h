@@ -1,5 +1,7 @@
-#ifndef _MOTIONSENSOR_H_
-#define _MOTIONSENSOR_H_
+#pragma once
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief MotionSensor
@@ -30,4 +32,4 @@ bool MotionSensor<T>::sendMotionEvent(bool detected, String cause) {
   return device.sendEvent(eventMessage);
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

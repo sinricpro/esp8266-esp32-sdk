@@ -1,7 +1,9 @@
-#ifndef _EQUALIZERCONTROLLER_H_
-#define _EQUALIZERCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief EqualizerController
@@ -188,4 +190,4 @@ bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

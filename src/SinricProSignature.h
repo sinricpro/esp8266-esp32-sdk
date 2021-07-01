@@ -5,12 +5,14 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SIGNATURE_H_
-#define _SIGNATURE_H_
+#pragma once
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 String HMACbase64(const String &message, const String &key);
 String extractPayload(const char *message);
 String calculateSignature(const char* key, String payload);
 String signMessage(String key, JsonDocument &jsonMessage);
 
-#endif // _SIGNATURE_H_
+} // SINRICPRO_NAMESPACE

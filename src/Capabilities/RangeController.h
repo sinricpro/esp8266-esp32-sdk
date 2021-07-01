@@ -1,7 +1,9 @@
-#ifndef _RANGECONTROLLER_H_
-#define _RANGECONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief RangeControllerFloatInt
@@ -296,4 +298,4 @@ bool RangeController<T>::handleRangeController(SinricProRequest &request) {
   return false;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

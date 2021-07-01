@@ -1,7 +1,9 @@
-#ifndef _POWERLEVELCONTROLLER_H_
-#define _POWERLEVELCONTROLLER_H_
+#pragma once
 
-#include "./SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief PowerLevelController
@@ -118,4 +120,4 @@ bool PowerLevelController<T>::handlePowerLevelController(SinricProRequest &reque
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

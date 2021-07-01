@@ -1,7 +1,9 @@
-#ifndef _INPUTCONTROLLER_H_
-#define _INPUTCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief InputController
@@ -84,4 +86,4 @@ bool InputController<T>::handleInputController(SinricProRequest &request) {
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

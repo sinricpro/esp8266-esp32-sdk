@@ -1,7 +1,9 @@
-#ifndef _DOORCONTROLLER_H_
-#define _DOORCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief DoorController - only used for GarageDoor device and cannot used as capability for a custom device!
@@ -80,4 +82,4 @@ bool DoorController<T>::handleDoorController(SinricProRequest &request) {
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

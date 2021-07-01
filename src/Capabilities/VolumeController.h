@@ -1,7 +1,9 @@
-#ifndef _VOLUMECONTROLLER_H_
-#define _VOLUMECONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief VolumeController
@@ -119,4 +121,4 @@ bool VolumeController<T>::handleVolumeController(SinricProRequest &request) {
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

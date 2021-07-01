@@ -5,13 +5,14 @@
  *
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
-
-#ifndef _SINRICCAMERA_H_
-#define _SINRICCAMERA_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProCamera
@@ -27,5 +28,4 @@ class SinricProCamera : public SinricProDevice,
 	  SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId, "CAMERA") {}
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

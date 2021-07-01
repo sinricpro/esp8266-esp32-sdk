@@ -5,12 +5,14 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICGARAGEDOOR_H_
-#define _SINRICGARAGEDOOR_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/DoorController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProGarageDoor
@@ -29,4 +31,4 @@ class SinricProGarageDoor : public SinricProDevice,
 	  SinricProGarageDoor(const DeviceId &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR") {}
 };
 
-#endif
+} // Namespace

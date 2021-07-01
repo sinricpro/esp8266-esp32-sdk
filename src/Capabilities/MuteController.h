@@ -1,7 +1,9 @@
-#ifndef _MUTECONTROLLER_H_
-#define _MUTECONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief MuteController
@@ -80,4 +82,4 @@ bool MuteController<T>::handleMuteController(SinricProRequest &request) {
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

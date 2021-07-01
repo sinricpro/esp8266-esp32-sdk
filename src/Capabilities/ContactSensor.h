@@ -1,5 +1,7 @@
-#ifndef _CONTACTSENSOR_H_
-#define _CONTACTSENSOR_H_
+#pragma once
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief ContactSensor
@@ -29,4 +31,4 @@ bool ContactSensor<T>::sendContactEvent(bool detected, String cause) {
   return device.sendEvent(eventMessage);
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

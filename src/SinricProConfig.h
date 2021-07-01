@@ -5,8 +5,7 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef __SINRICPRO_CONFIG_H__
-#define __SINRICPRO_CONFIG_H__
+#pragma once
 /* 
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  * !!                                                 !!
@@ -25,7 +24,7 @@
 // Version Configuration
 #define SINRICPRO_VERSION_MAJOR     2
 #define SINRICPRO_VERSION_MINOR     9
-#define SINRICPRO_VERSION_REVISION  5
+#define SINRICPRO_VERSION_REVISION  6
 #define SINRICPRO_VERSION STR(SINRICPRO_VERSION_MAJOR) "." STR(SINRICPRO_VERSION_MINOR) "." STR(SINRICPRO_VERSION_REVISION)
 #define SINRICPRO_VERSION_STR "SinricPro (v" SINRICPRO_VERSION ")"
 #define SINRICPRO_VERISON_INT SINRICPRO_VERSION_MAJOR * 1000000 + SINRICPRO_VERSION_MINOR * 1000 + SINRICPRO_VERSION_REVISION

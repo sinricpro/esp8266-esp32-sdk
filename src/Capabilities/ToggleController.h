@@ -1,7 +1,9 @@
-#ifndef _TOGGLECONTROLLER_H_
-#define _TOGGLECONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief ToggleController
@@ -88,4 +90,4 @@ bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

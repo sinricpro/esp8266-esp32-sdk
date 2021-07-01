@@ -1,7 +1,9 @@
-#ifndef _LOCKCONTROLLER_H_
-#define _LOCKCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief LockController
@@ -88,4 +90,4 @@ bool LockController<T>::handleLockController(SinricProRequest &request) {
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

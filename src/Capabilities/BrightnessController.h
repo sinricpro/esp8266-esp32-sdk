@@ -1,7 +1,9 @@
-#ifndef _BRIGHTNESSCONTROLLER_H_
-#define _BRIGHTNESSCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief BrightnessController
@@ -117,4 +119,4 @@ bool BrightnessController<T>::handleBrightnessController(SinricProRequest &reque
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

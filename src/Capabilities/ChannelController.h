@@ -1,7 +1,9 @@
-#ifndef _CHANNELCONTROLLER_H_
-#define _CHANNELCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief ChannelController
@@ -163,4 +165,4 @@ bool ChannelController<T>::handleChannelController(SinricProRequest &request) {
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

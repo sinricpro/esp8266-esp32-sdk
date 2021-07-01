@@ -5,8 +5,7 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRIC_H_
-#define _SINRIC_H_
+#pragma once
 
 #include "SinricProInterface.h"
 #include "SinricProDeviceInterface.h"
@@ -16,6 +15,9 @@
 #include "SinricProMessageid.h"
 #include "SinricProQueue.h"
 #include "SinricProId.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProClass
@@ -550,15 +552,8 @@ DynamicJsonDocument SinricProClass::prepareEvent(DeviceId deviceId, const char* 
   return eventMessage;
 }
 
-#ifndef NOSINRIC_INSTANCE
-/**
- * @class SinricPro
- * @brief The main instance of SinricProClass
- * 
- * Handles communication between SinricPro Server and your device \n
-  * @see SinricProClass
- **/
-SinricProClass SinricPro;
-#endif
+} // SINRICPRO_NAMESPACE
 
-#endif
+using namespace SINRICPRO_NAMESPACE;
+
+SinricProClass SinricPro;

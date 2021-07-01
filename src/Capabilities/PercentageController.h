@@ -1,7 +1,9 @@
-#ifndef _PERCENTAGECONTROLLER_H_
-#define _PERCENTAGECONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @brief PercentageController
@@ -117,4 +119,4 @@ bool PercentageController<T>::handlePercentageController(SinricProRequest &reque
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

@@ -1,6 +1,8 @@
-#ifndef _POWERSENSOR_H_
-#define _POWERSENSOR_H_
+#pragma once
 
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+  
 /**
  * @brief PowerSensor
  * @ingroup Capabilities
@@ -63,4 +65,4 @@ float PowerSensor<T>::getWattHours(unsigned long currentTimestamp) {
   return 0;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE
