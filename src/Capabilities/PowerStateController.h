@@ -85,4 +85,4 @@ bool PowerStateController<T>::handlePowerStateController(SinricProRequest &reque
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE
