@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class MuteController {
   public:
-    MuteController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&MuteController<T>::handleMuteController, this, std::placeholders::_1)); }
+    MuteController();
     /**
      * @brief Callback definition for onMute function
      * 
@@ -35,8 +35,15 @@ class MuteController {
     bool handleMuteController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     MuteCallback muteCallback;
 };
+
+template <typename T>
+MuteController<T>::MuteController()
+:event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&MuteController<T>::handleMuteController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setMute` request
@@ -59,6 +66,7 @@ void MuteController<T>::onMute(MuteCallback cb) { muteCallback = cb; }
  **/
 template <typename T>
 bool MuteController<T>::sendMuteEvent(bool mute, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setMute", cause.c_str());

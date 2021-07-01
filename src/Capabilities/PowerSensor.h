@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
   
@@ -10,13 +11,19 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class PowerSensor {
 public:
+  PowerSensor();
   bool sendPowerSensorEvent(float voltage, float current, float power = -1.0f, float apparentPower = -1.0f, float reactivePower = -1.0f, float factor = -1.0f, String cause = "PERIODIC_POLL");
 
 private:
+  EventLimiter event_limiter;
   unsigned long startTime = 0;
   unsigned long lastPower = 0;
   float getWattHours(unsigned long currentTimestamp);
 };
+
+template <typename T>
+PowerSensor<T>::PowerSensor()
+: event_limiter(EVENT_LIMIT_SENSOR_VALUE) {}
 
 /**
  * @brief Send PowerSensor event to SinricPro Server 
@@ -33,6 +40,7 @@ private:
  **/
 template <typename T>
 bool PowerSensor<T>::sendPowerSensorEvent(float voltage, float current, float power, float apparentPower, float reactivePower, float factor, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("powerUsage", cause.c_str());

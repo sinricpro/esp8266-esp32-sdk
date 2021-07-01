@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class PowerStateController {
   public:
-    PowerStateController() { static_cast<T&>(*this).requestHandlers.push_back(std::bind(&PowerStateController<T>::handlePowerStateController, this, std::placeholders::_1));}
+    PowerStateController();
     /**
      * @brief Callback definition for onPowerState function
      * 
@@ -35,8 +35,15 @@ class PowerStateController {
     bool handlePowerStateController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     PowerStateCallback powerStateCallback;
 };
+
+template <typename T>
+PowerStateController<T>::PowerStateController() 
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T&>(*this).requestHandlers.push_back(std::bind(&PowerStateController<T>::handlePowerStateController, this, std::placeholders::_1));
+}
 
 /**
  * @brief Set callback function for `powerState` request
@@ -61,6 +68,7 @@ void PowerStateController<T>::onPowerState(PowerStateCallback cb) {
  **/
 template <typename T>
 bool PowerStateController<T>::sendPowerStateEvent(bool state, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setPowerState", cause.c_str());

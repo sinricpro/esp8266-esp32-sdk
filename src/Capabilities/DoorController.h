@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class DoorController {
   public:
-    DoorController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&DoorController<T>::handleDoorController, this, std::placeholders::_1)); }
+    DoorController();
 
     /**
      * @brief Callback definition for onDoorState function
@@ -36,8 +36,15 @@ class DoorController {
     bool handleDoorController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     DoorCallback doorCallback;
 };
+
+template <typename T>
+DoorController<T>::DoorController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&DoorController<T>::handleDoorController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `onDoorState` request
@@ -60,6 +67,7 @@ void DoorController<T>::onDoorState(DoorCallback cb) { doorCallback = cb; }
  **/
 template <typename T>
 bool DoorController<T>::sendDoorStateEvent(bool state, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setMode", cause.c_str());

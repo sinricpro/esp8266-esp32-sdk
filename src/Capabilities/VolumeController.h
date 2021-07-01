@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class VolumeController {
   public:
-    VolumeController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&VolumeController<T>::handleVolumeController, this, std::placeholders::_1)); }
+    VolumeController();
     /**
      * @brief Callback definition for onSetVolume function
      * 
@@ -55,9 +55,16 @@ class VolumeController {
     bool handleVolumeController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     SetVolumeCallback volumeCallback;
     AdjustVolumeCallback adjustVolumeCallback;
 };
+
+template <typename T>
+VolumeController<T>::VolumeController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&VolumeController<T>::handleVolumeController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setVolume` request
@@ -90,6 +97,7 @@ void VolumeController<T>::onAdjustVolume(AdjustVolumeCallback cb) { adjustVolume
  **/
 template <typename T>
 bool VolumeController<T>::sendVolumeEvent(int volume, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setVolume", cause.c_str());

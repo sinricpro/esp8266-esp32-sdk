@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -10,8 +11,15 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class TemperatureSensor {
   public:
+    TemperatureSensor();
     bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
+  private:
+    EventLimiter event_limiter;
 };
+
+template <typename T>
+TemperatureSensor<T>::TemperatureSensor() 
+: event_limiter(EVENT_LIMIT_SENSOR_VALUE) {}
 
 /**
  * @brief Send `currentTemperature` event to report actual temperature (measured by a sensor)
@@ -25,6 +33,7 @@ class TemperatureSensor {
  **/
 template <typename T>
 bool TemperatureSensor<T>::sendTemperatureEvent(float temperature, float humidity, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("currentTemperature", cause.c_str());

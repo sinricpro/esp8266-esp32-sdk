@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class ColorTemperatureController {
   public:
-    ColorTemperatureController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ColorTemperatureController<T>::handleColorTemperatureController, this, std::placeholders::_1)); }
+    ColorTemperatureController();
     /**
      * @brief Callback definition for onColorTemperature function
      * 
@@ -67,11 +67,19 @@ class ColorTemperatureController {
   protected:
     bool handleColorTemperatureController(SinricProRequest &request);
 
-  private : SinricProDeviceInterface *device;
+  private: 
+    EventLimiter event_limiter;
+//    SinricProDeviceInterface *device;
     ColorTemperatureCallback colorTemperatureCallback;
     IncreaseColorTemperatureCallback increaseColorTemperatureCallback;
     DecreaseColorTemperatureCallback decreaseColorTemperatureCallback;
 };
+
+template <typename T>
+ColorTemperatureController<T>::ColorTemperatureController() 
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ColorTemperatureController<T>::handleColorTemperatureController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setColorTemperature` request
@@ -120,6 +128,7 @@ void ColorTemperatureController<T>::onDecreaseColorTemperature(DecreaseColorTemp
  **/
 template <typename T>
 bool ColorTemperatureController<T>::sendColorTemperatureEvent(int colorTemperature, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setColorTemperature", cause.c_str());

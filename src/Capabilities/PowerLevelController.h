@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class PowerLevelController {
   public:
-    PowerLevelController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&PowerLevelController<T>::handlePowerLevelController, this, std::placeholders::_1)); }
+    PowerLevelController();
     /**
      * @brief Definition for setPowerLevel callback
      * 
@@ -53,9 +53,16 @@ class PowerLevelController {
     bool handlePowerLevelController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     SetPowerLevelCallback setPowerLevelCallback;
     AdjustPowerLevelCallback adjustPowerLevelCallback;
 };
+
+template <typename T>
+PowerLevelController<T>::PowerLevelController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&PowerLevelController<T>::handlePowerLevelController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for setPowerLevel request

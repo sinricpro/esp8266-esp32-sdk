@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +11,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class KeypadController {
   public:
-    KeypadController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); }
+    KeypadController();
     /**
      * @brief Callback definition for onKeystroke function
      * 
@@ -37,6 +36,11 @@ class KeypadController {
   private:
     KeystrokeCallback keystrokeCallback;
 };
+
+template <typename T>
+KeypadController<T>::KeypadController() {
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `SendKeystroke` request

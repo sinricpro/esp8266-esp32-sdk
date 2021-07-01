@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class EqualizerController {
 public:
-  EqualizerController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&EqualizerController<T>::handleEqualizerController, this, std::placeholders::_1)); }
+  EqualizerController();
   /**
      * @brief Callback definition for onSetBands function
      * 
@@ -76,10 +76,17 @@ protected:
   bool handleEqualizerController(SinricProRequest &request);
 
 private:
+  EventLimiter event_limiter;
   SetBandsCallback setBandsCallback;
   AdjustBandsCallback adjustBandsCallback;
   ResetBandsCallback resetBandsCallback;
 };
+
+template <typename T>
+EqualizerController<T>::EqualizerController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T*>(this)->requestHandlers.push_back(std::bind(&EqualizerController<T>::handleEqualizerController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setBands` request
@@ -123,6 +130,7 @@ void EqualizerController<T>::onResetBands(ResetBandsCallback cb) { resetBandsCal
  **/
 template <typename T>
 bool EqualizerController<T>::sendBandsEvent(String bands, int level, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setBands", cause.c_str());

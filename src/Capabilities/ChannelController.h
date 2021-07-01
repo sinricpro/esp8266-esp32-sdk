@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class ChannelController {
   public:
-    ChannelController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ChannelController<T>::handleChannelController, this, std::placeholders::_1)); }
+    ChannelController();
     /**
      * @brief Callback definition for onChangeChannel function
      * 
@@ -70,11 +70,17 @@ class ChannelController {
     bool handleChannelController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     ChangeChannelCallback changeChannelCallback;
     ChangeChannelNumberCallback changeChannelNumberCallback;
     SkipChannelsCallback skipChannelsCallback;
 };
 
+template <typename T>
+ChannelController<T>::ChannelController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ChannelController<T>::handleChannelController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `changeChannel` request
@@ -123,6 +129,7 @@ void ChannelController<T>::onSkipChannels(SkipChannelsCallback cb) {
  **/
 template <typename T>
 bool ChannelController<T>::sendChangeChannelEvent(String channelName, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("changeChannel", cause.c_str());

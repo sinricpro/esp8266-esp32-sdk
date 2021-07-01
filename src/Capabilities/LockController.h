@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class LockController {
   public:
-    LockController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1)); }
+    LockController();
     /**
      * @brief Callback definition for onLockState function
      * 
@@ -41,8 +41,15 @@ class LockController {
     bool handleLockController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     LockStateCallback lockStateCallback;
 };
+
+template <typename T>
+LockController<T>::LockController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setLockState` request
@@ -67,6 +74,7 @@ void LockController<T>::onLockState(LockStateCallback cb) {
  **/
 template <typename T>
 bool LockController<T>::sendLockStateEvent(bool state, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setLockState", cause.c_str());

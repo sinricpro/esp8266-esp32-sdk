@@ -42,7 +42,7 @@
 #define WEBSOCKET_PING_TIMEOUT 10000
 #define WEBSOCKET_RETRY_COUNT 2
 
-// LeakyBucket Configuration
-#define BUCKET_SIZE 10
-#define DROP_OUT_TIME 60000
-#define DROP_IN_TIME 1000u
+// EventLimiter Configuration
+#define EVENT_LIMIT_STATE         1000
+#define EVENT_LIMIT_SENSOR_STATE  EVENT_LIMIT_STATE
+#define EVENT_LIMIT_SENSOR_VALUE  60000

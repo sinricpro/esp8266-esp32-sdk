@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class ThermostatController {
   public:
-    ThermostatController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ThermostatController<T>::handleThermostatController, this, std::placeholders::_1)); }
+    ThermostatController();
     /**
      * @brief Callback definition for onThermostatMode function
      * 
@@ -72,10 +72,19 @@ class ThermostatController {
     bool handleThermostatController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter_thermostatMode;
+    EventLimiter event_limiter_targetTemperature;
     ThermostatModeCallback thermostatModeCallback;
     SetTargetTemperatureCallback targetTemperatureCallback;
     AdjustTargetTemperatureCallback adjustTargetTemperatureCallback;
 };
+
+template <typename T>
+ThermostatController<T>::ThermostatController()
+: event_limiter_thermostatMode(EVENT_LIMIT_STATE)
+, event_limiter_targetTemperature(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ThermostatController<T>::handleThermostatController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setThermostatMode` request
@@ -124,6 +133,7 @@ void ThermostatController<T>::onAdjustTargetTemperature(AdjustTargetTemperatureC
  **/
 template <typename T>
 bool ThermostatController<T>::sendThermostatModeEvent(String thermostatMode, String cause) {
+  if (event_limiter_thermostatMode) return false;
   T &device = static_cast<T &>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setThermostatMode", cause.c_str());
@@ -143,6 +153,7 @@ bool ThermostatController<T>::sendThermostatModeEvent(String thermostatMode, Str
  **/
 template <typename T>
 bool ThermostatController<T>::sendTargetTemperatureEvent(float temperature, String cause) {
+  if (event_limiter_targetTemperature) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("targetTemperature", cause.c_str());

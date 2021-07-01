@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class PercentageController {
   public:
-    PercentageController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1)); }
+    PercentageController();
     /**
      * @brief Callback definition for onSetPercentage function
      * 
@@ -54,9 +54,16 @@ class PercentageController {
     bool handlePercentageController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     SetPercentageCallback percentageCallback;
     AdjustPercentageCallback adjustPercentageCallback;
 };
+
+template <typename T>
+PercentageController<T>::PercentageController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setPercentage` request
@@ -89,6 +96,7 @@ void PercentageController<T>::onAdjustPercentage(AdjustPercentageCallback cb) { 
  **/
 template <typename T>
 bool PercentageController<T>::sendSetPercentageEvent(int percentage, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setPercentage", cause.c_str());

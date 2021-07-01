@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -13,7 +13,7 @@ template <typename T>
 class RangeController {
   public:
 
-    RangeController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&RangeController<T>::handleRangeController, this, std::placeholders::_1)); }
+    RangeController();
     /**
      * @brief Callback definition for onRangeValue function
      * 
@@ -48,7 +48,6 @@ class RangeController {
     };
 
     using SetRangeValueCallback = bool (*)(const String &, int &);
-//    using SetRangeValueCallback = std::function<bool(const String &, int &)>;
 
     /**
      * @brief Callback definition for onRangeValue function on a specific instance
@@ -83,7 +82,6 @@ class RangeController {
      * @snippet callbacks.cpp onAdjustRangeValue
      **/
     using AdjustRangeValueCallback = bool (*)(const String &, int &);
-//    using AdjustRangeValueCallback = std::function<bool(const String &, int &)>;
 
     /**
      * @brief Callback definition for onAdjustRangeValue function on a specific instance for custom devices
@@ -119,11 +117,19 @@ class RangeController {
     bool handleRangeController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
+    std::map<String, EventLimiter> event_limiter_generic;
     SetRangeValueCallback setRangeValueCallback;
     std::map<String, GenericRangeValueCallback> genericSetRangeValueCallback;
     AdjustRangeValueCallback adjustRangeValueCallback;
     std::map<String, GenericRangeValueCallback> genericAdjustRangeValueCallback;
 };
+
+template <typename T>
+RangeController<T>::RangeController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&RangeController<T>::handleRangeController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setRangeValue` request
@@ -185,6 +191,7 @@ void RangeController<T>::onAdjustRangeValue(const String &instance, GenericAdjus
  */
 template <typename T>
 bool RangeController<T>::sendRangeValueEvent(int rangeValue, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
   
   DynamicJsonDocument eventMessage = device.prepareEvent("setRangeValue", cause.c_str());
@@ -205,6 +212,8 @@ bool RangeController<T>::sendRangeValueEvent(int rangeValue, String cause) {
  */
 template <typename T>
 bool RangeController<T>::sendRangeValueEvent(const String& instance, int rangeValue, String cause){
+  if (event_limiter_generic.find(instance) == event_limiter_generic.end()) event_limiter_generic[instance] = EventLimiter(EVENT_LIMIT_STATE);
+  if (event_limiter_generic[instance]) return false;
   T &device = static_cast<T &>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setRangeValue", cause.c_str());
@@ -216,7 +225,9 @@ bool RangeController<T>::sendRangeValueEvent(const String& instance, int rangeVa
 }
 
 template <typename T>
-bool RangeController<T>::sendRangeValueEvent(const String& instance, float rangeValue, String cause){
+bool RangeController<T>::sendRangeValueEvent(const String& instance, float rangeValue, String cause) {
+  if (event_limiter_generic.find(instance) == event_limiter_generic.end()) event_limiter_generic[instance] = EventLimiter(EVENT_LIMIT_STATE);
+  if (event_limiter_generic[instance]) return false;
   T &device = static_cast<T &>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setRangeValue", cause.c_str());

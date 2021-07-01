@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class MediaController {
   public:
-    MediaController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&MediaController<T>::handleMediaController, this, std::placeholders::_1)); }
+    MediaController();
     /**
      * @brief Callback definition for onMediaControl function
      * 
@@ -36,8 +36,15 @@ class MediaController {
     bool handleMediaController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     MediaControlCallback mediaControlCallback;
 };
+
+template <typename T>
+MediaController<T>::MediaController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&MediaController<T>::handleMediaController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `mediaControl` request
@@ -62,6 +69,7 @@ void MediaController<T>::onMediaControl(MediaControlCallback cb) {
  **/
 template <typename T>
 bool MediaController<T>::sendMediaControlEvent(String mediaControl, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("mediaControl", cause.c_str());

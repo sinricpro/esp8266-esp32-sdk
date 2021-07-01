@@ -8,7 +8,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class SettingController {
   public:
-    SettingController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&SettingController<T>::handleSettingController, this, std::placeholders::_1)); }
+    SettingController();
     using SetSettingCallback = std::function<bool(const String&, const String&, String&)>;
     void onSetSetting(SetSettingCallback cb);
 
@@ -18,6 +18,11 @@ class SettingController {
   private: 
     SetSettingCallback setSettingCallback;
 };
+
+template <typename T>
+SettingController<T>::SettingController() { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&SettingController<T>::handleSettingController, this, std::placeholders::_1)); 
+}
 
 template <typename T>
 void SettingController<T>::onSetSetting(SetSettingCallback cb) {

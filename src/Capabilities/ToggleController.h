@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class ToggleController {
 public:
-  ToggleController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); }
+  ToggleController();
   /**
      * @brief Callback definition for onToggleState function
      * 
@@ -36,9 +36,14 @@ protected:
   bool handleToggleController(SinricProRequest &request);
 
 private:
+  std::map<String, EventLimiter> event_limiter;
   std::map<String, GenericToggleStateCallback> genericToggleStateCallback;
 };
 
+template <typename T>
+ToggleController<T>::ToggleController() { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `toggleState` request
@@ -65,6 +70,9 @@ void ToggleController<T>::onToggleState(const String &instance, GenericToggleSta
  **/
 template <typename T>
 bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool state, String cause) {
+  if (event_limiter.find(instance) == event_limiter.end()) event_limiter[instance] = EventLimiter(EVENT_LIMIT_STATE);
+  if (event_limiter[instance]) return false;
+  
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setToggleState", cause.c_str());

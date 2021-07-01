@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -10,8 +11,15 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class AirQualitySensor {
   public:
+    AirQualitySensor();
     bool sendAirQualityEvent(int pm1 = 0, int pm2_5 = 0, int pm10 = 0, String cause = "PERIODIC_POLL");
+  private:
+    EventLimiter event_limiter;
 };
+
+template <typename T>
+AirQualitySensor<T>::AirQualitySensor()
+: event_limiter (EVENT_LIMIT_SENSOR_VALUE) {}
 
 /**
  * @brief Sending air quality to SinricPro server
@@ -26,6 +34,7 @@ class AirQualitySensor {
  **/
 template <typename T>
 bool AirQualitySensor<T>::sendAirQualityEvent(int pm1, int pm2_5, int pm10, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
   
   DynamicJsonDocument eventMessage = device.prepareEvent("airQuality", cause.c_str());

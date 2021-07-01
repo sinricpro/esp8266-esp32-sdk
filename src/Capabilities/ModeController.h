@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
+
 namespace SINRICPRO_NAMESPACE {
 
 /**
@@ -12,7 +13,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class ModeController {
   public:
-    ModeController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ModeController<T>::handleModeController, this, std::placeholders::_1)); }
+    ModeController();
     /**
      * @brief Callback definition for onSetMode function
      * 
@@ -53,12 +54,21 @@ class ModeController {
     bool sendModeEvent(String instance, String mode, String cause = "PHYSICAL_INTERACTION");
 
   protected:
+
     bool handleModeController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
+    std::map<String, EventLimiter> event_limiter_generic;
     ModeCallback setModeCallback;
     std::map<String, GenericModeCallback> genericModeCallback;
 };
+
+template <typename T>
+ModeController<T>::ModeController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ModeController<T>::handleModeController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setMode` request
@@ -94,6 +104,7 @@ void ModeController<T>::onSetMode(const String& instance, GenericModeCallback cb
  **/
 template <typename T>
 bool ModeController<T>::sendModeEvent(String mode, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setMode", cause.c_str());
@@ -114,6 +125,9 @@ bool ModeController<T>::sendModeEvent(String mode, String cause) {
  **/
 template <typename T>
 bool ModeController<T>::sendModeEvent(String instance, String mode, String cause) {
+  if (event_limiter_generic.find(instance) == event_limiter_generic.end()) event_limiter_generic[instance] = EventLimiter(EVENT_LIMIT_STATE);
+  if (event_limiter_generic[instance]) return false;
+
   T &device = static_cast<T &>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setMode", cause.c_str());

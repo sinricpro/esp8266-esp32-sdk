@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class InputController {
   public:
-    InputController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1)); }
+    InputController();
     /**
      * @brief Callback definition for onSelectInput function
      * 
@@ -36,8 +36,15 @@ class InputController {
     bool handleInputController(SinricProRequest &request);
 
   private: 
+    EventLimiter event_limiter;
     SelectInputCallback selectInputCallback;
 };
+
+template <typename T>
+InputController<T>::InputController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T*>(this)->requestHandlers.push_back(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `selectInput` request
@@ -62,6 +69,7 @@ void InputController<T>::onSelectInput(SelectInputCallback cb) {
  **/
 template <typename T>
 bool InputController<T>::sendSelectInputEvent(String input, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("selectInput", cause.c_str());

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class BrightnessController {
   public:
-    BrightnessController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); }
+    BrightnessController();
     /**
      * @brief Callback definition for onBrightness function
      * 
@@ -51,10 +51,16 @@ class BrightnessController {
     bool handleBrightnessController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     BrightnessCallback brightnessCallback;
     AdjustBrightnessCallback adjustBrightnessCallback;
 };
 
+template <typename T>
+BrightnessController<T>::BrightnessController() 
+: event_limiter (EVENT_LIMIT_STATE) { 
+  static_cast<T&>(*this).requestHandlers.push_back(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setBrightness` request
@@ -91,6 +97,7 @@ void BrightnessController<T>::onAdjustBrightness(AdjustBrightnessCallback cb) {
  **/
 template <typename T>
 bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setBrightness", cause.c_str());

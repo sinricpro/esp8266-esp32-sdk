@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../SinricProRequest.h"
-
+#include "../EventLimiter.h"
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -12,7 +12,7 @@ namespace SINRICPRO_NAMESPACE {
 template <typename T>
 class ColorController {
   public:
-    ColorController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ColorController<T>::handleColorController, this, std::placeholders::_1)); }
+    ColorController();
     /**
      * @brief Callback definition for onColor function
      * 
@@ -39,8 +39,15 @@ class ColorController {
     bool handleColorController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     ColorCallback colorCallback;
 };
+
+template <typename T>
+ColorController<T>::ColorController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  static_cast<T &>(*this).requestHandlers.push_back(std::bind(&ColorController<T>::handleColorController, this, std::placeholders::_1)); 
+}
 
 
 /**
@@ -68,6 +75,7 @@ void ColorController<T>::onColor(ColorCallback cb) {
  **/
 template <typename T>
 bool ColorController<T>::sendColorEvent(byte r, byte g, byte b, String cause) {
+  if (event_limiter) return false;
   T& device = static_cast<T&>(*this);
 
   DynamicJsonDocument eventMessage = device.prepareEvent("setColor", cause.c_str());
