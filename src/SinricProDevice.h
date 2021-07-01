@@ -9,8 +9,6 @@
 
 #include "SinricProRequest.h"
 #include "SinricProDeviceInterface.h"
-#include "SinricProId.h"
-
 #include <map>
 
 #include "SinricProNamespace.h"
@@ -26,10 +24,10 @@ namespace SINRICPRO_NAMESPACE {
 class SinricProDevice : public SinricProDeviceInterface {
   friend class SinricProClass;
 public:
-  SinricProDevice(const DeviceId &deviceId, const String &productType = "");
-  bool                                 operator==(const DeviceId& other);
+  SinricProDevice(const String &deviceId, const String &productType = "");
+  bool                                 operator==(const String& other);
 
-  virtual DeviceId                     getDeviceId();
+  virtual String                       getDeviceId();
 protected:
   virtual                              ~SinricProDevice();
 
@@ -42,7 +40,7 @@ protected:
   virtual void                         begin(SinricProInterface *eventSender);
   bool                                 handleRequest(SinricProRequest &request);
 
-  DeviceId                             deviceId;
+  String                               deviceId;
   std::vector<SinricProRequestHandler> requestHandlers;
 
 private:
@@ -50,7 +48,7 @@ private:
   String                               productType;
 };
 
-SinricProDevice::SinricProDevice(const DeviceId &deviceId, const String &productType) : 
+SinricProDevice::SinricProDevice(const String &deviceId, const String &productType) : 
   deviceId(deviceId),
   eventSender(nullptr),
   productType(productType) {
@@ -62,17 +60,17 @@ void SinricProDevice::begin(SinricProInterface* eventSender) {
   this->eventSender = eventSender;
 }
 
-DeviceId SinricProDevice::getDeviceId() {
+String SinricProDevice::getDeviceId() {
   return deviceId;
 }
 
-bool SinricProDevice::operator==(const DeviceId &other) { 
+bool SinricProDevice::operator==(const String &other) { 
   return other == deviceId; 
 }
 
 DynamicJsonDocument SinricProDevice::prepareEvent(const char* action, const char* cause) {
   if (eventSender) return eventSender->prepareEvent(deviceId, action, cause);
-  DEBUG_SINRIC("[SinricProDevice:prepareEvent()]: Device \"%s\" isn't configured correctly! The \'%s\' event will be ignored.\r\n", deviceId.toString().c_str(), action);
+  DEBUG_SINRIC("[SinricProDevice:prepareEvent()]: Device \"%s\" isn't configured correctly! The \'%s\' event will be ignored.\r\n", deviceId.c_str(), action);
   return DynamicJsonDocument(1024);
 }
 
