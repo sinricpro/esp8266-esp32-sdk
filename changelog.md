@@ -1,6 +1,7 @@
 # Changelog
 ## Version 2.9.5
 - Fixed: SinricProPowerSensor was missing PowerStateController
+- Improved: Improved error message when a callback is not implemented
 
 ## Version 2.9.4
 - Fixed: Compiler error on libb64/cencode.h when ESP8266WebServer is included before SinricPro.h.
