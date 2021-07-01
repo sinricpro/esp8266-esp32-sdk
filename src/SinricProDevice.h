@@ -27,23 +27,27 @@ class SinricProDevice : public SinricProDeviceInterface {
   friend class SinricProClass;
 public:
   SinricProDevice(const DeviceId &deviceId, const String &productType = "");
-  bool operator==(const DeviceId& other);
+  bool                                 operator==(const DeviceId& other);
 
-  virtual DeviceId getDeviceId();
+  virtual DeviceId                     getDeviceId();
 protected:
-  unsigned long getTimestamp();
-  virtual bool sendEvent(JsonDocument &event);
-  virtual DynamicJsonDocument prepareEvent(const char *action, const char *cause);
+  virtual                              ~SinricProDevice();
 
-  virtual ~SinricProDevice();
-  virtual String getProductType();
-  virtual void begin(SinricProInterface *eventSender);
-  bool handleRequest(SinricProRequest &request);
-  DeviceId deviceId;
+  void                                 registerRequestHandler(const SinricProRequestHandler &requestHandler);
+  unsigned long                        getTimestamp();
+  virtual bool                         sendEvent(JsonDocument &event);
+  virtual DynamicJsonDocument          prepareEvent(const char *action, const char *cause);
+
+  virtual String                       getProductType();
+  virtual void                         begin(SinricProInterface *eventSender);
+  bool                                 handleRequest(SinricProRequest &request);
+
+  DeviceId                             deviceId;
   std::vector<SinricProRequestHandler> requestHandlers;
 
-private : SinricProInterface *eventSender;
-  String productType;
+private:
+  SinricProInterface                   *eventSender;
+  String                               productType;
 };
 
 SinricProDevice::SinricProDevice(const DeviceId &deviceId, const String &productType) : 
@@ -85,6 +89,10 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
   }
   
   return false;
+}
+
+void SinricProDevice::registerRequestHandler(const SinricProRequestHandler &requestHandler) {
+  requestHandlers.push_back(requestHandler);
 }
 
 unsigned long SinricProDevice::getTimestamp() {

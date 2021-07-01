@@ -23,7 +23,7 @@ class SettingController {
 template <typename T>
 SettingController<T>::SettingController() { 
   T* device = static_cast<T*>(this);
-  device->requestHandlers.push_back(std::bind(&SettingController<T>::handleSettingController, this, std::placeholders::_1)); 
+  device->registerRequestHandler(std::bind(&SettingController<T>::handleSettingController, this, std::placeholders::_1)); 
 }
 
 template <typename T>

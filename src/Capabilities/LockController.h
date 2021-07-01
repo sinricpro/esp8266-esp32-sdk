@@ -51,7 +51,7 @@ template <typename T>
 LockController<T>::LockController()
 : event_limiter(EVENT_LIMIT_STATE) { 
   T* device = static_cast<T*>(this);
-  device->requestHandlers.push_back(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1)); 
+  device->registerRequestHandler(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1)); 
 }
 
 /**

@@ -65,7 +65,7 @@ template <typename T>
 PercentageController<T>::PercentageController()
 : event_limiter(EVENT_LIMIT_STATE) { 
   T* device = static_cast<T*>(this);
-  device->requestHandlers.push_back(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1)); 
+  device->registerRequestHandler(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1)); 
 }
 
 /**

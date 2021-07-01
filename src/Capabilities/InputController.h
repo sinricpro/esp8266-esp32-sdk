@@ -46,7 +46,7 @@ template <typename T>
 InputController<T>::InputController()
 : event_limiter(EVENT_LIMIT_STATE) { 
   T* device = static_cast<T*>(this);
-  device->requestHandlers.push_back(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1)); 
+  device->registerRequestHandler(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1)); 
 }
 
 /**

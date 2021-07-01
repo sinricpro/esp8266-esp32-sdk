@@ -42,7 +42,7 @@ class KeypadController {
 template <typename T>
 KeypadController<T>::KeypadController() {
   T* device = static_cast<T*>(this);
-  device->requestHandlers.push_back(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); 
+  device->registerRequestHandler(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); 
 }
 
 /**

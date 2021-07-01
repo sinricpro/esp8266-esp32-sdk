@@ -86,7 +86,7 @@ ThermostatController<T>::ThermostatController()
 : event_limiter_thermostatMode(EVENT_LIMIT_STATE)
 , event_limiter_targetTemperature(EVENT_LIMIT_STATE) { 
   T* device = static_cast<T*>(this);
-  device->requestHandlers.push_back(std::bind(&ThermostatController<T>::handleThermostatController, this, std::placeholders::_1)); 
+  device->registerRequestHandler(std::bind(&ThermostatController<T>::handleThermostatController, this, std::placeholders::_1)); 
 }
 
 /**

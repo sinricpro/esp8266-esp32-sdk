@@ -44,7 +44,7 @@ template <typename T>
 DoorController<T>::DoorController()
 : event_limiter(EVENT_LIMIT_STATE) { 
   T* device = static_cast<T*>(this);
-  device->requestHandlers.push_back(std::bind(&DoorController<T>::handleDoorController, this, std::placeholders::_1)); 
+  device->registerRequestHandler(std::bind(&DoorController<T>::handleDoorController, this, std::placeholders::_1)); 
 }
 
 /**

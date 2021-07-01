@@ -45,7 +45,7 @@ class ToggleController {
 template <typename T>
 ToggleController<T>::ToggleController() { 
   T* device = static_cast<T*>(this);
-  device->requestHandlers.push_back(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); 
+  device->registerRequestHandler(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); 
 }
 
 /**
