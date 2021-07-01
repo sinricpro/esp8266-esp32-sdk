@@ -44,17 +44,18 @@ using DisconnectedCallbackHandler = std::function<void(void)>;
  **/
 class SinricProClass : public SinricProInterface {
   friend class SinricProDevice;
+
   public:
-    void begin(AppKey socketAuthToken, AppSecret signingKey, String serverURL = SINRICPRO_SERVER_URL);
-    void handle();
-    void stop();
-    bool isConnected();
-
-    void onConnected(ConnectedCallbackHandler cb);
-    void onDisconnected(DisconnectedCallbackHandler cb);
-    void onPong(std::function<void(uint32_t)> cb) { _websocketListener.onPong(cb); }
-
-    void restoreDeviceStates(bool flag);
+    void               begin(AppKey socketAuthToken, AppSecret signingKey, String serverURL = SINRICPRO_SERVER_URL);
+    void               handle();
+    void               stop();
+    bool               isConnected();
+    void               onConnected(ConnectedCallbackHandler cb);
+    void               onDisconnected(DisconnectedCallbackHandler cb);
+    void               onPong(std::function<void(uint32_t)> cb);
+    void               restoreDeviceStates(bool flag);
+    void               setResponseMessage(String &&message);
+    unsigned long      getTimestamp() override;
 
     struct proxy {
       proxy(SinricProClass* ptr, DeviceId deviceId) : ptr(ptr), deviceId(deviceId) {}
@@ -65,82 +66,57 @@ class SinricProClass : public SinricProInterface {
       template <typename DeviceType>
       DeviceType& as() { return ptr->getDeviceInstance<DeviceType>(deviceId); }
     };
-    /**
-     * @brief operator[] is used tor create a new device instance or get an existing device instance
-     * 
-     * If the device is unknown to SinricProClass it will create a new device instance
-     * @param deviceId a String containing deviceId for device that have to been created or retreived
-     * @return returns a proxy object representing the reference to a device derrivered from SinricProDevice
-     * @section Syntax
-     * `<DeviceType> &reference = SinricPro[<DEVICE_ID>];`
-     * @section operator[] Example-Code
-     * @code
-     * #define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
-     * ..
-     *   SinricProSwitch &mySwitch = SinricPro[SWITCH_ID];
-     * ..
-     * @endcode
-     **/ 
-    proxy operator[](const DeviceId deviceId) { return proxy(this, deviceId); }
 
-    // setResponseMessage is is just a workaround until verison 3.x.x will be released
-    void setResponseMessage(String &&message) { responseMessageStr = message; }
-
-    /**
-     * @brief Get the current timestamp
-     * 
-     * @return unsigned long current timestamp (unix epoch time)
-     */
-    unsigned long getTimestamp() override { return baseTimestamp + (millis()/1000); }
+    proxy               operator[](const DeviceId deviceId);
   protected:
     template <typename DeviceType>
-    DeviceType &add(DeviceId deviceId);
+    DeviceType&         add(DeviceId deviceId);
 
-    void add(SinricProDeviceInterface &newDevice);
-    void add(SinricProDeviceInterface *newDevice);
+    void                add(SinricProDeviceInterface &newDevice);
+    void                add(SinricProDeviceInterface *newDevice);
 
     DynamicJsonDocument prepareResponse(JsonDocument &requestMessage);
     DynamicJsonDocument prepareEvent(DeviceId deviceId, const char *action, const char *cause) override;
-    void sendMessage(JsonDocument &jsonMessage) override;
+    void                sendMessage(JsonDocument &jsonMessage) override;
 
   private:
-    void handleReceiveQueue();
-    void handleSendQueue();
+    void                handleReceiveQueue();
+    void                handleSendQueue();
 
-    void handleRequest(DynamicJsonDocument& requestMessage, interface_t Interface);
-    void handleResponse(DynamicJsonDocument& responseMessage);
+    void                handleRequest(DynamicJsonDocument& requestMessage, interface_t Interface);
+    void                handleResponse(DynamicJsonDocument& responseMessage);
 
     DynamicJsonDocument prepareRequest(DeviceId deviceId, const char* action);
 
-    void connect();
-    void disconnect();
-    void reconnect();
+    void                connect();
+    void                disconnect();
+    void                reconnect();
 
-    void onConnect() { DEBUG_SINRIC("[SinricPro]: Connected to \"%s\"!]\r\n", serverURL.c_str()); }
-    void onDisconnect() { DEBUG_SINRIC("[SinricPro]: Disconnect\r\n"); }
+    void                onConnect();
+    void                onDisconnect();
 
-    void extractTimestamp(JsonDocument &message);
+    void                extractTimestamp(JsonDocument &message);
 
     SinricProDeviceInterface* getDevice(DeviceId deviceId);
 
     template <typename DeviceType>
-    DeviceType& getDeviceInstance(DeviceId deviceId);
+    DeviceType&         getDeviceInstance(DeviceId deviceId);
 
     std::vector<SinricProDeviceInterface*> devices;
 
-    AppKey socketAuthToken;
-    AppSecret signingKey;
-    String serverURL;
+    AppKey              socketAuthToken;
+    AppSecret           signingKey;
+    String              serverURL;
 
-    websocketListener _websocketListener;
-    udpListener _udpListener;
-    SinricProQueue_t receiveQueue;
-    SinricProQueue_t sendQueue;
+    websocketListener   _websocketListener;
+    udpListener         _udpListener;
+    SinricProQueue_t    receiveQueue;
+    SinricProQueue_t    sendQueue;
 
-    unsigned long baseTimestamp = 0;
+    unsigned long       baseTimestamp = 0;
 
-    bool _begin = false;
-    String responseMessageStr = "";
+    bool                _begin = false;
+    String              responseMessageStr = "";
 };
 
 SinricProDeviceInterface* SinricProClass::getDevice(DeviceId deviceId) {
@@ -462,6 +438,10 @@ void SinricProClass::onDisconnected(DisconnectedCallbackHandler cb) {
   _websocketListener.onDisconnected(cb);
 }
 
+void SinricProClass::onPong(std::function<void(uint32_t)> cb) { 
+  _websocketListener.onPong(cb); 
+}
+
 
 void SinricProClass::reconnect() {
   DEBUG_SINRIC("SinricPro:reconnect(): disconnecting\r\n");
@@ -469,6 +449,15 @@ void SinricProClass::reconnect() {
   DEBUG_SINRIC("SinricPro:reconnect(): connecting\r\n");
   connect();
 }
+
+void SinricProClass::onConnect() { 
+  DEBUG_SINRIC("[SinricPro]: Connected to \"%s\"!]\r\n", serverURL.c_str()); 
+}
+
+void SinricProClass::onDisconnect() { 
+  DEBUG_SINRIC("[SinricPro]: Disconnect\r\n"); 
+}
+
 
 void SinricProClass::extractTimestamp(JsonDocument &message) {
   unsigned long tempTimestamp = 0;
@@ -512,6 +501,39 @@ void SinricProClass::sendMessage(JsonDocument& jsonMessage) {
  **/
 void SinricProClass::restoreDeviceStates(bool flag) { 
   _websocketListener.setRestoreDeviceStates(flag);
+}
+
+/**
+ * @brief operator[] is used tor create a new device instance or get an existing device instance
+ * 
+ * If the device is unknown to SinricProClass it will create a new device instance
+ * @param deviceId a String containing deviceId for device that have to been created or retreived
+ * @return returns a proxy object representing the reference to a device derrivered from SinricProDevice
+ * @section Syntax
+ * `<DeviceType> &reference = SinricPro[<DEVICE_ID>];`
+ * @section operator[] Example-Code
+ * @code
+ * #define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
+ * ..
+ *   SinricProSwitch &mySwitch = SinricPro[SWITCH_ID];
+ * ..
+ * @endcode
+ **/ 
+SinricProClass::proxy SinricProClass::operator[](const DeviceId deviceId) { 
+  return proxy(this, deviceId); 
+}
+
+void SinricProClass::setResponseMessage(String &&message) { 
+  responseMessageStr = message; 
+}
+
+/**
+ * @brief Get the current timestamp
+ * 
+ * @return unsigned long current timestamp (unix epoch time)
+ */
+unsigned long SinricProClass::getTimestamp() { 
+  return baseTimestamp + (millis()/1000); 
 }
 
 DynamicJsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage) {
