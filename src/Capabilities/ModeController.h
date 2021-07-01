@@ -7,6 +7,40 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onSetMode function
+ * 
+ * Gets called when device receive a `setBands` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   mode        String device mode should set to \n `MOVIE`, `MUSIC`, `NIGHT`, `SPORT`, `TV`
+ * @param[out]  mode        String devices mode is set to \n `MOVIE`, `MUSIC`, `NIGHT`, `SPORT`, `TV`
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section ModeCallback Example-Code
+ * @snippet callbacks.cpp onSetMode
+ **/
+using ModeCallback = std::function<bool(const String &, String &)>;
+
+/**
+ * @brief Callback definition for onSetMode function for a specific instance
+ * 
+ * Gets called when device receive a `setBands` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   instance    String name of the instance
+ * @param[in]   mode        String device mode should set to
+ * @param[out]  mode        String devices mode is set to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section GenericModeCallback Example-Code
+ * @snippet callbacks.cpp onSetModeGeneric
+ **/
+using GenericModeCallback = std::function<bool(const String &, const String &, String &)>;
+
+
+/**
  * @brief ModeController
  * @ingroup Capabilities
  **/
@@ -14,38 +48,6 @@ template <typename T>
 class ModeController {
   public:
     ModeController();
-    /**
-     * @brief Callback definition for onSetMode function
-     * 
-     * Gets called when device receive a `setBands` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   mode        String device mode should set to \n `MOVIE`, `MUSIC`, `NIGHT`, `SPORT`, `TV`
-     * @param[out]  mode        String devices mode is set to \n `MOVIE`, `MUSIC`, `NIGHT`, `SPORT`, `TV`
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section ModeCallback Example-Code
-     * @snippet callbacks.cpp onSetMode
-     **/
-    using ModeCallback = std::function<bool(const String &, String &)>;
-
-    /**
-     * @brief Callback definition for onSetMode function for a specific instance
-     * 
-     * Gets called when device receive a `setBands` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   instance    String name of the instance
-     * @param[in]   mode        String device mode should set to
-     * @param[out]  mode        String devices mode is set to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section GenericModeCallback Example-Code
-     * @snippet callbacks.cpp onSetModeGeneric
-     **/
-    using GenericModeCallback = std::function<bool(const String &, const String &, String &)>;
 
     void onSetMode(ModeCallback cb);
     void onSetMode(const String& instance, GenericModeCallback cb);

@@ -6,6 +6,54 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onChangeChannel function
+ * 
+ * Gets called when device receive a `changeChannel` request by using channel name
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   channel      String with channel name device is requested to switch to
+ * @param[out]  channel      String with channel name device has switchted to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section ChangeChannel Example-Code
+ * @snippet callbacks.cpp onChangeChannel
+ **/
+using ChangeChannelCallback = std::function<bool(const String &, String &)>;
+
+/**
+ * @brief Callback definition for onChangeChannelNumber function
+ * 
+ * Gets called when device receive a `changeChannel` request by using channel number 
+ * @param[in]   deviceId      String which contains the ID of device
+ * @param[in]   channelNumber Integer with channel number device is requested to switch to
+ * @param[out]  channelName   String with channel name device has switchted to
+ * @return      the success of the request
+ * @retval      true          request handled properly
+ * @retval      false         request was not handled properly because of some error
+ * 
+ * @section ChangeChannelNumber Example-Code
+ * @snippet callbacks.cpp onChangeChannelNumber
+ **/
+using ChangeChannelNumberCallback = std::function<bool(const String &, int, String &)>;
+
+/**
+ * @brief Callback definition for onSkipChannels function
+ * 
+ * Gets called when device receive a `changeChannel` request by using channel number 
+ * @param[in]   deviceId      String which contains the ID of device
+ * @param[in]   channelCount  Integer with channels device is requested to skip `-n`..`+n`
+ * @param[out]  channelName   String with channel name device has switchted to
+ * @return      the success of the request
+ * @retval      true          request handled properly
+ * @retval      false         request was not handled properly because of some error
+ * 
+ * @section SkipChannels Example-Code
+ * @snippet callbacks.cpp onSkipChannels
+ **/
+using SkipChannelsCallback = std::function<bool(const String &, int, String &)>;
+
+/**
  * @brief ChannelController
  * @ingroup Capabilities
  **/
@@ -13,53 +61,6 @@ template <typename T>
 class ChannelController {
   public:
     ChannelController();
-    /**
-     * @brief Callback definition for onChangeChannel function
-     * 
-     * Gets called when device receive a `changeChannel` request by using channel name
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   channel      String with channel name device is requested to switch to
-     * @param[out]  channel      String with channel name device has switchted to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section ChangeChannel Example-Code
-     * @snippet callbacks.cpp onChangeChannel
-     **/
-    using ChangeChannelCallback = std::function<bool(const String &, String &)>;
-
-    /**
-     * @brief Callback definition for onChangeChannelNumber function
-     * 
-     * Gets called when device receive a `changeChannel` request by using channel number 
-     * @param[in]   deviceId      String which contains the ID of device
-     * @param[in]   channelNumber Integer with channel number device is requested to switch to
-     * @param[out]  channelName   String with channel name device has switchted to
-     * @return      the success of the request
-     * @retval      true          request handled properly
-     * @retval      false         request was not handled properly because of some error
-     * 
-     * @section ChangeChannelNumber Example-Code
-     * @snippet callbacks.cpp onChangeChannelNumber
-     **/
-    using ChangeChannelNumberCallback = std::function<bool(const String &, int, String &)>;
-
-    /**
-     * @brief Callback definition for onSkipChannels function
-     * 
-     * Gets called when device receive a `changeChannel` request by using channel number 
-     * @param[in]   deviceId      String which contains the ID of device
-     * @param[in]   channelCount  Integer with channels device is requested to skip `-n`..`+n`
-     * @param[out]  channelName   String with channel name device has switchted to
-     * @return      the success of the request
-     * @retval      true          request handled properly
-     * @retval      false         request was not handled properly because of some error
-     * 
-     * @section SkipChannels Example-Code
-     * @snippet callbacks.cpp onSkipChannels
-     **/
-    using SkipChannelsCallback = std::function<bool(const String &, int, String &)>;
 
     void onChangeChannel(ChangeChannelCallback cb);
     void onChangeChannelNumber(ChangeChannelNumberCallback cb);

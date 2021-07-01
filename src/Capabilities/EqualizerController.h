@@ -6,6 +6,59 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onSetBands function
+ * 
+ * Gets called when device receive a `setBands` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   bands       String with requested bands to change \n `BASS`, `MIDRANGE`, `TREBBLE`
+ * @param[in]   level       Integer value with level bands should set to
+ * @param[out]  bands       String with changed bands \n `BASS`, `MIDRANGE`, `TREBBLE`
+ * @param[out]  level       Integer value with level bands changed to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section SetBandsCallback Example-Code
+ * @snippet callbacks.cpp onSetBands
+ **/
+using SetBandsCallback = std::function<bool(const String &, const String &, int &)>;
+
+/**
+ * @brief Callback definition for onAdjustBands function
+ * 
+ * Gets called when device receive a `adjustBands` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   bands       String with requested bands to change \n `BASS`, `MIDRANGE`, `TREBBLE`
+ * @param[in]   levelDelta  Integer with relative level value device should change bands about
+ * @param[out]  bands       String with changed bands \n `BASS`, `MIDRANGE`, `TREBBLE`
+ * @param[out]  levelDelta  Integer value with level bands changed to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section AdjustBandsCallback Example-Code
+ * @snippet callbacks.cpp onAdjustBands
+ **/
+using AdjustBandsCallback = std::function<bool(const String &, const String &, int &)>;
+
+/**
+ * @brief Callback definition for onResetBands function
+ * 
+ * Gets called when device receive a `onResetBands` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   bands       String with requested bands to reset \n `BASS`, `MIDRANGE`, `TREBBLE`
+ * @param[out]  bands       String with changed bands \n `BASS`, `MIDRANGE`, `TREBBLE`
+ * @param[out]  level       Integer value with level bands changed to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section ResetBandsCallback Example-Code
+ * @snippet callbacks.cpp onResetBands
+ **/
+using ResetBandsCallback = std::function<bool(const String &, const String &, int &)>;
+
+/**
  * @brief EqualizerController
  * @ingroup Capabilities
  **/
@@ -13,58 +66,6 @@ template <typename T>
 class EqualizerController {
 public:
   EqualizerController();
-  /**
-     * @brief Callback definition for onSetBands function
-     * 
-     * Gets called when device receive a `setBands` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   bands       String with requested bands to change \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[in]   level       Integer value with level bands should set to
-     * @param[out]  bands       String with changed bands \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[out]  level       Integer value with level bands changed to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section SetBandsCallback Example-Code
-     * @snippet callbacks.cpp onSetBands
-     **/
-  using SetBandsCallback = std::function<bool(const String &, const String &, int &)>;
-
-  /**
-     * @brief Callback definition for onAdjustBands function
-     * 
-     * Gets called when device receive a `adjustBands` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   bands       String with requested bands to change \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[in]   levelDelta  Integer with relative level value device should change bands about
-     * @param[out]  bands       String with changed bands \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[out]  levelDelta  Integer value with level bands changed to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section AdjustBandsCallback Example-Code
-     * @snippet callbacks.cpp onAdjustBands
-     **/
-  using AdjustBandsCallback = std::function<bool(const String &, const String &, int &)>;
-
-  /**
-     * @brief Callback definition for onResetBands function
-     * 
-     * Gets called when device receive a `onResetBands` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   bands       String with requested bands to reset \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[out]  bands       String with changed bands \n `BASS`, `MIDRANGE`, `TREBBLE`
-     * @param[out]  level       Integer value with level bands changed to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section ResetBandsCallback Example-Code
-     * @snippet callbacks.cpp onResetBands
-     **/
-  using ResetBandsCallback = std::function<bool(const String &, const String &, int &)>;
 
   void onSetBands(SetBandsCallback cb);
   void onAdjustBands(AdjustBandsCallback cb);

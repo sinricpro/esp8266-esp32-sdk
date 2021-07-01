@@ -6,6 +6,23 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onMediaControl function
+ * 
+ * Gets called when device receive a `mediaControl` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   control     String with requested control \n `FastForward`, `Next`, `Pause`, `Play`, `Previous`, `Rewind`, `StartOver`, `Stop`
+ * @param[out]  control     String with control \n `FastForward`, `Next`, `Pause`, `Play`, `Previous`, `Rewind`, `StartOver`, `Stop`
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section MediaControlCallback Example-Code
+ * @snippet callbacks.cpp onMediaControl
+ **/
+using MediaControlCallback = std::function<bool(const String &, String &)>;
+
+
+/**
  * @brief MediaController
  * @ingroup Capabilities
  **/
@@ -13,21 +30,6 @@ template <typename T>
 class MediaController {
   public:
     MediaController();
-    /**
-     * @brief Callback definition for onMediaControl function
-     * 
-     * Gets called when device receive a `mediaControl` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   control     String with requested control \n `FastForward`, `Next`, `Pause`, `Play`, `Previous`, `Rewind`, `StartOver`, `Stop`
-     * @param[out]  control     String with control \n `FastForward`, `Next`, `Pause`, `Play`, `Previous`, `Rewind`, `StartOver`, `Stop`
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section MediaControlCallback Example-Code
-     * @snippet callbacks.cpp onMediaControl
-     **/
-    using MediaControlCallback = std::function<bool(const String &, String &)>;
 
     void onMediaControl(MediaControlCallback cb);
     bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION");

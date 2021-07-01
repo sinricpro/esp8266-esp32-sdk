@@ -6,6 +6,39 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onSetPercentage function
+ * 
+ * Gets called when device receive a `setPercentage` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   percentage      Integer with percentage device should set to
+ * @param[out]  percentage      Integer with percentage device has been set to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section SetPercentageCallback Example-Code
+ * @snippet callbacks.cpp onSetPercentage
+ **/
+
+using SetPercentageCallback = std::function<bool(const String &, int &)>;
+/**
+ * @brief Callback definition for onAdjustPercentage function
+ * 
+ * Gets called when device receive a `adjustPercentage` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   percentageDelta Integer with relative percentage the device should change about (-100..100)
+ * @param[out]  percentageDelta Integer with absolute percentage device has been set to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section AdjustPercentageCallback Example-Code
+ * @snippet callbacks.cpp onAdjustPercentage
+ **/
+using AdjustPercentageCallback = std::function<bool(const String &, int &)>;
+
+
+/**
  * @brief PercentageController
  * @ingroup Capabilities
  **/
@@ -13,37 +46,6 @@ template <typename T>
 class PercentageController {
   public:
     PercentageController();
-    /**
-     * @brief Callback definition for onSetPercentage function
-     * 
-     * Gets called when device receive a `setPercentage` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   percentage      Integer with percentage device should set to
-     * @param[out]  percentage      Integer with percentage device has been set to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section SetPercentageCallback Example-Code
-     * @snippet callbacks.cpp onSetPercentage
-     **/
-    using SetPercentageCallback = std::function<bool(const String &, int &)>;
-
-    /**
-     * @brief Callback definition for onAdjustPercentage function
-     * 
-     * Gets called when device receive a `adjustPercentage` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   percentageDelta Integer with relative percentage the device should change about (-100..100)
-     * @param[out]  percentageDelta Integer with absolute percentage device has been set to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section AdjustPercentageCallback Example-Code
-     * @snippet callbacks.cpp onAdjustPercentage
-     **/
-    using AdjustPercentageCallback = std::function<bool(const String &, int &)>;
 
     void onSetPercentage(SetPercentageCallback cb);
     void onAdjustPercentage(AdjustPercentageCallback cb);

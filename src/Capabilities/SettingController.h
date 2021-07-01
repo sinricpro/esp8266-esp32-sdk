@@ -5,11 +5,12 @@
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
+using SetSettingCallback = std::function<bool(const String&, const String&, String&)>;
+
 template <typename T>
 class SettingController {
   public:
     SettingController();
-    using SetSettingCallback = std::function<bool(const String&, const String&, String&)>;
     void onSetSetting(SetSettingCallback cb);
 
   protected:

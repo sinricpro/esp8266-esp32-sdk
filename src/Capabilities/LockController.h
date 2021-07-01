@@ -6,6 +6,28 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onLockState function
+ * 
+ * Gets called when device receive a `setLockState` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   state       `true` = device is requested to lock \n `false` = device is requested to unlock
+ * @param[out]  state       `true` = device has been locked \n `false` = device has been unlocked
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section LockStateCallback Example-Code
+ * @code
+ * bool onLockState(const String &deviceId, bool &lockState) {
+ *   Serial.printf("Device is %s\r\n", lockState?"locked":"unlocked");
+ *   return true;
+ * }
+ * @endcode
+ **/
+using LockStateCallback = std::function<bool(const String &, bool &)>; // void onLockState(const DeviceId &deviceId, bool& lockState);
+
+
+/**
  * @brief LockController
  * @ingroup Capabilities
  **/
@@ -13,26 +35,6 @@ template <typename T>
 class LockController {
   public:
     LockController();
-    /**
-     * @brief Callback definition for onLockState function
-     * 
-     * Gets called when device receive a `setLockState` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   state       `true` = device is requested to lock \n `false` = device is requested to unlock
-     * @param[out]  state       `true` = device has been locked \n `false` = device has been unlocked
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section LockStateCallback Example-Code
-     * @code
-     * bool onLockState(const String &deviceId, bool &lockState) {
-     *   Serial.printf("Device is %s\r\n", lockState?"locked":"unlocked");
-     *   return true;
-     * }
-     * @endcode
-     **/
-    using LockStateCallback = std::function<bool(const String &, bool &)>; // void onLockState(const DeviceId &deviceId, bool& lockState);
 
     void onLockState(LockStateCallback cb);
     bool sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");

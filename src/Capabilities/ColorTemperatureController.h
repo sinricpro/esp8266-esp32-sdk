@@ -6,6 +6,52 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onColorTemperature function
+ * 
+ * Gets called when device receive a `setColorTemperature` request \n
+ * @param[in]   deviceId          String which contains the ID of device
+ * @param[in]   colorTemperature  Integer value with color temperature the device should set to \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
+ * @param[out]  colorTemperature  Integer value with color temperature the device is set to \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * @section ColorTemperatureCallback Example-Code
+ * @snippet callbacks.cpp onColorTemperature
+ **/
+using ColorTemperatureCallback = std::function<bool(const String &, int &)>;
+
+/**
+ * @brief Callback definition for onIncreaseColorTemperature function
+ * 
+ * Gets called when device receive a `increaseColorTemperature` request \n
+ * @param[in]   deviceId          String which contains the ID of device
+ * @param[in]   colorTemperature  Integer value `1` = Device should increase color temperature
+ * @param[out]  colorTemperature  Integer value return the new color temperarature \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * @section IncreaseColorTemperatureCallback Example-Code
+ * @snippet callbacks.cpp onIncreaseColorTemperature
+ **/
+using IncreaseColorTemperatureCallback = std::function<bool(const String &, int &)>;
+
+/**
+ * @brief Callback definition for onDecreaseColorTemperature function
+ * 
+ * Gets called when device receive a `decreaseColorTemperature` request \n
+ * @param[in]   deviceId          String which contains the ID of device
+ * @param[in]   colorTemperature  Integer value `-1` = Device should decrease color temperature
+ * @param[out]  colorTemperature  Integer value return the new color temperarature \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * @section DecreaseColorTemperatureCallback Example-Code
+ * @snippet callbacks.cpp onDecreaseColorTemperature
+ **/
+using DecreaseColorTemperatureCallback = std::function<bool(const String &, int &)>;
+
+
+/**
  * @brief ColorTemperatureController
  * @ingroup Capabilities
  **/
@@ -13,50 +59,6 @@ template <typename T>
 class ColorTemperatureController {
   public:
     ColorTemperatureController();
-    /**
-     * @brief Callback definition for onColorTemperature function
-     * 
-     * Gets called when device receive a `setColorTemperature` request \n
-     * @param[in]   deviceId          String which contains the ID of device
-     * @param[in]   colorTemperature  Integer value with color temperature the device should set to \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
-     * @param[out]  colorTemperature  Integer value with color temperature the device is set to \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section ColorTemperatureCallback Example-Code
-     * @snippet callbacks.cpp onColorTemperature
-     **/
-    using ColorTemperatureCallback = std::function<bool(const String &, int &)>;
-
-    /**
-     * @brief Callback definition for onIncreaseColorTemperature function
-     * 
-     * Gets called when device receive a `increaseColorTemperature` request \n
-     * @param[in]   deviceId          String which contains the ID of device
-     * @param[in]   colorTemperature  Integer value `1` = Device should increase color temperature
-     * @param[out]  colorTemperature  Integer value return the new color temperarature \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section IncreaseColorTemperatureCallback Example-Code
-     * @snippet callbacks.cpp onIncreaseColorTemperature
-     **/
-    using IncreaseColorTemperatureCallback = std::function<bool(const String &, int &)>;
-
-    /**
-     * @brief Callback definition for onDecreaseColorTemperature function
-     * 
-     * Gets called when device receive a `decreaseColorTemperature` request \n
-     * @param[in]   deviceId          String which contains the ID of device
-     * @param[in]   colorTemperature  Integer value `-1` = Device should decrease color temperature
-     * @param[out]  colorTemperature  Integer value return the new color temperarature \n `2200` = warm white \n `2700` = soft white \n `4000` = white \n `5500` = daylight white \n `7000` = cool white
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section DecreaseColorTemperatureCallback Example-Code
-     * @snippet callbacks.cpp onDecreaseColorTemperature
-     **/
-    using DecreaseColorTemperatureCallback = std::function<bool(const String &, int &)>;
 
     void onColorTemperature(ColorTemperatureCallback cb);
     void onIncreaseColorTemperature(IncreaseColorTemperatureCallback cb);

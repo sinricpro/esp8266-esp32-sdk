@@ -6,38 +6,40 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+   * @brief Callback definition for onToggleState function
+   * 
+   * Gets called when device receive a `setPowerState` reuqest \n
+   * @param[in]   deviceId    String which contains the ID of device
+   * @param[in]   instance    String which instance is requested
+   * @param[in]   state       `true` = device is requested to turn on \n `false` = device is requested to turn off
+   * @param[out]  state       `true` = device has been turned on \n `false` = device has been turned off
+   * @return      the success of the request
+   * @retval      true        request handled properly
+   * @retval      false       request was not handled properly because of some error
+   * @section ToggleStateCallback Example-Code
+   * @snippet callbacks.cpp onToggleState
+   **/
+using GenericToggleStateCallback = std::function<bool(const String &, const String&, bool &)>;
+
+
+/**
  * @brief ToggleController
  * @ingroup Capabilities
  **/
 template <typename T>
 class ToggleController {
-public:
-  ToggleController();
-  /**
-     * @brief Callback definition for onToggleState function
-     * 
-     * Gets called when device receive a `setPowerState` reuqest \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   instance    String which instance is requested
-     * @param[in]   state       `true` = device is requested to turn on \n `false` = device is requested to turn off
-     * @param[out]  state       `true` = device has been turned on \n `false` = device has been turned off
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section ToggleStateCallback Example-Code
-     * @snippet callbacks.cpp onToggleState
-     **/
-  using GenericToggleStateCallback = std::function<bool(const String &, const String&, bool &)>;
-
-  void onToggleState(const String& instance, GenericToggleStateCallback cb);
-  bool sendToggleStateEvent(const String &instance, bool state, String cause = "PHYSICAL_INTERACTION");
-
-protected:
-  bool handleToggleController(SinricProRequest &request);
-
-private:
-  std::map<String, EventLimiter> event_limiter;
-  std::map<String, GenericToggleStateCallback> genericToggleStateCallback;
+  public:
+    ToggleController();
+  
+    void onToggleState(const String& instance, GenericToggleStateCallback cb);
+    bool sendToggleStateEvent(const String &instance, bool state, String cause = "PHYSICAL_INTERACTION");
+  
+  protected:
+    bool handleToggleController(SinricProRequest &request);
+  
+  private:
+    std::map<String, EventLimiter> event_limiter;
+    std::map<String, GenericToggleStateCallback> genericToggleStateCallback;
 };
 
 template <typename T>

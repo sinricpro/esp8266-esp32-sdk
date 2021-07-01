@@ -6,6 +6,25 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onColor function
+ * 
+ * Gets called when device receive a `setColor` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   r           Byte value for red
+ * @param[in]   g           Byte value for green
+ * @param[in]   b           Byte value for blue
+ * @param[out]  r           Byte value for red
+ * @param[out]  g           Byte value for green
+ * @param[out]  b           Byte value for blue
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * @section ColorCallback Example-Code
+ * @snippet callbacks.cpp onColor
+ **/
+using ColorCallback = std::function<bool(const String &, byte &, byte &, byte &)>;
+
+/**
  * @brief ColorController
  * @ingroup Capabilities
  **/
@@ -13,24 +32,6 @@ template <typename T>
 class ColorController {
   public:
     ColorController();
-    /**
-     * @brief Callback definition for onColor function
-     * 
-     * Gets called when device receive a `setColor` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   r           Byte value for red
-     * @param[in]   g           Byte value for green
-     * @param[in]   b           Byte value for blue
-     * @param[out]  r           Byte value for red
-     * @param[out]  g           Byte value for green
-     * @param[out]  b           Byte value for blue
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section ColorCallback Example-Code
-     * @snippet callbacks.cpp onColor
-     **/
-    using ColorCallback = std::function<bool(const String &, byte &, byte &, byte &)>;
 
     void onColor(ColorCallback cb);
     bool sendColorEvent(byte r, byte g, byte b, String cause = "PHYSICAL_INTERACTION");

@@ -6,6 +6,23 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onMute function
+ * 
+ * Gets called when device receive a `setMute` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   mute        `true` mute device \n `false` unmute device
+ * @param[out]  mute        `true` device is muted \n `false` device is unmuted
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section MuteCallback Example-Code
+ * @snippet callbacks.cpp onMute
+ **/
+using MuteCallback = std::function<bool(const String &, bool &)>;
+
+
+/**
  * @brief MuteController
  * @ingroup Capabilities
  **/
@@ -13,21 +30,6 @@ template <typename T>
 class MuteController {
   public:
     MuteController();
-    /**
-     * @brief Callback definition for onMute function
-     * 
-     * Gets called when device receive a `setMute` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   mute        `true` mute device \n `false` unmute device
-     * @param[out]  mute        `true` device is muted \n `false` device is unmuted
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section MuteCallback Example-Code
-     * @snippet callbacks.cpp onMute
-     **/
-    using MuteCallback = std::function<bool(const String &, bool &)>;
 
     void onMute(MuteCallback cb);
     bool sendMuteEvent(bool mute, String cause = "PHYSICAL_INTERACTION");

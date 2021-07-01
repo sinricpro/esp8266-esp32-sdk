@@ -6,6 +6,21 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onDoorState function
+ * 
+ * Gets called when device receive a `open` or `close` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   doorState   `false` = open, device is requested to open the garage door \n`true` = close, device is requested to close the garage door
+ * @param[out]  doorState   bool with actual state `false` = open, `true` = closed
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * @section DoorStateCallback Example-Code
+ * @snippet callbacks.cpp onDoorState
+ **/
+using DoorCallback = std::function<bool(const String &, bool &)>;
+
+/**
  * @brief DoorController - only used for GarageDoor device and cannot used as capability for a custom device!
  * 
  **/
@@ -13,21 +28,6 @@ template <typename T>
 class DoorController {
   public:
     DoorController();
-
-    /**
-     * @brief Callback definition for onDoorState function
-     * 
-     * Gets called when device receive a `open` or `close` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   doorState   `false` = open, device is requested to open the garage door \n`true` = close, device is requested to close the garage door
-     * @param[out]  doorState   bool with actual state `false` = open, `true` = closed
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section DoorStateCallback Example-Code
-     * @snippet callbacks.cpp onDoorState
-     **/
-    using DoorCallback = std::function<bool(const String &, bool &)>;
 
     void onDoorState(DoorCallback cb);
     bool sendDoorStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");

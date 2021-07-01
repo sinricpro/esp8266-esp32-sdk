@@ -6,6 +6,40 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onSetVolume function
+ * 
+ * Gets called when device receive a `setVolume` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   volume      Integer with volume device should set to
+ * @param[out]  volume      Integer with volume device has been set to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section SetVolumeCallback Example-Code
+ * @snippet callbacks.cpp onSetVolume
+ **/
+using SetVolumeCallback = std::function<bool(const String &, int &)>;
+
+/**
+ * @brief Callback definition for onAdjustVolume function
+ * 
+ * Gets called when device receive a `adjustVolume` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   volumeDelta Integer with relative volume the device should change about (-100..100)
+ * @param[out]  volumeDelta Integer with absolute volume device has been set to
+ * @param[in]   volumeDefault Bool `false` if the user specified the amount by which to change the volume; otherwise `true`
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section AdjustVolumeCallback Example-Code
+ * @snippet callbacks.cpp onAdjustVolume
+ **/
+using AdjustVolumeCallback = std::function<bool(const String &, int &, bool)>;
+
+
+/**
  * @brief VolumeController
  * @ingroup Capabilities
  **/
@@ -13,38 +47,6 @@ template <typename T>
 class VolumeController {
   public:
     VolumeController();
-    /**
-     * @brief Callback definition for onSetVolume function
-     * 
-     * Gets called when device receive a `setVolume` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   volume      Integer with volume device should set to
-     * @param[out]  volume      Integer with volume device has been set to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section SetVolumeCallback Example-Code
-     * @snippet callbacks.cpp onSetVolume
-     **/
-    using SetVolumeCallback = std::function<bool(const String &, int &)>;
-
-    /**
-     * @brief Callback definition for onAdjustVolume function
-     * 
-     * Gets called when device receive a `adjustVolume` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   volumeDelta Integer with relative volume the device should change about (-100..100)
-     * @param[out]  volumeDelta Integer with absolute volume device has been set to
-     * @param[in]   volumeDefault Bool `false` if the user specified the amount by which to change the volume; otherwise `true`
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section AdjustVolumeCallback Example-Code
-     * @snippet callbacks.cpp onAdjustVolume
-     **/
-    using AdjustVolumeCallback = std::function<bool(const String &, int &, bool)>;
 
     void onSetVolume(SetVolumeCallback cb);
     void onAdjustVolume(AdjustVolumeCallback cb);

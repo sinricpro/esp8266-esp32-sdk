@@ -6,6 +6,22 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onPowerState function
+ * 
+ * Gets called when device receive a `setPowerState` reuqest \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   state       `true` = device is requested to turn on \n `false` = device is requested to turn off
+ * @param[out]  state       `true` = device has been turned on \n `false` = device has been turned off
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * @section PowerStateCallback Example-Code
+ * @snippet callbacks.cpp onPowerState
+ **/
+using PowerStateCallback = std::function<bool(const String &, bool &)>;
+
+
+/**
  * @brief PowerStateController
  * @ingroup Capabilities
  **/
@@ -13,20 +29,6 @@ template <typename T>
 class PowerStateController {
   public:
     PowerStateController();
-    /**
-     * @brief Callback definition for onPowerState function
-     * 
-     * Gets called when device receive a `setPowerState` reuqest \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   state       `true` = device is requested to turn on \n `false` = device is requested to turn off
-     * @param[out]  state       `true` = device has been turned on \n `false` = device has been turned off
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section PowerStateCallback Example-Code
-     * @snippet callbacks.cpp onPowerState
-     **/
-    using PowerStateCallback = std::function<bool(const String &, bool &)>;
 
     void onPowerState(PowerStateCallback cb);
     bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");

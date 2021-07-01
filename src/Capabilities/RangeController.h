@@ -6,6 +6,95 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Callback definition for onRangeValue function
+ * 
+ * Gets called when device receive a `setRangeValue` reuqest \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   rangeValue  for range value device has to be set
+ * @param[out]  rangeValue  returning the current range value
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section SetRangeValueCallback Example-Code
+ * @snippet callbacks.cpp onRangeValue
+ **/
+
+using GenericRangeValueCallback_int   = bool (*)(const String &, const String &, int &);
+using GenericRangeValueCallback_float = bool (*)(const String &, const String &, float &);
+
+struct GenericRangeValueCallback {
+  GenericRangeValueCallback() : type(type_unknown) {}
+  GenericRangeValueCallback(GenericRangeValueCallback_int cb)   : type(type_int), cb_int(cb) {}
+  GenericRangeValueCallback(GenericRangeValueCallback_float cb) : type(type_float), cb_float(cb) {}
+  enum {
+    type_unknown,
+    type_int,
+    type_float
+  } type;
+  union {
+    GenericRangeValueCallback_int   cb_int;
+    GenericRangeValueCallback_float cb_float;
+  };
+};
+
+using SetRangeValueCallback = bool (*)(const String &, int &);
+
+/**
+ * @brief Callback definition for onRangeValue function on a specific instance
+ * 
+ * Gets called when device receive a `setRangeValue` reuqest \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   instance    String instance name
+ * @param[in]   rangeValue  for range value device has to be set
+ * @param[out]  rangeValue  returning the current range value
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section GenericSetRangeValueCallback Example-Code
+ * @snippet callbacks.cpp onRangeValueGeneric
+ **/
+ using GenericSetRangeValueCallback_int = GenericRangeValueCallback_int;
+ using GenericSetRangeValueCallback_float = GenericRangeValueCallback_float;
+
+/**
+ * @brief Callback definition for onAdjustRangeValue function
+ * 
+ * Gets called when device receive a `adjustRangeValue` reuqest \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   rangeValue  delta value for range value have to change
+ * @param[out]  rangeValue  returning the absolute range value 
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section AdjustRangeValueCallback Example-Code
+ * @snippet callbacks.cpp onAdjustRangeValue
+ **/
+using AdjustRangeValueCallback = bool (*)(const String &, int &);
+
+/**
+ * @brief Callback definition for onAdjustRangeValue function on a specific instance for custom devices
+ * 
+ * Gets called when device receive a `adjustRangeValue` reuqest \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   instance    String instance name
+ * @param[in]   rangeValue  delta value for range value have to change
+ * @param[out]  rangeValue  returning the absolute range value 
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section GenericAdjustRangeValueCallback Example-Code
+ * @snippet callbacks.cpp onAdjustRangeValueGeneric
+ **/
+using GenericAdjustRangeValueCallback_int   = GenericRangeValueCallback_int;
+using GenericAdjustRangeValueCallback_float = GenericRangeValueCallback_float;
+
+
+
+/**
  * @brief RangeControllerFloatInt
  * @ingroup Capabilities
  **/
@@ -14,92 +103,6 @@ class RangeController {
   public:
 
     RangeController();
-    /**
-     * @brief Callback definition for onRangeValue function
-     * 
-     * Gets called when device receive a `setRangeValue` reuqest \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   rangeValue  for range value device has to be set
-     * @param[out]  rangeValue  returning the current range value
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section SetRangeValueCallback Example-Code
-     * @snippet callbacks.cpp onRangeValue
-     **/
-
-    using GenericRangeValueCallback_int   = bool (*)(const String &, const String &, int &);
-    using GenericRangeValueCallback_float = bool (*)(const String &, const String &, float &);
-
-    struct GenericRangeValueCallback {
-      GenericRangeValueCallback() : type(type_unknown) {}
-      GenericRangeValueCallback(GenericRangeValueCallback_int cb)   : type(type_int), cb_int(cb) {}
-      GenericRangeValueCallback(GenericRangeValueCallback_float cb) : type(type_float), cb_float(cb) {}
-      enum {
-        type_unknown,
-        type_int,
-        type_float
-      } type;
-      union {
-        GenericRangeValueCallback_int   cb_int;
-        GenericRangeValueCallback_float cb_float;
-      };
-    };
-
-    using SetRangeValueCallback = bool (*)(const String &, int &);
-
-    /**
-     * @brief Callback definition for onRangeValue function on a specific instance
-     * 
-     * Gets called when device receive a `setRangeValue` reuqest \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   instance    String instance name
-     * @param[in]   rangeValue  for range value device has to be set
-     * @param[out]  rangeValue  returning the current range value
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section GenericSetRangeValueCallback Example-Code
-     * @snippet callbacks.cpp onRangeValueGeneric
-     **/
-     using GenericSetRangeValueCallback_int = GenericRangeValueCallback_int;
-     using GenericSetRangeValueCallback_float = GenericRangeValueCallback_float;
-
-    /**
-     * @brief Callback definition for onAdjustRangeValue function
-     * 
-     * Gets called when device receive a `adjustRangeValue` reuqest \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   rangeValue  delta value for range value have to change
-     * @param[out]  rangeValue  returning the absolute range value 
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section AdjustRangeValueCallback Example-Code
-     * @snippet callbacks.cpp onAdjustRangeValue
-     **/
-    using AdjustRangeValueCallback = bool (*)(const String &, int &);
-
-    /**
-     * @brief Callback definition for onAdjustRangeValue function on a specific instance for custom devices
-     * 
-     * Gets called when device receive a `adjustRangeValue` reuqest \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   instance    String instance name
-     * @param[in]   rangeValue  delta value for range value have to change
-     * @param[out]  rangeValue  returning the absolute range value 
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section GenericAdjustRangeValueCallback Example-Code
-     * @snippet callbacks.cpp onAdjustRangeValueGeneric
-     **/
-    using GenericAdjustRangeValueCallback_int   = GenericRangeValueCallback_int;
-    using GenericAdjustRangeValueCallback_float = GenericRangeValueCallback_float;
 
     void onRangeValue(SetRangeValueCallback cb);
     void onRangeValue(const String& instance, GenericSetRangeValueCallback_int cb);

@@ -6,29 +6,21 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
- * @brief BrightnessController
- * @ingroup Capabilities
+ * @brief Callback definition for onBrightness function
+ * 
+ * Gets called when device receive a `setBrightness` request \n
+ * @param[in]   deviceId      String which contains the ID of device
+ * @param[in]   brightness    Absolute integer value the device should set its brightness to
+ * @param[out]  brightness    Absolute integer value with new brightness the device is set to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * @section BrightnessCallback Example-Code
+ * @snippet callbacks.cpp onBrightness
  **/
-template <typename T>
-class BrightnessController {
-  public:
-    BrightnessController();
-    /**
-     * @brief Callback definition for onBrightness function
-     * 
-     * Gets called when device receive a `setBrightness` request \n
-     * @param[in]   deviceId      String which contains the ID of device
-     * @param[in]   brightness    Absolute integer value the device should set its brightness to
-     * @param[out]  brightness    Absolute integer value with new brightness the device is set to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section BrightnessCallback Example-Code
-     * @snippet callbacks.cpp onBrightness
-     **/
-    using BrightnessCallback = std::function<bool(const String &, int &)>;
+using BrightnessCallback = std::function<bool(const String &, int &)>;
 
-    /**
+/**
      * @brief Callback definition for onAdjustBrightness function
      * 
      * Gets called when device receive a `adjustBrightness` request \n
@@ -41,7 +33,16 @@ class BrightnessController {
      * @section AdjustBrightnessCallback Example-Code
      * @snippet callbacks.cpp onAdjustBrightness
      **/
-    using AdjustBrightnessCallback = std::function<bool(const String &, int &)>;
+using AdjustBrightnessCallback = std::function<bool(const String &, int &)>;
+
+/**
+ * @brief BrightnessController
+ * @ingroup Capabilities
+ **/
+template <typename T>
+class BrightnessController {
+  public:
+    BrightnessController();
 
     void onBrightness(BrightnessCallback cb);
     void onAdjustBrightness(AdjustBrightnessCallback cb);

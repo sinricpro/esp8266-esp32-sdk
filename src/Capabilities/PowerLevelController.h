@@ -6,6 +6,39 @@
 namespace SINRICPRO_NAMESPACE {
 
 /**
+ * @brief Definition for setPowerLevel callback
+ * 
+ * Gets called when device receive a `setPowerLevel` reuqest \n
+ * @param[in]     deviceId        String which contains the ID of device
+ * @param[in]     powerLevel      integer `0..100` new powerlevel the device should be set to
+ * @param[out]    powerLevel      integer `0..100` report the powerlevel that the device have been set to
+ * @return        the success of the request
+ * @retval        true            request handled properly
+ * @retval        false           request was not handled properly because of some error
+ * 
+ * @section SetPowerLevelCallback Example-Code
+ * @snippet callbacks.cpp onPowerLevel
+ **/
+
+using SetPowerLevelCallback = std::function<bool(const String &, int &)>;
+/**
+ * @brief Definition for onAdjustPowerLevel callback
+ * 
+ * Gets called when device receive a `adjustPowerLevel` reuqest \n
+ * @param[in]     deviceId      String which contains the ID of device
+ * @param[in]     powerLevel    integer `-100..100` delta value which power level have to be changed
+ * @param[out]    powerLevel    integer `0..100` report the absolute powerlevel that the device have been set to
+ * @return        the success of the request
+ * @retval true   request handled properly
+ * @retval false  request can`t be handled properly because of some error
+ * 
+ * @section AdjustPowerLevelCallback Example-Code
+ * @snippet callbacks.cpp onAdjustPowerLevel
+ **/
+using AdjustPowerLevelCallback = std::function<bool(const String &, int &)>;
+
+
+/**
  * @brief PowerLevelController
  * @ingroup Capabilities
  **/
@@ -13,37 +46,6 @@ template <typename T>
 class PowerLevelController {
   public:
     PowerLevelController();
-    /**
-     * @brief Definition for setPowerLevel callback
-     * 
-     * Gets called when device receive a `setPowerLevel` reuqest \n
-     * @param[in]     deviceId        String which contains the ID of device
-     * @param[in]     powerLevel      integer `0..100` new powerlevel the device should be set to
-     * @param[out]    powerLevel      integer `0..100` report the powerlevel that the device have been set to
-     * @return        the success of the request
-     * @retval        true            request handled properly
-     * @retval        false           request was not handled properly because of some error
-     * 
-     * @section SetPowerLevelCallback Example-Code
-     * @snippet callbacks.cpp onPowerLevel
-     **/
-    using SetPowerLevelCallback = std::function<bool(const String &, int &)>;
-
-    /**
-     * @brief Definition for onAdjustPowerLevel callback
-     * 
-     * Gets called when device receive a `adjustPowerLevel` reuqest \n
-     * @param[in]     deviceId      String which contains the ID of device
-     * @param[in]     powerLevel    integer `-100..100` delta value which power level have to be changed
-     * @param[out]    powerLevel    integer `0..100` report the absolute powerlevel that the device have been set to
-     * @return        the success of the request
-     * @retval true   request handled properly
-     * @retval false  request can`t be handled properly because of some error
-     * 
-     * @section AdjustPowerLevelCallback Example-Code
-     * @snippet callbacks.cpp onAdjustPowerLevel
-     **/
-    using AdjustPowerLevelCallback = std::function<bool(const String &, int &)>;
 
     void onPowerLevel(SetPowerLevelCallback cb);
     void onAdjustPowerLevel(AdjustPowerLevelCallback cb);
