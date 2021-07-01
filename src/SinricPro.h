@@ -45,7 +45,7 @@ class SinricProClass : public SinricProInterface {
   friend class SinricProDevice;
 
   public:
-    void               begin(String socketAuthToken, String signingKey, String serverURL = SINRICPRO_SERVER_URL);
+    void               begin(String appKey, String appSecret, String serverURL = SINRICPRO_SERVER_URL);
     void               handle();
     void               stop();
     bool               isConnected();
@@ -103,8 +103,8 @@ class SinricProClass : public SinricProInterface {
 
     std::vector<SinricProDeviceInterface*> devices;
 
-    String              socketAuthToken;
-    String              signingKey;
+    String              appKey;
+    String              appSecret;
     String              serverURL;
 
     websocketListener   _websocketListener;
@@ -144,8 +144,8 @@ DeviceType& SinricProClass::getDeviceInstance(String deviceId) {
 /**
  * @brief Initializing SinricProClass to be able to connect to SinricPro Server
  * 
- * @param socketAuthToken `String` containing APP_KEY (see credentials from https://sinric.pro )
- * @param signingKey `String` containing APP_SECRET (see credentials from https:://sinric.pro)
+ * @param appKey `String` containing APP_KEY (see credentials from https://sinric.pro )
+ * @param appSecret `String` containing APP_SECRET (see credentials from https:://sinric.pro)
  * @param serverURL `String` containing SinricPro Server URL (default="ws.sinric.pro")
  * @section Example-Code
  * @code
@@ -157,14 +157,14 @@ DeviceType& SinricProClass::getDeviceInstance(String deviceId) {
  * }
  * @endcode
  **/
-void SinricProClass::begin(String socketAuthToken, String signingKey, String serverURL) {
+void SinricProClass::begin(String appKey, String appSecret, String serverURL) {
   bool success = true;
-  if (!socketAuthToken.length()) {
-    DEBUG_SINRIC("[SinricPro:begin()]: App-Key \"%s\" is invalid!! Please check your app-key!! SinricPro will not work!\r\n", socketAuthToken.c_str());
+  if (!appKey.length()) {
+    DEBUG_SINRIC("[SinricPro:begin()]: App-Key \"%s\" is invalid!! Please check your app-key!! SinricPro will not work!\r\n", appKey.c_str());
     success = false;
   }
-  if (!signingKey.length()) {
-    DEBUG_SINRIC("[SinricPro:begin()]: App-Secret \"%s\" is invalid!! Please check your app-secret!! SinricPro will not work!\r\n", signingKey.c_str());
+  if (!appSecret.length()) {
+    DEBUG_SINRIC("[SinricPro:begin()]: App-Secret \"%s\" is invalid!! Please check your app-secret!! SinricPro will not work!\r\n", appSecret.c_str());
     success = false;
   }
 
@@ -173,8 +173,8 @@ void SinricProClass::begin(String socketAuthToken, String signingKey, String ser
     return;
   }
 
-  this->socketAuthToken = socketAuthToken;
-  this->signingKey = signingKey;
+  this->appKey = appKey;
+  this->appSecret = appSecret;
   this->serverURL = serverURL;
   _begin = true;
   _udpListener.begin(&receiveQueue);
@@ -324,7 +324,7 @@ void SinricProClass::handleReceiveQueue() {
     } else {
       String signature = jsonMessage["signature"]["HMAC"] | "";
       String payload = extractPayload(rawMessage->getMessage());
-      String calculatedSignature = calculateSignature(signingKey.c_str(), payload);
+      String calculatedSignature = calculateSignature(appSecret.c_str(), payload);
       sigMatch = (calculatedSignature == signature);
     }
 
@@ -354,7 +354,7 @@ void SinricProClass::handleSendQueue() {
     DynamicJsonDocument jsonMessage(1024);
     deserializeJson(jsonMessage, rawMessage->getMessage());
     jsonMessage["payload"]["createdAt"] = getTimestamp();
-    signMessage(signingKey, jsonMessage);
+    signMessage(appSecret, jsonMessage);
 
     String messageStr;
 
@@ -384,7 +384,7 @@ void SinricProClass::connect() {
     i++;
   }
 
-  _websocketListener.begin(serverURL, socketAuthToken, deviceList, &receiveQueue);
+  _websocketListener.begin(serverURL, appKey, deviceList, &receiveQueue);
 }
 
 
