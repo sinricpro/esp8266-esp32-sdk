@@ -1,8 +1,13 @@
 #pragma once
 
 #include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
+
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(KEYPAD, SendKeystroke);  // "SendKeystroke"
+FSTR(KEYPAD, keystroke);      // "keystroke"
 
 /**
  * @brief Callback definition for onKeystroke function
@@ -61,12 +66,12 @@ bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
   T* device = static_cast<T*>(this);
 
   bool success = false;
-  if (request.action != "SendKeystroke") return false;
+  if (request.action != FSTR_KEYPAD_SendKeystroke) return false;
 
   if (keystrokeCallback) {
-    String keystroke = request.request_value["keystroke"] | "";
+    String keystroke = request.request_value[FSTR_KEYPAD_keystroke] | "";
     success = keystrokeCallback(device->deviceId, keystroke);
-    request.response_value["keystroke"] = keystroke;
+    request.response_value[FSTR_KEYPAD_keystroke] = keystroke;
     return success;
   }
   

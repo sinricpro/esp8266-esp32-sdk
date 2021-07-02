@@ -2,8 +2,17 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(LOCK, setLockState);      // "setLockState"
+FSTR(LOCK, state);             // "state"
+FSTR(LOCK, LOCKED);            // "LOCKED"
+FSTR(LOCK, UNLOCKED);          // "UNLOCKED"
+FSTR(LOCK, lock);              // "lock"
+FSTR(LOCK, JAMMED);            // "JAMMED"
 
 /**
  * @brief Callback definition for onLockState function
@@ -37,7 +46,7 @@ class LockController {
     LockController();
 
     void onLockState(LockStateCallback cb);
-    bool sendLockStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendLockStateEvent(bool state, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     bool handleLockController(SinricProRequest &request);
@@ -80,9 +89,9 @@ bool LockController<T>::sendLockStateEvent(bool state, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setLockState", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  state ? event_value["state"] = "LOCKED" : event_value["state"] = "UNLOCKED";
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_LOCK_setLockState, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  state ? event_value[FSTR_LOCK_state] = FSTR_LOCK_LOCKED : event_value[FSTR_LOCK_state] = FSTR_LOCK_UNLOCKED;
   return device->sendEvent(eventMessage);
 }
 
@@ -92,10 +101,10 @@ bool LockController<T>::handleLockController(SinricProRequest &request) {
 
   bool success = false;
 
-  if (request.action == "setLockState" && lockStateCallback)  {
-    bool lockState = request.request_value["state"] == "lock" ? true : false;
+  if (request.action == FSTR_LOCK_setLockState && lockStateCallback)  {
+    bool lockState = request.request_value[FSTR_LOCK_state] == FSTR_LOCK_lock ? true : false;
     success = lockStateCallback(device->deviceId, lockState);
-    request.response_value["state"] = success ? lockState ? "LOCKED" : "UNLOCKED" : "JAMMED";
+    request.response_value[FSTR_LOCK_state] = success ? lockState ? FSTR_LOCK_LOCKED : FSTR_LOCK_UNLOCKED : FSTR_LOCK_JAMMED;
     return success;
   }
   return success;

@@ -1,8 +1,20 @@
 #pragma once
 
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(POWERSENSOR, powerUsage);          // "powerUsage"
+FSTR(POWERSENSOR, startTime);           // "startTime"
+FSTR(POWERSENSOR, voltage);             // "voltage"
+FSTR(POWERSENSOR, current);             // "current"
+FSTR(POWERSENSOR, power);               // "power"
+FSTR(POWERSENSOR, apparentPower);       // "apparentPower"
+FSTR(POWERSENSOR, reactivePower);       // "reactivePower"
+FSTR(POWERSENSOR, factor);              // "factor"
+FSTR(POWERSENSOR, wattHours);           // "wattHours"
   
 /**
  * @brief PowerSensor
@@ -12,7 +24,7 @@ template <typename T>
 class PowerSensor {
 public:
   PowerSensor();
-  bool sendPowerSensorEvent(float voltage, float current, float power = -1.0f, float apparentPower = -1.0f, float reactivePower = -1.0f, float factor = -1.0f, String cause = "PERIODIC_POLL");
+  bool sendPowerSensorEvent(float voltage, float current, float power = -1.0f, float apparentPower = -1.0f, float reactivePower = -1.0f, float factor = -1.0f, String cause = FSTR_SINRICPRO_PERIODIC_POLL);
 
 private:
   EventLimiter event_limiter;
@@ -43,8 +55,8 @@ bool PowerSensor<T>::sendPowerSensorEvent(float voltage, float current, float po
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("powerUsage", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERSENSOR_powerUsage, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   if (power == -1)
     power = voltage * current;
   if (apparentPower != -1)
@@ -52,14 +64,14 @@ bool PowerSensor<T>::sendPowerSensorEvent(float voltage, float current, float po
 
   unsigned long currentTimestamp = device->getTimestamp();
 
-  event_value["startTime"] = startTime;
-  event_value["voltage"] = voltage;
-  event_value["current"] = current;
-  event_value["power"] = power;
-  event_value["apparentPower"] = apparentPower;
-  event_value["reactivePower"] = reactivePower;
-  event_value["factor"] = factor;
-  event_value["wattHours"] = getWattHours(currentTimestamp);
+  event_value[FSTR_POWERSENSOR_startTime]     = startTime;
+  event_value[FSTR_POWERSENSOR_voltage]       = voltage;
+  event_value[FSTR_POWERSENSOR_current]       = current;
+  event_value[FSTR_POWERSENSOR_power]         = power;
+  event_value[FSTR_POWERSENSOR_apparentPower] = apparentPower;
+  event_value[FSTR_POWERSENSOR_reactivePower] = reactivePower;
+  event_value[FSTR_POWERSENSOR_factor]        = factor;
+  event_value[FSTR_POWERSENSOR_wattHours]     = getWattHours(currentTimestamp);
 
   startTime = currentTimestamp;
   lastPower = power;

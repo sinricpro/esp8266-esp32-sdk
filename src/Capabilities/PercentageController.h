@@ -2,8 +2,14 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(PERCENTAGE, setPercentage);      // "setPercentage"
+FSTR(PERCENTAGE, percentage);         // "percentage"
+FSTR(PERCENTAGE, adjustPercentage);   // "adjustPercentage"
 
 /**
  * @brief Callback definition for onSetPercentage function
@@ -50,7 +56,7 @@ class PercentageController {
     void onSetPercentage(SetPercentageCallback cb);
     void onAdjustPercentage(AdjustPercentageCallback cb);
 
-    bool sendSetPercentageEvent(int percentage, String cause = "PHYSICAL_INTERACTION");
+    bool sendSetPercentageEvent(int percentage, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     bool handlePercentageController(SinricProRequest &request);
@@ -102,9 +108,9 @@ bool PercentageController<T>::sendSetPercentageEvent(int percentage, String caus
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setPercentage", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["percentage"] = percentage;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_PERCENTAGE_setPercentage, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_PERCENTAGE_percentage] = percentage;
   return device->sendEvent(eventMessage);
 }
 
@@ -114,17 +120,17 @@ bool PercentageController<T>::handlePercentageController(SinricProRequest &reque
 
   bool success = false;
 
-  if (percentageCallback && request.action == "setPercentage") {
-    int percentage = request.request_value["percentage"];
+  if (percentageCallback && request.action == FSTR_PERCENTAGE_setPercentage) {
+    int percentage = request.request_value[FSTR_PERCENTAGE_percentage];
     success = percentageCallback(device->deviceId, percentage);
-    request.response_value["percentage"] = percentage;
+    request.response_value[FSTR_PERCENTAGE_percentage] = percentage;
     return success;
   }
 
-  if (adjustPercentageCallback && request.action == "adjustPercentage") {
-    int percentage = request.request_value["percentage"];
+  if (adjustPercentageCallback && request.action == FSTR_PERCENTAGE_adjustPercentage) {
+    int percentage = request.request_value[FSTR_PERCENTAGE_percentage];
     success = adjustPercentageCallback(device->deviceId, percentage);
-    request.response_value["percentage"] = percentage;
+    request.response_value[FSTR_PERCENTAGE_percentage] = percentage;
     return success;
   }
   return success;

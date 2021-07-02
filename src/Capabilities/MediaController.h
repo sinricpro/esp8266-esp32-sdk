@@ -2,8 +2,13 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(MEDIA, mediaControl);   // "mediaControl"
+FSTR(MEDIA, control);        // "control"
 
 /**
  * @brief Callback definition for onMediaControl function
@@ -32,7 +37,7 @@ class MediaController {
     MediaController();
 
     void onMediaControl(MediaControlCallback cb);
-    bool sendMediaControlEvent(String mediaControl, String cause = "PHYSICAL_INTERACTION");
+    bool sendMediaControlEvent(String mediaControl, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     bool handleMediaController(SinricProRequest &request);
@@ -75,9 +80,9 @@ bool MediaController<T>::sendMediaControlEvent(String mediaControl, String cause
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("mediaControl", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["control"] = mediaControl;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MEDIA_mediaControl, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_MEDIA_control] = mediaControl;
   return device->sendEvent(eventMessage);
 }
 
@@ -87,10 +92,10 @@ bool MediaController<T>::handleMediaController(SinricProRequest &request) {
 
   bool success = false;
 
-  if (mediaControlCallback && request.action == "mediaControl") {
-    String mediaControl = request.request_value["control"];
+  if (mediaControlCallback && request.action == FSTR_MEDIA_mediaControl) {
+    String mediaControl = request.request_value[FSTR_MEDIA_control];
     success = mediaControlCallback(device->deviceId, mediaControl);
-    request.response_value["control"] = mediaControl;
+    request.response_value[FSTR_MEDIA_control] = mediaControl;
     return success;
   }
 

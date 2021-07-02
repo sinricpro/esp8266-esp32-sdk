@@ -14,6 +14,7 @@
 #include "SinricProSignature.h"
 #include "SinricProMessageid.h"
 #include "SinricProQueue.h"
+#include "SinricProStrings.h"
 
 #include "SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
@@ -241,17 +242,17 @@ void SinricProClass::handle() {
 
 DynamicJsonDocument SinricProClass::prepareRequest(String deviceId, const char* action) {
   DynamicJsonDocument requestMessage(1024);
-  JsonObject header = requestMessage.createNestedObject("header");
-  header["payloadVersion"] = 2;
-  header["signatureVersion"] = 1;
+  JsonObject header = requestMessage.createNestedObject(FSTR_SINRICPRO_header);
+  header[FSTR_SINRICPRO_payloadVersion] = 2;
+  header[FSTR_SINRICPRO_signatureVersion] = 1;
 
-  JsonObject payload = requestMessage.createNestedObject("payload");
-  payload["action"] = action;
-  payload["createdAt"] = 0;
-  payload["deviceId"] = deviceId;
-  payload["replyToken"] = MessageID().getID();
-  payload["type"] = "request";
-  payload.createNestedObject("value");
+  JsonObject payload = requestMessage.createNestedObject(FSTR_SINRICPRO_payload);
+  payload[FSTR_SINRICPRO_action] = action;
+  payload[FSTR_SINRICPRO_createdAt] = 0;
+  payload[FSTR_SINRICPRO_deviceId] = deviceId;
+  payload[FSTR_SINRICPRO_replyToken] = MessageID().getID();
+  payload[FSTR_SINRICPRO_type] = FSTR_SINRICPRO_request;
+  payload.createNestedObject(FSTR_SINRICPRO_value);
   return requestMessage;
 }
 
@@ -275,11 +276,11 @@ void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interfac
 
   // handle devices
   bool success = false;
-  const char* deviceId = requestMessage["payload"]["deviceId"];
-  String action = requestMessage["payload"]["action"] | "";
-  String instance = requestMessage["payload"]["instanceId"] | "";
-  JsonObject request_value = requestMessage["payload"]["value"];
-  JsonObject response_value = responseMessage["payload"]["value"];
+  const char* deviceId = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_deviceId];
+  String action = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_action] | "";
+  String instance = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] | "";
+  JsonObject request_value = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  JsonObject response_value = responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
 
   for (auto& device : devices) {
     if (device->getDeviceId() == deviceId && success == false) {
@@ -290,13 +291,13 @@ void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interfac
         response_value
       };
       success = device->handleRequest(request);
-      responseMessage["payload"]["success"] = success;
+      responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_success] = success;
       if (!success) {
         if (responseMessageStr.length() > 0){
-          responseMessage["payload"]["message"] = responseMessageStr;
+          responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_message] = responseMessageStr;
           responseMessageStr = ""; 
         } else {
-          responseMessage["payload"]["message"] = "Device did not handle \""+ action + "\"";
+          responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_message] = "Device did not handle \""+ action + "\"";
         }
       }
     }
@@ -322,19 +323,19 @@ void SinricProClass::handleReceiveQueue() {
     if (strncmp(rawMessage->getMessage(), "{\"timestamp\":", 13) == 0 && strlen(rawMessage->getMessage()) <= 26) {
       sigMatch=true; // timestamp message has no signature...ignore sigMatch for this!
     } else {
-      String signature = jsonMessage["signature"]["HMAC"] | "";
+      String signature = jsonMessage[FSTR_SINRICPRO_signature][FSTR_SINRICPRO_HMAC] | "";
       String payload = extractPayload(rawMessage->getMessage());
       String calculatedSignature = calculateSignature(appSecret.c_str(), payload);
       sigMatch = (calculatedSignature == signature);
     }
 
-    String messageType = jsonMessage["payload"]["type"];
+    String messageType = jsonMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_type];
 
     if (sigMatch) { // signature is valid process message
       DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is valid. Processing message...\r\n");
       extractTimestamp(jsonMessage);
-      if (messageType == "response") handleResponse(jsonMessage);
-      if (messageType == "request") handleRequest(jsonMessage, rawMessage->getInterface());
+      if (messageType == FSTR_SINRICPRO_response) handleResponse(jsonMessage);
+      if (messageType == FSTR_SINRICPRO_request) handleRequest(jsonMessage, rawMessage->getInterface());
     } else {
       DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is invalid! Sending messsage to [dev/null] ;)\r\n");
     }
@@ -353,7 +354,7 @@ void SinricProClass::handleSendQueue() {
 
     DynamicJsonDocument jsonMessage(1024);
     deserializeJson(jsonMessage, rawMessage->getMessage());
-    jsonMessage["payload"]["createdAt"] = getTimestamp();
+    jsonMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_createdAt] = getTimestamp();
     signMessage(appSecret, jsonMessage);
 
     String messageStr;
@@ -456,7 +457,7 @@ void SinricProClass::extractTimestamp(JsonDocument &message) {
   }
 
   // extract timestamp from request message
-  tempTimestamp = message["payload"]["createdAt"] | 0;
+  tempTimestamp = message[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_createdAt] | 0;
   if (tempTimestamp) {
     DEBUG_SINRIC("[SinricPro:extractTimestamp(): Got Timestamp %lu\r\n", tempTimestamp);
     baseTimestamp = tempTimestamp - (millis() / 1000);
@@ -524,40 +525,40 @@ unsigned long SinricProClass::getTimestamp() {
 
 DynamicJsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage) {
   DynamicJsonDocument responseMessage(1024);
-  JsonObject header = responseMessage.createNestedObject("header");
-  header["payloadVersion"] = 2;
-  header["signatureVersion"] = 1;
+  JsonObject header = responseMessage.createNestedObject(FSTR_SINRICPRO_header);
+  header[FSTR_SINRICPRO_payloadVersion] = 2;
+  header[FSTR_SINRICPRO_signatureVersion] = 1;
 
-  JsonObject payload = responseMessage.createNestedObject("payload");
-  payload["action"] = requestMessage["payload"]["action"];
-  payload["clientId"] = requestMessage["payload"]["clientId"];
-  payload["createdAt"] = 0;
-  payload["deviceId"] = requestMessage["payload"]["deviceId"];
-  if (requestMessage["payload"].containsKey("instanceId")) payload["instanceId"] = requestMessage["payload"]["instanceId"];
-  payload["message"] = "OK";
-  payload["replyToken"] = requestMessage["payload"]["replyToken"];
-  payload["success"] = false;
-  payload["type"] = "response";
-  payload.createNestedObject("value");
+  JsonObject payload = responseMessage.createNestedObject(FSTR_SINRICPRO_payload);
+  payload[FSTR_SINRICPRO_action] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_action];
+  payload[FSTR_SINRICPRO_clientId] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_clientId];
+  payload[FSTR_SINRICPRO_createdAt] = 0;
+  payload[FSTR_SINRICPRO_deviceId] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_deviceId];
+  if (requestMessage[FSTR_SINRICPRO_payload].containsKey(FSTR_SINRICPRO_instanceId)) payload[FSTR_SINRICPRO_instanceId] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId];
+  payload[FSTR_SINRICPRO_message] = FSTR_SINRICPRO_OK;
+  payload[FSTR_SINRICPRO_replyToken] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_replyToken];
+  payload[FSTR_SINRICPRO_success] = false;
+  payload[FSTR_SINRICPRO_type] = FSTR_SINRICPRO_response;
+  payload.createNestedObject(FSTR_SINRICPRO_value);
   return responseMessage;
 }
 
 
 DynamicJsonDocument SinricProClass::prepareEvent(String deviceId, const char* action, const char* cause) {
   DynamicJsonDocument eventMessage(1024);
-  JsonObject header = eventMessage.createNestedObject("header");
-  header["payloadVersion"] = 2;
-  header["signatureVersion"] = 1;
+  JsonObject header = eventMessage.createNestedObject(FSTR_SINRICPRO_header);
+  header[FSTR_SINRICPRO_payloadVersion] = 2;
+  header[FSTR_SINRICPRO_signatureVersion] = 1;
 
-  JsonObject payload = eventMessage.createNestedObject("payload");
-  payload["action"] = action;
-  payload["cause"].createNestedObject("type");
-  payload["cause"]["type"] = cause;
-  payload["createdAt"] = 0;
-  payload["deviceId"] = deviceId;
-  payload["replyToken"] = MessageID().getID();
-  payload["type"] = "event";
-  payload.createNestedObject("value");
+  JsonObject payload = eventMessage.createNestedObject(FSTR_SINRICPRO_payload);
+  payload[FSTR_SINRICPRO_action] = action;
+  payload[FSTR_SINRICPRO_cause].createNestedObject(FSTR_SINRICPRO_type);
+  payload[FSTR_SINRICPRO_cause][FSTR_SINRICPRO_type] = cause;
+  payload[FSTR_SINRICPRO_createdAt] = 0;
+  payload[FSTR_SINRICPRO_deviceId] = deviceId;
+  payload[FSTR_SINRICPRO_replyToken] = MessageID().getID();
+  payload[FSTR_SINRICPRO_type] = FSTR_SINRICPRO_event;
+  payload.createNestedObject(FSTR_SINRICPRO_value);
   return eventMessage;
 }
 

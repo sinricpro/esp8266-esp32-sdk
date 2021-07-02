@@ -2,8 +2,15 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(VOLUME, setVolume);         // "setVolume"
+FSTR(VOLUME, volume);            // "volume"
+FSTR(VOLUME, adjustVolume);      // "adjustVolume"
+FSTR(VOLUME, volumeDefault);     // "volumeDefault"
 
 /**
  * @brief Callback definition for onSetVolume function
@@ -51,7 +58,7 @@ class VolumeController {
     void onSetVolume(SetVolumeCallback cb);
     void onAdjustVolume(AdjustVolumeCallback cb);
 
-    bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION");
+    bool sendVolumeEvent(int volume, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     bool handleVolumeController(SinricProRequest &request);
@@ -103,9 +110,9 @@ bool VolumeController<T>::sendVolumeEvent(int volume, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setVolume", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["volume"] = volume;
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_VOLUME_setVolume, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_VOLUME_volume] = volume;
   return device->sendEvent(eventMessage);
 }
 
@@ -115,18 +122,18 @@ bool VolumeController<T>::handleVolumeController(SinricProRequest &request) {
 
   bool success = false;
 
-  if (volumeCallback && request.action == "setVolume") {
-    int volume = request.request_value["volume"];
+  if (volumeCallback && request.action == FSTR_VOLUME_setVolume) {
+    int volume = request.request_value[FSTR_VOLUME_volume];
     success = volumeCallback(device->deviceId, volume);
-    request.response_value["volume"] = volume;
+    request.response_value[FSTR_VOLUME_volume] = volume;
     return success;
   }
 
-  if (adjustVolumeCallback && request.action == "adjustVolume") {
-    int volume = request.request_value["volume"];
-    bool volumeDefault = request.request_value["volumeDefault"] | false;
+  if (adjustVolumeCallback && request.action == FSTR_VOLUME_adjustVolume) {
+    int volume = request.request_value[FSTR_VOLUME_volume];
+    bool volumeDefault = request.request_value[FSTR_VOLUME_volumeDefault] | false;
     success = adjustVolumeCallback(device->deviceId, volume, volumeDefault);
-    request.response_value["volume"] = volume;
+    request.response_value[FSTR_VOLUME_volume] = volume;
     return success;
   }
   return success;

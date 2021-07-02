@@ -1,11 +1,16 @@
 #pragma once
 
 #include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
 using SetSettingCallback = std::function<bool(const String&, const String&, String&)>;
+
+FSTR(SETTING, setSetting);     // "setSetting"
+FSTR(SETTING, id);             // "id"
+FSTR(SETTING, value);          // "value"
 
 template <typename T>
 class SettingController {
@@ -37,12 +42,12 @@ bool SettingController<T>::handleSettingController(SinricProRequest &request) {
 
   bool success = false;
 
-  if (setSettingCallback && request.action == "setSetting") {
-    String settingId    = request.request_value["id"] | "";
-    String settingValue = request.request_value["value"] | "";
+  if (setSettingCallback && request.action == FSTR_SETTING_setSetting) {
+    String settingId    = request.request_value[FSTR_SETTING_id] | "";
+    String settingValue = request.request_value[FSTR_SETTING_value] | "";
     success = setSettingCallback(device->deviceId, settingId, settingValue);
-    request.response_value["id"]    = settingId;
-    request.response_value["value"] = settingValue;
+    request.response_value[FSTR_SETTING_id]    = settingId;
+    request.response_value[FSTR_SETTING_value] = settingValue;
     return success;
   }
 

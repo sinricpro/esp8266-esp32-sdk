@@ -2,8 +2,15 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(TOGGLE, setToggleState);    // "setToggleState"
+FSTR(TOGGLE, state);             // "state"
+FSTR(TOGGLE, On);                // "On"
+FSTR(TOGGLE, Off);               // "Off"
 
 /**
    * @brief Callback definition for onToggleState function
@@ -32,7 +39,7 @@ class ToggleController {
     ToggleController();
   
     void onToggleState(const String& instance, GenericToggleStateCallback cb);
-    bool sendToggleStateEvent(const String &instance, bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendToggleStateEvent(const String &instance, bool state, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
   
   protected:
     bool handleToggleController(SinricProRequest &request);
@@ -78,10 +85,10 @@ bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool stat
   
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setToggleState", cause.c_str());
-  eventMessage["payload"]["instanceId"] = instance;
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state ? "On" : "Off";
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_TOGGLE_setToggleState, cause.c_str());
+  eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_TOGGLE_state] = state ? FSTR_TOGGLE_On : FSTR_TOGGLE_Off;
   return device->sendEvent(eventMessage);
 }
 
@@ -91,11 +98,11 @@ bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
 
   bool success = false;
 
-  if (request.action == "setToggleState")  {
-    bool powerState = request.request_value["state"] == "On" ? true : false;
+  if (request.action == FSTR_TOGGLE_setToggleState)  {
+    bool powerState = request.request_value[FSTR_TOGGLE_state] == FSTR_TOGGLE_On ? true : false;
     if (genericToggleStateCallback.find(request.instance) != genericToggleStateCallback.end())
       success = genericToggleStateCallback[request.instance](device->deviceId, request.instance, powerState);
-    request.response_value["state"] = powerState ? "On" : "Off";
+    request.response_value[FSTR_TOGGLE_state] = powerState ? FSTR_TOGGLE_On : FSTR_TOGGLE_Off;
     return success;
   }
   return success;

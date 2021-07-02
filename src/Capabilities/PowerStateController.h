@@ -2,8 +2,15 @@
 
 #include "../SinricProRequest.h"
 #include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
+
+FSTR(POWERSTATE, state);             // "state"
+FSTR(POWERSTATE, On);                // "On"
+FSTR(POWERSTATE, Off);               // "Off"
+FSTR(POWERSTATE, setPowerState);     // "setPowerState"
 
 /**
  * @brief Callback definition for onPowerState function
@@ -31,7 +38,7 @@ class PowerStateController {
     PowerStateController();
 
     void onPowerState(PowerStateCallback cb);
-    bool sendPowerStateEvent(bool state, String cause = "PHYSICAL_INTERACTION");
+    bool sendPowerStateEvent(bool state, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     bool handlePowerStateController(SinricProRequest &request);
@@ -74,9 +81,9 @@ bool PowerStateController<T>::sendPowerStateEvent(bool state, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent("setPowerState", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = state ? "On" : "Off";
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERSTATE_setPowerState, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_POWERSTATE_state] = state ? FSTR_POWERSTATE_On : FSTR_POWERSTATE_Off;
   return device->sendEvent(eventMessage);
 }
 
@@ -86,11 +93,10 @@ bool PowerStateController<T>::handlePowerStateController(SinricProRequest &reque
 
   bool success = false;
 
-  if (request.action == "setPowerState" && powerStateCallback)  {
-    bool powerState = request.request_value["state"] == "On" ? true : false;
-//    success = powerStateCallback(device->deviceId, powerState);
+  if (request.action == FSTR_POWERSTATE_setPowerState && powerStateCallback)  {
+    bool powerState = request.request_value[FSTR_POWERSTATE_state] == FSTR_POWERSTATE_On ? true : false;
     success = powerStateCallback(device->deviceId, powerState);
-    request.response_value["state"] = powerState ? "On" : "Off";
+    request.response_value[FSTR_POWERSTATE_state] = powerState ? FSTR_POWERSTATE_On : FSTR_POWERSTATE_Off;
     return success;
   }
   return success;
