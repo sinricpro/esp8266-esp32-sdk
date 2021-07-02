@@ -20,18 +20,19 @@
 #include "SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
-class udpListener {
-public:
-  void begin(SinricProQueue_t* receiveQueue);
-  void handle();
-  void sendMessage(String &message);
-  void stop();
-private:
-  WiFiUDP _udp;
-  SinricProQueue_t* receiveQueue;
+class UdpListener {
+  public:
+    void              begin(SinricProQueue_t* receiveQueue);
+    void              handle();
+    void              sendMessage(String &message);
+    void              stop();
+
+  private:
+    WiFiUDP           _udp;
+    SinricProQueue_t* receiveQueue;
 };
 
-void udpListener::begin(SinricProQueue_t* receiveQueue) {
+void UdpListener::begin(SinricProQueue_t* receiveQueue) {
   this->receiveQueue = receiveQueue;
   #if defined ESP8266
     _udp.beginMulticast(WiFi.localIP(), UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
@@ -41,11 +42,11 @@ void udpListener::begin(SinricProQueue_t* receiveQueue) {
   #endif  
 }
 
-void udpListener::handle() {
+void UdpListener::handle() {
   if (!_udp.available()) return;
   int len = _udp.parsePacket();
+
   if (len) {
-    
     char buffer[1024];
     int n = _udp.read(buffer, 1024);
     buffer[n] = 0;
@@ -55,7 +56,7 @@ void udpListener::handle() {
   }
 }
 
-void udpListener::sendMessage(String &message) {
+void UdpListener::sendMessage(String &message) {
   _udp.beginPacket(_udp.remoteIP(), _udp.remotePort());
   _udp.print(message);
   _udp.endPacket();
@@ -68,16 +69,7 @@ void udpListener::sendMessage(String &message) {
   #endif  
 }
 
-/*
-void udpListener::sendMessage(String &message) {
-  WiFiUDP UDPsender;
-  UDPsender.beginPacket(_udp.remoteIP(), _udp.remotePort());
-  UDPsender.print(message);
-  UDPsender.endPacket();
-}
-*/ 
-
-void udpListener::stop() {
+void UdpListener::stop() {
   _udp.stop();
 }
 

@@ -107,8 +107,8 @@ class SinricProClass : public SinricProInterface {
     String              appSecret;
     String              serverURL;
 
-    websocketListener   _websocketListener;
-    udpListener         _udpListener;
+    WebsocketListener   _websocketListener;
+    UdpListener         _udpListener;
     SinricProQueue_t    receiveQueue;
     SinricProQueue_t    sendQueue;
 

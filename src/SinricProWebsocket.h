@@ -14,7 +14,6 @@
   #include <WiFi.h>
 #endif
 
-//#include <WebSockets.h>
 #include <WebSocketsClient.h>
 
 #include <ArduinoJson.h>
@@ -32,59 +31,77 @@ namespace SINRICPRO_NAMESPACE {
 
 class AdvWebSocketsClient : public WebSocketsClient {
   public:
-    void onPong(std::function<void(uint32_t)> cb) { _rttCb = cb; }
+    AdvWebSocketsClient();
+    void onPong(std::function<void(uint32_t)> cb);
   protected:
-    void messageReceived(WSclient_t * client, WSopcode_t opcode, uint8_t * payload, size_t length, bool fin) {
-      if ((opcode == WSop_pong)&& (_rttCb)) {
-        _rttCb(millis()-_client.lastPing);
-      }
-      WebSocketsClient::messageReceived(client, opcode, payload, length, fin);
-    }
+    void messageReceived(WSclient_t * client, WSopcode_t opcode, uint8_t * payload, size_t length, bool fin);
   private:
-    std::function<void(uint32_t)> _rttCb = nullptr;
+    std::function<void(uint32_t)> _rttCb;
 };
 
-class websocketListener
-{
+AdvWebSocketsClient::AdvWebSocketsClient()
+: _rttCb(nullptr) {}
+
+void AdvWebSocketsClient::onPong(std::function<void(uint32_t)> cb) { 
+  _rttCb = cb; 
+}
+
+void AdvWebSocketsClient::messageReceived(WSclient_t * client, WSopcode_t opcode, uint8_t * payload, size_t length, bool fin) {
+  if ( (opcode == WSop_pong) && (_rttCb) ) _rttCb( millis() - _client.lastPing );
+  WebSocketsClient::messageReceived(client, opcode, payload, length, fin);
+}
+
+using wsConnectedCallback = std::function<void(void)>;
+using wsDisconnectedCallback = std::function<void(void)>;
+
+class WebsocketListener {
   public:
-    typedef std::function<void(void)> wsConnectedCallback;
-    typedef std::function<void(void)> wsDisconnectedCallback;
 
-    websocketListener();
-    ~websocketListener();
+    WebsocketListener();
+    ~WebsocketListener();
 
-    void begin(String server, String socketAuthToken, String deviceIds, SinricProQueue_t* receiveQueue);
-    void handle();
-    void stop();
-    bool isConnected() { return _isConnected; }
-    void setRestoreDeviceStates(bool flag) { this->restoreDeviceStates = flag; };
+    void                    begin(String server, String appKey, String deviceIds, SinricProQueue_t* receiveQueue);
+    void                    handle();
+    void                    stop();
+    bool                    isConnected();
+    void                    setRestoreDeviceStates(bool flag);
 
-    void sendMessage(String &message);
+    void                    sendMessage(String &message);
 
-    void onConnected(wsConnectedCallback callback) { _wsConnectedCb = callback; }
-    void onDisconnected(wsDisconnectedCallback callback) { _wsDisconnectedCb = callback; }
-    void onPong(std::function<void(uint32_t)> cb) { webSocket.onPong(cb); }
+    void                    onConnected(wsConnectedCallback callback);
+    void                    onDisconnected(wsDisconnectedCallback callback);
+    void                    onPong(std::function<void(uint32_t)> cb);
 
-    void disconnect() { webSocket.disconnect(); }
+    void                    disconnect();
   private:
-    bool _begin = false;
-    bool _isConnected = false;
-    bool restoreDeviceStates = false;
+    bool                    _begin;
+    bool                    _isConnected;
+    bool                    restoreDeviceStates;
 
-    AdvWebSocketsClient webSocket;
+    AdvWebSocketsClient     webSocket;
+    wsConnectedCallback     _wsConnectedCb;
+    wsDisconnectedCallback  _wsDisconnectedCb;
 
-    wsConnectedCallback _wsConnectedCb;
-    wsDisconnectedCallback _wsDisconnectedCb;
-
-    void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
-    void setExtraHeaders();
-    SinricProQueue_t* receiveQueue;
-    String deviceIds;
-    String socketAuthToken;
+    void                    webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
+    void                    setExtraHeaders();
+    SinricProQueue_t*       receiveQueue;
+    String                  deviceIds;
+    String                  appKey;
 };
 
-void websocketListener::setExtraHeaders() {
-  String headers  = "appkey:" + socketAuthToken + "\r\n";
+WebsocketListener::WebsocketListener() 
+: _begin(false)
+, _isConnected(false)
+, restoreDeviceStates(false)
+, _wsConnectedCb(nullptr)
+, _wsDisconnectedCb(nullptr) {}
+
+WebsocketListener::~WebsocketListener() {
+  stop();
+}
+
+void WebsocketListener::setExtraHeaders() {
+  String headers  = "appkey:" + appKey + "\r\n";
          headers += "deviceids:" + deviceIds + "\r\n";
          headers += "restoredevicestates:" + String(restoreDeviceStates?"true":"false") + "\r\n";
          headers += "ip:" + WiFi.localIP().toString() + "\r\n";
@@ -100,18 +117,12 @@ void websocketListener::setExtraHeaders() {
   webSocket.setExtraHeaders(headers.c_str());
 }
 
-websocketListener::websocketListener() : _isConnected(false) {}
-
-websocketListener::~websocketListener() {
-  stop();
-}
-
-void websocketListener::begin(String server, String socketAuthToken, String deviceIds, SinricProQueue_t* receiveQueue) {
+void WebsocketListener::begin(String server, String appKey, String deviceIds, SinricProQueue_t* receiveQueue) {
   if (_begin) return;
   _begin = true;
 
   this->receiveQueue = receiveQueue;
-  this->socketAuthToken = socketAuthToken;
+  this->appKey = appKey;
   this->deviceIds = deviceIds;
 
 #ifdef WEBSOCKET_SSL
@@ -124,7 +135,7 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
     stop();
   }
   setExtraHeaders();
-  webSocket.onEvent(std::bind(&websocketListener::webSocketEvent, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  webSocket.onEvent(std::bind(&WebsocketListener::webSocketEvent, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
   webSocket.enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
 #ifdef WEBSOCKET_SSL
   webSocket.beginSSL(server.c_str(), SINRICPRO_SERVER_SSL_PORT, "/");
@@ -133,25 +144,49 @@ void websocketListener::begin(String server, String socketAuthToken, String devi
 #endif
 }
 
-void websocketListener::handle() {
+void WebsocketListener::handle() {
   webSocket.loop();
 }
 
-void websocketListener::stop() {
-  if (_isConnected) {
-    webSocket.disconnect();
-  }
+void WebsocketListener::stop() {
+  if (_isConnected) webSocket.disconnect();
   _begin = false;
 }
 
-void websocketListener::sendMessage(String &message) {
+bool WebsocketListener::isConnected() { 
+  return _isConnected; 
+}
+
+void WebsocketListener::setRestoreDeviceStates(bool flag) { 
+  this->restoreDeviceStates = flag; 
+};
+
+
+void WebsocketListener::sendMessage(String &message) {
   webSocket.sendTXT(message);
 }
- 
-void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t length)
-{
+
+void WebsocketListener::onConnected(wsConnectedCallback callback) {
+  _wsConnectedCb = callback; 
+}
+
+void WebsocketListener::onDisconnected(wsDisconnectedCallback callback) {
+  _wsDisconnectedCb = callback; 
+}
+
+void WebsocketListener::onPong(std::function<void(uint32_t)> cb) {
+webSocket.onPong(cb); 
+}
+
+void WebsocketListener::disconnect() {
+  webSocket.disconnect(); 
+}
+
+void WebsocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
   (void) length;
+  
   switch (type) {
+
     case WStype_DISCONNECTED:
       if (_isConnected) {
         DEBUG_SINRIC("[SinricPro:Websocket]: disconnected\r\n");
@@ -159,6 +194,7 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
         _isConnected = false;
       }
       break;
+
     case WStype_CONNECTED:
       _isConnected = true;
       DEBUG_SINRIC("[SinricPro:Websocket]: connected\r\n");
@@ -168,12 +204,14 @@ void websocketListener::webSocketEvent(WStype_t type, uint8_t * payload, size_t 
         setExtraHeaders();
       }
       break;
+
     case WStype_TEXT: {
       SinricProMessage* request = new SinricProMessage(IF_WEBSOCKET, (char*)payload);
       DEBUG_SINRIC("[SinricPro:Websocket]: receiving data\r\n");
       receiveQueue->push(request);
       break;
     }
+
     default: break;
   }
 }
