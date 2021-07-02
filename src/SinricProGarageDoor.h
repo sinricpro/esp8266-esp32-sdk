@@ -28,7 +28,7 @@ class SinricProGarageDoor : public SinricProDevice,
                             friend class SettingController<SinricProGarageDoor>;
                             friend class DoorController<SinricProGarageDoor>;
   public:
-	  SinricProGarageDoor(const DeviceId &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR") {}
+	  SinricProGarageDoor(const String &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR") {}
 };
 
 } // Namespace

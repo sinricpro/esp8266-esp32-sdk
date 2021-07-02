@@ -25,7 +25,7 @@ class SinricProCamera : public SinricProDevice,
                         friend class SettingController<SinricProCamera>;
                         friend class PowerStateController<SinricProCamera>;
   public:
-	  SinricProCamera(const DeviceId &deviceId) : SinricProDevice(deviceId, "CAMERA") {}
+	  SinricProCamera(const String &deviceId) : SinricProDevice(deviceId, "CAMERA") {}
 };
 
 } // SINRICPRO_NAMESPACE

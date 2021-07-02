@@ -28,7 +28,7 @@ class SinricProPowerSensor :  public SinricProDevice,
                               friend class PowerSensor<SinricProPowerSensor>;
                               friend class PowerStateController<SinricProPowerSensor>;
   public:
-	  SinricProPowerSensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "POWER_SENSOR") {}
+	  SinricProPowerSensor(const String &deviceId) : SinricProDevice(deviceId, "POWER_SENSOR") {}
 };
 
 } // SINRICPRO_NAMESPACE

@@ -28,7 +28,7 @@ class SinricProAirQualitySensor : public SinricProDevice,
                                   friend class AirQualitySensor<SinricProAirQualitySensor>;
                                   
 public:
-  SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR"){};
+  SinricProAirQualitySensor(const String &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR"){};
 };
 
 } // SINRICPRO_NAMESPACE

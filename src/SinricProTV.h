@@ -51,7 +51,7 @@ class SinricProTV : public SinricProDevice,
                     friend class InputController<SinricProTV>;
                     friend class ChannelController<SinricProTV>;
   public:
-	  SinricProTV(const DeviceId &deviceId) : SinricProDevice(deviceId, "TV") {}
+	  SinricProTV(const String &deviceId) : SinricProDevice(deviceId, "TV") {}
 };
 
 } // SINRICPRO_NAMESPACE

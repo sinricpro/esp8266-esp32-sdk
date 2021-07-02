@@ -28,7 +28,7 @@ class SinricProTemperaturesensor :  public SinricProDevice,
                                     friend class PowerStateController<SinricProTemperaturesensor>;
                                     friend class TemperatureSensor<SinricProTemperaturesensor>;
   public:
-	  SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "TEMPERATURESENSOR") {}
+	  SinricProTemperaturesensor(const String &deviceId) : SinricProDevice(deviceId, "TEMPERATURESENSOR") {}
 };
 
 } // SINRICPRO_NAMESPACE

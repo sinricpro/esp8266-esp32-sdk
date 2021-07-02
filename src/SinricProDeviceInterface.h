@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SinricProInterface.h>
-#include <SinricProRequest.h>
+#include "SinricProInterface.h"
+#include "SinricProRequest.h"
 
 #include "SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {

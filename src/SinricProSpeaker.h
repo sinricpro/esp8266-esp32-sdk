@@ -58,7 +58,7 @@ class SinricProSpeaker : public SinricProDevice,
                          friend class EqualizerController<SinricProSpeaker>;
                          friend class ModeController<SinricProSpeaker>;
 public:
-  SinricProSpeaker(const DeviceId &deviceId) : SinricProDevice(deviceId, "SPEAKER") {}
+  SinricProSpeaker(const String &deviceId) : SinricProDevice(deviceId, "SPEAKER") {}
 };
 
 } // SINRICPRO_NAMESPACE
