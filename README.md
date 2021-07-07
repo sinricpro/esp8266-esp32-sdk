@@ -1,11 +1,11 @@
 # SinricPro (ESP8266 / ESP32 SDK)
 [![arduino-library-badge](https://www.ardu-badge.com/badge/SinricPro.svg?)](https://www.ardu-badge.com/SinricPro) [![](https://img.shields.io/badge/PlatformIO_Libraries-SinricPro-brightgreen.svg)](https://platformio.org/lib/show/6519/SinricPro)
 
-![Platform ESP8266](https://img.shields.io/badge/Platform-Espressif8266-orange) ![Platform ESP32](https://img.shields.io/badge/Platform-Espressif32-orange) 
+[![Platform ESP8266](https://img.shields.io/badge/Platform-Espressif8266-orange)](#) [![Platform ESP32](https://img.shields.io/badge/Platform-Espressif32-orange)](#)
 
-![Framework](https://img.shields.io/badge/Framework-Arduino-blue) 
+[![Framework](https://img.shields.io/badge/Framework-Arduino-blue)](https://www.arduino.cc/)
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/sinricpro/esp8266-esp32-sdk) 
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/sinricpro/esp8266-esp32-sdk)](https://github.com/sinricpro/esp8266-esp32-sdk/releases)
 
 ## Note
 1. Use the latest ESP Arduino Core!
