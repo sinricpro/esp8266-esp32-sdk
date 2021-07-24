@@ -98,10 +98,10 @@ void handleTemperaturesensor() {
 
   unsigned long actualMillis = millis();
   if (actualMillis - lastEvent < EVENT_WAIT_TIME) return; //only check every EVENT_WAIT_TIME milliseconds
-    if (!htu.begin()) 
-          {
-              while (1) {}
-          }
+  if (!htu.begin()) {
+    Serial.printf("Sensor not initialized\r\n");
+    return;
+  }
 
           float temperature = htu.readTemperature();
           float humidity = htu.readHumidity();
