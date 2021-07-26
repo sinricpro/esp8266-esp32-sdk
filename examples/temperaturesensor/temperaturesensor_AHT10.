@@ -92,7 +92,10 @@ void handleTemperaturesensor() {
 
   unsigned long actualMillis = millis();
   if (actualMillis - lastEvent < EVENT_WAIT_TIME) return; //only check every EVENT_WAIT_TIME milliseconds
-
+  if (!aht.begin()) {
+    Serial.printf("Sensor not initialized\r\n");
+    return;
+  }
        sensors_event_t hum, temp;
        aht.getEvent(&hum, &temp);
        float humidity = hum.relative_humidity;
