@@ -44,7 +44,6 @@
 #include <Adafruit_AHTX0.h>
 Adafruit_AHTX0 aht;
 
-
 #define WIFI_SSID         ""
 #define WIFI_PASS         ""
 #define APP_KEY           ""    // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
@@ -52,7 +51,6 @@ Adafruit_AHTX0 aht;
 #define TEMP_SENSOR_ID    ""    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                // Change baudrate to your need (used for serial monitor)
 #define EVENT_WAIT_TIME   60000               // send event every 60 seconds
-
 
 bool deviceIsOn;                              // Temeprature sensor on/off state
 float humidity;                               // actual humidity
