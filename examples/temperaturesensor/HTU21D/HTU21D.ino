@@ -59,7 +59,6 @@ Adafruit_HTU21DF htu = Adafruit_HTU21DF();
       #define I2C_SDA 19 
 #endif
 
-
 bool deviceIsOn;                              // Temeprature sensor on/off state
 float temperature;                            // actual temperature
 float humidity;                               // actual humidity
@@ -103,9 +102,8 @@ void handleTemperaturesensor() {
     return;
   }
 
-          float temperature = htu.readTemperature();
-          float humidity = htu.readHumidity();
-
+  float temperature = htu.readTemperature();
+  float humidity = htu.readHumidity();
 
   if (isnan(temperature) || isnan(humidity)) { // reading failed... 
     Serial.printf("htu reading failed!\r\n");  // print error message
@@ -148,7 +146,6 @@ void setupSinricPro() {
   mySensor.onPowerState(onPowerState);
 
   // setup SinricPro
-  Wire.begin(I2C_SDA, I2C_SCL); //Initializing the I2C connection
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
@@ -158,9 +155,8 @@ void setupSinricPro() {
 // main setup function
 void setup() {
   Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
-  
-  //dht.setup(DHT_PIN);
- 
+  Wire.begin(I2C_SDA, I2C_SCL); //Initializing the I2C connection
+
   setupWiFi();
   setupSinricPro();
 }
