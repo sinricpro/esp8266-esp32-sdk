@@ -6,7 +6,7 @@
   Each version gets its own namespace in the form of SINRICPRO_X_Y_Z (SINRICPRO_2_9_6)
 - SinricProDevice: implemented registerRequestHandler (used by capabilities to register their requestHandler functions)
 - Implemented SinricProStrings to avoid unnecessary string duplication and move the strings into PROGMEM.
-- New temperature sensor example added HTU21D (thanks to [jpa-welten](https://github.com/jpa-welten))
+- New temperature sensors example added HTU21D & AHT10 (thanks to [jpa-welten](https://github.com/jpa-welten))
 ### Changes
 - Removed types: `DeviceId`, `AppKey` and `AppSecret`. These are now again of type `String`.
 - Include guard is now based on `#pragma once` instead of `#ifndef`, `#define` and `#endif`
