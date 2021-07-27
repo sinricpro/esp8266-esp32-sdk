@@ -96,15 +96,16 @@ void handleTemperaturesensor() {
     Serial.printf("Sensor not initialized\r\n");
     return;
   }
-       sensors_event_t hum, temp;
-       aht.getEvent(&hum, &temp);
-       float humidity = hum.relative_humidity;
-       float temperature = temp.temperature; 
-  
+
+  sensors_event_t hum, temp;
+  aht.getEvent(&hum, &temp);
+  float humidity = hum.relative_humidity;
+  float temperature = temp.temperature; 
+
   if (isnan(temperature) || isnan(humidity)) { // reading failed... 
     Serial.printf("AHT reading failed!\r\n");  // print error message
     return;                                    // try again next time
-  } 
+  }
 
   if (temperature == lastTemperature || humidity == lastHumidity) return; // if no values changed do nothing...
 
