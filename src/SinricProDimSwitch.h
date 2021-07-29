@@ -7,13 +7,13 @@
 
 #pragma once
 
-#include "SinricProNamespace.h"
-namespace SINRICPRO_NAMESPACE {
-
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerstateController.h"
 #include "Capabilities/PowerLevelController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProDimSwitch

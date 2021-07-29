@@ -1,4 +1,6 @@
 # Changelog
+## Version 2.9.7
+- Fixed SinricProDimSwitch (include order)
 
 ## Version 2.9.6
 ### New
