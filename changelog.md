@@ -1,4 +1,7 @@
 # Changelog
+## Version 2.9.8
+- Fixed SinricProBlinds
+
 ## Version 2.9.7
 - Fixed SinricProDimSwitch (include order)
 
