@@ -61,6 +61,11 @@ See [examples](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/exampl
 #define SWITCH_ID  "YOUR-DEVICE-ID"  // Should look like "5dc1564130xxxxxxxxxxxxxx"
 ```
 
+### Declare a global switch instance
+```C++
+SinricProSwitch mySwitch(SWITCH_ID);
+```
+
 ### Define callback routine(s)
 ```C++
 bool onPowerState(const String &deviceId, bool &state) {
@@ -71,9 +76,7 @@ bool onPowerState(const String &deviceId, bool &state) {
 
 ### In setup()
 ```C++
-  // create and add a switch to SinricPro
-  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
-  // set callback function
+  // assign callback function
   mySwitch.onPowerState(onPowerState);
   // startup SinricPro
   SinricPro.begin(APP_KEY, APP_SECRET);
@@ -86,41 +89,8 @@ bool onPowerState(const String &deviceId, bool &state) {
 ```
 
 ---
-## How to add a device?
-Syntax is  
-```C++
-  DeviceType& myDevice = SinricPro[DEVICE_ID];
-```
-Example  
-```C++
-  SinricProSwitch& mySwitch = SinricPro["YOUR-SWITCH-ID-HERE"];
-```
-*Example 2 (alternatively)*
-```C++
-  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>("YOUR-SWITCH-ID-HERE");
-```
 
----
-## How to retrieve a device for sending an event?
-Syntax is  
-```C++
-  DeviceType& myDevice = SinricPro[DEVICE_ID];
-```
-Example 1
-```C++
-  SinricProDoorbell& myDoorbell = SinricPro["YOUR-DOORBELL-ID-HERE"];
-  myDoorbell.sendDoorbellEvent();
-```
-
-*Example 2 (alternatively)*
-```C++
-  SinricPro["YOUR-DOORBELL-ID-HERE"].as<SinricProDoorbell>().sendDoorbellEvent();
-```
-
-
----
-
-# Devices
+## Devices
 * Switch
 * Dimmable Switch
 * Light
