@@ -7,11 +7,12 @@
 
 #pragma once
 
-#include "SinricProRequest.h"
-#include "SinricProDeviceInterface.h"
 #include <map>
 
+#include "SinricPro.h"
+#include "SinricProDeviceInterface.h"
 #include "SinricProNamespace.h"
+#include "SinricProRequest.h"
 namespace SINRICPRO_NAMESPACE {
 
 /**
@@ -22,91 +23,85 @@ namespace SINRICPRO_NAMESPACE {
  * Implements basic on/off functions like onPowerState and sendPowerStateEvent
  **/
 class SinricProDevice : public SinricProDeviceInterface {
-  friend class SinricProClass;
-public:
-  SinricProDevice(const String &deviceId, const String &productType = "");
-  bool                                 operator==(const String& other);
+    friend class SinricProClass;
 
-  virtual String                       getDeviceId();
-protected:
-  virtual                              ~SinricProDevice();
+  public:
+    SinricProDevice(const String &deviceId, const String &productType = "");
+    virtual ~SinricProDevice();
+    bool operator==(const String &other);
 
-  void                                 registerRequestHandler(const SinricProRequestHandler &requestHandler);
-  unsigned long                        getTimestamp();
-  virtual bool                         sendEvent(JsonDocument &event);
-  virtual DynamicJsonDocument          prepareEvent(const char *action, const char *cause);
+    virtual String getDeviceId();
 
-  virtual String                       getProductType();
-  virtual void                         begin(SinricProInterface *eventSender);
-  bool                                 handleRequest(SinricProRequest &request);
+  protected:
+    void registerRequestHandler(const SinricProRequestHandler &requestHandler);
+    virtual void loop();
+    unsigned long getTimestamp();
+    virtual bool sendEvent(JsonDocument &event);
+    virtual DynamicJsonDocument prepareEvent(const char *action, const char *cause);
 
-  String                               deviceId;
-  std::vector<SinricProRequestHandler> requestHandlers;
+    virtual String getProductType();
+    bool handleRequest(SinricProRequest &request);
 
-private:
-  SinricProInterface                   *eventSender;
-  String                               productType;
+    String deviceId;
+    std::vector<SinricProRequestHandler> requestHandlers;
+
+  private:
+    String productType;
 };
 
-SinricProDevice::SinricProDevice(const String &deviceId, const String &productType) : 
-  deviceId(deviceId),
-  eventSender(nullptr),
-  productType(productType) {
+SinricProDevice::SinricProDevice(const String &deviceId, const String &productType)
+    : deviceId(deviceId)
+    , productType(productType) {
+    SinricPro.registerDevice(this);
 }
 
-SinricProDevice::~SinricProDevice() {}
-
-void SinricProDevice::begin(SinricProInterface* eventSender) {
-  this->eventSender = eventSender;
+SinricProDevice::~SinricProDevice() {
+    SinricPro.unregisterDevice(this);
 }
 
 String SinricProDevice::getDeviceId() {
-  return deviceId;
+    return deviceId;
 }
 
-bool SinricProDevice::operator==(const String &other) { 
-  return other == deviceId; 
+bool SinricProDevice::operator==(const String &other) {
+    return other == deviceId;
 }
 
-DynamicJsonDocument SinricProDevice::prepareEvent(const char* action, const char* cause) {
-  if (eventSender) return eventSender->prepareEvent(deviceId, action, cause);
-  DEBUG_SINRIC("[SinricProDevice:prepareEvent()]: Device \"%s\" isn't configured correctly! The \'%s\' event will be ignored.\r\n", deviceId.c_str(), action);
-  return DynamicJsonDocument(1024);
+DynamicJsonDocument SinricProDevice::prepareEvent(const char *action, const char *cause) {
+    return SinricPro.prepareEvent(deviceId, action, cause);
 }
 
+bool SinricProDevice::sendEvent(JsonDocument &event) {
+    if (!SinricPro.isConnected()) {
+        DEBUG_SINRIC("[SinricProDevice::sendEvent]: The event could not be sent. No connection to the SinricPro server.\r\n");
+        return false;
+    }
 
-bool SinricProDevice::sendEvent(JsonDocument& event) {
-  if (!SinricPro.isConnected()) {
-    DEBUG_SINRIC("[SinricProDevice::sendEvent]: The event could not be sent. No connection to the SinricPro server.\r\n");
-    return false;
-  }
-
-  if (eventSender) {
-    eventSender->sendMessage(event);
+    SinricPro.sendMessage(event);
     return true;
-  }
-  
-  return false;
 }
 
 void SinricProDevice::registerRequestHandler(const SinricProRequestHandler &requestHandler) {
-  requestHandlers.push_back(requestHandler);
+    requestHandlers.push_back(requestHandler);
+}
+
+void SinricProDevice::loop() {
+    // does nothing, must be overriden
 }
 
 unsigned long SinricProDevice::getTimestamp() {
-  if (eventSender) return eventSender->getTimestamp();
-  return 0;
+    return SinricPro.getTimestamp();
 }
 
-String SinricProDevice::getProductType()  { 
-  return String("sinric.device.type.")+productType; 
+String SinricProDevice::getProductType() {
+    return String("sinric.device.type.") + productType;
 }
 
 bool SinricProDevice::handleRequest(SinricProRequest &request) {
-  for (auto& requestHandler : requestHandlers) {
-    if (requestHandler(request)) return true;
-  }
-  return false;
+    for (auto &requestHandler : requestHandlers) {
+        if (requestHandler(request)) return true;
+    }
+    return false;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

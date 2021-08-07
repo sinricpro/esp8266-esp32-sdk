@@ -1,9 +1,8 @@
 #pragma once
 
+#include "../SinricProNamespace.h"
 #include "../SinricProRequest.h"
 #include "../SinricProStrings.h"
-
-#include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
 FSTR(KEYPAD, SendKeystroke);  // "SendKeystroke"
@@ -25,7 +24,6 @@ FSTR(KEYPAD, keystroke);      // "keystroke"
  **/
 using KeystrokeCallback = std::function<bool(const String &, String &)>;
 
-
 /**
  * @brief KeypadController
  * @ingroup Capabilities
@@ -38,6 +36,7 @@ class KeypadController {
     void onKeystroke(KeystrokeCallback cb);
 
   protected:
+    virtual bool onKeystroke(const String &keystroke);
     bool handleKeypadController(SinricProRequest &request);
 
   private:
@@ -46,8 +45,8 @@ class KeypadController {
 
 template <typename T>
 KeypadController<T>::KeypadController() {
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1)); 
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1));
 }
 
 /**
@@ -58,24 +57,29 @@ KeypadController<T>::KeypadController() {
  * @see KeystrokeCallback
  **/
 template <typename T>
-void KeypadController<T>::onKeystroke(KeystrokeCallback cb) { keystrokeCallback = cb; }
+void KeypadController<T>::onKeystroke(KeystrokeCallback cb) {
+    keystrokeCallback = cb;
+}
 
+template <typename T>
+bool KeypadController<T>::onKeystroke(String &keystroke) {
+    T *device = static_cast<T *>(this);
+    if (keystrokeCallback) return KeystrokeCallback(device->deviceId, keystroke);
+    return false;
+}
 
 template <typename T>
 bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+    bool success = false;
 
-  bool success = false;
-  if (request.action != FSTR_KEYPAD_SendKeystroke) return false;
+    if (request.action == FSTR_KEYPAD_SendKeystroke) {
+        String keystroke = request.request_value[FSTR_KEYPAD_keystroke] | "";
+        success = onKeystroke(keystroke);
+        request.response_value[FSTR_KEYPAD_keystroke] = keystroke;
+        return success;
+    }
 
-  if (keystrokeCallback) {
-    String keystroke = request.request_value[FSTR_KEYPAD_keystroke] | "";
-    success = keystrokeCallback(device->deviceId, keystroke);
-    request.response_value[FSTR_KEYPAD_keystroke] = keystroke;
     return success;
-  }
-  
-  return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

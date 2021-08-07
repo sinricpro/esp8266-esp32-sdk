@@ -31,7 +31,8 @@
   ],
   "examples":[
     "examples/*/*.ino",
-    "examples/*/*/*.ino"
+    "examples/*/*/*.ino",
+    "examples/*/*/*/*.ino"
   ],
   "license": "CC-BY-SA-4.0"
 }

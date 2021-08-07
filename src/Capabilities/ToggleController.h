@@ -1,16 +1,15 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
-FSTR(TOGGLE, setToggleState);    // "setToggleState"
-FSTR(TOGGLE, state);             // "state"
-FSTR(TOGGLE, On);                // "On"
-FSTR(TOGGLE, Off);               // "Off"
+FSTR(TOGGLE, setToggleState);  // "setToggleState"
+FSTR(TOGGLE, state);           // "state"
+FSTR(TOGGLE, On);              // "On"
+FSTR(TOGGLE, Off);             // "Off"
 
 /**
    * @brief Callback definition for onToggleState function
@@ -26,8 +25,7 @@ FSTR(TOGGLE, Off);               // "Off"
    * @section ToggleStateCallback Example-Code
    * @snippet callbacks.cpp onToggleState
    **/
-using GenericToggleStateCallback = std::function<bool(const String &, const String&, bool &)>;
-
+using GenericToggleStateCallback = std::function<bool(const String &, const String &, bool &)>;
 
 /**
  * @brief ToggleController
@@ -37,22 +35,23 @@ template <typename T>
 class ToggleController {
   public:
     ToggleController();
-  
-    void onToggleState(const String& instance, GenericToggleStateCallback cb);
+
+    void onToggleState(const String &instance, GenericToggleStateCallback cb);
     bool sendToggleStateEvent(const String &instance, bool state, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
-  
+
   protected:
+    virtual bool onToggleState(const String &instance, bool &state);
     bool handleToggleController(SinricProRequest &request);
-  
+
   private:
     std::map<String, EventLimiter> event_limiter;
     std::map<String, GenericToggleStateCallback> genericToggleStateCallback;
 };
 
 template <typename T>
-ToggleController<T>::ToggleController() { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1)); 
+ToggleController<T>::ToggleController() {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1));
 }
 
 /**
@@ -65,7 +64,14 @@ ToggleController<T>::ToggleController() {
  **/
 template <typename T>
 void ToggleController<T>::onToggleState(const String &instance, GenericToggleStateCallback cb) {
-  genericToggleStateCallback[instance] = cb;
+    genericToggleStateCallback[instance] = cb;
+}
+
+template <typename T>
+bool ToggleController<T>::onToggleState(const String &instance, bool &state) {
+    T *device = static_cast<T *>(this);
+    if (genericToggleStateCallback[instance]) return genericToggleStateCallback(device->deviceId, instance, state);
+    return false;
 }
 
 /**
@@ -80,32 +86,29 @@ void ToggleController<T>::onToggleState(const String &instance, GenericToggleSta
  **/
 template <typename T>
 bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool state, String cause) {
-  if (event_limiter.find(instance) == event_limiter.end()) event_limiter[instance] = EventLimiter(EVENT_LIMIT_STATE);
-  if (event_limiter[instance]) return false;
-  
-  T* device = static_cast<T*>(this);
+    if (event_limiter.find(instance) == event_limiter.end()) event_limiter[instance] = EventLimiter(EVENT_LIMIT_STATE);
+    if (event_limiter[instance]) return false;
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_TOGGLE_setToggleState, cause.c_str());
-  eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  event_value[FSTR_TOGGLE_state] = state ? FSTR_TOGGLE_On : FSTR_TOGGLE_Off;
-  return device->sendEvent(eventMessage);
+    T *device = static_cast<T *>(this);
+
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_TOGGLE_setToggleState, cause.c_str());
+    eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    event_value[FSTR_TOGGLE_state] = state ? FSTR_TOGGLE_On : FSTR_TOGGLE_Off;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+    bool success = false;
 
-  bool success = false;
-
-  if (request.action == FSTR_TOGGLE_setToggleState)  {
-    bool powerState = request.request_value[FSTR_TOGGLE_state] == FSTR_TOGGLE_On ? true : false;
-    if (genericToggleStateCallback.find(request.instance) != genericToggleStateCallback.end())
-      success = genericToggleStateCallback[request.instance](device->deviceId, request.instance, powerState);
-    request.response_value[FSTR_TOGGLE_state] = powerState ? FSTR_TOGGLE_On : FSTR_TOGGLE_Off;
+    if (request.action == FSTR_TOGGLE_setToggleState) {
+        bool powerState = request.request_value[FSTR_TOGGLE_state] == FSTR_TOGGLE_On ? true : false;
+        success = onToggleState(request.instance, powerState);
+        request.response_value[FSTR_TOGGLE_state] = powerState ? FSTR_TOGGLE_On : FSTR_TOGGLE_Off;
+        return success;
+    }
     return success;
-  }
-  return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

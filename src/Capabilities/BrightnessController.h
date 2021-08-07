@@ -1,10 +1,9 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
 FSTR(BRIGHTNESS, setBrightness);     // "setBrightness"
@@ -55,7 +54,11 @@ class BrightnessController {
     void onAdjustBrightness(AdjustBrightnessCallback cb);
 
     bool sendBrightnessEvent(int brightness, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
+
   protected:
+    virtual bool onBrightness(int &brightness);
+    virtual bool onAdjustBrightness(int &brightnessDelta);
+
     bool handleBrightnessController(SinricProRequest &request);
 
   private:
@@ -65,10 +68,10 @@ class BrightnessController {
 };
 
 template <typename T>
-BrightnessController<T>::BrightnessController() 
-: event_limiter (EVENT_LIMIT_STATE) { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); 
+BrightnessController<T>::BrightnessController()
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1));
 }
 
 /**
@@ -80,7 +83,7 @@ BrightnessController<T>::BrightnessController()
  **/
 template <typename T>
 void BrightnessController<T>::onBrightness(BrightnessCallback cb) {
-  brightnessCallback = cb;
+    brightnessCallback = cb;
 }
 
 /**
@@ -92,7 +95,21 @@ void BrightnessController<T>::onBrightness(BrightnessCallback cb) {
  **/
 template <typename T>
 void BrightnessController<T>::onAdjustBrightness(AdjustBrightnessCallback cb) {
-  adjustBrightnessCallback = cb;
+    adjustBrightnessCallback = cb;
+}
+
+template <typename T>
+bool BrightnessController<T>::onBrightness(int &brightness) {
+    T *device = static_cast<T *>(this);
+    if (brightnessCallback) return brightnessCallback(device->deviceId, brightness);
+    return false;
+}
+
+template <typename T>
+bool BrightnessController<T>::onAdjustBrightness(int &brightnessDelta) {
+    T *device = static_cast<T *>(this);
+    if (adjustBrightnessCallback) return adjustBrightnessCallback(device->deviceId, brightnessDelta);
+    return false;
 }
 
 /**
@@ -106,33 +123,32 @@ void BrightnessController<T>::onAdjustBrightness(AdjustBrightnessCallback cb) {
  **/
 template <typename T>
 bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) {
-  if (event_limiter) return false;
-  T* device = static_cast<T*>(this);
+    if (event_limiter) return false;
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage        = device->prepareEvent(FSTR_BRIGHTNESS_setBrightness, cause.c_str());
-  JsonObject event_value                  = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  event_value[FSTR_BRIGHTNESS_brightness] = brightness;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_BRIGHTNESS_setBrightness, cause.c_str());
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    event_value[FSTR_BRIGHTNESS_brightness] = brightness;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool BrightnessController<T>::handleBrightnessController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
-  bool success = false;
+    bool success = false;
 
-  if (brightnessCallback && request.action == FSTR_BRIGHTNESS_setBrightness) {
-    int brightness = request.request_value[FSTR_BRIGHTNESS_brightness];
-    success = brightnessCallback(device->deviceId, brightness);
-    request.response_value[FSTR_BRIGHTNESS_brightness] = brightness;
-  }
+    if (request.action == FSTR_BRIGHTNESS_setBrightness) {
+        int brightness = request.request_value[FSTR_BRIGHTNESS_brightness];
+        success = onBrightness(brightness);
+        request.response_value[FSTR_BRIGHTNESS_brightness] = brightness;
+    }
 
-  if (adjustBrightnessCallback && request.action == FSTR_BRIGHTNESS_adjustBrightness) {
-    int brightnessDelta = request.request_value[FSTR_BRIGHTNESS_brightnessDelta];
-    success = adjustBrightnessCallback(device->deviceId, brightnessDelta);
-    request.response_value[FSTR_BRIGHTNESS_brightness] = brightnessDelta;
-  }
+    if (request.action == FSTR_BRIGHTNESS_adjustBrightness) {
+        int brightnessDelta = request.request_value[FSTR_BRIGHTNESS_brightnessDelta];
+        success = onAdjustBrightness(brightnessDelta);
+        request.response_value[FSTR_BRIGHTNESS_brightness] = brightnessDelta;
+    }
 
-  return success;
+    return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

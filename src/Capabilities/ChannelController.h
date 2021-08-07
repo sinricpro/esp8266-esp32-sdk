@@ -1,18 +1,17 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
-FSTR(CHANNEL, changeChannel);     // "changeChannel"
-FSTR(CHANNEL, channel);           // "channel"
-FSTR(CHANNEL, name);              // "name"
-FSTR(CHANNEL, number);            // "number"
-FSTR(CHANNEL, skipChannels);      // "skipChannels"
-FSTR(CHANNEL, channelCount);      // "channelCount"
+FSTR(CHANNEL, changeChannel);  // "changeChannel"
+FSTR(CHANNEL, channel);        // "channel"
+FSTR(CHANNEL, name);           // "name"
+FSTR(CHANNEL, number);         // "number"
+FSTR(CHANNEL, skipChannels);   // "skipChannels"
+FSTR(CHANNEL, channelCount);   // "channelCount"
 
 /**
  * @brief Callback definition for onChangeChannel function
@@ -76,7 +75,12 @@ class ChannelController {
     void onSkipChannels(SkipChannelsCallback cb);
 
     bool sendChangeChannelEvent(String channelName, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
+
   protected:
+    virtual bool onChangeChannel(String &channelName);
+    virtual bool onChangeChannelNumber(int channelNumber, String &channelName);
+    virtual bool onSkipChannels(int channelCount, String &channelName);
+
     bool handleChannelController(SinricProRequest &request);
 
   private:
@@ -88,9 +92,9 @@ class ChannelController {
 
 template <typename T>
 ChannelController<T>::ChannelController()
-: event_limiter(EVENT_LIMIT_STATE) {
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&ChannelController<T>::handleChannelController, this, std::placeholders::_1)); 
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&ChannelController<T>::handleChannelController, this, std::placeholders::_1));
 }
 
 /**
@@ -102,7 +106,7 @@ ChannelController<T>::ChannelController()
  **/
 template <typename T>
 void ChannelController<T>::onChangeChannel(ChangeChannelCallback cb) {
-  changeChannelCallback = cb;
+    changeChannelCallback = cb;
 }
 
 /**
@@ -114,7 +118,7 @@ void ChannelController<T>::onChangeChannel(ChangeChannelCallback cb) {
  **/
 template <typename T>
 void ChannelController<T>::onChangeChannelNumber(ChangeChannelNumberCallback cb) {
-  changeChannelNumberCallback = cb;
+    changeChannelNumberCallback = cb;
 }
 
 /**
@@ -126,7 +130,28 @@ void ChannelController<T>::onChangeChannelNumber(ChangeChannelNumberCallback cb)
  **/
 template <typename T>
 void ChannelController<T>::onSkipChannels(SkipChannelsCallback cb) {
-  skipChannelsCallback = cb;
+    skipChannelsCallback = cb;
+}
+
+template <typename T>
+bool ChannelController<T>::onChangeChannel(String &channelName) {
+    T *device = static_cast<T *>(this);
+    if (changeChannelCallback) return changeChannelCallback(device->deviceId, channelName);
+    return false;
+}
+
+template <typename T>
+bool ChannelController<T>::onChangeChannelNumber(int channelNumber, String &channelName) {
+    T *device = static_cast<T *>(this);
+    if (changeChannelNumberCallback) return changeChannelNumberCallback(device->deviceId, channelNumber, channelName);
+    return false;
+}
+
+template <typename T>
+bool ChannelController<T>::onSkipChannels(int channelCount, String &channelName) {
+    T *device = static_cast<T *>(this);
+    if (skipChannelsCallback) return skipChannelsCallback(device->deviceId, channelCount, channelName);
+    return false;
 }
 
 /**
@@ -140,47 +165,44 @@ void ChannelController<T>::onSkipChannels(SkipChannelsCallback cb) {
  **/
 template <typename T>
 bool ChannelController<T>::sendChangeChannelEvent(String channelName, String cause) {
-  if (event_limiter) return false;
-  T* device = static_cast<T*>(this);
+    if (event_limiter) return false;
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_CHANNEL_changeChannel, cause.c_str());
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  event_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] = channelName;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_CHANNEL_changeChannel, cause.c_str());
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    event_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] = channelName;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool ChannelController<T>::handleChannelController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+    bool success = false;
 
-  bool success = false;
+    if (request.action == FSTR_CHANNEL_changeChannel) {
+        if (request.request_value[FSTR_CHANNEL_channel].containsKey(FSTR_CHANNEL_name)) {
+            String channelName = request.request_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] | "";
+            success = onChangeChannel(channelName);
+            request.response_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] = channelName;
+        }
 
-  if (request.action == FSTR_CHANNEL_changeChannel) {
-
-    if (changeChannelCallback && request.request_value[FSTR_CHANNEL_channel].containsKey(FSTR_CHANNEL_name)) {
-      String channelName = request.request_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] | "";
-      success = changeChannelCallback(device->deviceId, channelName);
-      request.response_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] = channelName;
+        if (request.request_value[FSTR_CHANNEL_channel].containsKey(FSTR_CHANNEL_number)) {
+            String channelName("");
+            int channelNumber = request.request_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_number];
+            success = onChangeChannelNumber(channelNumber, channelName);
+            request.response_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] = channelName;
+        }
+        return success;
     }
 
-    if (changeChannelNumberCallback && request.request_value[FSTR_CHANNEL_channel].containsKey(FSTR_CHANNEL_number)) {
-      String channelName("");
-      int channelNumber = request.request_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_number];
-      success = changeChannelNumberCallback(device->deviceId, channelNumber, channelName);
-      request.response_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] = channelName;
+    if (skipChannelsCallback && request.action == FSTR_CHANNEL_skipChannels) {
+        String channelName;
+        int channelCount = request.request_value[FSTR_CHANNEL_channelCount] | 0;
+        success = onSkipChannels(channelCount, channelName);
+        request.response_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] = channelName;
+        return success;
     }
-    return success;
-  }
 
-  if (skipChannelsCallback && request.action == FSTR_CHANNEL_skipChannels) {
-    String channelName;
-    int channelCount                                                = request.request_value[FSTR_CHANNEL_channelCount] | 0;
-    success                                                         = skipChannelsCallback(device->deviceId, channelCount, channelName);
-    request.response_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] = channelName;
     return success;
-  }
-
-  return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

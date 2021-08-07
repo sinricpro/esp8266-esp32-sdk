@@ -1,17 +1,15 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
-FSTR(DOOR, setMode);   // "setMode"
-FSTR(DOOR, mode);      // "mode"
-FSTR(DOOR, Close);     // "Close"
-FSTR(DOOR, Open);      // "Open"
-
+FSTR(DOOR, setMode);  // "setMode"
+FSTR(DOOR, mode);     // "mode"
+FSTR(DOOR, Close);    // "Close"
+FSTR(DOOR, Open);     // "Open"
 
 /**
  * @brief Callback definition for onDoorState function
@@ -41,6 +39,7 @@ class DoorController {
     bool sendDoorStateEvent(bool state, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
+    virtual bool onDoorState(bool &doorState);
     bool handleDoorController(SinricProRequest &request);
 
   private:
@@ -50,9 +49,9 @@ class DoorController {
 
 template <typename T>
 DoorController<T>::DoorController()
-: event_limiter(EVENT_LIMIT_STATE) { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&DoorController<T>::handleDoorController, this, std::placeholders::_1)); 
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&DoorController<T>::handleDoorController, this, std::placeholders::_1));
 }
 
 /**
@@ -63,7 +62,16 @@ DoorController<T>::DoorController()
  * @see DoorStateCallback
  **/
 template <typename T>
-void DoorController<T>::onDoorState(DoorCallback cb) { doorCallback = cb; }
+void DoorController<T>::onDoorState(DoorCallback cb) {
+    doorCallback = cb;
+}
+
+template <typename T>
+bool DoorController<T>::onDoorState(bool &doorState) {
+    T *device = static_cast<T *>(this);
+    if (doorCallback) doorCallback(device->deviceId, doorState);
+    return false;
+}
 
 /**
  * @brief Send `DoorState` event to update actual door state on SinricPro Server
@@ -76,27 +84,26 @@ void DoorController<T>::onDoorState(DoorCallback cb) { doorCallback = cb; }
  **/
 template <typename T>
 bool DoorController<T>::sendDoorStateEvent(bool state, String cause) {
-  if (event_limiter) return false;
-  T* device = static_cast<T*>(this);
+    if (event_limiter) return false;
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_DOOR_setMode, cause.c_str());
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  state ? event_value[FSTR_DOOR_mode] = FSTR_DOOR_Close : event_value[FSTR_DOOR_mode] = FSTR_DOOR_Open;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_DOOR_setMode, cause.c_str());
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    state ? event_value[FSTR_DOOR_mode] = FSTR_DOOR_Close : event_value[FSTR_DOOR_mode] = FSTR_DOOR_Open;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool DoorController<T>::handleDoorController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+    bool success = false;
 
-  bool success = false;
-  if (request.action == FSTR_DOOR_setMode && doorCallback) {
-    String mode = request.request_value[FSTR_DOOR_mode] | "";
-    bool state = mode == FSTR_DOOR_Close;
-    success = doorCallback(device->deviceId, state);
-    request.response_value[FSTR_DOOR_mode] = state ? FSTR_DOOR_Close : FSTR_DOOR_Open;
-  }
-  return success;
+    if (request.action == FSTR_DOOR_setMode && doorCallback) {
+        String mode = request.request_value[FSTR_DOOR_mode] | "";
+        bool state = mode == FSTR_DOOR_Close;
+        success = onDoorState(state);
+        request.response_value[FSTR_DOOR_mode] = state ? FSTR_DOOR_Close : FSTR_DOOR_Open;
+    }
+    return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

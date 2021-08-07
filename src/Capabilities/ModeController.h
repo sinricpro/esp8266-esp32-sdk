@@ -1,10 +1,9 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 
 namespace SINRICPRO_NAMESPACE {
 
@@ -44,7 +43,6 @@ using ModeCallback = std::function<bool(const String &, String &)>;
  **/
 using GenericModeCallback = std::function<bool(const String &, const String &, String &)>;
 
-
 /**
  * @brief ModeController
  * @ingroup Capabilities
@@ -55,12 +53,14 @@ class ModeController {
     ModeController();
 
     void onSetMode(ModeCallback cb);
-    void onSetMode(const String& instance, GenericModeCallback cb);
+    void onSetMode(const String &instance, GenericModeCallback cb);
 
     bool sendModeEvent(String mode, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
     bool sendModeEvent(String instance, String mode, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
+    virtual bool onSetMode(String &mode);
+    virtual bool onSetMode(const String &instance, String &mode);
 
     bool handleModeController(SinricProRequest &request);
 
@@ -73,9 +73,9 @@ class ModeController {
 
 template <typename T>
 ModeController<T>::ModeController()
-: event_limiter(EVENT_LIMIT_STATE) { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&ModeController<T>::handleModeController, this, std::placeholders::_1)); 
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&ModeController<T>::handleModeController, this, std::placeholders::_1));
 }
 
 /**
@@ -97,8 +97,22 @@ void ModeController<T>::onSetMode(ModeCallback cb) { setModeCallback = cb; }
  * @see ModeCallback
  **/
 template <typename T>
-void ModeController<T>::onSetMode(const String& instance, GenericModeCallback cb) {
-  genericModeCallback[instance] = cb;
+void ModeController<T>::onSetMode(const String &instance, GenericModeCallback cb) {
+    genericModeCallback[instance] = cb;
+}
+
+template <typename T>
+bool ModeController<T>::onSetMode(String &mode) {
+    T *device = static_cast<T *>(this);
+    if (setModeCallback) return setModeCallback(device->deviceId, mode);
+    return false;
+}
+
+template <typename T>
+bool ModeController<T>::onSetMode(const String &instance, String &mode) {
+    T *device = static_cast<T *>(this);
+    if (genericModeCallback[instance]) return genericModeCallback[instance](device->deviceId, instance, mode);
+    return false;
 }
 
 /**
@@ -112,13 +126,13 @@ void ModeController<T>::onSetMode(const String& instance, GenericModeCallback cb
  **/
 template <typename T>
 bool ModeController<T>::sendModeEvent(String mode, String cause) {
-  if (event_limiter) return false;
-  T* device = static_cast<T*>(this);
+    if (event_limiter) return false;
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MODE_setMode, cause.c_str());
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  event_value[FSTR_MODE_mode] = mode;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MODE_setMode, cause.c_str());
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    event_value[FSTR_MODE_mode] = mode;
+    return device->sendEvent(eventMessage);
 }
 
 /**
@@ -133,41 +147,35 @@ bool ModeController<T>::sendModeEvent(String mode, String cause) {
  **/
 template <typename T>
 bool ModeController<T>::sendModeEvent(String instance, String mode, String cause) {
-  if (event_limiter_generic.find(instance) == event_limiter_generic.end()) event_limiter_generic[instance] = EventLimiter(EVENT_LIMIT_STATE);
-  if (event_limiter_generic[instance]) return false;
+    if (event_limiter_generic.find(instance) == event_limiter_generic.end()) event_limiter_generic[instance] = EventLimiter(EVENT_LIMIT_STATE);
+    if (event_limiter_generic[instance]) return false;
 
-  T* device = static_cast<T*>(this);
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MODE_setMode, cause.c_str());
-  eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  event_value[FSTR_MODE_mode] = mode;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MODE_setMode, cause.c_str());
+    eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    event_value[FSTR_MODE_mode] = mode;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool ModeController<T>::handleModeController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+    bool success = false;
+    if (request.action != FSTR_MODE_setMode) return false;
+    String mode = request.request_value[FSTR_MODE_mode] | "";
 
-  bool success = false;
-  if (request.action != FSTR_MODE_setMode) return false;
-  String mode = request.request_value[FSTR_MODE_mode] | "";
-
-  if (request.instance != "") {
-    if (genericModeCallback.find(request.instance) != genericModeCallback.end()) {
-      success = genericModeCallback[request.instance](device->deviceId, request.instance, mode);
-      request.response_value[FSTR_MODE_mode] = mode;
-      return success;
-    } else return false;
-  } else {
-    if (setModeCallback) {
-      success = setModeCallback(device->deviceId, mode);
-      request.response_value[FSTR_MODE_mode] = mode;
-      return success;
+    if (request.instance != "") {
+        success = onSetMode(request.instance, mode);
+        request.response_value[FSTR_MODE_mode] = mode;
+        return success;
+    } else {
+        success = onSetMode(mode);
+        request.response_value[FSTR_MODE_mode] = mode;
+        return success;
     }
-  }
-  
-  return success;
+
+    return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

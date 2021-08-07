@@ -1,10 +1,9 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
 FSTR(COLOR, setColor);  // "setColor"
@@ -30,7 +29,7 @@ FSTR(COLOR, b);         // "b"
  * @section ColorCallback Example-Code
  * @snippet callbacks.cpp onColor
  **/
-using ColorCallback = std::function<bool(const String &, byte &, byte &, byte &)>;
+using ColorCallback = std::function<bool(const String&, uint8_t&, uint8_t&, uint8_t&)>;
 
 /**
  * @brief ColorController
@@ -42,10 +41,11 @@ class ColorController {
     ColorController();
 
     void onColor(ColorCallback cb);
-    bool sendColorEvent(byte r, byte g, byte b, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
+    bool sendColorEvent(uint8_t r, uint8_t g, uint8_t b, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
-    bool handleColorController(SinricProRequest &request);
+    virtual bool onColor(uint8_t& r, uint8_t& g, uint8_t& b);
+    bool handleColorController(SinricProRequest& request);
 
   private:
     EventLimiter event_limiter;
@@ -54,11 +54,10 @@ class ColorController {
 
 template <typename T>
 ColorController<T>::ColorController()
-: event_limiter(EVENT_LIMIT_STATE) { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&ColorController<T>::handleColorController, this, std::placeholders::_1)); 
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T* device = static_cast<T*>(this);
+    device->registerRequestHandler(std::bind(&ColorController<T>::handleColorController, this, std::placeholders::_1));
 }
-
 
 /**
  * @brief Set callback function for `setColor` request
@@ -69,7 +68,14 @@ ColorController<T>::ColorController()
  **/
 template <typename T>
 void ColorController<T>::onColor(ColorCallback cb) {
-  colorCallback = cb;
+    colorCallback = cb;
+}
+
+template <typename T>
+bool ColorController<T>::onColor(uint8_t& r, uint8_t& g, uint8_t& b) {
+    T* device = static_cast<T*>(this);
+    if (colorCallback) return colorCallback(device->deviceId, r, g, b);
+    return false;
 }
 
 /**
@@ -84,37 +90,35 @@ void ColorController<T>::onColor(ColorCallback cb) {
  * @retval false  event has not been sent, maybe you sent to much events in a short distance of time
  **/
 template <typename T>
-bool ColorController<T>::sendColorEvent(byte r, byte g, byte b, String cause) {
-  if (event_limiter) return false;
-  T* device = static_cast<T*>(this);
+bool ColorController<T>::sendColorEvent(uint8_t r, uint8_t g, uint8_t b, String cause) {
+    if (event_limiter) return false;
+    T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_COLOR_setColor, cause.c_str());
-  JsonObject event_color = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value].createNestedObject(FSTR_COLOR_color);
-  event_color[FSTR_COLOR_r] = r;
-  event_color[FSTR_COLOR_g] = g;
-  event_color[FSTR_COLOR_b] = b;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_COLOR_setColor, cause.c_str());
+    JsonObject event_color = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value].createNestedObject(FSTR_COLOR_color);
+    event_color[FSTR_COLOR_r] = r;
+    event_color[FSTR_COLOR_g] = g;
+    event_color[FSTR_COLOR_b] = b;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
-bool ColorController<T>::handleColorController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+bool ColorController<T>::handleColorController(SinricProRequest& request) {
+    bool success = false;
 
-  bool success = false;
+    if (colorCallback && request.action == FSTR_COLOR_setColor) {
+        unsigned char r, g, b;
+        r = request.request_value[FSTR_COLOR_color][FSTR_COLOR_r];
+        g = request.request_value[FSTR_COLOR_color][FSTR_COLOR_g];
+        b = request.request_value[FSTR_COLOR_color][FSTR_COLOR_b];
+        success = onColor(r, g, b);
+        request.response_value.createNestedObject(FSTR_COLOR_color);
+        request.response_value[FSTR_COLOR_color][FSTR_COLOR_r] = r;
+        request.response_value[FSTR_COLOR_color][FSTR_COLOR_g] = g;
+        request.response_value[FSTR_COLOR_color][FSTR_COLOR_b] = b;
+    }
 
-  if (colorCallback && request.action == FSTR_COLOR_setColor) {
-    unsigned char r, g, b;
-    r = request.request_value[FSTR_COLOR_color][FSTR_COLOR_r];
-    g = request.request_value[FSTR_COLOR_color][FSTR_COLOR_g];
-    b = request.request_value[FSTR_COLOR_color][FSTR_COLOR_b];
-    success = colorCallback(device->deviceId, r, g, b);
-    request.response_value.createNestedObject(FSTR_COLOR_color);
-    request.response_value[FSTR_COLOR_color][FSTR_COLOR_r] = r;
-    request.response_value[FSTR_COLOR_color][FSTR_COLOR_g] = g;
-    request.response_value[FSTR_COLOR_color][FSTR_COLOR_b] = b;
-  }
-
-  return success;
+    return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

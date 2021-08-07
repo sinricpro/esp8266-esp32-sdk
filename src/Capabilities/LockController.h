@@ -1,18 +1,17 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
-FSTR(LOCK, setLockState);      // "setLockState"
-FSTR(LOCK, state);             // "state"
-FSTR(LOCK, LOCKED);            // "LOCKED"
-FSTR(LOCK, UNLOCKED);          // "UNLOCKED"
-FSTR(LOCK, lock);              // "lock"
-FSTR(LOCK, JAMMED);            // "JAMMED"
+FSTR(LOCK, setLockState);  // "setLockState"
+FSTR(LOCK, state);         // "state"
+FSTR(LOCK, LOCKED);        // "LOCKED"
+FSTR(LOCK, UNLOCKED);      // "UNLOCKED"
+FSTR(LOCK, lock);          // "lock"
+FSTR(LOCK, JAMMED);        // "JAMMED"
 
 /**
  * @brief Callback definition for onLockState function
@@ -33,8 +32,7 @@ FSTR(LOCK, JAMMED);            // "JAMMED"
  * }
  * @endcode
  **/
-using LockStateCallback = std::function<bool(const String &, bool &)>; // void onLockState(const DeviceId &deviceId, bool& lockState);
-
+using LockStateCallback = std::function<bool(const String &, bool &)>;  // void onLockState(const DeviceId &deviceId, bool& lockState);
 
 /**
  * @brief LockController
@@ -49,6 +47,7 @@ class LockController {
     bool sendLockStateEvent(bool state, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
+    virtual bool onLockState(bool &lockState);
     bool handleLockController(SinricProRequest &request);
 
   private:
@@ -58,9 +57,9 @@ class LockController {
 
 template <typename T>
 LockController<T>::LockController()
-: event_limiter(EVENT_LIMIT_STATE) { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1)); 
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1));
 }
 
 /**
@@ -72,7 +71,14 @@ LockController<T>::LockController()
  **/
 template <typename T>
 void LockController<T>::onLockState(LockStateCallback cb) {
-  lockStateCallback = cb;
+    lockStateCallback = cb;
+}
+
+template <typename T>
+bool LockController<T>::onLockState(bool &lockState) {
+    T *device = static_cast<T *>(this);
+    if (lockStateCallback) return lockStateCallback(device->deviceId, lockState);
+    return false;
 }
 
 /**
@@ -86,28 +92,26 @@ void LockController<T>::onLockState(LockStateCallback cb) {
  **/
 template <typename T>
 bool LockController<T>::sendLockStateEvent(bool state, String cause) {
-  if (event_limiter) return false;
-  T* device = static_cast<T*>(this);
+    if (event_limiter) return false;
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_LOCK_setLockState, cause.c_str());
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  state ? event_value[FSTR_LOCK_state] = FSTR_LOCK_LOCKED : event_value[FSTR_LOCK_state] = FSTR_LOCK_UNLOCKED;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_LOCK_setLockState, cause.c_str());
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    state ? event_value[FSTR_LOCK_state] = FSTR_LOCK_LOCKED : event_value[FSTR_LOCK_state] = FSTR_LOCK_UNLOCKED;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool LockController<T>::handleLockController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+    bool success = false;
 
-  bool success = false;
-
-  if (request.action == FSTR_LOCK_setLockState && lockStateCallback)  {
-    bool lockState = request.request_value[FSTR_LOCK_state] == FSTR_LOCK_lock ? true : false;
-    success = lockStateCallback(device->deviceId, lockState);
-    request.response_value[FSTR_LOCK_state] = success ? lockState ? FSTR_LOCK_LOCKED : FSTR_LOCK_UNLOCKED : FSTR_LOCK_JAMMED;
+    if (request.action == FSTR_LOCK_setLockState && lockStateCallback) {
+        bool lockState = request.request_value[FSTR_LOCK_state] == FSTR_LOCK_lock ? true : false;
+        success = onLockState(lockState);
+        request.response_value[FSTR_LOCK_state] = success ? lockState ? FSTR_LOCK_LOCKED : FSTR_LOCK_UNLOCKED : FSTR_LOCK_JAMMED;
+        return success;
+    }
     return success;
-  }
-  return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

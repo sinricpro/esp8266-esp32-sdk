@@ -1,15 +1,14 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
-FSTR(PERCENTAGE, setPercentage);      // "setPercentage"
-FSTR(PERCENTAGE, percentage);         // "percentage"
-FSTR(PERCENTAGE, adjustPercentage);   // "adjustPercentage"
+FSTR(PERCENTAGE, setPercentage);     // "setPercentage"
+FSTR(PERCENTAGE, percentage);        // "percentage"
+FSTR(PERCENTAGE, adjustPercentage);  // "adjustPercentage"
 
 /**
  * @brief Callback definition for onSetPercentage function
@@ -43,7 +42,6 @@ using SetPercentageCallback = std::function<bool(const String &, int &)>;
  **/
 using AdjustPercentageCallback = std::function<bool(const String &, int &)>;
 
-
 /**
  * @brief PercentageController
  * @ingroup Capabilities
@@ -59,6 +57,8 @@ class PercentageController {
     bool sendSetPercentageEvent(int percentage, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
+    virtual bool onSetPercentage(int &percentage);
+    virtual bool onAdjustPercentage(int &percentageDelta);
     bool handlePercentageController(SinricProRequest &request);
 
   private:
@@ -69,9 +69,9 @@ class PercentageController {
 
 template <typename T>
 PercentageController<T>::PercentageController()
-: event_limiter(EVENT_LIMIT_STATE) { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1)); 
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1));
 }
 
 /**
@@ -82,7 +82,9 @@ PercentageController<T>::PercentageController()
  * @see SetPercentageCallback
  **/
 template <typename T>
-void PercentageController<T>::onSetPercentage(SetPercentageCallback cb) { percentageCallback = cb; }
+void PercentageController<T>::onSetPercentage(SetPercentageCallback cb) {
+    percentageCallback = cb;
+}
 
 /**
  * @brief Set callback function for `adjustPercentage` request
@@ -92,7 +94,23 @@ void PercentageController<T>::onSetPercentage(SetPercentageCallback cb) { percen
  * @see AdjustPercentageCallback
  **/
 template <typename T>
-void PercentageController<T>::onAdjustPercentage(AdjustPercentageCallback cb) { adjustPercentageCallback = cb; }
+void PercentageController<T>::onAdjustPercentage(AdjustPercentageCallback cb) {
+    adjustPercentageCallback = cb;
+}
+
+template <typename t>
+bool PercentageController<T>::onSetPercentage(int &percentage) {
+    T *device = static_cast<T *>(this);
+    if (setPercentageCallback) return setPercentageCallback(device->deviceId, percentage);
+    return false;
+}
+
+template <typename t>
+bool PercentageController<T>::onAdjustPercentage(int &percentageDelta) {
+    T *device = static_cast<T *>(this);
+    if (adjustPercentageCallback) return adjustPercentageCallback(device->deviceId, percentageDelta);
+    return false;
+}
 
 /**
  * @brief Send `setPercentage` event to SinricPro Server indicating actual percentage has changed
@@ -105,35 +123,33 @@ void PercentageController<T>::onAdjustPercentage(AdjustPercentageCallback cb) { 
  **/
 template <typename T>
 bool PercentageController<T>::sendSetPercentageEvent(int percentage, String cause) {
-  if (event_limiter) return false;
-  T* device = static_cast<T*>(this);
+    if (event_limiter) return false;
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_PERCENTAGE_setPercentage, cause.c_str());
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  event_value[FSTR_PERCENTAGE_percentage] = percentage;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_PERCENTAGE_setPercentage, cause.c_str());
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    event_value[FSTR_PERCENTAGE_percentage] = percentage;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool PercentageController<T>::handlePercentageController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+    bool success = false;
 
-  bool success = false;
+    if (request.action == FSTR_PERCENTAGE_setPercentage) {
+        int percentage = request.request_value[FSTR_PERCENTAGE_percentage];
+        success = onSetPercentage(percentage);
+        request.response_value[FSTR_PERCENTAGE_percentage] = percentage;
+        return success;
+    }
 
-  if (percentageCallback && request.action == FSTR_PERCENTAGE_setPercentage) {
-    int percentage = request.request_value[FSTR_PERCENTAGE_percentage];
-    success = percentageCallback(device->deviceId, percentage);
-    request.response_value[FSTR_PERCENTAGE_percentage] = percentage;
+    if (request.action == FSTR_PERCENTAGE_adjustPercentage) {
+        int percentage = request.request_value[FSTR_PERCENTAGE_percentage];
+        success = onAdjustPercentage(percentage);
+        request.response_value[FSTR_PERCENTAGE_percentage] = percentage;
+        return success;
+    }
     return success;
-  }
-
-  if (adjustPercentageCallback && request.action == FSTR_PERCENTAGE_adjustPercentage) {
-    int percentage = request.request_value[FSTR_PERCENTAGE_percentage];
-    success = adjustPercentageCallback(device->deviceId, percentage);
-    request.response_value[FSTR_PERCENTAGE_percentage] = percentage;
-    return success;
-  }
-  return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

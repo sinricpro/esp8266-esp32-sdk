@@ -1,14 +1,13 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
-FSTR(MEDIA, mediaControl);   // "mediaControl"
-FSTR(MEDIA, control);        // "control"
+FSTR(MEDIA, mediaControl);  // "mediaControl"
+FSTR(MEDIA, control);       // "control"
 
 /**
  * @brief Callback definition for onMediaControl function
@@ -26,7 +25,6 @@ FSTR(MEDIA, control);        // "control"
  **/
 using MediaControlCallback = std::function<bool(const String &, String &)>;
 
-
 /**
  * @brief MediaController
  * @ingroup Capabilities
@@ -40,6 +38,7 @@ class MediaController {
     bool sendMediaControlEvent(String mediaControl, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
+    virtual bool onMediaControl(String &control);
     bool handleMediaController(SinricProRequest &request);
 
   private:
@@ -49,9 +48,9 @@ class MediaController {
 
 template <typename T>
 MediaController<T>::MediaController()
-: event_limiter(EVENT_LIMIT_STATE) { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&MediaController<T>::handleMediaController, this, std::placeholders::_1)); 
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&MediaController<T>::handleMediaController, this, std::placeholders::_1));
 }
 
 /**
@@ -63,7 +62,14 @@ MediaController<T>::MediaController()
  **/
 template <typename T>
 void MediaController<T>::onMediaControl(MediaControlCallback cb) {
-  mediaControlCallback = cb;
+    mediaControlCallback = cb;
+}
+
+template <typename T>
+bool MediaController<T>::onMediaControl(String &control) {
+    T *device = static_cast<T *>(this);
+    if (mediaControlCallback) return mediaControlCallback(device->deviceId, control);
+    return false;
 }
 
 /**
@@ -77,29 +83,27 @@ void MediaController<T>::onMediaControl(MediaControlCallback cb) {
  **/
 template <typename T>
 bool MediaController<T>::sendMediaControlEvent(String mediaControl, String cause) {
-  if (event_limiter) return false;
-  T* device = static_cast<T*>(this);
+    if (event_limiter) return false;
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MEDIA_mediaControl, cause.c_str());
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  event_value[FSTR_MEDIA_control] = mediaControl;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MEDIA_mediaControl, cause.c_str());
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    event_value[FSTR_MEDIA_control] = mediaControl;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool MediaController<T>::handleMediaController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+    bool success = false;
 
-  bool success = false;
+    if (request.action == FSTR_MEDIA_mediaControl) {
+        String mediaControl = request.request_value[FSTR_MEDIA_control];
+        success = onMediaControl(mediaControl);
+        request.response_value[FSTR_MEDIA_control] = mediaControl;
+        return success;
+    }
 
-  if (mediaControlCallback && request.action == FSTR_MEDIA_mediaControl) {
-    String mediaControl = request.request_value[FSTR_MEDIA_control];
-    success = mediaControlCallback(device->deviceId, mediaControl);
-    request.response_value[FSTR_MEDIA_control] = mediaControl;
     return success;
-  }
-
-  return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

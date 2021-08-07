@@ -1,14 +1,13 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
-FSTR(INPUT, selectInput);     // "selectInput"
-FSTR(INPUT, input);           // "input"
+FSTR(INPUT, selectInput);  // "selectInput"
+FSTR(INPUT, input);        // "input"
 
 /**
  * @brief Callback definition for onSelectInput function
@@ -26,7 +25,6 @@ FSTR(INPUT, input);           // "input"
  **/
 using SelectInputCallback = std::function<bool(const String &, String &)>;
 
-
 /**
  * @brief InputController
  * @ingroup Capabilities
@@ -40,18 +38,19 @@ class InputController {
     bool sendSelectInputEvent(String intput, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
+    virtual bool onSelectInput(String &input);
     bool handleInputController(SinricProRequest &request);
 
-  private: 
+  private:
     EventLimiter event_limiter;
     SelectInputCallback selectInputCallback;
 };
 
 template <typename T>
 InputController<T>::InputController()
-: event_limiter(EVENT_LIMIT_STATE) { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1)); 
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1));
 }
 
 /**
@@ -63,7 +62,14 @@ InputController<T>::InputController()
  **/
 template <typename T>
 void InputController<T>::onSelectInput(SelectInputCallback cb) {
-  selectInputCallback = cb;
+    selectInputCallback = cb;
+}
+
+template <typename T>
+bool InputController<T>::onSelectInput(String &input) {
+    T *device = static_cast<T *>(this);
+    if (selectInputCallback) return selectInputCallback(device->deviceId, input);
+    return false;
 }
 
 /**
@@ -77,29 +83,27 @@ void InputController<T>::onSelectInput(SelectInputCallback cb) {
  **/
 template <typename T>
 bool InputController<T>::sendSelectInputEvent(String input, String cause) {
-  if (event_limiter) return false;
-  T* device = static_cast<T*>(this);
+    if (event_limiter) return false;
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_INPUT_selectInput, cause.c_str());
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  event_value[FSTR_INPUT_input] = input;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_INPUT_selectInput, cause.c_str());
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    event_value[FSTR_INPUT_input] = input;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool InputController<T>::handleInputController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+    bool success = false;
 
-  bool success = false;
+    if (request.action == FSTR_INPUT_selectInput) {
+        String input = request.request_value[FSTR_INPUT_input];
+        success = onSelectInput(input);
+        request.response_value[FSTR_INPUT_input] = input;
+        return success;
+    }
 
-  if (selectInputCallback && request.action == FSTR_INPUT_selectInput) {
-    String input = request.request_value[FSTR_INPUT_input];
-    success = selectInputCallback(device->deviceId, input);
-    request.response_value[FSTR_INPUT_input] = input;
     return success;
-  }
-
-  return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE

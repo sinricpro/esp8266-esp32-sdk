@@ -1,10 +1,9 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
 FSTR(POWERLEVEL, setPowerLevel);     // "setPowerLevel"
@@ -44,7 +43,6 @@ using SetPowerLevelCallback = std::function<bool(const String &, int &)>;
  **/
 using AdjustPowerLevelCallback = std::function<bool(const String &, int &)>;
 
-
 /**
  * @brief PowerLevelController
  * @ingroup Capabilities
@@ -59,6 +57,8 @@ class PowerLevelController {
     bool sendPowerLevelEvent(int powerLevel, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
+    virtual bool onPowerLevel(int &level);
+    virtual bool onAdjustPowerLevel(int &levelDelta);
     bool handlePowerLevelController(SinricProRequest &request);
 
   private:
@@ -69,9 +69,9 @@ class PowerLevelController {
 
 template <typename T>
 PowerLevelController<T>::PowerLevelController()
-: event_limiter(EVENT_LIMIT_STATE) { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&PowerLevelController<T>::handlePowerLevelController, this, std::placeholders::_1)); 
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(std::bind(&PowerLevelController<T>::handlePowerLevelController, this, std::placeholders::_1));
 }
 
 /**
@@ -82,7 +82,7 @@ PowerLevelController<T>::PowerLevelController()
  **/
 template <typename T>
 void PowerLevelController<T>::onPowerLevel(SetPowerLevelCallback cb) {
-  setPowerLevelCallback = cb;
+    setPowerLevelCallback = cb;
 }
 
 /**
@@ -92,9 +92,22 @@ void PowerLevelController<T>::onPowerLevel(SetPowerLevelCallback cb) {
  * @see       AdjustPowerLevelCallback
  **/
 template <typename T>
-void PowerLevelController<T>::onAdjustPowerLevel(AdjustPowerLevelCallback cb)
-{
-  adjustPowerLevelCallback = cb;
+void PowerLevelController<T>::onAdjustPowerLevel(AdjustPowerLevelCallback cb) {
+    adjustPowerLevelCallback = cb;
+}
+
+template <typename T>
+bool PowerLevelController<T>::onPowerLevel(int &level) {
+    T *device = static_cast<T *>(this);
+    if (setPowerLevelCallback) return setPowerLevelCallback(device->deviceId, level);
+    return false;
+}
+
+template <typename T>
+bool PowerLevelController<T>::onAdjustPowerLevel(int &level) {
+    T *device = static_cast<T *>(this);
+    if (adjustPowerLevelCallback) return adjustPowerLevelCallback(device->deviceId, level);
+    return false;
 }
 
 /**
@@ -107,34 +120,31 @@ void PowerLevelController<T>::onAdjustPowerLevel(AdjustPowerLevelCallback cb)
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
 template <typename T>
-bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause)
-{
-  T* device = static_cast<T*>(this);
+bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause) {
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERLEVEL_setPowerLevel, cause.c_str());
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  event_value[FSTR_POWERLEVEL_powerLevel] = powerLevel;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERLEVEL_setPowerLevel, cause.c_str());
+    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    event_value[FSTR_POWERLEVEL_powerLevel] = powerLevel;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool PowerLevelController<T>::handlePowerLevelController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+    bool success = false;
 
-  bool success = false;
+    if (request.action == FSTR_POWERLEVEL_setPowerLevel) {
+        int powerLevel = request.request_value[FSTR_POWERLEVEL_powerLevel];
+        success = onPowerLevel(powerLevel);
+        request.response_value[FSTR_POWERLEVEL_powerLevel] = powerLevel;
+    }
 
-  if (setPowerLevelCallback && request.action == FSTR_POWERLEVEL_setPowerLevel) {
-    int powerLevel = request.request_value[FSTR_POWERLEVEL_powerLevel];
-    success = setPowerLevelCallback(device->deviceId, powerLevel);
-    request.response_value[FSTR_POWERLEVEL_powerLevel] = powerLevel;
-  }
-
-  if (adjustPowerLevelCallback && request.action == FSTR_POWERLEVEL_adjustPowerLevel) {
-    int powerLevelDelta = request.request_value[FSTR_POWERLEVEL_powerLevelDelta];
-    success = adjustPowerLevelCallback(device->deviceId, powerLevelDelta);
-    request.response_value[FSTR_POWERLEVEL_powerLevel] = powerLevelDelta;
-  }
-  return success;
+    if (request.action == FSTR_POWERLEVEL_adjustPowerLevel) {
+        int powerLevelDelta = request.request_value[FSTR_POWERLEVEL_powerLevelDelta];
+        success = onAdjustPowerLevel(powerLevelDelta);
+        request.response_value[FSTR_POWERLEVEL_powerLevel] = powerLevelDelta;
+    }
+    return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE
