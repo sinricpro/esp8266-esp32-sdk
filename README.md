@@ -69,7 +69,8 @@ SinricProSwitch mySwitch(SWITCH_ID);
 ### Define callback routine(s)
 ```C++
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("device %s turned %s\r\n", deviceId.c_str(), state?"on":"off");
+  // put your switch code here, to run when the switch gets triggered (digital write to gpio etc)
+
   return true; // indicate that callback handled correctly
 }
 ```
