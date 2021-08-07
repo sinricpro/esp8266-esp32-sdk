@@ -62,7 +62,7 @@ void KeypadController<T>::onKeystroke(KeystrokeCallback cb) {
 }
 
 template <typename T>
-bool KeypadController<T>::onKeystroke(String &keystroke) {
+bool KeypadController<T>::onKeystroke(const String &keystroke) {
     T *device = static_cast<T *>(this);
     if (keystrokeCallback) return KeystrokeCallback(device->deviceId, keystroke);
     return false;
