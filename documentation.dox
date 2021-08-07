@@ -1,0 +1,16 @@
+/**
+ * @defgroup SinricPro SinricPro
+ * @brief Main instance of SinricProClass
+ *
+ * @defgroup Devices Devices
+ * @brief Available devices
+ *
+ * @defgroup Capabilities Capabilities
+ * @brief Capabilities
+ * 
+ * @defgroup Callbacks Callbacks
+ * @brief Callbacks
+ *
+ * @defgroup Override Override
+ * @brief overrides of request handler
+ **/ 
