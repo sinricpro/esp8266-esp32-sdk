@@ -472,22 +472,6 @@ void SinricProClass::restoreDeviceStates(bool flag) {
     _websocketListener.setRestoreDeviceStates(flag);
 }
 
-/**
- * @brief operator[] is used tor create a new device instance or get an existing device instance
- * 
- * If the device is unknown to SinricProClass it will create a new device instance
- * @param deviceId a String containing deviceId for device that have to been created or retreived
- * @return returns a proxy object representing the reference to a device derrivered from SinricProDevice
- * @section Syntax
- * `<T> &reference = SinricPro[<DEVICE_ID>];`
- * @section operator[] Example-Code
- * @code
- * #define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
- * ..
- *   SinricProSwitch &mySwitch = SinricPro[SWITCH_ID];
- * ..
- * @endcode
- **/
 __attribute__ ((deprecated))
 SinricProClass::proxy SinricProClass::operator[](const String deviceId) {
     return proxy(this, deviceId);
