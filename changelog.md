@@ -1,4 +1,7 @@
 # Changelog
+## Version 2.9.9
+- Fixed include instruction in EventLimiter.h (uppercase / lowercase issue)
+
 ## Version 2.9.8
 - Fixed SinricProBlinds
 
