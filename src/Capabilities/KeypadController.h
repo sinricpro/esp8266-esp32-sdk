@@ -5,7 +5,7 @@
 #include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
-FSTR(KEYPAD, SendKeystroke);  // "SendKeystroke"
+FSTR(KEYPAD, sendKeystroke);  // "sendKeystroke"
 FSTR(KEYPAD, keystroke);      // "keystroke"
 
 /**
@@ -36,7 +36,7 @@ class KeypadController {
     void onKeystroke(KeystrokeCallback cb);
 
   protected:
-    virtual bool onKeystroke(const String &keystroke);
+    virtual bool onKeystroke(String &keystroke);
     bool handleKeypadController(SinricProRequest &request);
 
   private:
@@ -50,7 +50,7 @@ KeypadController<T>::KeypadController() {
 }
 
 /**
- * @brief Set callback function for `SendKeystroke` request
+ * @brief Set callback function for `sendKeystroke` request
  * 
  * @param cb Function pointer to a `KeystrokeCallback` function
  * @return void
@@ -62,9 +62,9 @@ void KeypadController<T>::onKeystroke(KeystrokeCallback cb) {
 }
 
 template <typename T>
-bool KeypadController<T>::onKeystroke(const String &keystroke) {
+bool KeypadController<T>::onKeystroke(String &keystroke) {
     T *device = static_cast<T *>(this);
-    if (keystrokeCallback) return KeystrokeCallback(device->deviceId, keystroke);
+    if (keystrokeCallback) return keystrokeCallback(device->deviceId, keystroke);
     return false;
 }
 
@@ -72,7 +72,7 @@ template <typename T>
 bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
     bool success = false;
 
-    if (request.action == FSTR_KEYPAD_SendKeystroke) {
+    if (request.action == FSTR_KEYPAD_sendKeystroke) {
         String keystroke = request.request_value[FSTR_KEYPAD_keystroke] | "";
         success = onKeystroke(keystroke);
         request.response_value[FSTR_KEYPAD_keystroke] = keystroke;
