@@ -6,7 +6,7 @@
 #include "../SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
-FSTR(KEYPAD, SendKeystroke);  // "SendKeystroke"
+FSTR(KEYPAD, sendKeystroke);  // "sendKeystroke"
 FSTR(KEYPAD, keystroke);      // "keystroke"
 
 /**
@@ -51,7 +51,7 @@ KeypadController<T>::KeypadController() {
 }
 
 /**
- * @brief Set callback function for `SendKeystroke` request
+ * @brief Set callback function for `sendKeystroke` request
  * 
  * @param cb Function pointer to a `KeystrokeCallback` function
  * @return void
@@ -66,7 +66,7 @@ bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
   T* device = static_cast<T*>(this);
 
   bool success = false;
-  if (request.action != FSTR_KEYPAD_SendKeystroke) return false;
+  if (request.action != FSTR_KEYPAD_sendKeystroke) return false;
 
   if (keystrokeCallback) {
     String keystroke = request.request_value[FSTR_KEYPAD_keystroke] | "";
