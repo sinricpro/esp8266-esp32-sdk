@@ -65,6 +65,10 @@ bool onThermostatMode(const String &deviceId, String &mode) {
   return true;
 }
 
+bool onRangeValue(const String &deviceId, int &rangeValue) {
+  Serial.printf("Fan speed changed to %d\r\n", rangeValue);
+  return true;
+}
 
 void setupWiFi() {
   Serial.printf("\r\n[Wifi]: Connecting");
@@ -84,6 +88,7 @@ void setupSinricPro() {
   myAcUnit.onTargetTemperature(onTargetTemperature);
   myAcUnit.onAdjustTargetTemperature(onAdjustTargetTemperature);
   myAcUnit.onThermostatMode(onThermostatMode);
+  myAcUnit.onRangeValue(onRangeValue);
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
