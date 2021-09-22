@@ -12,7 +12,7 @@
  */
 
 // Uncomment the following line to enable serial debug output
-//#define ENABLE_DEBUG
+#define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
        #define DEBUG_ESP_PORT Serial
@@ -35,7 +35,7 @@
 #define WIFI_PASS         "YOUR_WIFI_PASSWORD"
 #define APP_KEY           "YOUR_APP_KEY_HERE"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET        "YOUR_APP_SECRET_HERE"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define ACUNIT_ID     "YOUR_DEVICE_ID_HERE"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
+#define ACUNIT_ID         "YOUR_DEVICE_ID_HERE"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                     // Change baudrate to your need
 
 float globalTemperature;
@@ -65,6 +65,16 @@ bool onThermostatMode(const String &deviceId, String &mode) {
   return true;
 }
 
+bool onRangeValue(const String &deviceId, int &rangeValue) {
+  Serial.printf("Fan speed changed to %d\r\n", rangeValue);
+  return true;
+}
+
+bool onAdjustRangeValue(const String &deviceId, int &rangeValueDelta) {
+  Serial.printf("Fan speed adjusted to to %d\r\n", rangeValueDelta);
+  return true;
+}
+
 
 void setupWiFi() {
   Serial.printf("\r\n[Wifi]: Connecting");
@@ -84,7 +94,10 @@ void setupSinricPro() {
   myAcUnit.onTargetTemperature(onTargetTemperature);
   myAcUnit.onAdjustTargetTemperature(onAdjustTargetTemperature);
   myAcUnit.onThermostatMode(onThermostatMode);
-
+  myAcUnit.onThermostatMode(onThermostatMode);
+  myAcUnit.onRangeValue(onRangeValue);
+  myAcUnit.onAdjustRangeValue(onAdjustRangeValue);
+  
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
