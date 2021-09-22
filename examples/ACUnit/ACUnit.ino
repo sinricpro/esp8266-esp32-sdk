@@ -35,11 +35,12 @@
 #define WIFI_PASS         "YOUR_WIFI_PASSWORD"
 #define APP_KEY           "YOUR_APP_KEY_HERE"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET        "YOUR_APP_SECRET_HERE"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define ACUNIT_ID     "YOUR_DEVICE_ID_HERE"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
+#define ACUNIT_ID         "YOUR_DEVICE_ID_HERE"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                     // Change baudrate to your need
 
 float globalTemperature;
 bool globalPowerState;
+int globalFanSpeed;
 
 bool onPowerState(const String &deviceId, bool &state) {
   Serial.printf("Thermostat %s turned %s\r\n", deviceId.c_str(), state?"on":"off");
@@ -66,7 +67,15 @@ bool onThermostatMode(const String &deviceId, String &mode) {
 }
 
 bool onRangeValue(const String &deviceId, int &rangeValue) {
-  Serial.printf("Fan speed changed to %d\r\n", rangeValue);
+  Serial.printf("Fan speed set to %d\r\n", rangeValue);
+  globalFanSpeed = rangeValue;
+  return true;
+}
+
+bool onAdjustRangeValue(const String &deviceId, int &valueDelta) {
+  globalFanSpeed += valueDelta;
+  Serial.printf("Fan speed changed about %d to %d\r\n", valueDelta, globalFanSpeed);
+  valueDelta = globalFanSpeed;
   return true;
 }
 
@@ -89,6 +98,7 @@ void setupSinricPro() {
   myAcUnit.onAdjustTargetTemperature(onAdjustTargetTemperature);
   myAcUnit.onThermostatMode(onThermostatMode);
   myAcUnit.onRangeValue(onRangeValue);
+  myAcUnit.onAdjustRangeValue(onAdjustRangeValue);
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
