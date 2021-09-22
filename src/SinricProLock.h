@@ -5,12 +5,14 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICLOCK_H_
-#define _SINRICLOCK_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/LockController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProLock
@@ -27,8 +29,7 @@ class SinricProLock :  public SinricProDevice,
                        friend class SettingController<SinricProLock>;
                        friend class LockController<SinricProLock>;
   public:
-	  SinricProLock(const DeviceId &deviceId) : SinricProDevice(deviceId, "SMARTLOCK") {}
+	  SinricProLock(const String &deviceId) : SinricProDevice(deviceId, "SMARTLOCK") {}
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE#

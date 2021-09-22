@@ -4,14 +4,15 @@
  *
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
-
-#ifndef _SINRICAIRQUALITYSENSOR_H_
-#define _SINRICAIRQUALITYSENSOR_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/AirQualitySensor.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProAirQualitySensor
@@ -27,8 +28,7 @@ class SinricProAirQualitySensor : public SinricProDevice,
                                   friend class AirQualitySensor<SinricProAirQualitySensor>;
                                   
 public:
-  SinricProAirQualitySensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR"){};
+  SinricProAirQualitySensor(const String &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR"){};
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

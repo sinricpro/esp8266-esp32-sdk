@@ -5,8 +5,10 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef __MESSAGEID_H__
-#define __MESSAGEID_H__
+#pragma once
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 class MessageID {
 public:
@@ -31,4 +33,4 @@ MessageID::MessageID() {
   }
 }
 
-#endif // __MESSAGEID_H__
+} // SINRICPRO_NAMESPACE

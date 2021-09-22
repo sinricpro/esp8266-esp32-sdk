@@ -5,21 +5,21 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICPRO_INTERFACE_H_
-#define _SINRICPRO_INTERFACE_H_
+#pragma once
 
 #include "ArduinoJson.h"
 #include "SinricProQueue.h"
-#include "SinricProId.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 class SinricProInterface {
   friend class SinricProDevice;
   protected:
-    virtual void sendMessage(JsonDocument& jsonEvent);
-    virtual DynamicJsonDocument prepareEvent(DeviceId deviceId, const char* action, const char* cause);
-    virtual unsigned long getTimestamp(); 
-    virtual bool isConnected();
+    virtual void                sendMessage(JsonDocument& jsonEvent);
+    virtual DynamicJsonDocument prepareEvent(String deviceId, const char* action, const char* cause);
+    virtual unsigned long       getTimestamp(); 
+    virtual bool                isConnected();
 };
 
-
-#endif
+} // SINRICPRO_NAMESPACE

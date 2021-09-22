@@ -4,15 +4,16 @@
  *
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
-
-#ifndef _SINRICWINDOWAC_H_
-#define _SINRICWINDOWAC_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/RangeController.h"
 #include "Capabilities/ThermostatController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProWindowAC
@@ -37,7 +38,7 @@ class SinricProWindowAC :  public SinricProDevice,
                            friend class RangeController<SinricProWindowAC>;
                            friend class ThermostatController<SinricProWindowAC>;
   public:
-	  SinricProWindowAC(const DeviceId &deviceId) : SinricProDevice(deviceId, "AC_UNIT") {}
+	  SinricProWindowAC(const String &deviceId) : SinricProDevice(deviceId, "AC_UNIT") {}
 };
 
-#endif
+} // SINRICPRO_NAMESPACE

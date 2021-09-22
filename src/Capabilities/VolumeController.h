@@ -1,7 +1,50 @@
-#ifndef _VOLUMECONTROLLER_H_
-#define _VOLUMECONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+#include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
+FSTR(VOLUME, setVolume);         // "setVolume"
+FSTR(VOLUME, volume);            // "volume"
+FSTR(VOLUME, adjustVolume);      // "adjustVolume"
+FSTR(VOLUME, volumeDefault);     // "volumeDefault"
+
+/**
+ * @brief Callback definition for onSetVolume function
+ * 
+ * Gets called when device receive a `setVolume` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   volume      Integer with volume device should set to
+ * @param[out]  volume      Integer with volume device has been set to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section SetVolumeCallback Example-Code
+ * @snippet callbacks.cpp onSetVolume
+ **/
+using SetVolumeCallback = std::function<bool(const String &, int &)>;
+
+/**
+ * @brief Callback definition for onAdjustVolume function
+ * 
+ * Gets called when device receive a `adjustVolume` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   volumeDelta Integer with relative volume the device should change about (-100..100)
+ * @param[out]  volumeDelta Integer with absolute volume device has been set to
+ * @param[in]   volumeDefault Bool `false` if the user specified the amount by which to change the volume; otherwise `true`
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section AdjustVolumeCallback Example-Code
+ * @snippet callbacks.cpp onAdjustVolume
+ **/
+using AdjustVolumeCallback = std::function<bool(const String &, int &, bool)>;
+
 
 /**
  * @brief VolumeController
@@ -10,52 +53,28 @@
 template <typename T>
 class VolumeController {
   public:
-    VolumeController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&VolumeController<T>::handleVolumeController, this, std::placeholders::_1)); }
-    /**
-     * @brief Callback definition for onSetVolume function
-     * 
-     * Gets called when device receive a `setVolume` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   volume      Integer with volume device should set to
-     * @param[out]  volume      Integer with volume device has been set to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section SetVolumeCallback Example-Code
-     * @snippet callbacks.cpp onSetVolume
-     **/
-    using SetVolumeCallback = std::function<bool(const String &, int &)>;
-
-    /**
-     * @brief Callback definition for onAdjustVolume function
-     * 
-     * Gets called when device receive a `adjustVolume` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   volumeDelta Integer with relative volume the device should change about (-100..100)
-     * @param[out]  volumeDelta Integer with absolute volume device has been set to
-     * @param[in]   volumeDefault Bool `false` if the user specified the amount by which to change the volume; otherwise `true`
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section AdjustVolumeCallback Example-Code
-     * @snippet callbacks.cpp onAdjustVolume
-     **/
-    using AdjustVolumeCallback = std::function<bool(const String &, int &, bool)>;
+    VolumeController();
 
     void onSetVolume(SetVolumeCallback cb);
     void onAdjustVolume(AdjustVolumeCallback cb);
 
-    bool sendVolumeEvent(int volume, String cause = "PHYSICAL_INTERACTION");
+    bool sendVolumeEvent(int volume, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     bool handleVolumeController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     SetVolumeCallback volumeCallback;
     AdjustVolumeCallback adjustVolumeCallback;
 };
+
+template <typename T>
+VolumeController<T>::VolumeController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  T* device = static_cast<T*>(this);
+  device->registerRequestHandler(std::bind(&VolumeController<T>::handleVolumeController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setVolume` request
@@ -88,35 +107,36 @@ void VolumeController<T>::onAdjustVolume(AdjustVolumeCallback cb) { adjustVolume
  **/
 template <typename T>
 bool VolumeController<T>::sendVolumeEvent(int volume, String cause) {
-  T& device = static_cast<T&>(*this);
+  if (event_limiter) return false;
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setVolume", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["volume"] = volume;
-  return device.sendEvent(eventMessage);
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_VOLUME_setVolume, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_VOLUME_volume] = volume;
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool VolumeController<T>::handleVolumeController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
-  if (volumeCallback && request.action == "setVolume") {
-    int volume = request.request_value["volume"];
-    success = volumeCallback(device.deviceId, volume);
-    request.response_value["volume"] = volume;
+  if (volumeCallback && request.action == FSTR_VOLUME_setVolume) {
+    int volume = request.request_value[FSTR_VOLUME_volume];
+    success = volumeCallback(device->deviceId, volume);
+    request.response_value[FSTR_VOLUME_volume] = volume;
     return success;
   }
 
-  if (adjustVolumeCallback && request.action == "adjustVolume") {
-    int volume = request.request_value["volume"];
-    bool volumeDefault = request.request_value["volumeDefault"] | false;
-    success = adjustVolumeCallback(device.deviceId, volume, volumeDefault);
-    request.response_value["volume"] = volume;
+  if (adjustVolumeCallback && request.action == FSTR_VOLUME_adjustVolume) {
+    int volume = request.request_value[FSTR_VOLUME_volume];
+    bool volumeDefault = request.request_value[FSTR_VOLUME_volumeDefault] | false;
+    success = adjustVolumeCallback(device->deviceId, volume, volumeDefault);
+    request.response_value[FSTR_VOLUME_volume] = volume;
     return success;
   }
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

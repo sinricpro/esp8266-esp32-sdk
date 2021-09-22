@@ -1,6 +1,14 @@
+#pragma once
 
-#ifndef _TEMPERATURESENSOR_H_
-#define _TEMPERATURESENSOR_H_
+#include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
+FSTR(TEMPERATURE, currentTemperature);    // "currentTemperature"
+FSTR(TEMPERATURE, humidity);              // "humidity"
+FSTR(TEMPERATURE, temperature);           // "temperature"
 
 /**
  * @brief TemperatureSensor
@@ -9,8 +17,15 @@
 template <typename T>
 class TemperatureSensor {
   public:
-    bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = "PERIODIC_POLL");
+    TemperatureSensor();
+    bool sendTemperatureEvent(float temperature, float humidity = -1, String cause = FSTR_SINRICPRO_PERIODIC_POLL);
+  private:
+    EventLimiter event_limiter;
 };
+
+template <typename T>
+TemperatureSensor<T>::TemperatureSensor() 
+: event_limiter(EVENT_LIMIT_SENSOR_VALUE) {}
 
 /**
  * @brief Send `currentTemperature` event to report actual temperature (measured by a sensor)
@@ -24,13 +39,14 @@ class TemperatureSensor {
  **/
 template <typename T>
 bool TemperatureSensor<T>::sendTemperatureEvent(float temperature, float humidity, String cause) {
-  T& device = static_cast<T&>(*this);
+  if (event_limiter) return false;
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("currentTemperature", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["humidity"] = roundf(humidity * 100) / 100.0;
-  event_value["temperature"] = roundf(temperature * 10) / 10.0;
-  return device.sendEvent(eventMessage);
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_TEMPERATURE_currentTemperature, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_TEMPERATURE_humidity] = roundf(humidity * 100) / 100.0;
+  event_value[FSTR_TEMPERATURE_temperature] = roundf(temperature * 10) / 10.0;
+  return device->sendEvent(eventMessage);
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

@@ -5,13 +5,15 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICTEMPERATURESENSOR_H_
-#define _SINRICTEMPERATURESENSOR_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/TemperatureSensor.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProTemperaturesensor
@@ -26,8 +28,7 @@ class SinricProTemperaturesensor :  public SinricProDevice,
                                     friend class PowerStateController<SinricProTemperaturesensor>;
                                     friend class TemperatureSensor<SinricProTemperaturesensor>;
   public:
-	  SinricProTemperaturesensor(const DeviceId &deviceId) : SinricProDevice(deviceId, "TEMPERATURESENSOR") {}
+	  SinricProTemperaturesensor(const String &deviceId) : SinricProDevice(deviceId, "TEMPERATURESENSOR") {}
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

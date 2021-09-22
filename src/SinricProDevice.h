@@ -5,15 +5,14 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICDEVICE_H_
-#define _SINRICDEVICE_H_
+#pragma once
 
 #include "SinricProRequest.h"
 #include "SinricProDeviceInterface.h"
-#include "LeakyBucket.h"
-#include "SinricProId.h"
-
 #include <map>
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProDevice
@@ -25,28 +24,31 @@
 class SinricProDevice : public SinricProDeviceInterface {
   friend class SinricProClass;
 public:
-  SinricProDevice(const DeviceId &deviceId, const String &productType = "");
-  bool operator==(const DeviceId& other);
+  SinricProDevice(const String &deviceId, const String &productType = "");
+  bool                                 operator==(const String& other);
 
-  virtual DeviceId getDeviceId();
+  virtual String                       getDeviceId();
 protected:
-  unsigned long getTimestamp();
-  virtual bool sendEvent(JsonDocument &event);
-  virtual DynamicJsonDocument prepareEvent(const char *action, const char *cause);
+  virtual                              ~SinricProDevice();
 
-  virtual ~SinricProDevice();
-  virtual String getProductType();
-  virtual void begin(SinricProInterface *eventSender);
-  bool handleRequest(SinricProRequest &request);
-  DeviceId deviceId;
+  void                                 registerRequestHandler(const SinricProRequestHandler &requestHandler);
+  unsigned long                        getTimestamp();
+  virtual bool                         sendEvent(JsonDocument &event);
+  virtual DynamicJsonDocument          prepareEvent(const char *action, const char *cause);
+
+  virtual String                       getProductType();
+  virtual void                         begin(SinricProInterface *eventSender);
+  bool                                 handleRequest(SinricProRequest &request);
+
+  String                               deviceId;
   std::vector<SinricProRequestHandler> requestHandlers;
 
-private : SinricProInterface *eventSender;
-  std::map<String, LeakyBucket_t> eventFilter;
-  String productType;
+private:
+  SinricProInterface                   *eventSender;
+  String                               productType;
 };
 
-SinricProDevice::SinricProDevice(const DeviceId &deviceId, const String &productType) : 
+SinricProDevice::SinricProDevice(const String &deviceId, const String &productType) : 
   deviceId(deviceId),
   eventSender(nullptr),
   productType(productType) {
@@ -58,48 +60,37 @@ void SinricProDevice::begin(SinricProInterface* eventSender) {
   this->eventSender = eventSender;
 }
 
-DeviceId SinricProDevice::getDeviceId() {
+String SinricProDevice::getDeviceId() {
   return deviceId;
 }
 
-bool SinricProDevice::operator==(const DeviceId &other) { 
+bool SinricProDevice::operator==(const String &other) { 
   return other == deviceId; 
 }
 
 DynamicJsonDocument SinricProDevice::prepareEvent(const char* action, const char* cause) {
   if (eventSender) return eventSender->prepareEvent(deviceId, action, cause);
-  DEBUG_SINRIC("[SinricProDevice:prepareEvent()]: Device \"%s\" isn't configured correctly! The \'%s\' event will be ignored.\r\n", deviceId.toString().c_str(), action);
+  DEBUG_SINRIC("[SinricProDevice:prepareEvent()]: Device \"%s\" isn't configured correctly! The \'%s\' event will be ignored.\r\n", deviceId.c_str(), action);
   return DynamicJsonDocument(1024);
 }
 
 
 bool SinricProDevice::sendEvent(JsonDocument& event) {
-  if (!eventSender) return false;
-  if (!eventSender->isConnected()) {
+  if (!SinricPro.isConnected()) {
     DEBUG_SINRIC("[SinricProDevice::sendEvent]: The event could not be sent. No connection to the SinricPro server.\r\n");
     return false;
   }
-  String eventName = event["payload"]["action"] | ""; // get event name
-  String eventInstance = event["payload"]["instanceId"] | "";
-  if (eventInstance != "") eventName += "_" + eventInstance;
-  
-  LeakyBucket_t bucket; // leaky bucket algorithm is used to prevent flooding the server
 
-  // get leaky bucket for event from eventFilter
-  if (eventFilter.find(eventName) == eventFilter.end()) {  // if there is no bucket ...
-    eventFilter[eventName] = bucket;                       // ...add a new bucket
-  } else {  
-    bucket = eventFilter[eventName];                       // else get bucket
-  }
-
-  if (bucket.addDrop()) {                                  // if we can add a new drop
-    eventSender->sendMessage(event);                       // send event
-    eventFilter[eventName] = bucket;                       // update bucket on eventFilter
+  if (eventSender) {
+    eventSender->sendMessage(event);
     return true;
   }
-
-  eventFilter[eventName] = bucket;                        // update bucket on eventFilter
+  
   return false;
+}
+
+void SinricProDevice::registerRequestHandler(const SinricProRequestHandler &requestHandler) {
+  requestHandlers.push_back(requestHandler);
 }
 
 unsigned long SinricProDevice::getTimestamp() {
@@ -118,5 +109,4 @@ bool SinricProDevice::handleRequest(SinricProRequest &request) {
   return false;
 }
 
-
-#endif
+} // SINRICPRO_NAMESPACE

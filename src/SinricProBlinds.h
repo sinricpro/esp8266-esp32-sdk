@@ -4,14 +4,15 @@
  *
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
-
-#ifndef _SINRICBLINDS_H_
-#define _SINRICBLINDS_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/RangeController.h"
 #include "Capabilities/PowerStateController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProBlinds
@@ -31,8 +32,7 @@ class SinricProBlinds : public SinricProDevice,
                         friend class PowerStateController<SinricProBlinds>;
                         friend class RangeController<SinricProBlinds>;
   public:
-    SinricProBlinds(const DeviceId &deviceId) : SinricProDevice(deviceId, "BLIND"){};
+    SinricProBlinds(const String &deviceId) : SinricProDevice(deviceId, "BLIND"){}
 };
 
-#endif
-
+} // SINRICPRO_NAMESPACE

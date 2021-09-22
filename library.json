@@ -13,7 +13,7 @@
       "maintainer": true
     }
   ],
-  "version": "2.9.3",
+  "version": "2.9.9",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",

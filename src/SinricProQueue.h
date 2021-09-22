@@ -1,14 +1,16 @@
 /*
- *  Copyright (c) 2019 Sinric. All rights reserved.
+ *  Copyright (c) 2021 Sinric. All rights reserved.
  *  Licensed under Creative Commons Attribution-Share Alike (CC BY-SA)
  *
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef __SINRICPRO_QUEUE_H__
-#define __SINRICPRO_QUEUE_H__
+#pragma once
 
 #include <queue>
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 typedef enum {
   IF_UNKNOWN    = 0,
@@ -20,11 +22,11 @@ class SinricProMessage {
 public:
   SinricProMessage(interface_t interface, const char* message);
   ~SinricProMessage();
-  const char* getMessage() const;
-  interface_t getInterface() const;
+  const char*   getMessage() const;
+  interface_t   getInterface() const;
 private:
-  interface_t _interface;
-  char* _message;
+  interface_t   _interface;
+  char*         _message;
 };
 
 SinricProMessage::SinricProMessage(interface_t interface, const char* message) : 
@@ -47,4 +49,4 @@ interface_t SinricProMessage::getInterface() const {
 
 typedef std::queue<SinricProMessage*> SinricProQueue_t;
 
-#endif
+} // SINRICPRO_NAMESPACE

@@ -1,4 +1,65 @@
 # Changelog
+## Version 2.9.9
+- Fixed include instruction in EventLimiter.h (uppercase / lowercase issue)
+
+## Version 2.9.8
+- Fixed SinricProBlinds
+
+## Version 2.9.7
+- Fixed SinricProDimSwitch (include order)
+
+## Version 2.9.6
+### New
+- Namespace implemented
+  Each version gets its own namespace in the form of SINRICPRO_X_Y_Z (SINRICPRO_2_9_6)
+- SinricProDevice: implemented registerRequestHandler (used by capabilities to register their requestHandler functions)
+- Implemented SinricProStrings to avoid unnecessary string duplication and move the strings into PROGMEM.
+- New temperature sensors example added HTU21D & AHT10 (thanks to [jpa-welten](https://github.com/jpa-welten))
+### Changes
+- Removed types: `DeviceId`, `AppKey` and `AppSecret`. These are now again of type `String`.
+- Include guard is now based on `#pragma once` instead of `#ifndef`, `#define` and `#endif`
+- Event-Limiting system changed\
+Attempting to send events shorter than these minimum waiting times will add the minimum waiting time as a delay to each attempt. If excessive events are tried to be sent (e.g. in a loop) a warning is displayed.
+  <details><summary>Events overview (click for more details)</summary>
+
+  | Events allowed every 10 seconds | Events allowed every 60 seconds |
+  |---------------------------------| --------------------------------|
+  | sendBrightnessEvent             | sendAirQualityEvent             |
+  | sendChangeChannelEvent          | sendPowerSensorEvent            |
+  | sendColorEvent                  | sendTemperatureEvent            |
+  | sendColoColorTemperatureEvent   |                                 |
+  | sendContactEvent                |                                 |
+  | sendDoorbellEvent               |                                 |
+  | sendDoorStateEvent              |                                 |
+  | sendBandsEvent                  |                                 |
+  | sendSelectInputEvent            |                                 |
+  | sendLockStateEvent              |                                 |
+  | sendModeEvent                   |                                 |
+  | sendMediaControlEvent           |                                 |
+  | sendMotionEvent                 |                                 |
+  | sendMuteEvent                   |                                 |
+  | sendSetPercentageEvent          |                                 |
+  | sendPowerLevelEvent             |                                 |
+  | sendPowerStateEvent             |                                 |
+  | sendRangeValueEvent             |                                 |
+  | sendTargetTemperatureEvent      |                                 |
+  | sendThermostatModeEvent         |                                 |
+  | sendToggleStateEvent            |                                 |
+  | sendVolumeEvent                 |                                 |
+  </details>
+
+### Code cleanup
+- Moved callback definitions outside from class definitions\
+(possible by the use of a dedicated namespace)
+- Static-Cast (CRTP) unified to Pointer.
+
+## Version 2.9.5
+- Fixed: SinricProPowerSensor was missing PowerStateController
+- Improved: Improved error message when a callback is not implemented
+
+## Version 2.9.4
+- Fixed: Compiler error on libb64/cencode.h when ESP8266WebServer is included before SinricPro.h.
+
 ## Version 2.9.3
 - RangeController accepts callbacks for integer and floating point values
 - Event limitation takes into account different instances for generic controllers 

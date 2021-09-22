@@ -1,32 +1,33 @@
-#ifndef _BRIGHTNESSCONTROLLER_H_
-#define _BRIGHTNESSCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+#include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
+FSTR(BRIGHTNESS, setBrightness);     // "setBrightness"
+FSTR(BRIGHTNESS, brightness);        // "brightness"
+FSTR(BRIGHTNESS, adjustBrightness);  // "adjustBrightness"
+FSTR(BRIGHTNESS, brightnessDelta);   // "brightnessDelta"
 
 /**
- * @brief BrightnessController
- * @ingroup Capabilities
+ * @brief Callback definition for onBrightness function
+ * 
+ * Gets called when device receive a `setBrightness` request \n
+ * @param[in]   deviceId      String which contains the ID of device
+ * @param[in]   brightness    Absolute integer value the device should set its brightness to
+ * @param[out]  brightness    Absolute integer value with new brightness the device is set to
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * @section BrightnessCallback Example-Code
+ * @snippet callbacks.cpp onBrightness
  **/
-template <typename T>
-class BrightnessController {
-  public:
-    BrightnessController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); }
-    /**
-     * @brief Callback definition for onBrightness function
-     * 
-     * Gets called when device receive a `setBrightness` request \n
-     * @param[in]   deviceId      String which contains the ID of device
-     * @param[in]   brightness    Absolute integer value the device should set its brightness to
-     * @param[out]  brightness    Absolute integer value with new brightness the device is set to
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * @section BrightnessCallback Example-Code
-     * @snippet callbacks.cpp onBrightness
-     **/
-    using BrightnessCallback = std::function<bool(const String &, int &)>;
+using BrightnessCallback = std::function<bool(const String &, int &)>;
 
-    /**
+/**
      * @brief Callback definition for onAdjustBrightness function
      * 
      * Gets called when device receive a `adjustBrightness` request \n
@@ -39,20 +40,36 @@ class BrightnessController {
      * @section AdjustBrightnessCallback Example-Code
      * @snippet callbacks.cpp onAdjustBrightness
      **/
-    using AdjustBrightnessCallback = std::function<bool(const String &, int &)>;
+using AdjustBrightnessCallback = std::function<bool(const String &, int &)>;
+
+/**
+ * @brief BrightnessController
+ * @ingroup Capabilities
+ **/
+template <typename T>
+class BrightnessController {
+  public:
+    BrightnessController();
 
     void onBrightness(BrightnessCallback cb);
     void onAdjustBrightness(AdjustBrightnessCallback cb);
 
-    bool sendBrightnessEvent(int brightness, String cause = "PHYSICAL_INTERACTION");
+    bool sendBrightnessEvent(int brightness, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
   protected:
     bool handleBrightnessController(SinricProRequest &request);
 
   private:
+    EventLimiter event_limiter;
     BrightnessCallback brightnessCallback;
     AdjustBrightnessCallback adjustBrightnessCallback;
 };
 
+template <typename T>
+BrightnessController<T>::BrightnessController() 
+: event_limiter (EVENT_LIMIT_STATE) { 
+  T* device = static_cast<T*>(this);
+  device->registerRequestHandler(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `setBrightness` request
@@ -89,32 +106,33 @@ void BrightnessController<T>::onAdjustBrightness(AdjustBrightnessCallback cb) {
  **/
 template <typename T>
 bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) {
-  T& device = static_cast<T&>(*this);
+  if (event_limiter) return false;
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("setBrightness", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["brightness"] = brightness;
-  return device.sendEvent(eventMessage);
+  DynamicJsonDocument eventMessage        = device->prepareEvent(FSTR_BRIGHTNESS_setBrightness, cause.c_str());
+  JsonObject event_value                  = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_BRIGHTNESS_brightness] = brightness;
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool BrightnessController<T>::handleBrightnessController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
   bool success = false;
 
-  if (brightnessCallback && request.action == "setBrightness") {
-    int brightness = request.request_value["brightness"];
-    success = brightnessCallback(device.deviceId, brightness);
-    request.response_value["brightness"] = brightness;
+  if (brightnessCallback && request.action == FSTR_BRIGHTNESS_setBrightness) {
+    int brightness = request.request_value[FSTR_BRIGHTNESS_brightness];
+    success = brightnessCallback(device->deviceId, brightness);
+    request.response_value[FSTR_BRIGHTNESS_brightness] = brightness;
   }
 
-  if (adjustBrightnessCallback && request.action == "adjustBrightness") {
-    int brightnessDelta = request.request_value["brightnessDelta"];
-    success = adjustBrightnessCallback(device.deviceId, brightnessDelta);
-    request.response_value["brightness"] = brightnessDelta;
+  if (adjustBrightnessCallback && request.action == FSTR_BRIGHTNESS_adjustBrightness) {
+    int brightnessDelta = request.request_value[FSTR_BRIGHTNESS_brightnessDelta];
+    success = adjustBrightnessCallback(device->deviceId, brightnessDelta);
+    request.response_value[FSTR_BRIGHTNESS_brightness] = brightnessDelta;
   }
 
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

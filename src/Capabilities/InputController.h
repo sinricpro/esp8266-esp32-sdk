@@ -1,7 +1,31 @@
-#ifndef _INPUTCONTROLLER_H_
-#define _INPUTCONTROLLER_H_
+#pragma once
 
-#include "SinricProRequest.h"
+#include "../SinricProRequest.h"
+#include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
+FSTR(INPUT, selectInput);     // "selectInput"
+FSTR(INPUT, input);           // "input"
+
+/**
+ * @brief Callback definition for onSelectInput function
+ * 
+ * Gets called when device receive a `selectInput` request \n
+ * @param[in]   deviceId    String which contains the ID of device
+ * @param[in]   input       String with input name device is requested to switch to \n `AUX 1`..`AUX 7`, `BLURAY`, `CABLE`, `CD`, `COAX 1`,`COAX 2`, `COMPOSITE 1`, `DVD`, `GAME`, `HD RADIO`, `HDMI 1`.. `HDMI 10`, `HDMI ARC`, `INPUT 1`..`INPUT 10`, `IPOD`, `LINE 1`..`LINE 7`, `MEDIA PLAYER`, `OPTICAL 1`, `OPTICAL 2`, `PHONO`, `PLAYSTATION`, `PLAYSTATION 3`, `PLAYSTATION 4`, `SATELLITE`, `SMARTCAST`, `TUNER`, `TV`, `USB DAC`, `VIDEO 1`..`VIDEO 3`, `XBOX`
+ * @param[out]  input       String with input name device has switchted to \n `AUX 1`..`AUX 7`, `BLURAY`, `CABLE`, `CD`, `COAX 1`,`COAX 2`, `COMPOSITE 1`, `DVD`, `GAME`, `HD RADIO`, `HDMI 1`.. `HDMI 10`, `HDMI ARC`, `INPUT 1`..`INPUT 10`, `IPOD`, `LINE 1`..`LINE 7`, `MEDIA PLAYER`, `OPTICAL 1`, `OPTICAL 2`, `PHONO`, `PLAYSTATION`, `PLAYSTATION 3`, `PLAYSTATION 4`, `SATELLITE`, `SMARTCAST`, `TUNER`, `TV`, `USB DAC`, `VIDEO 1`..`VIDEO 3`, `XBOX`
+ * @return      the success of the request
+ * @retval      true        request handled properly
+ * @retval      false       request was not handled properly because of some error
+ * 
+ * @section SelectInput Example-Code
+ * @snippet callbacks.cpp onSelectInput
+ **/
+using SelectInputCallback = std::function<bool(const String &, String &)>;
+
 
 /**
  * @brief InputController
@@ -10,32 +34,25 @@
 template <typename T>
 class InputController {
   public:
-    InputController() { static_cast<T &>(*this).requestHandlers.push_back(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1)); }
-    /**
-     * @brief Callback definition for onSelectInput function
-     * 
-     * Gets called when device receive a `selectInput` request \n
-     * @param[in]   deviceId    String which contains the ID of device
-     * @param[in]   input       String with input name device is requested to switch to \n `AUX 1`..`AUX 7`, `BLURAY`, `CABLE`, `CD`, `COAX 1`,`COAX 2`, `COMPOSITE 1`, `DVD`, `GAME`, `HD RADIO`, `HDMI 1`.. `HDMI 10`, `HDMI ARC`, `INPUT 1`..`INPUT 10`, `IPOD`, `LINE 1`..`LINE 7`, `MEDIA PLAYER`, `OPTICAL 1`, `OPTICAL 2`, `PHONO`, `PLAYSTATION`, `PLAYSTATION 3`, `PLAYSTATION 4`, `SATELLITE`, `SMARTCAST`, `TUNER`, `TV`, `USB DAC`, `VIDEO 1`..`VIDEO 3`, `XBOX`
-     * @param[out]  input       String with input name device has switchted to \n `AUX 1`..`AUX 7`, `BLURAY`, `CABLE`, `CD`, `COAX 1`,`COAX 2`, `COMPOSITE 1`, `DVD`, `GAME`, `HD RADIO`, `HDMI 1`.. `HDMI 10`, `HDMI ARC`, `INPUT 1`..`INPUT 10`, `IPOD`, `LINE 1`..`LINE 7`, `MEDIA PLAYER`, `OPTICAL 1`, `OPTICAL 2`, `PHONO`, `PLAYSTATION`, `PLAYSTATION 3`, `PLAYSTATION 4`, `SATELLITE`, `SMARTCAST`, `TUNER`, `TV`, `USB DAC`, `VIDEO 1`..`VIDEO 3`, `XBOX`
-     * @return      the success of the request
-     * @retval      true        request handled properly
-     * @retval      false       request was not handled properly because of some error
-     * 
-     * @section SelectInput Example-Code
-     * @snippet callbacks.cpp onSelectInput
-     **/
-    using SelectInputCallback = std::function<bool(const String &, String &)>;
+    InputController();
 
     void onSelectInput(SelectInputCallback cb);
-    bool sendSelectInputEvent(String intput, String cause = "PHYSICAL_INTERACTION");
+    bool sendSelectInputEvent(String intput, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     bool handleInputController(SinricProRequest &request);
 
   private: 
+    EventLimiter event_limiter;
     SelectInputCallback selectInputCallback;
 };
+
+template <typename T>
+InputController<T>::InputController()
+: event_limiter(EVENT_LIMIT_STATE) { 
+  T* device = static_cast<T*>(this);
+  device->registerRequestHandler(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1)); 
+}
 
 /**
  * @brief Set callback function for `selectInput` request
@@ -60,28 +77,29 @@ void InputController<T>::onSelectInput(SelectInputCallback cb) {
  **/
 template <typename T>
 bool InputController<T>::sendSelectInputEvent(String input, String cause) {
-  T& device = static_cast<T&>(*this);
+  if (event_limiter) return false;
+  T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device.prepareEvent("selectInput", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["input"] = input;
-  return device.sendEvent(eventMessage);
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_INPUT_selectInput, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_INPUT_input] = input;
+  return device->sendEvent(eventMessage);
 }
 
 template <typename T>
 bool InputController<T>::handleInputController(SinricProRequest &request) {
-  T &device = static_cast<T &>(*this);
+  T* device = static_cast<T*>(this);
 
   bool success = false;
 
-  if (selectInputCallback && request.action == "selectInput") {
-    String input = request.request_value["input"];
-    success = selectInputCallback(device.deviceId, input);
-    request.response_value["input"] = input;
+  if (selectInputCallback && request.action == FSTR_INPUT_selectInput) {
+    String input = request.request_value[FSTR_INPUT_input];
+    success = selectInputCallback(device->deviceId, input);
+    request.response_value[FSTR_INPUT_input] = input;
     return success;
   }
 
   return success;
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

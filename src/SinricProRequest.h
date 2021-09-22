@@ -1,9 +1,11 @@
-#ifndef _SINRICPROREQUEST_H_
-#define _SINRICPROREQUEST_H_
+#pragma once
 
 #include <WString.h>
 #include <ArduinoJson.h>
 #include <functional>
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 struct SinricProRequest {
   const String &action;
@@ -14,4 +16,4 @@ struct SinricProRequest {
 
 using SinricProRequestHandler = std::function<bool(SinricProRequest&)>;
 
-#endif
+} // SINRICPRO_NAMESPACE

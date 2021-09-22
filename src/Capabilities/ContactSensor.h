@@ -1,5 +1,15 @@
-#ifndef _CONTACTSENSOR_H_
-#define _CONTACTSENSOR_H_
+#pragma once
+
+#include "../EventLimiter.h"
+#include "../SinricProStrings.h"
+
+#include "../SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
+
+FSTR(CONTACT, setContactState);   // "setContactState"
+FSTR(CONTACT, state);             // "state"
+FSTR(CONTACT, closed);            // "closed"
+FSTR(CONTACT, open);              // "open"
 
 /**
  * @brief ContactSensor
@@ -8,8 +18,15 @@
 template <typename T>
 class ContactSensor {
   public:
-    bool sendContactEvent(bool detected, String cause = "PHYSICAL_INTERACTION");
+    ContactSensor();
+    bool sendContactEvent(bool detected, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
+  private:
+    EventLimiter event_limiter;
 };
+
+template <typename T>
+ContactSensor<T>::ContactSensor()
+: event_limiter(EVENT_LIMIT_SENSOR_STATE) {}
 
 /**
  * \brief Send `setContactState` event to SinricPro Server indicating actual power state
@@ -21,12 +38,13 @@ class ContactSensor {
  **/
 template <typename T>
 bool ContactSensor<T>::sendContactEvent(bool detected, String cause) {
-  T& device = static_cast<T&>(*this);
+  if (event_limiter) return false;
+  T* device = static_cast<T*>(this);
   
-  DynamicJsonDocument eventMessage = device.prepareEvent("setContactState", cause.c_str());
-  JsonObject event_value = eventMessage["payload"]["value"];
-  event_value["state"] = detected ? "closed" : "open";
-  return device.sendEvent(eventMessage);
+  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_CONTACT_setContactState, cause.c_str());
+  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+  event_value[FSTR_CONTACT_state] = detected ? FSTR_CONTACT_closed : FSTR_CONTACT_open;
+  return device->sendEvent(eventMessage);
 }
 
-#endif
+} // SINRICPRO_NAMESPACE

@@ -5,13 +5,15 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef _SINRICFAN_H_
-#define _SINRICFAN_H_
+#pragma once
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/PowerLevelController.h"
+
+#include "SinricProNamespace.h"
+namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProFan
@@ -26,8 +28,7 @@ class SinricProFan : public SinricProDevice,
                      friend class PowerStateController<SinricProFan>;
                      friend class PowerLevelController<SinricProFan>;
   public:
-	  SinricProFan(const DeviceId &deviceId) : SinricProDevice(deviceId, "FAN_NON-US") {}
+	  SinricProFan(const String &deviceId) : SinricProDevice(deviceId, "FAN_NON-US") {}
 };
 
-#endif
-
+} // Namespace

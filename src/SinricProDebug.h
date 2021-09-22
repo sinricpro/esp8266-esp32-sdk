@@ -5,8 +5,7 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#ifndef __SINRICPRODEBUG_H__
-#define __SINRICPRODEBUG_H__
+#pragma once
 
 #ifndef NODEBUG_SINRIC
 #ifdef DEBUG_ESP_PORT
@@ -20,7 +19,4 @@
 #ifndef DEBUG_SINRIC
 #define DEBUG_SINRIC(...)
 #define NODEBUG_SINRIC
-#endif
-
-
 #endif
