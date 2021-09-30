@@ -13,45 +13,63 @@
 //#define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
-       #define DEBUG_ESP_PORT Serial
-       #define NODEBUG_WEBSOCKETS
-       #define NDEBUG
-#endif 
-
-#include <Arduino.h>
-#ifdef ESP8266 
-       #include <ESP8266WiFi.h>
-#endif 
-#ifdef ESP32   
-       #include <WiFi.h>
+#define DEBUG_ESP_PORT Serial
+#define NODEBUG_WEBSOCKETS
+#define NDEBUG
 #endif
 
-#include "SinricPro.h"
-#include "SinricProSwitch.h"
+#include <Arduino.h>
+#ifdef ESP8266
+#include <ESP8266WiFi.h>
+#endif
+#ifdef ESP32
+#include <WiFi.h>
+#endif
 
-#define WIFI_SSID         "YOUR-WIFI-SSID"    
-#define WIFI_PASS         "YOUR-WIFI-PASS"
-#define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
-#define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
-#define BAUD_RATE         9600                // Change baudrate to your need
+#include <SinricProSwitch.h>
 
-#define RELAY_PIN         D5                  // Pin where the relay is connected (D5 = GPIO 14 on ESP8266)
+#define WIFI_SSID  "YOUR-WIFI-SSID"
+#define WIFI_PASS  "YOUR-WIFI-PASS"
+#define APP_KEY    "YOUR-APP-KEY"     // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+#define APP_SECRET "YOUR-APP-SECRET"  // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define SWITCH_ID  "YOUR-DEVICE-ID"   // Should look like "5dc1564130xxxxxxxxxxxxxx"
+#define BAUD_RATE  9600               // Change baudrate to your need
+
+#define RELAY_PIN D5  // Pin where the relay is connected (D5 = GPIO 14 on ESP8266)
+
+SinricProSwitch mySwitch(SWITCH_ID);  // create new switch device
 
 bool onPowerState(const String &deviceId, bool &state) {
-  digitalWrite(RELAY_PIN, state);             // set pin state
-  return true;                                // request handled properly
+    digitalWrite(RELAY_PIN, state);  // set pin state
+    return true;                     // request handled properly
+}
+
+void setupWiFi() {
+    Serial.printf("\r\n[Wifi]: Connecting");
+    WiFi.begin(WIFI_SSID, WIFI_PASS);
+
+    while (WiFi.status() != WL_CONNECTED) {
+        Serial.printf(".");
+        delay(250);
+    }
+    Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
+}
+
+void setupSinricPro() {
+    mySwitch.onPowerState(onPowerState);  // apply onPowerState callback
+
+    // setup SinricPro
+    SinricPro.onConnected([]() { Serial.printf("Connected to SinricPro\r\n"); });
+    SinricPro.onDisconnected([]() { Serial.printf("Disconnected from SinricPro\r\n"); });
+    SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 void setup() {
-  pinMode(RELAY_PIN, OUTPUT);                 // set relay-pin to output mode
-  WiFi.begin(WIFI_SSID, WIFI_PASS);           // start wifi
-
-  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];   // create new switch device
-  mySwitch.onPowerState(onPowerState);                // apply onPowerState callback
-  SinricPro.begin(APP_KEY, APP_SECRET);               // start SinricPro
+    pinMode(RELAY_PIN, OUTPUT);  // set relay-pin to output mode
+    setupWiFi();
+    setupSinricPro();
 }
 
 void loop() {
-  SinricPro.handle();                         // handle SinricPro commands
+    SinricPro.handle();  // handle SinricPro commands
 }

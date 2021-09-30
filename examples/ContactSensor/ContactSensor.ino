@@ -18,36 +18,36 @@
 //#define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
-       #define DEBUG_ESP_PORT Serial
-       #define NODEBUG_WEBSOCKETS
-       #define NDEBUG
+#define DEBUG_ESP_PORT Serial
+#define NODEBUG_WEBSOCKETS
+#define NDEBUG
 #endif
 
 #include <Arduino.h>
 #ifdef ESP8266
-       #include <ESP8266WiFi.h>
+#include <ESP8266WiFi.h>
 #endif
 #ifdef ESP32
-       #include <WiFi.h>
+#include <WiFi.h>
 #endif
 
-#include "SinricPro.h"
-#include "SinricProContactsensor.h"
+#include <SinricProContactsensor.h>
 
-#define WIFI_SSID         "YOUR-WIFI-SSID"
-#define WIFI_PASS         "YOUR-WIFI-PASSWORD"
-#define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
-#define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define CONTACT_ID        "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
-#define BAUD_RATE         9600                // Change baudrate to your need
+#define WIFI_SSID  "YOUR-WIFI-SSID"
+#define WIFI_PASS  "YOUR-WIFI-PASSWORD"
+#define APP_KEY    "YOUR-APP-KEY"     // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+#define APP_SECRET "YOUR-APP-SECRET"  // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define CONTACT_ID "YOUR-DEVICE-ID"   // Should look like "5dc1564130xxxxxxxxxxxxxx"
+#define BAUD_RATE  9600               // Change baudrate to your need
 
-#define CONTACT_PIN       5                   // PIN where contactsensor is connected to
-                                              // LOW  = contact is open
-                                              // HIGH = contact is closed
+#define CONTACT_PIN 5  // PIN where contactsensor is connected to \
+                       // LOW  = contact is open                  \
+                       // HIGH = contact is closed
 
-bool myPowerState = true;                     // assume device is turned on
-bool lastContactState = false;
-unsigned long lastChange = 0;
+SinricProContactsensor myContact(CONTACT_ID);
+bool                   myPowerState     = true;  // assume device is turned on
+bool                   lastContactState = false;
+unsigned long          lastChange       = 0;
 
 /**
  * @brief Checks contactsensor connected to CONTACT_PIN
@@ -58,20 +58,19 @@ unsigned long lastChange = 0;
  *      LOW  = contactsensor is open
  */
 void handleContactsensor() {
-  if (!myPowerState) return;                            // if device switched off...do nothing
+    if (!myPowerState) return;  // if device switched off...do nothing
 
-  unsigned long actualMillis = millis();
-  if (actualMillis - lastChange < 250) return;          // debounce contact state transitions (same as debouncing a pushbutton)
+    unsigned long actualMillis = millis();
+    if (actualMillis - lastChange < 250) return;  // debounce contact state transitions (same as debouncing a pushbutton)
 
-  bool actualContactState = digitalRead(CONTACT_PIN);   // read actual state of contactsensor
+    bool actualContactState = digitalRead(CONTACT_PIN);  // read actual state of contactsensor
 
-  if (actualContactState != lastContactState) {         // if state has changed
-    Serial.printf("Contactsensor is %s now\r\n", actualContactState?"open":"closed");
-    lastContactState = actualContactState;              // update last known state
-    lastChange = actualMillis;                          // update debounce time
-    SinricProContactsensor &myContact = SinricPro[CONTACT_ID]; // get contact sensor device
-    myContact.sendContactEvent(actualContactState);      // send event with actual state
-  }
+    if (actualContactState != lastContactState) {  // if state has changed
+        Serial.printf("Contactsensor is %s now\r\n", actualContactState ? "open" : "closed");
+        lastContactState = actualContactState;           // update last known state
+        lastChange       = actualMillis;                 // update debounce time
+        myContact.sendContactEvent(actualContactState);  // send event with actual state
+    }
 }
 
 /**
@@ -84,50 +83,47 @@ void handleContactsensor() {
  * @return false        request can't be handled because some kind of error happened
  */
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
-  myPowerState = state;
-  return true; // request handled properly
+    Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state ? "on" : "off");
+    myPowerState = state;
+    return true;  // request handled properly
 }
-
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
+    Serial.printf("\r\n[Wifi]: Connecting");
+    WiFi.begin(WIFI_SSID, WIFI_PASS);
 
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
-    delay(250);
-  }
-  IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+    while (WiFi.status() != WL_CONNECTED) {
+        Serial.printf(".");
+        delay(250);
+    }
+    IPAddress localIP = WiFi.localIP();
+    Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 // setup function for SinricPro
 void setupSinricPro() {
-  // add device to SinricPro
-  SinricProContactsensor& myContact = SinricPro[CONTACT_ID];
+    // set callback function to device
+    myContact.onPowerState(onPowerState);
 
-  // set callback function to device
-  myContact.onPowerState(onPowerState);
-
-  // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); });
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
-  SinricPro.begin(APP_KEY, APP_SECRET);
+    // setup SinricPro
+    SinricPro.onConnected([]() { Serial.printf("Connected to SinricPro\r\n"); });
+    SinricPro.onDisconnected([]() { Serial.printf("Disconnected from SinricPro\r\n"); });
+    SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+    Serial.begin(BAUD_RATE);
+    Serial.printf("\r\n\r\n");
 
-  pinMode(CONTACT_PIN, INPUT);
+    pinMode(CONTACT_PIN, INPUT);
 
-  setupWiFi();
-  setupSinricPro();
+    setupWiFi();
+    setupSinricPro();
 }
 
 void loop() {
-  handleContactsensor();
-  SinricPro.handle();
+    handleContactsensor();
+    SinricPro.handle();
 }
