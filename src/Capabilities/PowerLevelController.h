@@ -107,8 +107,8 @@ void PowerLevelController<T>::onAdjustPowerLevel(AdjustPowerLevelCallback cb)
  * @retval  false         event has not been sent, maybe you sent to much events in a short distance of time
  **/
 template <typename T>
-bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause)
-{
+bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause) {
+  if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
   DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERLEVEL_setPowerLevel, cause.c_str());
