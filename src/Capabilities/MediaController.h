@@ -30,7 +30,7 @@ using MediaControlCallback = std::function<bool(const String &, String &)>;
  * @ingroup Capabilities
  **/
 template <typename T>
-class MediaController {
+class MediaController : public SinricProRequestHandler {
   public:
     MediaController();
 
@@ -39,7 +39,7 @@ class MediaController {
 
   protected:
     virtual bool onMediaControl(String &control);
-    bool handleMediaController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -50,7 +50,7 @@ template <typename T>
 MediaController<T>::MediaController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&MediaController<T>::handleMediaController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -93,7 +93,7 @@ bool MediaController<T>::sendMediaControlEvent(String mediaControl, String cause
 }
 
 template <typename T>
-bool MediaController<T>::handleMediaController(SinricProRequest &request) {
+bool MediaController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_MEDIA_mediaControl) {

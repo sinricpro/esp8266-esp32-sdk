@@ -29,7 +29,7 @@ using KeystrokeCallback = std::function<bool(const String &, String &)>;
  * @ingroup Capabilities
  **/
 template <typename T>
-class KeypadController {
+class KeypadController : public SinricProRequestHandler {
   public:
     KeypadController();
 
@@ -37,7 +37,7 @@ class KeypadController {
 
   protected:
     virtual bool onKeystroke(String &keystroke);
-    bool handleKeypadController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     KeystrokeCallback keystrokeCallback;
@@ -46,7 +46,7 @@ class KeypadController {
 template <typename T>
 KeypadController<T>::KeypadController() {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&KeypadController<T>::handleKeypadController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -69,7 +69,7 @@ bool KeypadController<T>::onKeystroke(String &keystroke) {
 }
 
 template <typename T>
-bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
+bool KeypadController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_KEYPAD_sendKeystroke) {

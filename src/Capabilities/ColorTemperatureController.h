@@ -61,7 +61,7 @@ using DecreaseColorTemperatureCallback = std::function<bool(const String&, int&)
  * @ingroup Capabilities
  **/
 template <typename T>
-class ColorTemperatureController {
+class ColorTemperatureController : public SinricProRequestHandler {
   public:
     ColorTemperatureController();
 
@@ -76,7 +76,7 @@ class ColorTemperatureController {
     virtual bool onIncreaseColorTemperature(int& colorTemperatureDelta);
     virtual bool onDecreaseColorTemperature(int& colorTemperatureDelta);
 
-    bool handleColorTemperatureController(SinricProRequest& request);
+    bool handleRequest(SinricProRequest& request);
 
   private:
     EventLimiter event_limiter;
@@ -90,7 +90,7 @@ template <typename T>
 ColorTemperatureController<T>::ColorTemperatureController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T* device = static_cast<T*>(this);
-    device->registerRequestHandler(std::bind(&ColorTemperatureController<T>::handleColorTemperatureController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -171,7 +171,7 @@ bool ColorTemperatureController<T>::sendColorTemperatureEvent(int colorTemperatu
 }
 
 template <typename T>
-bool ColorTemperatureController<T>::handleColorTemperatureController(SinricProRequest& request) {
+bool ColorTemperatureController<T>::handleRequest(SinricProRequest& request) {
     bool success = false;
 
     if (request.action == FSTR_COLORTEMPERATURE_setColorTemperature) {

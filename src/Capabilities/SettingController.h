@@ -12,14 +12,14 @@ FSTR(SETTING, id);          // "id"
 FSTR(SETTING, value);       // "value"
 
 template <typename T>
-class SettingController {
+class SettingController : public SinricProRequestHandler {
   public:
     SettingController();
     void onSetSetting(SetSettingCallback cb);
 
   protected:
     virtual bool onSetSetting(const String &settingId, String &settingValue);
-    bool handleSettingController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     SetSettingCallback setSettingCallback;
@@ -28,7 +28,7 @@ class SettingController {
 template <typename T>
 SettingController<T>::SettingController() {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&SettingController<T>::handleSettingController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 template <typename T>
@@ -44,7 +44,7 @@ bool SettingController<T>::onSetSetting(const String &settingId, String &setting
 }
 
 template <typename T>
-bool SettingController<T>::handleSettingController(SinricProRequest &request) {
+bool SettingController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_SETTING_setSetting) {

@@ -31,7 +31,7 @@ using DoorCallback = std::function<bool(const String &, bool &)>;
  * 
  **/
 template <typename T>
-class DoorController {
+class DoorController : public SinricProRequestHandler {
   public:
     DoorController();
 
@@ -40,7 +40,7 @@ class DoorController {
 
   protected:
     virtual bool onDoorState(bool &doorState);
-    bool handleDoorController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -51,7 +51,7 @@ template <typename T>
 DoorController<T>::DoorController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&DoorController<T>::handleDoorController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -94,7 +94,7 @@ bool DoorController<T>::sendDoorStateEvent(bool state, String cause) {
 }
 
 template <typename T>
-bool DoorController<T>::handleDoorController(SinricProRequest &request) {
+bool DoorController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_DOOR_setMode && doorCallback) {

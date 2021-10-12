@@ -30,7 +30,7 @@ using MuteCallback = std::function<bool(const String &, bool &)>;
  * @ingroup Capabilities
  **/
 template <typename T>
-class MuteController {
+class MuteController : public SinricProRequestHandler {
   public:
     MuteController();
 
@@ -39,7 +39,7 @@ class MuteController {
 
   protected:
     virtual bool onMute(bool &mute);
-    bool handleMuteController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -50,7 +50,7 @@ template <typename T>
 MuteController<T>::MuteController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&MuteController<T>::handleMuteController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -93,7 +93,7 @@ bool MuteController<T>::sendMuteEvent(bool mute, String cause) {
 }
 
 template <typename T>
-bool MuteController<T>::handleMuteController(SinricProRequest &request) {
+bool MuteController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_MUTE_setMute) {

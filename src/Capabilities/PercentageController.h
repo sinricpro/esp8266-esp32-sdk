@@ -47,7 +47,7 @@ using AdjustPercentageCallback = std::function<bool(const String &, int &)>;
  * @ingroup Capabilities
  **/
 template <typename T>
-class PercentageController {
+class PercentageController : public SinricProRequestHandler {
   public:
     PercentageController();
 
@@ -59,7 +59,7 @@ class PercentageController {
   protected:
     virtual bool onSetPercentage(int &percentage);
     virtual bool onAdjustPercentage(int &percentageDelta);
-    bool handlePercentageController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -71,7 +71,7 @@ template <typename T>
 PercentageController<T>::PercentageController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&PercentageController<T>::handlePercentageController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -133,7 +133,7 @@ bool PercentageController<T>::sendSetPercentageEvent(int percentage, String caus
 }
 
 template <typename T>
-bool PercentageController<T>::handlePercentageController(SinricProRequest &request) {
+bool PercentageController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_PERCENTAGE_setPercentage) {

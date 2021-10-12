@@ -48,7 +48,7 @@ using AdjustPowerLevelCallback = std::function<bool(const String &, int &)>;
  * @ingroup Capabilities
  **/
 template <typename T>
-class PowerLevelController {
+class PowerLevelController : public SinricProRequestHandler {
   public:
     PowerLevelController();
 
@@ -59,7 +59,7 @@ class PowerLevelController {
   protected:
     virtual bool onPowerLevel(int &level);
     virtual bool onAdjustPowerLevel(int &levelDelta);
-    bool handlePowerLevelController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -71,7 +71,7 @@ template <typename T>
 PowerLevelController<T>::PowerLevelController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&PowerLevelController<T>::handlePowerLevelController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -121,6 +121,7 @@ bool PowerLevelController<T>::onAdjustPowerLevel(int &level) {
  **/
 template <typename T>
 bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause) {
+    if (event_limiter) return false;
     T *device = static_cast<T *>(this);
 
     DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERLEVEL_setPowerLevel, cause.c_str());
@@ -130,7 +131,7 @@ bool PowerLevelController<T>::sendPowerLevelEvent(int powerLevel, String cause) 
 }
 
 template <typename T>
-bool PowerLevelController<T>::handlePowerLevelController(SinricProRequest &request) {
+bool PowerLevelController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_POWERLEVEL_setPowerLevel) {

@@ -31,7 +31,7 @@ using PowerStateCallback = std::function<bool(const String &, bool &)>;
  * @ingroup Capabilities
  **/
 template <typename T>
-class PowerStateController {
+class PowerStateController : public SinricProRequestHandler {
   public:
     PowerStateController();
 
@@ -40,7 +40,7 @@ class PowerStateController {
 
   protected:
     virtual bool onPowerState(bool &state);
-    bool handlePowerStateController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -51,7 +51,7 @@ template <typename T>
 PowerStateController<T>::PowerStateController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&PowerStateController<T>::handlePowerStateController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -94,7 +94,7 @@ bool PowerStateController<T>::sendPowerStateEvent(bool state, String cause) {
 }
 
 template <typename T>
-bool PowerStateController<T>::handlePowerStateController(SinricProRequest &request) {
+bool PowerStateController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_POWERSTATE_setPowerState) {

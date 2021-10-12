@@ -39,7 +39,7 @@ using LockStateCallback = std::function<bool(const String &, bool &)>;  // void 
  * @ingroup Capabilities
  **/
 template <typename T>
-class LockController {
+class LockController : public SinricProRequestHandler {
   public:
     LockController();
 
@@ -48,7 +48,7 @@ class LockController {
 
   protected:
     virtual bool onLockState(bool &lockState);
-    bool handleLockController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -59,7 +59,7 @@ template <typename T>
 LockController<T>::LockController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&LockController<T>::handleLockController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -102,7 +102,7 @@ bool LockController<T>::sendLockStateEvent(bool state, String cause) {
 }
 
 template <typename T>
-bool LockController<T>::handleLockController(SinricProRequest &request) {
+bool LockController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_LOCK_setLockState && lockStateCallback) {

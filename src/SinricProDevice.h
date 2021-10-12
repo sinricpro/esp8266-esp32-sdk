@@ -33,7 +33,7 @@ class SinricProDevice : public SinricProDeviceInterface {
     virtual String getDeviceId();
 
   protected:
-    void registerRequestHandler(const SinricProRequestHandler &requestHandler);
+    void registerRequestHandler(SinricProRequestHandler* requestHandler);
     virtual void loop();
     unsigned long getTimestamp();
     virtual bool sendEvent(JsonDocument &event);
@@ -43,7 +43,7 @@ class SinricProDevice : public SinricProDeviceInterface {
     bool handleRequest(SinricProRequest &request);
 
     String deviceId;
-    std::vector<SinricProRequestHandler> requestHandlers;
+    std::vector<SinricProRequestHandler*> requestHandlers;
 
   private:
     String productType;
@@ -81,7 +81,7 @@ bool SinricProDevice::sendEvent(JsonDocument &event) {
     return true;
 }
 
-void SinricProDevice::registerRequestHandler(const SinricProRequestHandler &requestHandler) {
+void SinricProDevice::registerRequestHandler(SinricProRequestHandler* requestHandler) {
     requestHandlers.push_back(requestHandler);
 }
 
@@ -99,7 +99,7 @@ String SinricProDevice::getProductType() {
 
 bool SinricProDevice::handleRequest(SinricProRequest &request) {
     for (auto &requestHandler : requestHandlers) {
-        if (requestHandler(request)) return true;
+        if (requestHandler->handleRequest(request)) return true;
     }
     return false;
 }

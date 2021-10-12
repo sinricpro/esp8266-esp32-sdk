@@ -36,7 +36,7 @@ using ColorCallback = std::function<bool(const String&, uint8_t&, uint8_t&, uint
  * @ingroup Capabilities
  **/
 template <typename T>
-class ColorController {
+class ColorController : public SinricProRequestHandler {
   public:
     ColorController();
 
@@ -45,7 +45,7 @@ class ColorController {
 
   protected:
     virtual bool onColor(uint8_t& r, uint8_t& g, uint8_t& b);
-    bool handleColorController(SinricProRequest& request);
+    bool handleRequest(SinricProRequest& request);
 
   private:
     EventLimiter event_limiter;
@@ -56,7 +56,7 @@ template <typename T>
 ColorController<T>::ColorController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T* device = static_cast<T*>(this);
-    device->registerRequestHandler(std::bind(&ColorController<T>::handleColorController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -103,7 +103,7 @@ bool ColorController<T>::sendColorEvent(uint8_t r, uint8_t g, uint8_t b, String 
 }
 
 template <typename T>
-bool ColorController<T>::handleColorController(SinricProRequest& request) {
+bool ColorController<T>::handleRequest(SinricProRequest& request) {
     bool success = false;
 
     if (colorCallback && request.action == FSTR_COLOR_setColor) {

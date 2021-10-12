@@ -30,7 +30,7 @@ using SelectInputCallback = std::function<bool(const String &, String &)>;
  * @ingroup Capabilities
  **/
 template <typename T>
-class InputController {
+class InputController : public SinricProRequestHandler {
   public:
     InputController();
 
@@ -39,7 +39,7 @@ class InputController {
 
   protected:
     virtual bool onSelectInput(String &input);
-    bool handleInputController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -50,7 +50,7 @@ template <typename T>
 InputController<T>::InputController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&InputController<T>::handleInputController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -93,7 +93,7 @@ bool InputController<T>::sendSelectInputEvent(String input, String cause) {
 }
 
 template <typename T>
-bool InputController<T>::handleInputController(SinricProRequest &request) {
+bool InputController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_INPUT_selectInput) {

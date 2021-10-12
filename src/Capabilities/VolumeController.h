@@ -49,7 +49,7 @@ using AdjustVolumeCallback = std::function<bool(const String &, int &, bool)>;
  * @ingroup Capabilities
  **/
 template <typename T>
-class VolumeController {
+class VolumeController : public SinricProRequestHandler {
   public:
     VolumeController();
 
@@ -61,7 +61,7 @@ class VolumeController {
   protected:
     virtual bool onSetVolume(int &volume);
     virtual bool onAdjustVolume(int &volumeDelta, bool volumeDefault);
-    bool handleVolumeController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -73,7 +73,7 @@ template <typename T>
 VolumeController<T>::VolumeController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&VolumeController<T>::handleVolumeController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -135,7 +135,7 @@ bool VolumeController<T>::sendVolumeEvent(int volume, String cause) {
 }
 
 template <typename T>
-bool VolumeController<T>::handleVolumeController(SinricProRequest &request) {
+bool VolumeController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_VOLUME_setVolume) {

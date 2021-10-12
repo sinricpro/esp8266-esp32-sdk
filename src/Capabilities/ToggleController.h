@@ -32,7 +32,7 @@ using GenericToggleStateCallback = std::function<bool(const String &, const Stri
  * @ingroup Capabilities
  **/
 template <typename T>
-class ToggleController {
+class ToggleController : public SinricProRequestHandler {
   public:
     ToggleController();
 
@@ -41,7 +41,7 @@ class ToggleController {
 
   protected:
     virtual bool onToggleState(const String &instance, bool &state);
-    bool handleToggleController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     std::map<String, EventLimiter> event_limiter;
@@ -51,7 +51,7 @@ class ToggleController {
 template <typename T>
 ToggleController<T>::ToggleController() {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&ToggleController<T>::handleToggleController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -99,7 +99,7 @@ bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool stat
 }
 
 template <typename T>
-bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
+bool ToggleController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_TOGGLE_setToggleState) {

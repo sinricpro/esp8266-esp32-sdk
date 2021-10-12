@@ -48,7 +48,7 @@ using GenericModeCallback = std::function<bool(const String &, const String &, S
  * @ingroup Capabilities
  **/
 template <typename T>
-class ModeController {
+class ModeController : public SinricProRequestHandler {
   public:
     ModeController();
 
@@ -62,7 +62,7 @@ class ModeController {
     virtual bool onSetMode(String &mode);
     virtual bool onSetMode(const String &instance, String &mode);
 
-    bool handleModeController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -75,7 +75,7 @@ template <typename T>
 ModeController<T>::ModeController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&ModeController<T>::handleModeController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -160,7 +160,7 @@ bool ModeController<T>::sendModeEvent(String instance, String mode, String cause
 }
 
 template <typename T>
-bool ModeController<T>::handleModeController(SinricProRequest &request) {
+bool ModeController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
     if (request.action != FSTR_MODE_setMode) return false;
     String mode = request.request_value[FSTR_MODE_mode] | "";

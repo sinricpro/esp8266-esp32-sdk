@@ -106,7 +106,7 @@ using GenericAdjustRangeValueCallback_float = GenericRangeValueCallback_float;
  * @ingroup Capabilities
  **/
 template <typename T>
-class RangeController {
+class RangeController : public SinricProRequestHandler {
   public:
     RangeController();
 
@@ -130,7 +130,7 @@ class RangeController {
     virtual bool onAdjustRangeValue(const String &instance, int &valueDelta);
     virtual bool onAdjustRangeValue(const String &instance, float &valueDelta);
 
-    bool handleRangeController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -145,7 +145,7 @@ template <typename T>
 RangeController<T>::RangeController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&RangeController<T>::handleRangeController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -345,7 +345,7 @@ bool RangeController<T>::sendRangeValueEvent(const String &instance, float range
 }
 
 template <typename T>
-bool RangeController<T>::handleRangeController(SinricProRequest &request) {
+bool RangeController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_RANGE_setRangeValue) {

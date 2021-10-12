@@ -65,7 +65,7 @@ using AdjustTargetTemperatureCallback = std::function<bool(const String &, float
  * @ingroup Capabilities
  **/
 template <typename T>
-class ThermostatController {
+class ThermostatController : public SinricProRequestHandler {
   public:
     ThermostatController();
 
@@ -81,7 +81,7 @@ class ThermostatController {
     virtual bool onTargetTemperature(float &temperature);
     virtual bool onAdjustTargetTemperature(float &temperatureDelta);
 
-    bool handleThermostatController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter_thermostatMode;
@@ -96,7 +96,7 @@ ThermostatController<T>::ThermostatController()
     : event_limiter_thermostatMode(EVENT_LIMIT_STATE)
     , event_limiter_targetTemperature(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&ThermostatController<T>::handleThermostatController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -197,7 +197,7 @@ bool ThermostatController<T>::sendTargetTemperatureEvent(float temperature, Stri
 }
 
 template <typename T>
-bool ThermostatController<T>::handleThermostatController(SinricProRequest &request) {
+bool ThermostatController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_THERMOSTAT_targetTemperature) {

@@ -75,7 +75,7 @@ using ResetBandsCallback = std::function<bool(const String &, const String &, in
  * @ingroup Capabilities
  **/
 template <typename T>
-class EqualizerController {
+class EqualizerController : public SinricProRequestHandler {
   public:
     EqualizerController();
 
@@ -90,7 +90,7 @@ class EqualizerController {
     virtual bool onAdjustBands(const String &bands, int &levelDelta);
     virtual bool onResetBands(const String &bands, int &level);
 
-    bool handleEqualizerController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -103,7 +103,7 @@ template <typename T>
 EqualizerController<T>::EqualizerController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&EqualizerController<T>::handleEqualizerController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -188,7 +188,7 @@ bool EqualizerController<T>::sendBandsEvent(String bands, int level, String caus
 }
 
 template <typename T>
-bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request) {
+bool EqualizerController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_EQUALIZER_setBands) {

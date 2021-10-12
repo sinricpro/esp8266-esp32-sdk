@@ -55,3 +55,5 @@ bool AirQualitySensor<T>::sendAirQualityEvent(int pm1, int pm2_5, int pm10, Stri
 }
 
 }  // namespace SINRICPRO_NAMESPACE
+
+using AirQualitySensor = SINRICPRO_NAMESPACE::AirQualitySensor;

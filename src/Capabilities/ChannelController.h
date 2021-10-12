@@ -66,7 +66,7 @@ using SkipChannelsCallback = std::function<bool(const String &, int, String &)>;
  * @ingroup Capabilities
  **/
 template <typename T>
-class ChannelController {
+class ChannelController : public SinricProRequestHandler {
   public:
     ChannelController();
 
@@ -81,7 +81,7 @@ class ChannelController {
     virtual bool onChangeChannelNumber(int channelNumber, String &channelName);
     virtual bool onSkipChannels(int channelCount, String &channelName);
 
-    bool handleChannelController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -94,7 +94,7 @@ template <typename T>
 ChannelController<T>::ChannelController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&ChannelController<T>::handleChannelController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -175,7 +175,7 @@ bool ChannelController<T>::sendChangeChannelEvent(String channelName, String cau
 }
 
 template <typename T>
-bool ChannelController<T>::handleChannelController(SinricProRequest &request) {
+bool ChannelController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_CHANNEL_changeChannel) {

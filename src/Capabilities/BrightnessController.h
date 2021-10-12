@@ -46,7 +46,7 @@ using AdjustBrightnessCallback = std::function<bool(const String &, int &)>;
  * @ingroup Capabilities
  **/
 template <typename T>
-class BrightnessController {
+class BrightnessController : public SinricProRequestHandler {
   public:
     BrightnessController();
 
@@ -59,7 +59,7 @@ class BrightnessController {
     virtual bool onBrightness(int &brightness);
     virtual bool onAdjustBrightness(int &brightnessDelta);
 
-    bool handleBrightnessController(SinricProRequest &request);
+    bool handleRequest(SinricProRequest &request);
 
   private:
     EventLimiter event_limiter;
@@ -71,7 +71,7 @@ template <typename T>
 BrightnessController<T>::BrightnessController()
     : event_limiter(EVENT_LIMIT_STATE) {
     T *device = static_cast<T *>(this);
-    device->registerRequestHandler(std::bind(&BrightnessController<T>::handleBrightnessController, this, std::placeholders::_1));
+    device->registerRequestHandler(this);
 }
 
 /**
@@ -133,7 +133,7 @@ bool BrightnessController<T>::sendBrightnessEvent(int brightness, String cause) 
 }
 
 template <typename T>
-bool BrightnessController<T>::handleBrightnessController(SinricProRequest &request) {
+bool BrightnessController<T>::handleRequest(SinricProRequest &request) {
     bool success = false;
 
     if (request.action == FSTR_BRIGHTNESS_setBrightness) {
