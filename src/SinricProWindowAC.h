@@ -29,11 +29,9 @@ namespace SINRICPRO_NAMESPACE {
  **/
 
 class SinricProWindowAC :  public SinricProDevice,
-                           public SettingController<SinricProWindowAC>,
                            public PowerStateController<SinricProWindowAC>,
                            public RangeController<SinricProWindowAC>,
                            public ThermostatController<SinricProWindowAC> {
-                           friend class SettingController<SinricProWindowAC>;
                            friend class PowerStateController<SinricProWindowAC>;
                            friend class RangeController<SinricProWindowAC>;
                            friend class ThermostatController<SinricProWindowAC>;

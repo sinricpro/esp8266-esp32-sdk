@@ -28,12 +28,10 @@ namespace SINRICPRO_NAMESPACE {
  * * Color temperature
  **/
 class SinricProLight :  public SinricProDevice,
-                        public SettingController<SinricProLight>,
                         public PowerStateController<SinricProLight>,
                         public BrightnessController<SinricProLight>,
                         public ColorController<SinricProLight>,
                         public ColorTemperatureController<SinricProLight> {
-                        friend class SettingController<SinricProLight>;
                         friend class PowerStateController<SinricProLight>;
                         friend class BrightnessController<SinricProLight>;
                         friend class ColorController<SinricProLight>;

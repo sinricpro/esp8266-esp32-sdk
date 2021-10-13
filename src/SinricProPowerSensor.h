@@ -21,10 +21,8 @@ namespace SINRICPRO_NAMESPACE {
  * @ingroup Devices
  **/
 class SinricProPowerSensor :  public SinricProDevice,
-                              public SettingController<SinricProPowerSensor>,
                               public PowerSensor<SinricProPowerSensor>,
                               public PowerStateController<SinricProPowerSensor> {
-                              friend class SettingController<SinricProPowerSensor>;
                               friend class PowerSensor<SinricProPowerSensor>;
                               friend class PowerStateController<SinricProPowerSensor>;
   public:

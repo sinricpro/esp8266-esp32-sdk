@@ -21,10 +21,8 @@ namespace SINRICPRO_NAMESPACE {
  * @ingroup Devices
  **/
 class SinricProDimSwitch :  public SinricProDevice,
-                            public SettingController<SinricProDimSwitch>,
                             public PowerStateController<SinricProDimSwitch>,
                             public PowerLevelController<SinricProDimSwitch> {
-                            friend class SettingController<SinricProDimSwitch>;
                             friend class PowerStateController<SinricProDimSwitch>;
                             friend class PowerLevelController<SinricProDimSwitch>;
   public:

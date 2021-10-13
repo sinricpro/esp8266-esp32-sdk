@@ -20,10 +20,8 @@ namespace SINRICPRO_NAMESPACE {
  * @ingroup Devices
  */
 class SinricProAirQualitySensor : public SinricProDevice,
-                                  public SettingController<SinricProAirQualitySensor>,
                                   public PowerStateController<SinricProAirQualitySensor>,
                                   public AirQualitySensor<SinricProAirQualitySensor> {
-                                  friend class SettingController<SinricProAirQualitySensor>;
                                   friend class PowerStateController<SinricProAirQualitySensor>;
                                   friend class AirQualitySensor<SinricProAirQualitySensor>;
                                   

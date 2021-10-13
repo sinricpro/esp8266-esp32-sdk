@@ -23,9 +23,7 @@ namespace SINRICPRO_NAMESPACE {
  * * open / close 
  **/
 class SinricProGarageDoor : public SinricProDevice,
-                            public SettingController<SinricProGarageDoor>,
                             public DoorController<SinricProGarageDoor> {
-                            friend class SettingController<SinricProGarageDoor>;
                             friend class DoorController<SinricProGarageDoor>;
   public:
 	  SinricProGarageDoor(const String &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR") {}

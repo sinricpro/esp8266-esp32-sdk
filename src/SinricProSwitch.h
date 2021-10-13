@@ -20,9 +20,7 @@ namespace SINRICPRO_NAMESPACE {
  * @ingroup Devices
  **/
 class SinricProSwitch : public SinricProDevice,
-                        public SettingController<SinricProSwitch>,
                         public PowerStateController<SinricProSwitch> {
-                        friend class SettingController<SinricProSwitch>;
                         friend class PowerStateController<SinricProSwitch>;
   public:
     SinricProSwitch(const String &deviceId) : SinricProDevice(deviceId, "SWITCH") {};

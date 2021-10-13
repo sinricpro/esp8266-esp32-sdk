@@ -25,10 +25,8 @@ namespace SINRICPRO_NAMESPACE {
  * * open / close 
  **/
 class SinricProBlinds : public SinricProDevice,
-                        public SettingController<SinricProBlinds>,
                         public PowerStateController<SinricProBlinds>,
                         public RangeController<SinricProBlinds> {
-                        friend class SettingController<SinricProBlinds>;
                         friend class PowerStateController<SinricProBlinds>;
                         friend class RangeController<SinricProBlinds>;
   public:
