@@ -1,4 +1,4 @@
-#include "MySwitch.h"
+#include "MyLight.h"
 
 #define WIFI_SSID "YOUR_WIFI_SSID"
 #define WIFI_PASS "YOUR_WIFI_PASS"
@@ -8,7 +8,7 @@
 
 #define BAUD_RATE 9600
 
-MySwitch mySwitch("YOUR_DEVICE_ID", 2);
+MyLight myLight("YOUR_DEVICE_ID");
 
 void setupWiFi() {
     Serial.printf("\r\n[Wifi]: Connecting");
