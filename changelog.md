@@ -1,4 +1,9 @@
 # Changelog
+## Version 2.9.10
+- Fixed event limitation in PowerLevelController
+- Example "RGB_LED_Stripe_5050.ino" extended to support color temperature
+- Example "ACUnit.ino" extended to support onRangeValue / adjustRangeValue
+
 ## Version 2.9.9
 - Fixed include instruction in EventLimiter.h (uppercase / lowercase issue)
 
@@ -22,7 +27,7 @@
 Attempting to send events shorter than these minimum waiting times will add the minimum waiting time as a delay to each attempt. If excessive events are tried to be sent (e.g. in a loop) a warning is displayed.
   <details><summary>Events overview (click for more details)</summary>
 
-  | Events allowed every 10 seconds | Events allowed every 60 seconds |
+  | Events allowed every 1 second | Events allowed every 60 seconds |
   |---------------------------------| --------------------------------|
   | sendBrightnessEvent             | sendAirQualityEvent             |
   | sendChangeChannelEvent          | sendPowerSensorEvent            |
