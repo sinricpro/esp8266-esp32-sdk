@@ -1,4 +1,7 @@
 # Changelog
+
+## Version 2.9.11
+- Add missing CAMERA_MODEL_AI_THINKER in Camera example
 ## Version 2.9.10
 - Fixed event limitation in PowerLevelController
 - Example "RGB_LED_Stripe_5050.ino" extended to support color temperature
