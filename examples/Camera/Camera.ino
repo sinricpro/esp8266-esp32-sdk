@@ -39,11 +39,18 @@
 
 // Select your camera model
 
-//#define CAMERA_MODEL_WROVER_KIT
-#define T_Camera_V17_VERSION
-//#define CAMERA_MODEL_M5STACK_PSRAM
-//#define CAMERA_MODEL_M5STACK_WIDE
+//#define T_Camera_V16_VERSION
+//#define T_Camera_V05_VERSION
+//#define T_Camera_JORNAL_VERSION
+//#define T_Camera_PLUS_VERSION
+//#define T_Camera_V162_VERSION
+//#define T_Camera_MINI_VERSION
+//#define T_Camera_V17_VERSION
+//#define ESPRESSIF_ESP_EYE
 //#define CAMERA_MODEL_AI_THINKER
+//#define CAMERA_MODEL_M5STACK_PSRAM
+//#define CAMERA_MODEL_M5STACK_WITHOUT_PSRAM
+//#define CAMERA_MODEL_M5STACK_PSRAM_B
 
 #include "select_pins.h"
  
