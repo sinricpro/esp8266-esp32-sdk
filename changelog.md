@@ -1,4 +1,6 @@
 # Changelog
+## Version 2.9.12
+- Fixed: Namespace implementation
 
 ## Version 2.9.11
 - Add missing CAMERA_MODEL_AI_THINKER in Camera example
