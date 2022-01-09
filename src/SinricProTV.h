@@ -53,3 +53,5 @@ class SinricProTV : public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProTV = SINRICPRO_NAMESPACE::SinricProTV;

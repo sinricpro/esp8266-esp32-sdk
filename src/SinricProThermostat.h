@@ -39,3 +39,5 @@ class SinricProThermostat :  public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProThermostat = SINRICPRO_NAMESPACE::SinricProThermostat;

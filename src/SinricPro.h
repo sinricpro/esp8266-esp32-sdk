@@ -209,10 +209,14 @@ void SinricProClass::handle() {
         return;
     }
 
-    if (!isConnected()) connect();
+    if (WiFi.isConnected()) {
 
-    _websocketListener.handle();
-    _udpListener.handle();
+      if (!isConnected()) connect();
+      _websocketListener.handle();
+      _udpListener.handle();
+
+    }
+
 
     handleReceiveQueue();
     handleSendQueue();
@@ -530,6 +534,4 @@ DynamicJsonDocument SinricProClass::prepareEvent(String deviceId, const char* ac
 
 }  // namespace SINRICPRO_NAMESPACE
 
-using namespace SINRICPRO_NAMESPACE;
-
-SinricProClass SinricPro;
+SINRICPRO_NAMESPACE::SinricProClass SinricPro;

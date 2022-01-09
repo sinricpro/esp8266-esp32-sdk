@@ -29,3 +29,5 @@ class SinricProDoorbell :  public SinricProDevice,
 };
 
 } // Namespace
+
+using SinricProDoorbell = SINRICPRO_NAMESPACE::SinricProDoorbell;

@@ -30,3 +30,5 @@ public:
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProAirQualitySensor = SINRICPRO_NAMESPACE::SinricProAirQualitySensor;

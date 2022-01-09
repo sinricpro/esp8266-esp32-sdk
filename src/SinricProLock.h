@@ -31,3 +31,5 @@ class SinricProLock :  public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE#
+
+using SinricProLock = SINRICPRO_NAMESPACE::SinricProLock;

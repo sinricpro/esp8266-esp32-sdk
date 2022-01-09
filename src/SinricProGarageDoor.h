@@ -30,3 +30,5 @@ class SinricProGarageDoor : public SinricProDevice,
 };
 
 } // Namespace
+
+using SinricProGarageDoor = SINRICPRO_NAMESPACE::SinricProGarageDoor;

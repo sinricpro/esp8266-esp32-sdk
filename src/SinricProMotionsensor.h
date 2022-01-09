@@ -30,3 +30,5 @@ class SinricProMotionsensor : public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProMotionsensor = SINRICPRO_NAMESPACE::SinricProMotionsensor;
