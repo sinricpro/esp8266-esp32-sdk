@@ -32,3 +32,5 @@ class SinricProTemperaturesensor :  public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProTemperaturesensor = SINRICPRO_NAMESPACE::SinricProTemperaturesensor;

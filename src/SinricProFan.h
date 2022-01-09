@@ -32,3 +32,5 @@ class SinricProFan : public SinricProDevice,
 };
 
 } // Namespace
+
+using SinricProFan = SINRICPRO_NAMESPACE::SinricProFan;

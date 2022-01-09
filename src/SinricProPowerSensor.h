@@ -32,3 +32,5 @@ class SinricProPowerSensor :  public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProPowerSensor = SINRICPRO_NAMESPACE::SinricProPowerSensor;

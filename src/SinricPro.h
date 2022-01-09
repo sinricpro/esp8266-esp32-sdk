@@ -564,6 +564,4 @@ DynamicJsonDocument SinricProClass::prepareEvent(String deviceId, const char* ac
 
 } // SINRICPRO_NAMESPACE
 
-using namespace SINRICPRO_NAMESPACE;
-
-SinricProClass SinricPro;
+SINRICPRO_NAMESPACE::SinricProClass SinricPro;

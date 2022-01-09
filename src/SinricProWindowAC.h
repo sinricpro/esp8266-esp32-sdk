@@ -42,3 +42,5 @@ class SinricProWindowAC :  public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProWindowAC = SINRICPRO_NAMESPACE::SinricProWindowAC;

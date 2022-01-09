@@ -31,3 +31,5 @@ class SinricProContactsensor : public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProContactsensor = SINRICPRO_NAMESPACE::SinricProContactsensor;

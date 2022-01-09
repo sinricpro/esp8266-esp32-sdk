@@ -43,3 +43,5 @@ class SinricProLight :  public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProLight = SINRICPRO_NAMESPACE::SinricProLight;

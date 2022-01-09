@@ -32,3 +32,5 @@ class SinricProDimSwitch :  public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProDimSwitch = SINRICPRO_NAMESPACE::SinricProDimSwitch;

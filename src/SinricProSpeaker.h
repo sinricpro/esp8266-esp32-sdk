@@ -62,3 +62,5 @@ public:
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProSpeaker = SINRICPRO_NAMESPACE::SinricProSpeaker;

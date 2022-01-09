@@ -29,3 +29,5 @@ class SinricProCamera : public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProCamera = SINRICPRO_NAMESPACE::SinricProCamera;

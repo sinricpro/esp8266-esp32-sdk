@@ -36,3 +36,5 @@ class SinricProBlinds : public SinricProDevice,
 };
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProBlinds = SINRICPRO_NAMESPACE::SinricProBlinds;
