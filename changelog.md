@@ -1,6 +1,7 @@
 # Changelog
 ## Version 2.9.12
 - Fixed: Namespace implementation
+- Fixed: WiFi connection status check
 
 ## Version 2.9.11
 - Add missing CAMERA_MODEL_AI_THINKER in Camera example

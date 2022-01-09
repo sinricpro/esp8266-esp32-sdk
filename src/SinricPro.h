@@ -231,10 +231,13 @@ void SinricProClass::handle() {
     return;
   }
 
+  if (WiFi.isConnected()) {
 
-  if (!isConnected()) connect();
-  _websocketListener.handle();
-  _udpListener.handle();
+    if (!isConnected()) connect();
+    _websocketListener.handle();
+    _udpListener.handle();
+  
+  }
 
   handleReceiveQueue();
   handleSendQueue();
