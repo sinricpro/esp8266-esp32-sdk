@@ -26,28 +26,7 @@ FSTR(RANGE, rangeValueDelta);   // "rangeValueDelta"
  * @snippet callbacks.cpp onRangeValue
  **/
 
-using GenericRangeValueCallback_int = bool (*)(const String &, const String &, int &);
-using GenericRangeValueCallback_float = bool (*)(const String &, const String &, float &);
-
-struct GenericRangeValueCallback {
-    GenericRangeValueCallback()
-        : type(type_unknown) {}
-    GenericRangeValueCallback(GenericRangeValueCallback_int cb)
-        : type(type_int), cb_int(cb) {}
-    GenericRangeValueCallback(GenericRangeValueCallback_float cb)
-        : type(type_float), cb_float(cb) {}
-    enum {
-        type_unknown,
-        type_int,
-        type_float
-    } type;
-    union {
-        GenericRangeValueCallback_int cb_int;
-        GenericRangeValueCallback_float cb_float;
-    };
-};
-
-using SetRangeValueCallback = bool (*)(const String &, int &);
+using SetRangeValueCallback = std::function<bool(const String &, int &)>;
 
 /**
  * @brief Callback definition for onRangeValue function on a specific instance
@@ -64,8 +43,7 @@ using SetRangeValueCallback = bool (*)(const String &, int &);
  * @section GenericSetRangeValueCallback Example-Code
  * @snippet callbacks.cpp onRangeValueGeneric
  **/
-using GenericSetRangeValueCallback_int = GenericRangeValueCallback_int;
-using GenericSetRangeValueCallback_float = GenericRangeValueCallback_float;
+using GenericSetRangeValueCallback = std::function<bool(const String &, const String &, float &)>;
 
 /**
  * @brief Callback definition for onAdjustRangeValue function
@@ -81,7 +59,7 @@ using GenericSetRangeValueCallback_float = GenericRangeValueCallback_float;
  * @section AdjustRangeValueCallback Example-Code
  * @snippet callbacks.cpp onAdjustRangeValue
  **/
-using AdjustRangeValueCallback = bool (*)(const String &, int &);
+using AdjustRangeValueCallback = std::function<bool(const String &, int &)>;
 
 /**
  * @brief Callback definition for onAdjustRangeValue function on a specific instance for custom devices
@@ -98,8 +76,7 @@ using AdjustRangeValueCallback = bool (*)(const String &, int &);
  * @section GenericAdjustRangeValueCallback Example-Code
  * @snippet callbacks.cpp onAdjustRangeValueGeneric
  **/
-using GenericAdjustRangeValueCallback_int = GenericRangeValueCallback_int;
-using GenericAdjustRangeValueCallback_float = GenericRangeValueCallback_float;
+using GenericAdjustRangeValueCallback = std::function<bool(const String &, const String &, float &)>;
 
 /**
  * @brief RangeControllerFloatInt
@@ -111,34 +88,30 @@ class RangeController : public SinricProRequestHandler {
     RangeController();
 
     void onRangeValue(SetRangeValueCallback cb);
-    void onRangeValue(const String &instance, GenericSetRangeValueCallback_int cb);
-    void onRangeValue(const String &instance, GenericSetRangeValueCallback_float cb);
+    void onRangeValue(const String &instance, GenericSetRangeValueCallback cb);
 
     void onAdjustRangeValue(AdjustRangeValueCallback cb);
-    void onAdjustRangeValue(const String &instance, GenericAdjustRangeValueCallback_int cb);
-    void onAdjustRangeValue(const String &instance, GenericAdjustRangeValueCallback_float cb);
+    void onAdjustRangeValue(const String &instance, GenericAdjustRangeValueCallback cb);
 
-    bool sendRangeValueEvent(int rangeValue, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
-    bool sendRangeValueEvent(const String &instance, int rangeValue, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
+    bool sendRangeValueEvent(float rangeValue, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
     bool sendRangeValueEvent(const String &instance, float rangeValue, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     virtual bool onRangeValue(int &value);
-    virtual bool onRangeValue(const String &instance, int &value);
     virtual bool onRangeValue(const String &instance, float &value);
     virtual bool onAdjustRangeValue(int &valueDelta);
-    virtual bool onAdjustRangeValue(const String &instance, int &valueDelta);
     virtual bool onAdjustRangeValue(const String &instance, float &valueDelta);
 
     bool handleRequest(SinricProRequest &request);
 
   private:
-    EventLimiter event_limiter;
-    std::map<String, EventLimiter> event_limiter_generic;
-    SetRangeValueCallback setRangeValueCallback;
-    std::map<String, GenericRangeValueCallback> genericSetRangeValueCallback;
-    AdjustRangeValueCallback adjustRangeValueCallback;
-    std::map<String, GenericRangeValueCallback> genericAdjustRangeValueCallback;
+    EventLimiter                   event_limiter;
+    std::map<String, EventLimiter> generic_event_limiter;
+
+    SetRangeValueCallback                             setRangeValueCallback;
+    std::map<String, GenericSetRangeValueCallback>    genericSetRangeValueCallbacks;
+    AdjustRangeValueCallback                          adjustRangeValueCallback;
+    std::map<String, GenericAdjustRangeValueCallback> genericAdjustRangeValueCallbacks;
 };
 
 template <typename T>
@@ -167,13 +140,8 @@ void RangeController<T>::onRangeValue(SetRangeValueCallback cb) {
  * @see GenericSetRangeValueCallback
  */
 template <typename T>
-void RangeController<T>::onRangeValue(const String &instance, GenericSetRangeValueCallback_int cb) {
-    genericSetRangeValueCallback[instance] = GenericRangeValueCallback(cb);
-}
-
-template <typename T>
-void RangeController<T>::onRangeValue(const String &instance, GenericSetRangeValueCallback_float cb) {
-    genericSetRangeValueCallback[instance] = GenericRangeValueCallback(cb);
+void RangeController<T>::onRangeValue(const String &instance, GenericSetRangeValueCallback cb) {
+    genericSetRangeValueCallbacks[instance] = cb;
 }
 
 /**
@@ -188,13 +156,8 @@ void RangeController<T>::onAdjustRangeValue(AdjustRangeValueCallback cb) {
 }
 
 template <typename T>
-void RangeController<T>::onAdjustRangeValue(const String &instance, GenericAdjustRangeValueCallback_int cb) {
-    genericAdjustRangeValueCallback[instance] = GenericRangeValueCallback(cb);
-}
-
-template <typename T>
-void RangeController<T>::onAdjustRangeValue(const String &instance, GenericAdjustRangeValueCallback_float cb) {
-    genericAdjustRangeValueCallback[instance] = GenericRangeValueCallback(cb);
+void RangeController<T>::onAdjustRangeValue(const String &instance, GenericAdjustRangeValueCallback cb) {
+    genericAdjustRangeValueCallbacks[instance] = cb;
 }
 
 template <typename T>
@@ -205,41 +168,12 @@ bool RangeController<T>::onRangeValue(int &value) {
 }
 
 template <typename T>
-bool RangeController<T>::onRangeValue(const String &instance, int &value) {
-    if (genericSetRangeValueCallback.find(instance) == genericSetRangeValueCallback.end()) return false;
-    T *device = static_cast<T *>(this);
-
-    if (genericSetRangeValueCallback[instance].type == GenericRangeValueCallback::type_int) {
-        return genericSetRangeValueCallback[instance].cb_int(device->deviceId, instance, value);
-    }
-
-    if (genericSetRangeValueCallback[instance].type == GenericRangeValueCallback::type_float) {
-        float floatValue = (float)value;
-        bool success = genericSetRangeValueCallback[instance].cb_float(device->deviceId, instance, floatValue);
-        value = (int)floatValue;
-        return success;
-    }
-
-    return false;
-}
-
-template <typename T>
 bool RangeController<T>::onRangeValue(const String &instance, float &value) {
-    if (genericSetRangeValueCallback.find(instance) == genericSetRangeValueCallback.end()) return false;
+    if (genericSetRangeValueCallbacks.find(instance) == genericSetRangeValueCallbacks.end()) return false;
     T *device = static_cast<T *>(this);
 
-    if (genericSetRangeValueCallback[instance].type == GenericRangeValueCallback::type_float) {
-        return genericSetRangeValueCallback[instance].cb_float(device->deviceId, instance, value);
-    }
-
-    if (genericSetRangeValueCallback[instance].type == GenericRangeValueCallback::type_int) {
-        int intValue = (int)value;
-        bool success = genericSetRangeValueCallback[instance].cb_int(device->deviceId, instance, intValue);
-        value = (float)intValue;
-        return success;
-    }
-
-    return false;
+    bool success = genericSetRangeValueCallbacks[instance](device->deviceId, instance, value);
+    return success;
 }
 
 template <typename T>
@@ -250,40 +184,12 @@ bool RangeController<T>::onAdjustRangeValue(int &valueDelta) {
 }
 
 template <typename T>
-bool RangeController<T>::onAdjustRangeValue(const String &instance, int &valueDelta) {
-    if (genericAdjustRangeValueCallback.find(instance) == genericAdjustRangeValueCallback.end()) return false;
-    T *device = static_cast<T *>(this);
-
-    if (genericAdjustRangeValueCallback[instance].type == GenericRangeValueCallback::type_int) {
-        return genericAdjustRangeValueCallback[instance].cb_int(device->deviceId, instance, valueDelta);
-    }
-
-    if (genericAdjustRangeValueCallback[instance].type == GenericRangeValueCallback::type_float) {
-        float floatValueDelta = (float)valueDelta;
-        bool success = genericAdjustRangeValueCallback[instance].cb_float(device->deviceId, instance, floatValueDelta);
-        valueDelta = (int)floatValueDelta;
-        return success;
-    }
-
-    return false;
-}
-
-template <typename T>
 bool RangeController<T>::onAdjustRangeValue(const String &instance, float &valueDelta) {
-    if (genericAdjustRangeValueCallback.find(instance) == genericAdjustRangeValueCallback.end()) return false;
+    if (genericAdjustRangeValueCallbacks.find(instance) == genericAdjustRangeValueCallbacks.end()) return false;
     T *device = static_cast<T *>(this);
 
-    if (genericAdjustRangeValueCallback[instance].type == GenericRangeValueCallback::type_float) {
-        return genericAdjustRangeValueCallback[instance].cb_float(device->deviceId, instance, valueDelta);
-    }
-
-    if (genericAdjustRangeValueCallback[instance].type == GenericRangeValueCallback::type_int) {
-        int intValueDelta = (int)valueDelta;
-        bool success = genericAdjustRangeValueCallback[instance].cb_int(device->deviceId, instance, intValueDelta);
-        valueDelta = (float)intValueDelta;
-        return success;
-    }
-    return false;
+    bool success = genericAdjustRangeValueCallbacks[instance](device->deviceId, instance, valueDelta);
+    return success;
 }
 
 /**
@@ -296,12 +202,12 @@ bool RangeController<T>::onAdjustRangeValue(const String &instance, float &value
  * @retval  false       event has not been sent, maybe you sent to much events in a short distance of time
  */
 template <typename T>
-bool RangeController<T>::sendRangeValueEvent(int rangeValue, String cause) {
+bool RangeController<T>::sendRangeValueEvent(float rangeValue, String cause) {
     if (event_limiter) return false;
     T *device = static_cast<T *>(this);
 
-    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
-    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    DynamicJsonDocument eventMessage   = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
+    JsonObject          event_value    = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
     event_value[FSTR_RANGE_rangeValue] = rangeValue;
     return device->sendEvent(eventMessage);
 }
@@ -317,29 +223,15 @@ bool RangeController<T>::sendRangeValueEvent(int rangeValue, String cause) {
  * @retval  false       event has not been sent, maybe you sent to much events in a short distance of time
  */
 template <typename T>
-bool RangeController<T>::sendRangeValueEvent(const String &instance, int rangeValue, String cause) {
-    if (event_limiter_generic.find(instance) == event_limiter_generic.end()) event_limiter_generic[instance] = EventLimiter(EVENT_LIMIT_STATE);
-    if (event_limiter_generic[instance]) return false;
-    T *device = static_cast<T *>(this);
-
-    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
-    eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
-
-    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-    event_value[FSTR_RANGE_rangeValue] = rangeValue;
-    return device->sendEvent(eventMessage);
-}
-
-template <typename T>
 bool RangeController<T>::sendRangeValueEvent(const String &instance, float rangeValue, String cause) {
-    if (event_limiter_generic.find(instance) == event_limiter_generic.end()) event_limiter_generic[instance] = EventLimiter(EVENT_LIMIT_STATE);
-    if (event_limiter_generic[instance]) return false;
+    if (generic_event_limiter.find(instance) == generic_event_limiter.end()) generic_event_limiter[instance] = EventLimiter(EVENT_LIMIT_STATE);
+    if (generic_event_limiter[instance]) return false;
     T *device = static_cast<T *>(this);
 
-    DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
+    DynamicJsonDocument eventMessage                                = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
     eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
 
-    JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    JsonObject event_value             = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
     event_value[FSTR_RANGE_rangeValue] = rangeValue;
     return device->sendEvent(eventMessage);
 }
@@ -350,47 +242,31 @@ bool RangeController<T>::handleRequest(SinricProRequest &request) {
 
     if (request.action == FSTR_RANGE_setRangeValue) {
         if (request.instance == "") {
-            int rangeValue = request.request_value[FSTR_RANGE_rangeValue];
-            success = onRangeValue(rangeValue);
+            int rangeValue                                = request.request_value[FSTR_RANGE_rangeValue];
+            success                                       = onRangeValue(rangeValue);
             request.response_value[FSTR_RANGE_rangeValue] = rangeValue;
             return success;
 
         } else {
-            if (request.request_value[FSTR_RANGE_rangeValue].is<int>()) {
-                int rangeValue = request.request_value[FSTR_RANGE_rangeValue];
-                success = onRangeValue(request.instance, rangeValue);
-                request.response_value[FSTR_RANGE_rangeValue] = rangeValue;
-                return success;
-
-            } else {
-                float rangeValue = request.request_value[FSTR_RANGE_rangeValue];
-                success = onRangeValue(request.instance, rangeValue);
-                request.response_value[FSTR_RANGE_rangeValue] = rangeValue;
-                return success;
-            }
+            float rangeValue                              = request.request_value[FSTR_RANGE_rangeValue];
+            success                                       = onRangeValue(request.instance, rangeValue);
+            request.response_value[FSTR_RANGE_rangeValue] = rangeValue;
+            return success;
         }
     }
 
     if (request.action == FSTR_RANGE_adjustRangeValue) {
         if (request.instance == "") {
-            int rangeValue = request.request_value[FSTR_RANGE_rangeValueDelta];
-            success = onAdjustRangeValue(rangeValue);
+            int rangeValue                                = request.request_value[FSTR_RANGE_rangeValueDelta];
+            success                                       = onAdjustRangeValue(rangeValue);
             request.response_value[FSTR_RANGE_rangeValue] = rangeValue;
             return success;
 
         } else {
-            if (request.request_value[FSTR_RANGE_rangeValueDelta].is<int>()) {
-                int rangeValue = request.request_value[FSTR_RANGE_rangeValueDelta];
-                success = onAdjustRangeValue(request.instance, rangeValue);
-                request.response_value[FSTR_RANGE_rangeValue] = rangeValue;
-                return success;
-
-            } else {
-                float rangeValue = request.request_value[FSTR_RANGE_rangeValueDelta];
-                success = onAdjustRangeValue(request.instance, rangeValue);
-                request.response_value[FSTR_RANGE_rangeValue] = rangeValue;
-                return success;
-            }
+            float rangeValue                              = request.request_value[FSTR_RANGE_rangeValueDelta];
+            success                                       = onAdjustRangeValue(request.instance, rangeValue);
+            request.response_value[FSTR_RANGE_rangeValue] = rangeValue;
+            return success;
         }
     }
 
