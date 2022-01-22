@@ -1,5 +1,5 @@
 # SinricPro (ESP8266 / ESP32 SDK)
-[![arduino-library-badge](https://www.ardu-badge.com/badge/SinricPro.svg?)](https://www.ardu-badge.com/SinricPro) [![](https://img.shields.io/badge/PlatformIO_Libraries-SinricPro-brightgreen.svg)](https://platformio.org/lib/show/6519/SinricPro)
+[![arduino-library-badge](https://www.ardu-badge.com/badge/SinricPro.svg?)](https://www.ardu-badge.com/SinricPro) [![PlatformIO Registry](https://badges.registry.platformio.org/packages/sinricpro/library/SinricPro.svg)](https://registry.platformio.org/libraries/sinricpro/SinricPro)
 
 [![Platform ESP8266](https://img.shields.io/badge/Platform-Espressif8266-orange)](#) [![Platform ESP32](https://img.shields.io/badge/Platform-Espressif32-orange)](#)
 
