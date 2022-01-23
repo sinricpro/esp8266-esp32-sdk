@@ -1,4 +1,7 @@
 # Changelog
+
+## Version 2.9.13
+- Firmware version added.
 ## Version 2.9.12
 - Fixed: Namespace implementation
 - Fixed: WiFi connection status check
