@@ -1,7 +1,9 @@
 # Changelog
 
 ## Version 2.9.13
-- Firmware version added.
+- "firmwareVersion" WebSocket header added.
+- "version" WebSocket header renamed to "SDKVersion"
+
 ## Version 2.9.12
 - Fixed: Namespace implementation
 - Fixed: WiFi connection status check
