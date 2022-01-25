@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 2.9.14
+- Fixed: Cannot connect to the server.
+
 ## Version 2.9.13
 - "firmwareVersion" WebSocket header added.
 - "version" WebSocket header renamed to "SDKVersion"
