@@ -101,21 +101,21 @@ WebsocketListener::~WebsocketListener() {
 }
 
 void WebsocketListener::setExtraHeaders() {
-  String headers  = "appkey:" + appKey + "\r\n";
-         headers += "deviceids:" + deviceIds + "\r\n";
-         headers += "restoredevicestates:" + String(restoreDeviceStates?"true":"false") + "\r\n";
-         headers += "ip:" + WiFi.localIP().toString() + "\r\n";
-         headers += "mac:" + WiFi.macAddress() + "\r\n";
+  String headers  = "appkey:" + appKey;
+         headers += "\r\ndeviceids:" + deviceIds;
+         headers += "\r\nrestoredevicestates:" + String(restoreDeviceStates ? "true" : "false");
+         headers += "\r\nip:" + WiFi.localIP().toString();
+         headers += "\r\nmac:" + WiFi.macAddress();
   #ifdef ESP8266
-         headers += "platform:ESP8266\r\n";
+         headers += "\r\nplatform:ESP8266";
   #endif
   #ifdef ESP32
-         headers += "platform:ESP32\r\n";
+         headers += "\r\nplatform:ESP32";
   #endif
-         headers += "SDKVersion:" + String(SINRICPRO_VERSION) + "\r\n";
+         headers += "\r\nSDKVersion:" + String(SINRICPRO_VERSION);
 
   #ifdef FIRMWARE_VERSION
-        headers += "firmwareVersion:" + String(FIRMWARE_VERSION);
+         headers += "\r\nfirmwareVersion:" + String(FIRMWARE_VERSION);
   #endif
   
   DEBUG_SINRIC("[SinricPro:Websocket]: headers: \r\n%s\r\n", headers.c_str());
