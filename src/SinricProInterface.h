@@ -16,10 +16,10 @@ namespace SINRICPRO_NAMESPACE {
 class SinricProInterface {
   friend class SinricProDevice;
   protected:
-    virtual void                sendMessage(JsonDocument& jsonEvent);
-    virtual DynamicJsonDocument prepareEvent(String deviceId, const char* action, const char* cause);
-    virtual unsigned long       getTimestamp(); 
-    virtual bool                isConnected();
+    virtual void                sendMessage(JsonDocument& jsonEvent) = 0;
+    virtual DynamicJsonDocument prepareEvent(String deviceId, const char* action, const char* cause) = 0;
+    virtual unsigned long       getTimestamp() = 0; 
+    virtual bool                isConnected() = 0;
 };
 
 } // SINRICPRO_NAMESPACE
