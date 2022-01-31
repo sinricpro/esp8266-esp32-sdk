@@ -110,3 +110,5 @@ bool SinricProDevice::handleRequest(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+using SinricProDevice = SINRICPRO_NAMESPACE::SinricProDevice;

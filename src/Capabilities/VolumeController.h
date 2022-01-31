@@ -140,3 +140,6 @@ bool VolumeController<T>::handleVolumeController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using VolumeController = SINRICPRO_NAMESPACE::VolumeController<T>;

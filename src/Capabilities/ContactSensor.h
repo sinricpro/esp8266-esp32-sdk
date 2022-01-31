@@ -48,3 +48,6 @@ bool ContactSensor<T>::sendContactEvent(bool detected, String cause) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using ContactSensor = SINRICPRO_NAMESPACE::ContactSensor<T>;

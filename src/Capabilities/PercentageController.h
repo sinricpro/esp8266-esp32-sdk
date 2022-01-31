@@ -137,3 +137,6 @@ bool PercentageController<T>::handlePercentageController(SinricProRequest &reque
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using PercentageController = SINRICPRO_NAMESPACE::PercentageController<T>;

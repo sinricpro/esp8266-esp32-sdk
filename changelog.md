@@ -1,4 +1,6 @@
 # Changelog
+## Version 2.9.15
+- Fixed: Namespace issues with custom devices
 
 ## Version 2.9.14
 - Fixed: Cannot connect to the server.

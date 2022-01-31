@@ -100,3 +100,6 @@ bool DoorController<T>::handleDoorController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using DoorController = SINRICPRO_NAMESPACE::DoorController<T>;

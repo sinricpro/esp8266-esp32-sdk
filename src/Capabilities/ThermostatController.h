@@ -209,3 +209,6 @@ bool ThermostatController<T>::handleThermostatController(SinricProRequest &reque
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using ThermostatController = SINRICPRO_NAMESPACE::ThermostatController<T>;

@@ -321,3 +321,6 @@ bool RangeController<T>::handleRangeController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using RangeController = SINRICPRO_NAMESPACE::RangeController<T>;

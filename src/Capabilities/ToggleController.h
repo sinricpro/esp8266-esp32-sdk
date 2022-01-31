@@ -109,3 +109,6 @@ bool ToggleController<T>::handleToggleController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using ToggleController = SINRICPRO_NAMESPACE::ToggleController<T>;

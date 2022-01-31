@@ -136,3 +136,6 @@ bool BrightnessController<T>::handleBrightnessController(SinricProRequest &reque
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using BrightnessController = SINRICPRO_NAMESPACE::BrightnessController<T>;

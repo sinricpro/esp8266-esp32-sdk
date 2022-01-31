@@ -111,3 +111,6 @@ bool LockController<T>::handleLockController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using LockController = SINRICPRO_NAMESPACE::LockController<T>;

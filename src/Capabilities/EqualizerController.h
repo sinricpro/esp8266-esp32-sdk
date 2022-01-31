@@ -214,3 +214,6 @@ bool EqualizerController<T>::handleEqualizerController(SinricProRequest &request
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using EqualizerController = SINRICPRO_NAMESPACE::EqualizerController<T>;

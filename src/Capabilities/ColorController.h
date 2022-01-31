@@ -118,3 +118,6 @@ bool ColorController<T>::handleColorController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using ColorController = SINRICPRO_NAMESPACE::ColorController<T>;

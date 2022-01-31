@@ -103,3 +103,6 @@ bool MediaController<T>::handleMediaController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using MediaController = SINRICPRO_NAMESPACE::MediaController<T>;

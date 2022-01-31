@@ -184,3 +184,6 @@ bool ChannelController<T>::handleChannelController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using ChannelController = SINRICPRO_NAMESPACE::ChannelController<T>;

@@ -138,3 +138,6 @@ bool PowerLevelController<T>::handlePowerLevelController(SinricProRequest &reque
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using PowerLevelController = SINRICPRO_NAMESPACE::PowerLevelController<T>;

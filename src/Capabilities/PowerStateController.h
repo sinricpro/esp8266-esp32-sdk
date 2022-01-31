@@ -103,3 +103,6 @@ bool PowerStateController<T>::handlePowerStateController(SinricProRequest &reque
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using PowerStateController = SINRICPRO_NAMESPACE::PowerStateController<T>;

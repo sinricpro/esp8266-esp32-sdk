@@ -47,3 +47,6 @@ bool Doorbell<T>::sendDoorbellEvent(String cause) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using Doorbell = SINRICPRO_NAMESPACE::Doorbell<T>;

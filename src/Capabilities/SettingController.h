@@ -55,3 +55,6 @@ bool SettingController<T>::handleSettingController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using SettingController = SINRICPRO_NAMESPACE::SettingController<T>;

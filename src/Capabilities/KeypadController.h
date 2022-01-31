@@ -79,3 +79,6 @@ bool KeypadController<T>::handleKeypadController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using KeypadController = SINRICPRO_NAMESPACE::KeypadController<T>;

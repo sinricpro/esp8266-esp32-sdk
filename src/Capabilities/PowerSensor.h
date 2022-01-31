@@ -86,3 +86,6 @@ float PowerSensor<T>::getWattHours(unsigned long currentTimestamp) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using PowerSensor = SINRICPRO_NAMESPACE::PowerSensor<T>;

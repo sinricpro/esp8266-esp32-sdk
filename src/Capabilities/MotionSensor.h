@@ -49,3 +49,6 @@ bool MotionSensor<T>::sendMotionEvent(bool detected, String cause) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using MotionSensor = SINRICPRO_NAMESPACE::MotionSensor<T>;

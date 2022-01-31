@@ -50,3 +50,6 @@ bool TemperatureSensor<T>::sendTemperatureEvent(float temperature, float humidit
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using TemperatureSensor = SINRICPRO_NAMESPACE::TemperatureSensor<T>;

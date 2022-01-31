@@ -103,3 +103,6 @@ bool InputController<T>::handleInputController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using InputController = SINRICPRO_NAMESPACE::InputController<T>;

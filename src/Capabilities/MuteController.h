@@ -99,3 +99,6 @@ bool MuteController<T>::handleMuteController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using MuteController = SINRICPRO_NAMESPACE::MuteController<T>;

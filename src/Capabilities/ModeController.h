@@ -171,3 +171,6 @@ bool ModeController<T>::handleModeController(SinricProRequest &request) {
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using ModeController = SINRICPRO_NAMESPACE::ModeController<T>;

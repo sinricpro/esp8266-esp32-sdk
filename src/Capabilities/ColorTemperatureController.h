@@ -175,3 +175,6 @@ bool ColorTemperatureController<T>::handleColorTemperatureController(SinricProRe
 }
 
 } // SINRICPRO_NAMESPACE
+
+template <typename T>
+using ColorTemperatureController = SINRICPRO_NAMESPACE::ColorTemperatureController<T>;
