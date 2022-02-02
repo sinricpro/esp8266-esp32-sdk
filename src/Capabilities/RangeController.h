@@ -291,13 +291,13 @@ bool RangeController<T>::handleRangeController(SinricProRequest &request) {
     if (request.instance == "") {
 
       int rangeValue = request.request_value[FSTR_RANGE_rangeValueDelta];
-      if (setRangeValueCallback) success = setRangeValueCallback(device->deviceId, rangeValue);
+      if (adjustRangeValueCallback) success = adjustRangeValueCallback(device->deviceId, rangeValue);
       request.response_value[FSTR_RANGE_rangeValue] = rangeValue;
       return success;
 
     } else {
 
-      if (genericSetRangeValueCallback.find(request.instance) == genericSetRangeValueCallback.end()) return false;
+      if (genericAdjustRangeValueCallback.find(request.instance) == genericAdjustRangeValueCallback.end()) return false;
 
       auto& cb = genericAdjustRangeValueCallback[request.instance];
 

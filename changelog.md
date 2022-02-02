@@ -1,4 +1,8 @@
 # Changelog
+## Version 2.9.16
+- Fixed: Issue in RangeController
+  For relative changes, onRangeValue was called instead of onAdjustRangeValue.
+
 ## Version 2.9.15
 - Fixed: Namespace issues with custom devices
 
