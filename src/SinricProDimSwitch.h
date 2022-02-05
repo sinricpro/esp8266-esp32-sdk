@@ -9,7 +9,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
-#include "Capabilities/PowerstateController.h"
+#include "Capabilities/PowerStateController.h"
 #include "Capabilities/PowerLevelController.h"
 
 #include "SinricProNamespace.h"

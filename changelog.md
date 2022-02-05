@@ -1,4 +1,7 @@
 # Changelog
+## Version 2.9.17
+- Fixed: Case sensivitiy include (#251)
+
 ## Version 2.9.16
 - Fixed: Issue in RangeController
   For relative changes, onRangeValue was called instead of onAdjustRangeValue.
