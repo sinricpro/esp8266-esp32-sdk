@@ -67,6 +67,8 @@
 #endif
 
 #ifdef ESP32
+#define LED_BUILTIN 2
+
 #define RELAYPIN_1 16
 #define RELAYPIN_2 17
 #define RELAYPIN_3 18
