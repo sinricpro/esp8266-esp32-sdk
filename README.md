@@ -7,6 +7,8 @@
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/sinricpro/esp8266-esp32-sdk)](https://github.com/sinricpro/esp8266-esp32-sdk/releases)
 
+[![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build.yml)
+
 ## Note
 1. Use the latest ESP Arduino Core!
 2. Use the latest WebSocktes library!
