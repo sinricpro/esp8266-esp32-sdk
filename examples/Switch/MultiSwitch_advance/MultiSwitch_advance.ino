@@ -55,6 +55,28 @@
 
 #define DEBOUNCE_TIME 250
 
+#ifdef ESP8266
+#define RELAYPIN_1 D1
+#define RELAYPIN_2 D2
+#define RELAYPIN_3 D3
+#define RELAYPIN_4 D4
+#define SWITCHPIN_1 D8
+#define SWITCHPIN_2 D7
+#define SWITCHPIN_3 D6
+#define SWITCHPIN_4 D5
+#endif
+
+#ifdef ESP32
+#define RELAYPIN_1 16
+#define RELAYPIN_2 17
+#define RELAYPIN_3 18
+#define RELAYPIN_4 19
+#define SWITCHPIN_1 25
+#define SWITCHPIN_2 26
+#define SWITCHPIN_3 22
+#define SWITCHPIN_4 21
+#endif
+
 typedef struct {      // struct for the std::map below
   int relayPIN;
   int flipSwitchPIN;
@@ -67,10 +89,10 @@ typedef struct {      // struct for the std::map below
 // right now we have 4 devicesIds going to 4 relays and 4 flip switches to switch the relay manually
 std::map<String, deviceConfig_t> devices = {
     //{deviceId, {relayPIN,  flipSwitchPIN}}
-    {"SWITCH_ID_NO_1_HERE", {  D1, D8 }},
-    {"SWITCH_ID_NO_2_HERE", {  D2, D7 }},
-    {"SWITCH_ID_NO_3_HERE", {  D3, D6 }},
-    {"SWITCH_ID_NO_4_HERE", {  D4, D5 }}      
+    {"SWITCH_ID_NO_1_HERE", {  RELAYPIN_1, SWITCHPIN_1 }},
+    {"SWITCH_ID_NO_2_HERE", {  RELAYPIN_2, SWITCHPIN_2 }},
+    {"SWITCH_ID_NO_3_HERE", {  RELAYPIN_3, SWITCHPIN_3 }},
+    {"SWITCH_ID_NO_4_HERE", {  RELAYPIN_4, SWITCHPIN_4 }}      
 };
 
 typedef struct {      // struct for the std::map below

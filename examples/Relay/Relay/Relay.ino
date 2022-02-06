@@ -36,7 +36,13 @@
 #define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                // Change baudrate to your need
 
+#ifdef ESP8266
 #define RELAY_PIN         D5                  // Pin where the relay is connected (D5 = GPIO 14 on ESP8266)
+#endif
+
+#ifdef ESP32
+#define RELAY_PIN         16                  // Pin where the relay is connected (GPIO 16 on ESP32)
+#endif
 
 bool onPowerState(const String &deviceId, bool &state) {
   digitalWrite(RELAY_PIN, state);             // set pin state

@@ -31,6 +31,27 @@
 #include <SinricPro.h>
 #include <SinricProSwitch.h>
 
+#ifdef ESP8266
+#define RELAYPIN_1 D1
+#define RELAYPIN_2 D2
+#define RELAYPIN_3 D3
+#define RELAYPIN_4 D4
+#define RELAYPIN_5 D5
+#define RELAYPIN_6 D6
+#define RELAYPIN_7 D7
+#define RELAYPIN_8 D8
+#endif
+#ifdef ESP32
+#define RELAYPIN_1 16
+#define RELAYPIN_2 17
+#define RELAYPIN_3 18
+#define RELAYPIN_4 19
+#define RELAYPIN_5 21
+#define RELAYPIN_6 22
+#define RELAYPIN_7 23
+#define RELAYPIN_8 25
+#endif
+
 /*****************
  * Configuration *
  *****************/
@@ -42,14 +63,14 @@ struct RelayInfo {
 };
 
 std::vector<RelayInfo> relays = {
-    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 1", D1},
-    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 2", D2},
-    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 3", D3},
-    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 4", D4},
-    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 5", D5},
-    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 6", D6},
-    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 7", D7},
-    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 8", D8}};
+    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 1", RELAYPIN_1},
+    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 2", RELAYPIN_2},
+    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 3", RELAYPIN_3},
+    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 4", RELAYPIN_4},
+    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 5", RELAYPIN_5},
+    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 6", RELAYPIN_6},
+    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 7", RELAYPIN_7},
+    {"5fxxxxxxxxxxxxxxxxxxxxxx", "Relay 8", RELAYPIN_8}};
 /*   ^^^^^^^^^^^^^^^^^^^^^^^^^   ^^^^^^^^^  ^^^
  *              |                     |      |
  *              |                     |      +---> digital PIN or GPIO number (see Note below!)
