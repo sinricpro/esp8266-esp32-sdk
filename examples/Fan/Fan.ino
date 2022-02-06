@@ -50,14 +50,14 @@ bool onPowerState(const String &deviceId, bool &state) {
 }
 
 // Fan rangeValue is from 1..3
-bool onRangeValue(const String &deviceId, int &rangeValue) {
+bool onRangeValue(const String &deviceId, int& rangeValue) {
   device_state.fanSpeed = rangeValue;
   Serial.printf("Fan speed changed to %d\r\n", device_state.fanSpeed);
   return true;
 }
 
 // Fan rangeValueDelta is from -3..+3
-bool onAdjustRangeValue(const String &deviceId, int rangeValueDelta) {
+bool onAdjustRangeValue(const String &deviceId, int& rangeValueDelta) {
   device_state.fanSpeed += rangeValueDelta;
   Serial.printf("Fan speed changed about %i to %d\r\n", rangeValueDelta, device_state.fanSpeed);
 
