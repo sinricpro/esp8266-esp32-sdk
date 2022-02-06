@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        example: [examples/Switch/Switch/Switch.ino, examples\ACUnit\ACUnit.ino]
+        example: [examples/Switch/Switch/Switch.ino]
 
     steps:
     - uses: actions/checkout@v2
