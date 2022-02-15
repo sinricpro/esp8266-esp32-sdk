@@ -13,29 +13,31 @@ jobs:
         example: [examples/ACUnit/ACUnit.ino, examples/AirQualitySensor/AirQualitySensor/AirQualitySensor.ino, examples/Blinds/Blinds.ino, examples/ContactSensor/ContactSensor.ino, examples/DimSwitch/DimSwitch.ino, examples/doorbell/doorbell.ino, examples/Fan/Fan.ino, examples/GarageDoor/GarageDoor.ino, examples/Light/Light/Light.ino, examples/Lock/Lock/Lock.ino, examples/Lock/Lock_with_feedback/Lock_with_feedback.ino, examples/MotionSensor/MotionSensor.ino, examples/PowerSensor/PowerSensor.ino, examples/Relay/MultiRelays_advance/MultiRelays_advance.ino, examples/Relay/Relay/Relay.ino, examples/Speaker/Speaker.ino, examples/Switch/MultiSwitch_advance/MultiSwitch_advance.ino, examples/Switch/MultiSwitch_beginner/MultiSwitch_beginner.ino, examples/Switch/MultiSwitch_intermediate/MultiSwitch_intermediate.ino, examples/Switch/Switch/Switch.ino, examples/Thermostat/Thermostat.ino, examples/TV/TV.ino]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Cache pip
+
+    - name: Step 1 - Checkout Repo
+      uses: actions/checkout@v2
+    - name: Step 2 - Cache pip
       uses: actions/cache@v2
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: ${{ runner.os }}-pip-
-    - name: Cache PlatformIO
+    - name: Step 3 - Cache PlatformIO
       uses: actions/cache@v2
       with:
         path: ~/.platformio
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-    - name: Set up Python
+    - name: Step 4 - Set up Python
       uses: actions/setup-python@v2
-    - name: Install PlatformIO
+    - name: Step 5 - Install PlatformIO
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade platformio
-    - name: Install library dependencies
+    - name: Step 6 - Install library dependencies
       run: |
         pio lib --global install "bblanchon/ArduinoJson"
         pio lib --global install "links2004/WebSockets"
-    - name: Run build test using PlatformIO
+    - name: Step 7 - Run build test using PlatformIO
       run: pio ci --lib="." -b esp12e -b esp32dev
       env:
         PLATFORMIO_CI_SRC: ${{ matrix.example }}
