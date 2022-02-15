@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        example: [examples/ACUnit/ACUnit.ino, examples/AirQualitySensor/AirQualitySensor/AirQualitySensor.ino, examples/Blinds/Blinds.ino, examples/ContactSensor/ContactSensor.ino, examples/DimSwitch/DimSwitch.ino, examples/doorbell/doorbell.ino, examples/Fan/Fan.ino, examples/GarageDoor/GarageDoor.ino, examples/Light/Light/Light.ino, examples/Lock/Lock/Lock.ino, examples/Lock/Lock_with_feedback/Lock_with_feedback.ino, examples/MotionSensor/MotionSensor.ino, examples/PowerSensor/PowerSensor.ino, examples/Relay/MultiRelays_advance/MultiRelays_advance.ino, examples/Relay/Relay/Relay.ino, examples/Speaker/Speaker.ino, examples/Switch/MultiSwitch_advance/MultiSwitch_advance.ino, examples/Switch/MultiSwitch_beginner/MultiSwitch_beginner.ino, examples/Switch/MultiSwitch_intermediate/MultiSwitch_intermediate.ino, examples/Switch/Switch/Switch.ino, examples/Thermostat/Thermostat.ino, examples/TV/TV.ino]
+        example: [examples/ACUnit, examples/AirQualitySensor/AirQualitySensor, examples/Blinds, examples/ContactSensor, examples/DimSwitch, examples/doorbell, examples/Fan, examples/GarageDoor, examples/Light/Light, examples/Lock/Lock, examples/Lock/Lock_with_feedback, examples/MotionSensor, examples/PowerSensor, examples/Relay/MultiRelays_advance, examples/Relay/Relay, examples/Speaker, examples/Switch/MultiSwitch_advance, examples/Switch/MultiSwitch_beginner, examples/Switch/MultiSwitch_intermediate, examples/Switch/Switch, examples/Thermostat, examples/TV]
 
     steps:
 
