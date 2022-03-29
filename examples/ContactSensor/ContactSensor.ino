@@ -18,17 +18,17 @@
 //#define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
-       #define DEBUG_ESP_PORT Serial
-       #define NODEBUG_WEBSOCKETS
-       #define NDEBUG
+ #define DEBUG_ESP_PORT Serial
+ #define NODEBUG_WEBSOCKETS
+ #define NDEBUG
 #endif
 
 #include <Arduino.h>
 #ifdef ESP8266
-       #include <ESP8266WiFi.h>
+ #include <ESP8266WiFi.h>
 #endif
 #ifdef ESP32
-       #include <WiFi.h>
+ #include <WiFi.h>
 #endif
 
 #include "SinricPro.h"
