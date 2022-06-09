@@ -36,6 +36,7 @@ FSTR(SINRICPRO, HMAC);                    // "HMAC"
 FSTR(SINRICPRO, timestamp);               // "timestamp"
 FSTR(SINRICPRO, PERIODIC_POLL);           // "PERIODIC_POLL"
 FSTR(SINRICPRO, PHYSICAL_INTERACTION);    // "PHYSICAL_INTERACTION"
+FSTR(SINRICPRO, ALERT);                   // "ALERT"
 FSTR(SINRICPRO, OK);                      // "OK"
 
 } // SINRICPRO_NAMESPACE

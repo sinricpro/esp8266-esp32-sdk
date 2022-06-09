@@ -8,6 +8,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
+#include "Capabilities/PushNotification.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/AirQualitySensor.h"
 
@@ -21,12 +22,13 @@ namespace SINRICPRO_NAMESPACE {
  */
 class SinricProAirQualitySensor : public SinricProDevice,
                                   public SettingController<SinricProAirQualitySensor>,
+                                  public PushNotification<SinricProAirQualitySensor>, 
                                   public PowerStateController<SinricProAirQualitySensor>,
                                   public AirQualitySensor<SinricProAirQualitySensor> {
                                   friend class SettingController<SinricProAirQualitySensor>;
+                                  friend class PushNotification<AirQualitySensor>;
                                   friend class PowerStateController<SinricProAirQualitySensor>;
                                   friend class AirQualitySensor<SinricProAirQualitySensor>;
-                                  
 public:
   SinricProAirQualitySensor(const String &deviceId) : SinricProDevice(deviceId, "AIR_QUALITY_SENSOR"){};
 };

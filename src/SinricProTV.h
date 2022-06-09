@@ -9,6 +9,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
+#include "Capabilities/PushNotification.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/VolumeController.h"
 #include "Capabilities/MuteController.h"
@@ -37,6 +38,7 @@ namespace SINRICPRO_NAMESPACE {
  */
 class SinricProTV : public SinricProDevice,
                     public SettingController<SinricProTV>,
+                    public PushNotification<SinricProTV>,
                     public PowerStateController<SinricProTV>,
                     public VolumeController<SinricProTV>,
                     public MuteController<SinricProTV>,
@@ -44,6 +46,7 @@ class SinricProTV : public SinricProDevice,
                     public InputController<SinricProTV>,
                     public ChannelController<SinricProTV> {
                     friend class SettingController<SinricProTV>;
+                    friend class PushNotification<SinricProTV>;
                     friend class PowerStateController<SinricProTV>;
                     friend class VolumeController<SinricProTV>;
                     friend class MuteController<SinricProTV>;

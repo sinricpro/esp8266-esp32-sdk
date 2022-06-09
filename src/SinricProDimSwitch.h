@@ -9,6 +9,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
+#include "Capabilities/PushNotification.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/PowerLevelController.h"
 
@@ -22,9 +23,11 @@ namespace SINRICPRO_NAMESPACE {
  **/
 class SinricProDimSwitch :  public SinricProDevice,
                             public SettingController<SinricProDimSwitch>,
+                            public PushNotification<SinricProDimSwitch>,
                             public PowerStateController<SinricProDimSwitch>,
                             public PowerLevelController<SinricProDimSwitch> {
                             friend class SettingController<SinricProDimSwitch>;
+                            friend class PushNotification<SinricProDimSwitch>;
                             friend class PowerStateController<SinricProDimSwitch>;
                             friend class PowerLevelController<SinricProDimSwitch>;
   public:

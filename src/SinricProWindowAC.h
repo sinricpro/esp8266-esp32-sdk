@@ -8,6 +8,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
+#include "Capabilities/PushNotification.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/RangeController.h"
 #include "Capabilities/ThermostatController.h"
@@ -30,10 +31,12 @@ namespace SINRICPRO_NAMESPACE {
 
 class SinricProWindowAC :  public SinricProDevice,
                            public SettingController<SinricProWindowAC>,
+                           public PushNotification<SinricProWindowAC>,
                            public PowerStateController<SinricProWindowAC>,
                            public RangeController<SinricProWindowAC>,
                            public ThermostatController<SinricProWindowAC> {
                            friend class SettingController<SinricProWindowAC>;
+                           friend class PushNotification<SinricProWindowAC>;
                            friend class PowerStateController<SinricProWindowAC>;
                            friend class RangeController<SinricProWindowAC>;
                            friend class ThermostatController<SinricProWindowAC>;
