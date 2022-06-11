@@ -9,6 +9,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
+#include "Capabilities/PushNotification.h"
 #include "Capabilities/DoorController.h"
 
 #include "SinricProNamespace.h"
@@ -24,8 +25,10 @@ namespace SINRICPRO_NAMESPACE {
  **/
 class SinricProGarageDoor : public SinricProDevice,
                             public SettingController<SinricProGarageDoor>,
+                            public PushNotification<SinricProGarageDoor>,
                             public DoorController<SinricProGarageDoor> {
                             friend class SettingController<SinricProGarageDoor>;
+                            friend class PushNotification<SinricProGarageDoor>;
                             friend class DoorController<SinricProGarageDoor>;
   public:
 	  SinricProGarageDoor(const String &deviceId) : SinricProDevice(deviceId, "GARAGE_DOOR") {}

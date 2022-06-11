@@ -9,6 +9,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
+#include "Capabilities/PushNotification.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/ThermostatController.h"
 #include "Capabilities/TemperatureSensor.h"
@@ -29,10 +30,12 @@ namespace SINRICPRO_NAMESPACE {
  **/
 class SinricProThermostat :  public SinricProDevice,
                              public SettingController<SinricProThermostat>,
+                             public PushNotification<SinricProThermostat>,
                              public PowerStateController<SinricProThermostat>,
                              public ThermostatController<SinricProThermostat>,
                              public TemperatureSensor<SinricProThermostat> {
                              friend class SettingController<SinricProThermostat>;
+                             friend class PushNotification<SinricProThermostat>;
                              friend class PowerStateController<SinricProThermostat>;
                              friend class ThermostatController<SinricProThermostat>;
                              friend class TemperatureSensor<SinricProThermostat>;

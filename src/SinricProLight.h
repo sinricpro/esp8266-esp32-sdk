@@ -8,6 +8,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
+#include "Capabilities/PushNotification.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/BrightnessController.h"
 #include "Capabilities/ColorController.h"
@@ -29,11 +30,13 @@ namespace SINRICPRO_NAMESPACE {
  **/
 class SinricProLight :  public SinricProDevice,
                         public SettingController<SinricProLight>,
+                        public PushNotification<SinricProLight>,
                         public PowerStateController<SinricProLight>,
                         public BrightnessController<SinricProLight>,
                         public ColorController<SinricProLight>,
                         public ColorTemperatureController<SinricProLight> {
                         friend class SettingController<SinricProLight>;
+                        friend class PushNotification<SinricProLight>;
                         friend class PowerStateController<SinricProLight>;
                         friend class BrightnessController<SinricProLight>;
                         friend class ColorController<SinricProLight>;

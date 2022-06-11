@@ -9,6 +9,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
+#include "Capabilities/PushNotification.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/MuteController.h"
 #include "Capabilities/VolumeController.h"
@@ -42,6 +43,7 @@ namespace SINRICPRO_NAMESPACE {
  */
 class SinricProSpeaker : public SinricProDevice,
                          public SettingController<SinricProSpeaker>,
+                         public PushNotification<SinricProSpeaker>,
                          public PowerStateController<SinricProSpeaker>,
                          public MuteController<SinricProSpeaker>,
                          public VolumeController<SinricProSpeaker>,
@@ -50,6 +52,7 @@ class SinricProSpeaker : public SinricProDevice,
                          public EqualizerController<SinricProSpeaker>,
                          public ModeController<SinricProSpeaker> {
                          friend class SettingController<SinricProSpeaker>;
+                         friend class PushNotification<SinricProSpeaker>;
                          friend class PowerStateController<SinricProSpeaker>;
                          friend class MuteController<SinricProSpeaker>;
                          friend class VolumeController<SinricProSpeaker>;

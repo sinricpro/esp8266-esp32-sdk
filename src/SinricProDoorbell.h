@@ -8,6 +8,7 @@
 
 #include "SinricProDevice.h"
 #include "Capabilities/SettingController.h"
+#include "Capabilities/PushNotification.h"
 #include "Capabilities/PowerStateController.h"
 #include "Capabilities/Doorbell.h"
 
@@ -21,9 +22,11 @@ namespace SINRICPRO_NAMESPACE {
  **/
 class SinricProDoorbell :  public SinricProDevice,
                            public SettingController<SinricProDoorbell>,
+                           public PushNotification<SinricProDoorbell>,
                            public PowerStateController<SinricProDoorbell>,
                            public Doorbell<SinricProDoorbell> {
                            friend class SettingController<SinricProDoorbell>;
+                           friend class PushNotification<SinricProDoorbell>;
                            friend class PowerStateController<SinricProDoorbell>;
                            friend class Doorbell<SinricProDoorbell>;
   public:
