@@ -25,7 +25,7 @@ FSTR(POWERSTATE, setPowerState);     // "setPowerState"
  * @section PowerStateCallback Example-Code
  * @snippet callbacks.cpp onPowerState
  **/
-using PowerStateCallback = std::function<bool(const String &, bool &)>;
+using PowerStateCallback_t = std::function<bool(const String &, bool &)>;
 
 
 /**
@@ -37,7 +37,7 @@ class PowerStateController {
   public:
     PowerStateController();
 
-    void onPowerState(PowerStateCallback cb);
+    void onPowerState(PowerStateCallback_t cb);
     bool sendPowerStateEvent(bool state, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
@@ -45,7 +45,7 @@ class PowerStateController {
 
   private:
     EventLimiter event_limiter;
-    PowerStateCallback powerStateCallback;
+    PowerStateCallback_t powerStateCallback;
 };
 
 template <typename T>
@@ -63,7 +63,7 @@ PowerStateController<T>::PowerStateController()
  * @see PowerStateCallback
  **/
 template <typename T>
-void PowerStateController<T>::onPowerState(PowerStateCallback cb) {
+void PowerStateController<T>::onPowerState(PowerStateCallback_t cb) {
   powerStateCallback = cb;
 }
 
