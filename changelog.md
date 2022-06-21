@@ -1,4 +1,8 @@
 # Changelog
+
+## Version 2.10.0
+- Feature: Push Notification.
+
 ## Version 2.9.17
 - Fixed: Case sensivitiy include [#251](https://github.com/sinricpro/esp8266-esp32-sdk/issues/251)
 - Fixed: platformio.ini example [#252](https://github.com/sinricpro/esp8266-esp32-sdk/issues/252)

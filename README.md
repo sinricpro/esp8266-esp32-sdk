@@ -119,6 +119,11 @@ Example 1
   SinricPro["YOUR-DOORBELL-ID-HERE"].as<SinricProDoorbell>().sendDoorbellEvent();
 ```
 
+## How to send a push notification?
+```C++
+SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
+mySwitch.sendPushNotification("Hello SinricPro!");
+```
 
 ---
 
