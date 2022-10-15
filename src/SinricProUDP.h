@@ -16,6 +16,8 @@
 
 #include <WiFiUdp.h>
 #include "SinricProQueue.h"
+#include "SinricProConfig.h"
+#include "SinricProDebug.h"
 
 #include "SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
