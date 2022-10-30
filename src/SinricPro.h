@@ -16,6 +16,7 @@
 #include "SinricProStrings.h"
 #include "SinricProUDP.h"
 #include "SinricProWebsocket.h"
+#include "Timestamp.h"
 namespace SINRICPRO_NAMESPACE {
 
 /**
@@ -107,7 +108,7 @@ class SinricProClass : public SinricProInterface {
     SinricProQueue_t  receiveQueue;
     SinricProQueue_t  sendQueue;
 
-    unsigned long baseTimestamp = 0;
+    Timestamp timestamp;
 
     bool   _begin             = false;
     String responseMessageStr = "";
@@ -356,7 +357,7 @@ void SinricProClass::handleReceiveQueue() {
 
 void SinricProClass::handleSendQueue() {
     if (!isConnected()) return;
-    if (!baseTimestamp) return;
+    if (!timestamp.getTimestamp()) return;
     while (sendQueue.size() > 0) {
         DEBUG_SINRIC("[SinricPro:handleSendQueue()]: %i message(s) in sendQueue\r\n", sendQueue.size());
         DEBUG_SINRIC("[SinricPro:handleSendQueue()]: Sending message...\r\n");
@@ -366,7 +367,7 @@ void SinricProClass::handleSendQueue() {
 
         DynamicJsonDocument jsonMessage(1024);
         deserializeJson(jsonMessage, rawMessage->getMessage());
-        jsonMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_createdAt] = getTimestamp();
+        jsonMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_createdAt] = timestamp.getTimestamp();
         signMessage(appSecret, jsonMessage);
 
         String messageStr;
@@ -467,7 +468,7 @@ void SinricProClass::extractTimestamp(JsonDocument& message) {
     // extract timestamp from timestamp message right after websocket connection is established
     tempTimestamp = message["timestamp"] | 0;
     if (tempTimestamp) {
-        baseTimestamp = tempTimestamp - (millis() / 1000);
+        timestamp.setTimestamp(tempTimestamp);
         DEBUG_SINRIC("[SinricPro:extractTimestamp(): Got Timestamp %lu\r\n", tempTimestamp);
         return;
     }
@@ -476,7 +477,7 @@ void SinricProClass::extractTimestamp(JsonDocument& message) {
     tempTimestamp = message[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_createdAt] | 0;
     if (tempTimestamp) {
         DEBUG_SINRIC("[SinricPro:extractTimestamp(): Got Timestamp %lu\r\n", tempTimestamp);
-        baseTimestamp = tempTimestamp - (millis() / 1000);
+        timestamp.setTimestamp(tempTimestamp);
         return;
     }
 }
@@ -535,7 +536,7 @@ void SinricProClass::setResponseMessage(String&& message) {
  * @return unsigned long current timestamp (unix epoch time)
  */
 unsigned long SinricProClass::getTimestamp() {
-    return baseTimestamp + (millis() / 1000);
+    return timestamp.getTimestamp();
 }
 
 DynamicJsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage) {
