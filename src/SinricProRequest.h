@@ -14,6 +14,10 @@ struct SinricProRequest {
   JsonObject &response_value;
 };
 
-using SinricProRequestHandler = std::function<bool(SinricProRequest&)>;
+class SinricProRequestHandler {
+  friend class SinricProDevice;
+  private:
+    virtual bool handleRequest(SinricProRequest&) = 0;
+};
 
 } // SINRICPRO_NAMESPACE

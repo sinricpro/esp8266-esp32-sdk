@@ -31,7 +31,7 @@ public:
 protected:
   virtual                              ~SinricProDevice();
 
-  void                                 registerRequestHandler(const SinricProRequestHandler &requestHandler);
+  void                                 registerRequestHandler(SinricProRequestHandler* requestHandler);
   unsigned long                        getTimestamp();
   virtual bool                         sendEvent(JsonDocument &event);
   virtual DynamicJsonDocument          prepareEvent(const char *action, const char *cause);
@@ -41,7 +41,7 @@ protected:
   bool                                 handleRequest(SinricProRequest &request);
 
   String                               deviceId;
-  std::vector<SinricProRequestHandler> requestHandlers;
+  std::vector<SinricProRequestHandler*> requestHandlers;
 
 private:
   SinricProInterface                   *eventSender;
@@ -89,7 +89,7 @@ bool SinricProDevice::sendEvent(JsonDocument& event) {
   return false;
 }
 
-void SinricProDevice::registerRequestHandler(const SinricProRequestHandler &requestHandler) {
+void SinricProDevice::registerRequestHandler(SinricProRequestHandler* requestHandler) {
   requestHandlers.push_back(requestHandler);
 }
 
@@ -104,7 +104,7 @@ String SinricProDevice::getProductType()  {
 
 bool SinricProDevice::handleRequest(SinricProRequest &request) {
   for (auto& requestHandler : requestHandlers) {
-    if (requestHandler(request)) return true;
+    if (requestHandler->handleRequest(request)) return true;
   }
   return false;
 }

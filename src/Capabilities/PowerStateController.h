@@ -1,20 +1,19 @@
 #pragma once
 
-#include "../SinricProRequest.h"
 #include "../EventLimiter.h"
-#include "../SinricProStrings.h"
-
 #include "../SinricProNamespace.h"
+#include "../SinricProRequest.h"
+#include "../SinricProStrings.h"
 namespace SINRICPRO_NAMESPACE {
 
-FSTR(POWERSTATE, state);             // "state"
-FSTR(POWERSTATE, On);                // "On"
-FSTR(POWERSTATE, Off);               // "Off"
-FSTR(POWERSTATE, setPowerState);     // "setPowerState"
+FSTR(POWERSTATE, state);          // "state"
+FSTR(POWERSTATE, On);             // "On"
+FSTR(POWERSTATE, Off);            // "Off"
+FSTR(POWERSTATE, setPowerState);  // "setPowerState"
 
 /**
  * @brief Callback definition for onPowerState function
- * 
+ *
  * Gets called when device receive a `setPowerState` reuqest \n
  * @param[in]   deviceId    String which contains the ID of device
  * @param[in]   state       `true` = device is requested to turn on \n `false` = device is requested to turn off
@@ -27,49 +26,48 @@ FSTR(POWERSTATE, setPowerState);     // "setPowerState"
  **/
 using PowerStateCallback = std::function<bool(const String &, bool &)>;
 
-
 /**
  * @brief PowerStateController
  * @ingroup Capabilities
  **/
 template <typename T>
-class PowerStateController {
+class PowerStateController : public SinricProRequestHandler {
   public:
     PowerStateController();
 
     void onPowerState(PowerStateCallback cb);
     bool sendPowerStateEvent(bool state, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
-  protected:
-    bool handlePowerStateController(SinricProRequest &request);
+  private:
+    virtual bool handleRequest(SinricProRequest &request);
 
   private:
-    EventLimiter event_limiter;
+    EventLimiter       event_limiter;
     PowerStateCallback powerStateCallback;
 };
 
 template <typename T>
-PowerStateController<T>::PowerStateController() 
-: event_limiter(EVENT_LIMIT_STATE) { 
-  T* device = static_cast<T*>(this);
-  device->registerRequestHandler(std::bind(&PowerStateController<T>::handlePowerStateController, this, std::placeholders::_1));
+PowerStateController<T>::PowerStateController()
+    : event_limiter(EVENT_LIMIT_STATE) {
+    T *device = static_cast<T *>(this);
+    device->registerRequestHandler(this);
 }
 
 /**
  * @brief Set callback function for `powerState` request
- * 
+ *
  * @param cb Function pointer to a `PowerStateCallback` function
  * @return void
  * @see PowerStateCallback
  **/
 template <typename T>
 void PowerStateController<T>::onPowerState(PowerStateCallback cb) {
-  powerStateCallback = cb;
+    powerStateCallback = cb;
 }
 
 /**
  * @brief Send `setPowerState` event to SinricPro Server indicating actual power state
- * 
+ *
  * @param state   `true` = device turned on \n `false` = device turned off
  * @param cause   (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
  * @return the success of sending the even
@@ -78,31 +76,31 @@ void PowerStateController<T>::onPowerState(PowerStateCallback cb) {
  **/
 template <typename T>
 bool PowerStateController<T>::sendPowerStateEvent(bool state, String cause) {
-  if (event_limiter) return false;
-  T* device = static_cast<T*>(this);
+    if (event_limiter) return false;
+    T *device = static_cast<T *>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERSTATE_setPowerState, cause.c_str());
-  JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-  event_value[FSTR_POWERSTATE_state] = state ? FSTR_POWERSTATE_On : FSTR_POWERSTATE_Off;
-  return device->sendEvent(eventMessage);
+    DynamicJsonDocument eventMessage   = device->prepareEvent(FSTR_POWERSTATE_setPowerState, cause.c_str());
+    JsonObject          event_value    = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    event_value[FSTR_POWERSTATE_state] = state ? FSTR_POWERSTATE_On : FSTR_POWERSTATE_Off;
+    return device->sendEvent(eventMessage);
 }
 
 template <typename T>
-bool PowerStateController<T>::handlePowerStateController(SinricProRequest &request) {
-  T* device = static_cast<T*>(this);
+bool PowerStateController<T>::handleRequest(SinricProRequest &request) {
+    T *device = static_cast<T *>(this);
 
-  bool success = false;
+    bool success = false;
 
-  if (request.action == FSTR_POWERSTATE_setPowerState && powerStateCallback)  {
-    bool powerState = request.request_value[FSTR_POWERSTATE_state] == FSTR_POWERSTATE_On ? true : false;
-    success = powerStateCallback(device->deviceId, powerState);
-    request.response_value[FSTR_POWERSTATE_state] = powerState ? FSTR_POWERSTATE_On : FSTR_POWERSTATE_Off;
+    if (request.action == FSTR_POWERSTATE_setPowerState && powerStateCallback) {
+        bool powerState                               = request.request_value[FSTR_POWERSTATE_state] == FSTR_POWERSTATE_On ? true : false;
+        success                                       = powerStateCallback(device->deviceId, powerState);
+        request.response_value[FSTR_POWERSTATE_state] = powerState ? FSTR_POWERSTATE_On : FSTR_POWERSTATE_Off;
+        return success;
+    }
     return success;
-  }
-  return success;
 }
 
-} // SINRICPRO_NAMESPACE
+}  // namespace SINRICPRO_NAMESPACE
 
 template <typename T>
 using PowerStateController = SINRICPRO_NAMESPACE::PowerStateController<T>;
