@@ -1,4 +1,9 @@
 # Changelog
+## Version 2.10.2
+- Fixed Timestamp calculation
+
+## Version 2.10.1
+- New Timestamp calculation
 
 ## Version 2.10.0
 - Feature: Push Notification.
