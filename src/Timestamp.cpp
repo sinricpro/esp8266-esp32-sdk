@@ -14,5 +14,6 @@ void Timestamp::update() {
     if (!timestamp_ms) return;
     uint32_t current_millis = millis();
     uint32_t diff_millis    = current_millis - last_update;
-    last_update             = current_millis;
+    timestamp_ms += diff_millis;
+    last_update = current_millis;
 }
