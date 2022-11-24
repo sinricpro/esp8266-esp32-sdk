@@ -1,4 +1,7 @@
 # Changelog
+## Version 2.10.3
+- Fixed version number for PlatformIO library registry
+
 ## Version 2.10.2
 - Fixed Timestamp calculation
 
