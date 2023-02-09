@@ -13,12 +13,20 @@
  * - visit https://github.com/sinricpro/esp8266-esp32-sdk/issues and check for existing issues or open a new one
  */
 
-#include <Arduino.h>
-#ifdef ESP8266 
-       #include <ESP8266WiFi.h>
+// Uncomment the following line to enable serial debug output
+//#define ENABLE_DEBUG
+
+#ifdef ENABLE_DEBUG
+  #define DEBUG_ESP_PORT Serial
+  #define NODEBUG_WEBSOCKETS
+  #define NDEBUG
 #endif 
-#ifdef ESP32   
-       #include <WiFi.h>
+
+#include <Arduino.h>
+#if defined(ESP8266)
+  #include <ESP8266WiFi.h>
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+  #include <WiFi.h>
 #endif
 
 #include "SinricPro.h"

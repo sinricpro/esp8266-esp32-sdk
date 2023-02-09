@@ -9,7 +9,7 @@
 #include <ArduinoJson.h>
 #include "SinricProSignature.h"
 
-#if defined (ESP8266)
+#if defined (ESP8266) || defined(ARDUINO_ARCH_RP2040)
   #include <bearssl/bearssl_hmac.h>
 #endif
 #if defined (ESP32)
@@ -22,7 +22,7 @@ namespace SINRICPRO_NAMESPACE {
 
 String HMACbase64(const String &message, const String &key) {
   byte hmacResult[32];
-#if defined(ESP8266)
+#if defined(ESP8266) || defined(ARDUINO_ARCH_RP2040)
   br_hmac_key_context keyContext; // Holds general HMAC info
   br_hmac_context hmacContext;    // Holds general HMAC info + specific info for the current operation
 
@@ -42,8 +42,8 @@ String HMACbase64(const String &message, const String &key) {
   mbedtls_md_hmac_update(&ctx, (const unsigned char*) message.c_str(), message.length());
   mbedtls_md_hmac_finish(&ctx, hmacResult);
   mbedtls_md_free(&ctx);
-
 #endif
+
 
   base64_encodestate _state;
   base64_init_encodestate(&_state);

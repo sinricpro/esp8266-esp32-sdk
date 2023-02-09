@@ -1,4 +1,7 @@
 # Changelog
+## Version 2.11.1
+- Support Raspberry Pi Pico W
+
 ## Version 2.10.3
 - Fixed version number for PlatformIO library registry
 

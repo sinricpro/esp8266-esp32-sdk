@@ -13,11 +13,12 @@
       "maintainer": true
     }
   ],
-  "version": "2.10.3",
+  "version": "2.11.1",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",
-    "espressif32"
+    "espressif32",
+    "raspberrypi"
   ],
   "dependencies":[
     { 
