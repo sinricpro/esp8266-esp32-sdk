@@ -280,14 +280,14 @@ bool RangeController<T>::handleRangeController(SinricProRequest &request) {
 
       if (cb.type == GenericRangeValueCallback::type_float) {
         float value = request.request_value[FSTR_RANGE_rangeValue];
-        success = cb.callback.cbfloat(device->deviceId, request.instance, value);
+        success = cb.cb_float(device->deviceId, request.instance, value);
         request.response_value[FSTR_RANGE_rangeValue] = value;
         return success;
       }
 
       if (cb.type == GenericRangeValueCallback::type_int) {
         int value = request.request_value[FSTR_RANGE_rangeValue];
-        success = cb.callback.cbint(device->deviceId, request.instance, value);
+        success = cb.cb_int(device->deviceId, request.instance, value);
         request.response_value[FSTR_RANGE_rangeValue] = value;
         return success;
       }
@@ -311,14 +311,14 @@ bool RangeController<T>::handleRangeController(SinricProRequest &request) {
 
       if (cb.type == GenericRangeValueCallback::type_float) {
         float value = request.request_value[FSTR_RANGE_rangeValueDelta];
-        success = cb.callback.cbfloat(device->deviceId, request.instance, value);
+        success = cb.cb_float(device->deviceId, request.instance, value);
         request.response_value[FSTR_RANGE_rangeValue] = value;
         return success;
       }
 
       if (cb.type == GenericRangeValueCallback::type_int) {
         int value = request.request_value[FSTR_RANGE_rangeValueDelta];
-        success = cb.callback.cbint(device->deviceId, request.instance, value);
+        success = cb.cb_int(device->deviceId, request.instance, value);
         request.response_value[FSTR_RANGE_rangeValue] = value;
         return success;
       }
