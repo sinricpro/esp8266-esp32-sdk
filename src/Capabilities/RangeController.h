@@ -87,7 +87,7 @@ using SetRangeValueCallback = std::function<bool(const String &, int &)>;
  * @section AdjustRangeValueCallback Example-Code
  * @snippet callbacks.cpp onAdjustRangeValue
  **/
-using AdjustRangeValueCallback = bool (*)(const String &, int &);
+using AdjustRangeValueCallback = std::function<bool(const String&, int&);
 
 /**
  * @brief Callback definition for onAdjustRangeValue function on a specific instance for custom devices
