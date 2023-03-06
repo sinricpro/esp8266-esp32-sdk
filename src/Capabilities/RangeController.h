@@ -27,33 +27,25 @@ FSTR(RANGE, rangeValueDelta);     // "rangeValueDelta"
  * @snippet callbacks.cpp onRangeValue
  **/
 
-using GenericRangeValueCallback_int   = std::function<bool(const String &, const String &, int &)>;
-using GenericRangeValueCallback_float = std::function<bool(const String &, const String &, float &)>;
+using GenericRangeValueCallback_int   = bool (*)(const String &, const String &, int &);
+using GenericRangeValueCallback_float = bool (*)(const String &, const String &, float &);
 
 struct GenericRangeValueCallback {
   GenericRangeValueCallback() : type(type_unknown) {}
-  GenericRangeValueCallback(GenericRangeValueCallback_int cb)   : type(type_int), callback(cb) {}
-  GenericRangeValueCallback(GenericRangeValueCallback_float cb) : type(type_float), callback(cb) {}
-  ~GenericRangeValueCallback() {};
-  GenericRangeValueCallback& operator=(const GenericRangeValueCallback& other) { this->callback = other.callback; this->type = other.type; return *this; };
+  GenericRangeValueCallback(GenericRangeValueCallback_int cb)   : type(type_int), cb_int(cb) {}
+  GenericRangeValueCallback(GenericRangeValueCallback_float cb) : type(type_float), cb_float(cb) {}
   enum {
     type_unknown,
     type_int,
     type_float
   } type;
-  union Callback {
-    Callback() {};
-    Callback(const GenericRangeValueCallback_int& cb) : cb_int(cb) {};
-    Callback(const GenericRangeValueCallback_float& cb) : cb_float(cb) {};
-    Callback& operator=(const Callback& other) { cb_int = other.cb_int; return *this; }
-    ~Callback(){};
-
+  union {
     GenericRangeValueCallback_int   cb_int;
     GenericRangeValueCallback_float cb_float;
-  } callback;
+  };
 };
 
-using SetRangeValueCallback = std::function<bool(const String &, int &)>;
+using SetRangeValueCallback = bool (*)(const String &, int &);
 
 /**
  * @brief Callback definition for onRangeValue function on a specific instance
@@ -87,7 +79,7 @@ using SetRangeValueCallback = std::function<bool(const String &, int &)>;
  * @section AdjustRangeValueCallback Example-Code
  * @snippet callbacks.cpp onAdjustRangeValue
  **/
-using AdjustRangeValueCallback = std::function<bool(const String&, int&)>;
+using AdjustRangeValueCallback = bool (*)(const String &, int &);
 
 /**
  * @brief Callback definition for onAdjustRangeValue function on a specific instance for custom devices
@@ -280,14 +272,14 @@ bool RangeController<T>::handleRangeController(SinricProRequest &request) {
 
       if (cb.type == GenericRangeValueCallback::type_float) {
         float value = request.request_value[FSTR_RANGE_rangeValue];
-        success = cb.callback.cb_float(device->deviceId, request.instance, value);
+        success = cb.cb_float(device->deviceId, request.instance, value);
         request.response_value[FSTR_RANGE_rangeValue] = value;
         return success;
       }
 
       if (cb.type == GenericRangeValueCallback::type_int) {
         int value = request.request_value[FSTR_RANGE_rangeValue];
-        success = cb.callback.cb_int(device->deviceId, request.instance, value);
+        success = cb.cb_int(device->deviceId, request.instance, value);
         request.response_value[FSTR_RANGE_rangeValue] = value;
         return success;
       }
@@ -311,14 +303,14 @@ bool RangeController<T>::handleRangeController(SinricProRequest &request) {
 
       if (cb.type == GenericRangeValueCallback::type_float) {
         float value = request.request_value[FSTR_RANGE_rangeValueDelta];
-        success = cb.callback.cb_float(device->deviceId, request.instance, value);
+        success = cb.cb_float(device->deviceId, request.instance, value);
         request.response_value[FSTR_RANGE_rangeValue] = value;
         return success;
       }
 
       if (cb.type == GenericRangeValueCallback::type_int) {
         int value = request.request_value[FSTR_RANGE_rangeValueDelta];
-        success = cb.callback.cb_int(device->deviceId, request.instance, value);
+        success = cb.cb_int(device->deviceId, request.instance, value);
         request.response_value[FSTR_RANGE_rangeValue] = value;
         return success;
       }

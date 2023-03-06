@@ -1,7 +1,4 @@
 # Changelog
-## Version 2.10.4
-- Implemented std::function for RangeController to allow lambda functions
-
 ## Version 2.10.3
 - Fixed version number for PlatformIO library registry
 
