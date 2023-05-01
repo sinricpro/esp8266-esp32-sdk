@@ -10,7 +10,7 @@
 [![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build.yml)
 
 ## Note
-1. Use the latest ESP Arduino Core!
+1. Use the latest ESP8226/ESP32/Pico Arduino Core!
 2. Use the latest WebSocktes library!
 3. Use the latest ArduinoJson library!
 
