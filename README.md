@@ -1,4 +1,4 @@
-# SinricPro (ESP8266 / ESP32 SDK)
+# SinricPro (ESP8266 / ESP32 / Pi Pico W)
 [![arduino-library-badge](https://www.ardu-badge.com/badge/SinricPro.svg?)](https://www.ardu-badge.com/SinricPro) [![PlatformIO Registry](https://badges.registry.platformio.org/packages/sinricpro/library/SinricPro.svg)](https://registry.platformio.org/libraries/sinricpro/SinricPro)
 
 [![Platform ESP8266](https://img.shields.io/badge/Platform-Espressif8266-orange)](#) [![Platform ESP32](https://img.shields.io/badge/Platform-Espressif32-orange)](#)
@@ -10,8 +10,9 @@
 [![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build.yml)
 
 ## Note
-1. Use the latest ESP Arduino Core!
+1. Use the latest ESP8226/ESP32/Pico Arduino Core!
 2. Use the latest WebSocktes library!
+3. Use the latest ArduinoJson library!
 
 ## Installation
 
@@ -35,7 +36,7 @@
 
 ## Dependencies
 [ArduinoJson](https://github.com/bblanchon/ArduinoJson) by Benoit Blanchon (minimum Version 6.12.0)   
-[WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version 2.3.5)
+[WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version TBD)
 
 ---
 
