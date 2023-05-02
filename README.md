@@ -36,7 +36,7 @@
 
 ## Dependencies
 [ArduinoJson](https://github.com/bblanchon/ArduinoJson) by Benoit Blanchon (minimum Version 6.12.0)   
-[WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version TBD)
+[WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version 2.4.0)
 
 ---
 
