@@ -243,15 +243,7 @@ void SinricProClass::handle() {
         return;
     }
 
-    bool isWiFiConnected = true;
-    
-    #if defined(ESP32) || defined(ESP8266)
-        isWiFiConnected = WiFi.isConnected();
-    #elif defined(ARDUINO_ARCH_RP2040)
-        isWiFiConnected = WiFi.connected();
-    #endif
-
-    if (isWiFiConnected) {
+    if (WiFi.isConnected()) {
         if (!isConnected()) connect();
         _websocketListener.handle();
         _udpListener.handle();
