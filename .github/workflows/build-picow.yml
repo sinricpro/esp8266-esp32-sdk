@@ -1,0 +1,38 @@
+name: Build
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths:
+      - src/**
+      - examples/**
+    
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example: [examples/Switch/Switch]
+
+    steps:
+    - name: Step 1 - Checkout Repo
+      uses: actions/checkout@v3
+      with:
+          submodules: "recursive"
+    - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.9"
+    - name: Install dependencies
+        run: |
+          pip install -U https://github.com/platformio/platformio/archive/develop.zip
+          pio pkg install --global --platform symlink://.
+    - name: Install library dependencies
+      run: |
+        pio lib --global install "bblanchon/ArduinoJson"
+        pio lib --global install "links2004/WebSockets"
+    - name: Step 7 - Run build test using PlatformIO
+      run: pio ci --lib="." -b earlephilhower
+      env:
+        PLATFORMIO_CI_SRC: ${{ matrix.example }}
