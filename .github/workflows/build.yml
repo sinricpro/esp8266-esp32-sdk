@@ -33,6 +33,6 @@ jobs:
         pio lib --global install "bblanchon/ArduinoJson"
         pio lib --global install "links2004/WebSockets"
     - name: Step 7 - Run build test using PlatformIO
-      run: pio ci --lib="." -b earlephilhower
+      run: pio ci --lib="." -b rpipicow
       env:
         PLATFORMIO_CI_SRC: ${{ matrix.example }}
