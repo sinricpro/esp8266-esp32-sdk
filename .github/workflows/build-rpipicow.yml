@@ -1,4 +1,4 @@
-name: Build
+name: Build for Raspberry Pi Pico W
 
 on:
   pull_request:
