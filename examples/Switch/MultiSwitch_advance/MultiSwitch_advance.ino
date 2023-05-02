@@ -54,28 +54,26 @@
 
 #define DEBOUNCE_TIME 250
 
-#ifdef ESP8266
-#define RELAYPIN_1 D1
-#define RELAYPIN_2 D2
-#define RELAYPIN_3 D3
-#define RELAYPIN_4 D4
-#define SWITCHPIN_1 D8
-#define SWITCHPIN_2 D7
-#define SWITCHPIN_3 D6
-#define SWITCHPIN_4 D5
-#endif
+#if defined(ESP8266)
+  #define RELAYPIN_1 D1
+  #define RELAYPIN_2 D2
+  #define RELAYPIN_3 D3
+  #define RELAYPIN_4 D4
+  #define SWITCHPIN_1 D8
+  #define SWITCHPIN_2 D7
+  #define SWITCHPIN_3 D6
+  #define SWITCHPIN_4 D5
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+  #define LED_BUILTIN 2
 
-#ifdef ESP32
-#define LED_BUILTIN 2
-
-#define RELAYPIN_1 16
-#define RELAYPIN_2 17
-#define RELAYPIN_3 18
-#define RELAYPIN_4 19
-#define SWITCHPIN_1 25
-#define SWITCHPIN_2 26
-#define SWITCHPIN_3 22
-#define SWITCHPIN_4 21
+  #define RELAYPIN_1 16
+  #define RELAYPIN_2 17
+  #define RELAYPIN_3 18
+  #define RELAYPIN_4 19
+  #define SWITCHPIN_1 25
+  #define SWITCHPIN_2 26
+  #define SWITCHPIN_3 22
+  #define SWITCHPIN_4 21
 #endif
 
 typedef struct {      // struct for the std::map below

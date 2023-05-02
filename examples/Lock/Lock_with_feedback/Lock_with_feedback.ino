@@ -42,13 +42,12 @@
 #define LOCK_ID           "YOUR_DEVICE_ID_HERE"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                     // Change baudrate to your need
 
-#ifdef ESP8266
-#define LOCK_PIN          D1                       // PIN where the lock is connected to: HIGH = locked, LOW = unlocked
-#define LOCK_STATE_PIN    D2                       // PIN where the lock feedback is connected to (HIGH:locked, LOW:unlocked)
-#endif
-#ifdef ESP32
-#define LOCK_PIN          16                       // PIN where the lock is connected to: HIGH = locked, LOW = unlocked
-#define LOCK_STATE_PIN    17                       // PIN where the lock feedback is connected to (HIGH:locked, LOW:unlocked)
+#if defined(ESP8266)
+  #define LOCK_PIN          D1                       // PIN where the lock is connected to: HIGH = locked, LOW = unlocked
+  #define LOCK_STATE_PIN    D2                       // PIN where the lock feedback is connected to (HIGH:locked, LOW:unlocked)
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+  #define LOCK_PIN          16                       // PIN where the lock is connected to: HIGH = locked, LOW = unlocked
+  #define LOCK_STATE_PIN    17                       // PIN where the lock feedback is connected to (HIGH:locked, LOW:unlocked)
 #endif
 
 bool lastLockState;

@@ -45,10 +45,9 @@
 #define BAUD_RATE         9600                // Change baudrate to your need (used for serial monitor)
 #define EVENT_WAIT_TIME   60000               // send event every 60 seconds
 
-#ifdef ESP8266
+#if defined(ESP8266)
        #define DHT_PIN    D5
-#endif
-#ifdef ESP32
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
        #define DHT_PIN    5
 #endif
 
