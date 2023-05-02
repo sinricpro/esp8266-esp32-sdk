@@ -51,7 +51,10 @@ bool onPowerState(const String &deviceId, bool &state) {
 void setup() {
   pinMode(RELAY_PIN, OUTPUT);                 // set relay-pin to output mode
   WiFi.begin(WIFI_SSID, WIFI_PASS);           // start wifi
-
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(250);
+  }
+  
   SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];   // create new switch device
   mySwitch.onPowerState(onPowerState);                // apply onPowerState callback
   SinricPro.begin(APP_KEY, APP_SECRET);               // start SinricPro
