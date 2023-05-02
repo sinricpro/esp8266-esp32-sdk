@@ -25,9 +25,9 @@ jobs:
       with:
         python-version: "3.9"
     - name: Install dependencies
-        run: |
-          pip install -U https://github.com/platformio/platformio/archive/develop.zip
-          pio pkg install --global --platform symlink://.
+      run: |
+        pip install -U https://github.com/platformio/platformio/archive/develop.zip
+        pio pkg install --global --platform symlink://.
     - name: Install library dependencies
       run: |
         pio lib --global install "bblanchon/ArduinoJson"
