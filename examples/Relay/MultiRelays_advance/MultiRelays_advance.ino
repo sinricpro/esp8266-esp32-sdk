@@ -15,41 +15,39 @@
 //#define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
-       #define DEBUG_ESP_PORT Serial
-       #define NODEBUG_WEBSOCKETS
-       #define NDEBUG
+  #define DEBUG_ESP_PORT Serial
+  #define NODEBUG_WEBSOCKETS
+  #define NDEBUG
 #endif 
 
 #include <Arduino.h>
-#ifdef ESP8266 
-       #include <ESP8266WiFi.h>
-#endif 
-#ifdef ESP32   
-       #include <WiFi.h>
+#if defined(ESP8266)
+  #include <ESP8266WiFi.h>
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+  #include <WiFi.h>
 #endif
 
 #include <SinricPro.h>
 #include <SinricProSwitch.h>
 
-#ifdef ESP8266
-#define RELAYPIN_1 D1
-#define RELAYPIN_2 D2
-#define RELAYPIN_3 D3
-#define RELAYPIN_4 D4
-#define RELAYPIN_5 D5
-#define RELAYPIN_6 D6
-#define RELAYPIN_7 D7
-#define RELAYPIN_8 D8
-#endif
-#ifdef ESP32
-#define RELAYPIN_1 16
-#define RELAYPIN_2 17
-#define RELAYPIN_3 18
-#define RELAYPIN_4 19
-#define RELAYPIN_5 21
-#define RELAYPIN_6 22
-#define RELAYPIN_7 23
-#define RELAYPIN_8 25
+#if defined(ESP8266)
+  #define RELAYPIN_1 D1
+  #define RELAYPIN_2 D2
+  #define RELAYPIN_3 D3
+  #define RELAYPIN_4 D4
+  #define RELAYPIN_5 D5
+  #define RELAYPIN_6 D6
+  #define RELAYPIN_7 D7
+  #define RELAYPIN_8 D8
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+  #define RELAYPIN_1 16
+  #define RELAYPIN_2 17
+  #define RELAYPIN_3 18
+  #define RELAYPIN_4 19
+  #define RELAYPIN_5 21
+  #define RELAYPIN_6 22
+  #define RELAYPIN_7 23
+  #define RELAYPIN_8 25
 #endif
 
 /*****************

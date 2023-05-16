@@ -20,19 +20,17 @@
 //#define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
-       #define DEBUG_ESP_PORT Serial
-       #define NODEBUG_WEBSOCKETS
-       #define NDEBUG
+  #define DEBUG_ESP_PORT Serial
+  #define NODEBUG_WEBSOCKETS
+  #define NDEBUG
 #endif 
-
 
 #include <Arduino.h>
-#ifdef ESP8266 
-       #include <ESP8266WiFi.h>
-#endif 
-#ifdef ESP32   
-       #include <WiFi.h>
-#endif
+#if defined(ESP8266)
+  #include <ESP8266WiFi.h>
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+  #include <WiFi.h>
+#endiff
 
 #include "SinricPro.h"
 #include "SinricProTemperaturesensor.h"
@@ -50,13 +48,12 @@ Adafruit_HTU21DF htu = Adafruit_HTU21DF();
 #define BAUD_RATE         9600                // Change baudrate to your need (used for serial monitor)
 #define EVENT_WAIT_TIME   60000   
 
-#ifdef ESP8266
-      #define I2C_SCL 14    //D5                
-      #define I2C_SDA 12    //D6
-#endif
-#ifdef ESP32
-      #define I2C_SCL 18                    
-      #define I2C_SDA 19 
+#if defined(ESP8266)
+  #define I2C_SCL 14    //D5                
+  #define I2C_SDA 12    //D6
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+  #define I2C_SCL 18                    
+  #define I2C_SDA 19 
 #endif
 
 bool deviceIsOn;                              // Temeprature sensor on/off state

@@ -1,0 +1,38 @@
+name: Build for Raspberry Pi Pico W
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths:
+      - src/**
+      - examples/**
+    
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example: [examples/ACUnit, examples/AirQualitySensor/AirQualitySensor, examples/Blinds, examples/ContactSensor, examples/DimSwitch, examples/doorbell, examples/Fan, examples/GarageDoor, examples/Light/Light, examples/Lock/Lock, examples/Lock/Lock_with_feedback, examples/MotionSensor, examples/PowerSensor, examples/Relay/MultiRelays_advance, examples/Relay/Relay, examples/Speaker, examples/Switch/MultiSwitch_advance, examples/Switch/MultiSwitch_beginner, examples/Switch/MultiSwitch_intermediate, examples/Switch/Switch, examples/Thermostat, examples/TV]
+
+    steps:
+    - name: Step 1 - Checkout Repo
+      uses: actions/checkout@v3
+      with:
+          submodules: "recursive"
+    - name: Step 2 - Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.9"
+    - name: Step 3 - Install dependencies
+      run: |
+        pip install -U https://github.com/platformio/platformio/archive/develop.zip
+        pio pkg install --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
+    - name: Step 4 - Install library dependencies
+      run: |
+        pio lib --global install "bblanchon/ArduinoJson"
+        pio lib --global install "links2004/WebSockets"
+    - name: Step 5 - Run build test using PlatformIO
+      run: pio ci --lib="." -b rpipicow
+      env:
+        PLATFORMIO_CI_SRC: ${{ matrix.example }}

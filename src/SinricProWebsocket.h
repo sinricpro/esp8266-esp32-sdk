@@ -7,11 +7,10 @@
 
 #pragma once
 
-#if defined ESP8266
-#include <ESP8266WiFi.h>
-#endif
-#if defined ESP32
-#include <WiFi.h>
+#if defined(ESP8266)
+    #include <ESP8266WiFi.h>
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+    #include <WiFi.h>
 #endif
 
 #include <ArduinoJson.h>
@@ -79,11 +78,12 @@ WebsocketListener::~WebsocketListener() {
 }
 
 void WebsocketListener::setExtraHeaders() {
-#ifdef ESP8266
+#if defined(ESP8266)
     const char* platform = "ESP8266";
-#endif
-#ifdef ESP32
+#elif defined(ESP32)
     const char* platform = "ESP32";
+#elif defined(ARDUINO_ARCH_RP2040)
+    const char* platform = "RP2040";
 #endif
 
     String headers = "appkey:" + appKey;

@@ -13,17 +13,16 @@
 //#define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
-       #define DEBUG_ESP_PORT Serial
-       #define NODEBUG_WEBSOCKETS
-       #define NDEBUG
+  #define DEBUG_ESP_PORT Serial
+  #define NODEBUG_WEBSOCKETS
+  #define NDEBUG
 #endif 
 
 #include <Arduino.h>
-#ifdef ESP8266 
-       #include <ESP8266WiFi.h>
-#endif 
-#ifdef ESP32   
-       #include <WiFi.h>
+#if defined(ESP8266)
+  #include <ESP8266WiFi.h>
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+  #include <WiFi.h>
 #endif
 
 #include "SinricPro.h"
@@ -36,12 +35,10 @@
 #define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE         9600                // Change baudrate to your need
 
-#ifdef ESP8266
-#define RELAY_PIN         D5                  // Pin where the relay is connected (D5 = GPIO 14 on ESP8266)
-#endif
-
-#ifdef ESP32
-#define RELAY_PIN         16                  // Pin where the relay is connected (GPIO 16 on ESP32)
+#if defined(ESP8266)
+  #define RELAY_PIN         D5                  // Pin where the relay is connected (D5 = GPIO 14 on ESP8266)
+#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+  #define RELAY_PIN         16                  // Pin where the relay is connected (GPIO 16 on ESP32)
 #endif
 
 bool onPowerState(const String &deviceId, bool &state) {
@@ -52,7 +49,10 @@ bool onPowerState(const String &deviceId, bool &state) {
 void setup() {
   pinMode(RELAY_PIN, OUTPUT);                 // set relay-pin to output mode
   WiFi.begin(WIFI_SSID, WIFI_PASS);           // start wifi
-
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(250);
+  }
+  
   SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];   // create new switch device
   mySwitch.onPowerState(onPowerState);                // apply onPowerState callback
   SinricPro.begin(APP_KEY, APP_SECRET);               // start SinricPro
