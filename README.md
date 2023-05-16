@@ -7,7 +7,7 @@
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/sinricpro/esp8266-esp32-sdk)](https://github.com/sinricpro/esp8266-esp32-sdk/releases)
 
-[![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build.yml)
+[![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-esp8266-esp32.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-esp8266-esp32.yml)
 
 ## Note
 1. Use the latest ESP8226/ESP32/RP2040 Arduino Core!
