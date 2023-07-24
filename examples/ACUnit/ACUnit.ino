@@ -82,6 +82,12 @@ void setupWiFi() {
   Serial.printf("\r\n[Wifi]: Connecting");
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
+  #if defined(ESP8266)
+    WiFi.setSleepMode(WIFI_NONE_SLEEP); 
+  #elif defined(ESP32)
+    WiFi.setSleep(false); 
+  #endif
+
   while (WiFi.status() != WL_CONNECTED) {
     Serial.printf(".");
     delay(250);
