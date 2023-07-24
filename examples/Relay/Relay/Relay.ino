@@ -48,6 +48,15 @@ bool onPowerState(const String &deviceId, bool &state) {
 
 void setup() {
   pinMode(RELAY_PIN, OUTPUT);                 // set relay-pin to output mode
+
+  #if defined(ESP8266)
+    WiFi.setSleepMode(WIFI_NONE_SLEEP); 
+    WiFi.setAutoReconnect(true);
+  #elif defined(ESP32)
+    WiFi.setSleep(false); 
+    WiFi.setAutoReconnect(true);
+  #endif
+  
   WiFi.begin(WIFI_SSID, WIFI_PASS);           // start wifi
   while (WiFi.status() != WL_CONNECTED) {
     delay(250);

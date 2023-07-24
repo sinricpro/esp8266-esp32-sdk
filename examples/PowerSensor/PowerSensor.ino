@@ -89,6 +89,15 @@ bool sendPowerSensorData() {
 
 void setupWiFi() {
   Serial.printf("\r\n[Wifi]: Connecting");
+  
+  #if defined(ESP8266)
+    WiFi.setSleepMode(WIFI_NONE_SLEEP); 
+    WiFi.setAutoReconnect(true);
+  #elif defined(ESP32)
+    WiFi.setSleep(false); 
+    WiFi.setAutoReconnect(true);
+  #endif
+  
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
