@@ -127,7 +127,7 @@ void setupSinricPro() {
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
-  SinricPro.begin(APP_KEY, APP_SECRET, "testws.sinric.pro");
+  SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 void setupWiFi() {
