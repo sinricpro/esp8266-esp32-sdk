@@ -1,4 +1,4 @@
-# Temperature Sensor Tutorials
+# Tutorials
 
 1. [Temperature Sensor Tutorial - DHT11 and DHT22, AM2302, RHT03](https://help.sinric.pro/pages/tutorials/temperaturesensors/temperature_sensor_dht)
 
