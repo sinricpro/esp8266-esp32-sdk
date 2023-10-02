@@ -39,7 +39,7 @@
 #define APP_KEY           ""   // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET        ""   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
 #define DEVICE_ID         ""   // Should look like "5dc1564130xxxxxxxxxxxxxx"
-#define BAUD_RATE         9600 // Change baudrate to your need
+#define BAUD_RATE         115200 // Change baudrate to your need
 
 // Air quality sensor event dispatch time.  Min is every 1 min.
 #define MIN (1000UL * 60 * 1)

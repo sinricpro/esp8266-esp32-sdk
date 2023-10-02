@@ -50,7 +50,7 @@
 // comment the following line if you use a toggle switches instead of tactile buttons
 #define TACTILE_BUTTON 1
 
-#define BAUD_RATE   9600
+#define BAUD_RATE   115200
 
 #define DEBOUNCE_TIME 250
 
