@@ -23,7 +23,7 @@ namespace SINRICPRO_NAMESPACE {
 class SinricProPowerSensor :  public SinricProDevice,
                               public SettingController<SinricProPowerSensor>,
                               public PushNotification<SinricProPowerSensor>,
-                              public PowerSensor<SinricProPowerSensor>,
+                              public PowerSensor<SinricProPowerSensor> {
                               friend class SettingController<SinricProPowerSensor>;
                               friend class PushNotification<SinricProPowerSensor>;
                               friend class PowerSensor<SinricProPowerSensor>;
