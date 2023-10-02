@@ -63,6 +63,11 @@ void doPowerMeasure() {
 }
 
 bool sendPowerSensorData() {
+  if (SinricPro.isConnected() == false) {
+    Serial.printf("Not connected to Sinric Pro...!\r\n");
+    return; 
+  }
+  
   // limit data rate to SAMPLE_EVERY_SEC
   static unsigned long lastEvent = 0;
   unsigned long actualMillis = millis();

@@ -86,6 +86,11 @@ void loop() {
   SinricPro.handle();
 
  if((long)(millis() - dispatchTime) >= 0) {
+  if (SinricPro.isConnected() == false) {
+    Serial.printf("Not connected to Sinric Pro...!\r\n");
+    return; 
+  }
+  
    SinricProAirQualitySensor &mySinricProAirQualitySensor = SinricPro[DEVICE_ID]; // get sensor device
    
    int pm1 =0;

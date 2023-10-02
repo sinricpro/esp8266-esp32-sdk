@@ -64,6 +64,11 @@ unsigned long lastEvent = (-EVENT_WAIT_TIME); // last time event has been sent
  * - Send event to SinricPro Server if temperature or humidity changed
  */
 void handleTemperaturesensor() {
+  if (SinricPro.isConnected() == false) {
+    Serial.printf("Not connected to Sinric Pro...!\r\n");
+    return; 
+  }
+  
   unsigned long actualMillis = millis();
   if (actualMillis - lastEvent < EVENT_WAIT_TIME) return; //only check every EVENT_WAIT_TIME milliseconds
   if (!aht.begin()) {
