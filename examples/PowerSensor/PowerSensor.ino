@@ -74,7 +74,9 @@ void sendPowerSensorData() {
   // send measured data
   SinricProPowerSensor &myPowerSensor = SinricPro[POWERSENSOR_ID];
   bool success = myPowerSensor.sendPowerSensorEvent(powerMeasure.voltage, powerMeasure.current, powerMeasure.power, powerMeasure.apparentPower);
-  return;
+  if(!success) {
+    Serial.printf("Something went wrong...could not send Event to server!\r\n");
+  }
 }
 
 void setupWiFi() {

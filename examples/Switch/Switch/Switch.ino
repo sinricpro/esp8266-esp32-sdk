@@ -79,7 +79,11 @@ void handleButtonPress() {
     // get Switch device back
     SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
     // send powerstate event
-    mySwitch.sendPowerStateEvent(myPowerState); // send the new powerState to SinricPro server
+    bool success = mySwitch.sendPowerStateEvent(myPowerState); // send the new powerState to SinricPro server
+    if(!success) {
+      Serial.printf("Something went wrong...could not send Event to server!\r\n");
+    }
+
     Serial.printf("Device %s turned %s (manually via flashbutton)\r\n", mySwitch.getDeviceId().c_str(), myPowerState?"on":"off");
 
     lastBtnPress = actualMillis;  // update last button press variable

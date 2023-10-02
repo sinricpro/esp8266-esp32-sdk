@@ -154,7 +154,11 @@ void handleFlipSwitches() {
           digitalWrite(relayPIN, newRelayState);                                  // set the trelay to the new state
 
           SinricProSwitch &mySwitch = SinricPro[deviceId];                        // get Switch device from SinricPro
-          mySwitch.sendPowerStateEvent(newRelayState);                            // send the event
+          bool success = mySwitch.sendPowerStateEvent(newRelayState);             // send the event
+          if(!success) {
+            Serial.printf("Something went wrong...could not send Event to server!\r\n");
+          }
+
 #ifdef TACTILE_BUTTON
         }
 #endif      

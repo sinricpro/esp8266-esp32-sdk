@@ -60,7 +60,10 @@ void checkButtonPress() {
       SinricProDoorbell& myDoorbell = SinricPro[DOORBELL_ID];
 
       // send doorbell event
-      myDoorbell.sendDoorbellEvent();
+      bool success = myDoorbell.sendDoorbellEvent();
+      if(!success) {
+        Serial.printf("Something went wrong...could not send Event to server!\r\n");
+      }
     }
   }
 }

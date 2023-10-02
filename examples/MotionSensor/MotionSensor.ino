@@ -67,7 +67,10 @@ void handleMotionsensor() {
     lastMotionState = actualMotionState;              // update last known state
     lastChange = actualMillis;                        // update debounce time
     SinricProMotionsensor &myMotionsensor = SinricPro[MOTIONSENSOR_ID]; // get motion sensor device
-    myMotionsensor.sendMotionEvent(actualMotionState);
+    bool success = myMotionsensor.sendMotionEvent(actualMotionState);
+    if(!success) {
+      Serial.printf("Something went wrong...could not send Event to server!\r\n");
+    }
   }
 }
 

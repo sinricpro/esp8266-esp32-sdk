@@ -92,8 +92,13 @@ void loop() {
    int pm2_5 = 0;   
    int pm10=0;   
    
-   mySinricProAirQualitySensor.sendAirQualityEvent(pm1, pm2_5, pm10, "PERIODIC_POLL");
+  bool success = mySinricProAirQualitySensor.sendAirQualityEvent(pm1, pm2_5, pm10, "PERIODIC_POLL");
+  if(success) {
+    Serial.println("Air Quality event sent! ..");
+  } else {
+    Serial.printf("Something went wrong...could not send Event to server!\r\n");
+  }
+
    dispatchTime += MIN;
-   Serial.println("Sending Air Quality event ..");
  }  
 }

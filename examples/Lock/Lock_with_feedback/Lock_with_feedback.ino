@@ -64,7 +64,10 @@ void checkLockState() {
   Serial.printf("Lock has been %s manually\r\n", currentLockState?"locked":"unlocked");   // print current lock state to serial
   lastLockState = currentLockState;                                                       // update last known lock state
   SinricProLock &myLock = SinricPro[LOCK_ID];                                             // get the LockDevice
-  myLock.sendLockStateEvent(currentLockState);                                            // update LockState on Server
+  bool success = myLock.sendLockStateEvent(currentLockState);                             // update LockState on Server
+  if(!success) {
+      Serial.printf("Something went wrong...could not send Event to server!\r\n");
+  }
 }
 
 void setupWiFi() {

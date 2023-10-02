@@ -66,7 +66,10 @@ void handleContactsensor() {
     lastContactState = actualContactState;              // update last known state
     lastChange = actualMillis;                          // update debounce time
     SinricProContactsensor &myContact = SinricPro[CONTACT_ID]; // get contact sensor device
-    myContact.sendContactEvent(actualContactState);      // send event with actual state
+    bool success = myContact.sendContactEvent(actualContactState);      // send event with actual state
+    if(!success) {
+      Serial.printf("Something went wrong...could not send Event to server!\r\n");
+    }
   }
 }
 
