@@ -62,17 +62,7 @@ void doPowerMeasure() {
   powerMeasure.apparentPower = powerMeasure.power + (random(10,20)/10.0f);
 }
 
-bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s power turned %s \r\n", deviceId.c_str(), state?"on":"off");
-  powerState = state;
-  if (powerState) doPowerMeasure(); // start a measurement when device is turned on
-  return true; // request handled properly
-}
-
 bool sendPowerSensorData() {
-  // dont send data if device is turned off
-  if (!powerState) return false;
-
   // limit data rate to SAMPLE_EVERY_SEC
   static unsigned long lastEvent = 0;
   unsigned long actualMillis = millis();
@@ -101,9 +91,6 @@ void setupWiFi() {
 
 void setupSinricPro() {
   SinricProPowerSensor &myPowerSensor = SinricPro[POWERSENSOR_ID];
-
-  // set callback function to device
-  myPowerSensor.onPowerState(onPowerState);
 
   // setup SinricPro
   //SinricPro.restoreDeviceStates(true); // Uncomment to restore the last known state from the server.

@@ -44,7 +44,6 @@
                                               // LOW  = contact is open
                                               // HIGH = contact is closed
 
-bool myPowerState = true;                     // assume device is turned on
 bool lastContactState = false;
 unsigned long lastChange = 0;
 
@@ -57,8 +56,11 @@ unsigned long lastChange = 0;
  *      LOW  = contactsensor is open
  */
 void handleContactsensor() {
-  if (!myPowerState) return;                            // if device switched off...do nothing
-
+  if (SinricPro.isConnected() == false) {
+    Serial.printf("Not connected to Sinric Pro...!\r\n");
+    return; 
+  }
+  
   unsigned long actualMillis = millis();
   if (actualMillis - lastChange < 250) return;          // debounce contact state transitions (same as debouncing a pushbutton)
 
@@ -72,22 +74,6 @@ void handleContactsensor() {
     myContact.sendContactEvent(actualContactState);      // send event with actual state
   }
 }
-
-/**
- * @brief Callback for setPowerState request
- *
- * @param deviceId      String containing deviceId (useful if this callback used by multiple devices)
- * @param[in] state     bool true=turn on device / false=turn off device
- * @param[out] state    bool true=device turned on / false=device turned off
- * @return true         request handled properly
- * @return false        request can't be handled because some kind of error happened
- */
-bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
-  myPowerState = state;
-  return true; // request handled properly
-}
-
 
 // setup function for WiFi connection
 void setupWiFi() {
@@ -106,9 +92,6 @@ void setupWiFi() {
 void setupSinricPro() {
   // add device to SinricPro
   SinricProContactsensor& myContact = SinricPro[CONTACT_ID];
-
-  // set callback function to device
-  myContact.onPowerState(onPowerState);
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); });

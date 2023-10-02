@@ -61,7 +61,6 @@ void setupSinricPro() {
 
   // set callback function to device
  
-
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });

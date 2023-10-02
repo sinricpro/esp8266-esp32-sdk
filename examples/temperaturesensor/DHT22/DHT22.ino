@@ -53,31 +53,11 @@
 
 DHT dht;                                      // DHT sensor
 
-bool deviceIsOn;                              // Temeprature sensor on/off state
 float temperature;                            // actual temperature
 float humidity;                               // actual humidity
 float lastTemperature;                        // last known temperature (for compare)
 float lastHumidity;                           // last known humidity (for compare)
 unsigned long lastEvent = (-EVENT_WAIT_TIME); // last time event has been sent
-
-/* bool onPowerState(String deviceId, bool &state) 
- *
- * Callback for setPowerState request
- * parameters
- *  String deviceId (r)
- *    contains deviceId (useful if this callback used by multiple devices)
- *  bool &state (r/w)
- *    contains the requested state (true:on / false:off)
- *    must return the new state
- * 
- * return
- *  true if request should be marked as handled correctly / false if not
- */
-bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Temperaturesensor turned %s (via SinricPro) \r\n", state?"on":"off");
-  deviceIsOn = state; // turn on / off temperature sensor
-  return true; // request handled properly
-}
 
 /* handleTemperatatureSensor()
  * - Checks if Temperaturesensor is turned on
@@ -87,8 +67,6 @@ bool onPowerState(const String &deviceId, bool &state) {
  * - Send event to SinricPro Server if temperature or humidity changed
  */
 void handleTemperaturesensor() {
-  if (deviceIsOn == false) return; // device is off...do nothing
-
   unsigned long actualMillis = millis();
   if (actualMillis - lastEvent < EVENT_WAIT_TIME) return; //only check every EVENT_WAIT_TIME milliseconds
 
@@ -134,7 +112,6 @@ void setupWiFi() {
 void setupSinricPro() {
   // add device to SinricPro
   SinricProTemperaturesensor &mySensor = SinricPro[TEMP_SENSOR_ID];
-  mySensor.onPowerState(onPowerState);
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 

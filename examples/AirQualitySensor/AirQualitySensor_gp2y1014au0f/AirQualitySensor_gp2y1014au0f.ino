@@ -67,9 +67,6 @@ void setupSinricPro() {
   // add device to SinricPro
   SinricProAirQualitySensor& mySinricProAirQualitySensor = SinricPro[DEVICE_ID];
 
-  // set callback function to device
- 
-
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
@@ -82,14 +79,12 @@ void setupDustSensor() {
   dustSensor.begin();
 }
 
-
 void setup() {
   Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
   setupDustSensor();  
 }
-
 
 void loop() {
   SinricPro.handle();
