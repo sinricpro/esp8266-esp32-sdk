@@ -17,13 +17,15 @@
  */
 
 // Uncomment the following line to enable serial debug output
-//#define ENABLE_DEBUG
+#define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
   #define DEBUG_ESP_PORT Serial
   #define NODEBUG_WEBSOCKETS
   #define NDEBUG
 #endif 
+
+//#define ENABLE_STATIC_IP
 
 #include <WiFi.h>
 #include <WebServer.h>
@@ -37,48 +39,82 @@
 #include "OV2640Streamer.h"
 #include "CRtspSession.h"
 
-// Select your camera model
+// Select camera model
 
-//#define T_Camera_V16_VERSION
-//#define T_Camera_V05_VERSION
-//#define T_Camera_JORNAL_VERSION
-//#define T_Camera_PLUS_VERSION
-//#define T_Camera_V162_VERSION
-//#define T_Camera_MINI_VERSION
-//#define T_Camera_V17_VERSION
-//#define ESPRESSIF_ESP_EYE
-//#define CAMERA_MODEL_AI_THINKER
+//#define CAMERA_MODEL_WROVER_KIT
+//#define CAMERA_MODEL_ESP_EYE
 //#define CAMERA_MODEL_M5STACK_PSRAM
-//#define CAMERA_MODEL_M5STACK_WITHOUT_PSRAM
-//#define CAMERA_MODEL_M5STACK_PSRAM_B
+//#define CAMERA_MODEL_M5STACK_V2_PSRAM
+//#define CAMERA_MODEL_M5STACK_WIDE
+//#define CAMERA_MODEL_M5STACK_ESP32CAM
+//#define CAMERA_MODEL_M5STACK_UNITCAM
+//#define CAMERA_MODEL_AI_THINKER
+//#define CAMERA_MODEL_TTGO_T_JOURNAL
+//#define CAMERA_MODEL_ESP32_CAM_BOARD
+//#define CAMERA_MODEL_ESP32S3_CAM_LCD
+//#define CAMERA_MODEL_ESP32S2_CAM_BOARD
+//#define CAMERA_MODEL_ESP32S3_EYE
 
-#include "select_pins.h"
+/*
+Notice:
+
+With latest version of ESP32 Core Micro-RTSP does not compile. To fix it
+
+1. Goto C:\Users\<username>\AppData\Local\Arduino15\packages\esp32\hardware\esp32\<version>
+
+2. Make a copy of platform.txt and rename it to platform.local.txt.
+
+3. Open platform.txt. Change
+
+# Arduino Compile Warning Levels
+compiler.warning_flags=-w
+compiler.warning_flags.none=-w
+compiler.warning_flags.default=
+compiler.warning_flags.more=-Wall -Werror=all
+compiler.warning_flags.all=-Wall -Werror=all -Wextra
+
+To:
+
+# Arduino Compile Warning Levels
+compiler.warning_flags=-w
+compiler.warning_flags.none=-w
+compiler.warning_flags.default=
+compiler.warning_flags.more=-Wall
+compiler.warning_flags.all=-Wall -Wextra
+
+4. Restart Arduino IDE !!!!
+
+*/
+
+
+#include "camera_pins.h"
  
-#define WIFI_SSID  "YOUR-WIFI-SSID"
-#define WIFI_PASSWD "YOUR-WIFI-PASSWORD"
+#define WIFI_SSID         "YOUR-WIFI-SSID"
+#define WIFI_PASSWD       "YOUR-WIFI-PASSWORD"
 
 #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx". Get it from https://portal.sinric.pro/ -> Credentials
 #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx" . Get it from https://portal.sinric.pro/ -> Credentials
 #define CAMERA_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx". Get it from https://portal.sinric.pro/ -> Devices
+
 
 OV2640 cam;
 CStreamer *streamer;
 
 WiFiServer rtspServer(8554);
 
-// Optional but important for stability. 
-IPAddress local_IP(192, 168, 1, 124);
-IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 255, 0);
-IPAddress primaryDNS(8, 8, 8, 8);   //optional
-IPAddress secondaryDNS(8, 8, 4, 4); //optional
-
+#ifdef ENABLE_STATIC_IP
+  // Optional but important for stability. 
+  IPAddress local_IP(192, 168, 1, 124);
+  IPAddress gateway(192, 168, 1, 1);
+  IPAddress subnet(255, 255, 255, 0);
+  IPAddress primaryDNS(8, 8, 8, 8);   //optional
+  IPAddress secondaryDNS(8, 8, 4, 4); //optional
+#endif 
 
 bool onPowerState(const String &deviceId, bool &state) {
   Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
   return true; // request handled properly
 }
-
 
 // setup function for SinricPro
 void setupSinricPro() {
@@ -97,11 +133,13 @@ void setupSinricPro() {
 void setupWiFi() {
   IPAddress ip;
   
-  // Configures static IP address
-  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
-    Serial.println("Failed to configure IP");
-  }
-  
+  #ifdef ENABLE_STATIC_IP
+    // Configures static IP address
+    if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
+      Serial.println("Failed to configure IP");
+    }
+  #endif 
+
   WiFi.begin(WIFI_SSID, WIFI_PASSWD);
   while (WiFi.status() != WL_CONNECTED) {
       delay(500);
@@ -130,28 +168,35 @@ void setupCamera() {
   config.pin_pclk = PCLK_GPIO_NUM;
   config.pin_vsync = VSYNC_GPIO_NUM;
   config.pin_href = HREF_GPIO_NUM;
-  config.pin_sscb_sda = SIOD_GPIO_NUM;
-  config.pin_sscb_scl = SIOC_GPIO_NUM;
+  config.pin_sccb_sda = SIOD_GPIO_NUM;
+  config.pin_sccb_scl = SIOC_GPIO_NUM;
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
   config.pixel_format = PIXFORMAT_JPEG; //PIXFORMAT_YUV422 PIXFORMAT_GRAYSCALE PIXFORMAT_RGB565 PIXFORMAT_JPEG
  
 
-  /*
-  FRAMESIZE_UXGA (1600 x 1200)
-  FRAMESIZE_QVGA (320 x 240)
-  FRAMESIZE_CIF (352 x 288)
-  FRAMESIZE_VGA (640 x 480)
-  FRAMESIZE_SVGA (800 x 600)
-  FRAMESIZE_XGA (1024 x 768)
-  FRAMESIZE_SXGA (1280 x 1024)
+/* 
+    FRAMESIZE_96X96,    // 96x96
+    FRAMESIZE_QQVGA,    // 160x120
+    FRAMESIZE_QCIF,     // 176x144
+    FRAMESIZE_HQVGA,    // 240x176
+    FRAMESIZE_240X240,  // 240x240
+    FRAMESIZE_QVGA,     // 320x240
+    FRAMESIZE_CIF,      // 400x296
+    FRAMESIZE_HVGA,     // 480x320
+    FRAMESIZE_VGA,      // 640x480
+    FRAMESIZE_SVGA,     // 800x600
+    FRAMESIZE_XGA,      // 1024x768
+    FRAMESIZE_HD,       // 1280x720
+    FRAMESIZE_SXGA,     // 1280x1024
+    FRAMESIZE_UXGA,     // 1600x1200
   */
 
   if(psramFound()){
     Serial.println("psram found");
-    config.frame_size = FRAMESIZE_UXGA;
-    config.jpeg_quality = 40; //10-63 lower number means higher quality
+    config.frame_size = FRAMESIZE_VGA;
+    config.jpeg_quality = 10; //10-63 lower number means higher quality
     config.fb_count = 2;
   } else {
     Serial.println("psram not found");
@@ -165,8 +210,8 @@ void setupCamera() {
 
 void setupStreaming() {
     rtspServer.begin();  
-    //streamer = new SimStreamer(true);             // our streamer for UDP/TCP based RTP transport
     streamer = new OV2640Streamer(cam);             // our streamer for UDP/TCP based RTP transport
+    Serial.print("Use 'rtsp://"); Serial.print(WiFi.localIP()); Serial.println(":8554/mjpeg/1' to stream via VLC");
 }
 
 void handleStreaming() {
