@@ -105,11 +105,6 @@ void loop() {
    Serial.print(dustSensor.getRunningAverage());
    Serial.println(" ug/m3");
 
-   if (SinricPro.isConnected() == false) {
-    Serial.printf("Not connected to Sinric Pro...!\r\n");
-    return; 
-   }
-  
    SinricProAirQualitySensor &mySinricProAirQualitySensor = SinricPro[DEVICE_ID]; // get air q sensor device
    
    int pm1=0;

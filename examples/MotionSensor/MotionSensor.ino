@@ -57,11 +57,6 @@ unsigned long lastChange = 0;
  *      LOW  = motion not detected
  */
 void handleMotionsensor() {
-  if (SinricPro.isConnected() == false) {
-    Serial.printf("Not connected to Sinric Pro...!\r\n");
-    return; 
-  }
-  
   unsigned long actualMillis = millis();
   if (actualMillis - lastChange < 250) return;          // debounce motionsensor state transitions (same as debouncing a pushbutton)
 

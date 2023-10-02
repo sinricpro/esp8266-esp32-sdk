@@ -62,24 +62,19 @@ void doPowerMeasure() {
   powerMeasure.apparentPower = powerMeasure.power + (random(10,20)/10.0f);
 }
 
-bool sendPowerSensorData() {
-  if (SinricPro.isConnected() == false) {
-    Serial.printf("Not connected to Sinric Pro...!\r\n");
-    return; 
-  }
-  
+void sendPowerSensorData() {
   // limit data rate to SAMPLE_EVERY_SEC
   static unsigned long lastEvent = 0;
   unsigned long actualMillis = millis();
   if (actualMillis - lastEvent < (SAMPLE_EVERY_SEC * 1000)) return false;
   lastEvent = actualMillis;
 
+  doPowerMeasure();
+
   // send measured data
   SinricProPowerSensor &myPowerSensor = SinricPro[POWERSENSOR_ID];
   bool success = myPowerSensor.sendPowerSensorEvent(powerMeasure.voltage, powerMeasure.current, powerMeasure.power, powerMeasure.apparentPower);
-  // if measured data was sent do a new measure
-  if (success) doPowerMeasure();
-  return success;
+  return;
 }
 
 void setupWiFi() {

@@ -56,13 +56,13 @@ unsigned long lastChange = 0;
  *      LOW  = contactsensor is open
  */
 void handleContactsensor() {
+  unsigned long actualMillis = millis();
+  if (actualMillis - lastChange < 250) return;          // debounce contact state transitions (same as debouncing a pushbutton)
+
   if (SinricPro.isConnected() == false) {
     Serial.printf("Not connected to Sinric Pro...!\r\n");
     return; 
   }
-  
-  unsigned long actualMillis = millis();
-  if (actualMillis - lastChange < 250) return;          // debounce contact state transitions (same as debouncing a pushbutton)
 
   bool actualContactState = digitalRead(CONTACT_PIN);   // read actual state of contactsensor
 
