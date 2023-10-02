@@ -73,11 +73,6 @@ void handleTemperaturesensor() {
   unsigned long actualMillis = millis();
   if (actualMillis - lastEvent < EVENT_WAIT_TIME) return; //only check every EVENT_WAIT_TIME milliseconds
 
-  if (!SinricPro.isConnected()) {
-    Serial.printf("Not connected to Sinric Pro...!\r\n");
-    return; 
-  }
-
   if (!htu.begin()) {
     Serial.printf("Sensor not initialized\r\n");
     return;

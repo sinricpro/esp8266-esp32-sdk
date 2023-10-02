@@ -71,11 +71,6 @@ void handleTemperaturesensor() {
     return;
   }
 
-  if (SinricPro.isConnected() == false) {
-    Serial.printf("Not connected to Sinric Pro...!\r\n");
-    return; 
-  }
-
   sensors_event_t hum, temp;
   aht.getEvent(&hum, &temp);
   float humidity = hum.relative_humidity;
