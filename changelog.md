@@ -1,6 +1,8 @@
 # Changelog
 ## Version 3.1.1
 - BREAKING CHANGE: Remove PowerStateController from Air Quality, Contact, Motion and Temperature sensor.
+- Fix examples
+- Default Arduino Serial baudrate changed to 115200
 
 ## Version 2.11.1
 - Support Raspberry Pi Pico W
