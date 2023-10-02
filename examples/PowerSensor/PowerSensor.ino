@@ -66,7 +66,7 @@ void sendPowerSensorData() {
   // limit data rate to SAMPLE_EVERY_SEC
   static unsigned long lastEvent = 0;
   unsigned long actualMillis = millis();
-  if (actualMillis - lastEvent < (SAMPLE_EVERY_SEC * 1000)) return false;
+  if (actualMillis - lastEvent < (SAMPLE_EVERY_SEC * 1000)) return;
   lastEvent = actualMillis;
 
   doPowerMeasure();
