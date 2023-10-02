@@ -1,5 +1,5 @@
 # Changelog
-## Version 2.11.2
+## Version 2.12.1
 - Remove PowerStateController from Air Quality, Contact, Motion and Temperature sensor.
 
 ## Version 2.11.1
