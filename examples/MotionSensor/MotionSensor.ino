@@ -38,14 +38,13 @@
 #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
 #define MOTIONSENSOR_ID   "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
-#define BAUD_RATE         9600                // Change baudrate to your need
+#define BAUD_RATE         115200                // Change baudrate to your need
 
 #define MOTIONSENSOR_PIN  5                   // PIN where motionsensor is connected to
                                               // LOW  = motion is not detected
                                               // HIGH = motion is detected
 
 
-bool myPowerState = true;                     // assume device is turned on
 bool lastMotionState = false;
 unsigned long lastChange = 0;
 
@@ -58,8 +57,6 @@ unsigned long lastChange = 0;
  *      LOW  = motion not detected
  */
 void handleMotionsensor() {
-  if (!myPowerState) return;                            // if device switched off...do nothing
-
   unsigned long actualMillis = millis();
   if (actualMillis - lastChange < 250) return;          // debounce motionsensor state transitions (same as debouncing a pushbutton)
 
@@ -70,25 +67,12 @@ void handleMotionsensor() {
     lastMotionState = actualMotionState;              // update last known state
     lastChange = actualMillis;                        // update debounce time
     SinricProMotionsensor &myMotionsensor = SinricPro[MOTIONSENSOR_ID]; // get motion sensor device
-    myMotionsensor.sendMotionEvent(actualMotionState);
+    bool success = myMotionsensor.sendMotionEvent(actualMotionState);
+    if(!success) {
+      Serial.printf("Something went wrong...could not send Event to server!\r\n");
+    }
   }
 }
-
-/**
- * @brief Callback for setPowerState request
- *
- * @param deviceId      String containing deviceId (useful if this callback used by multiple devices)
- * @param[in] state     bool true=turn on device / false=turn off device
- * @param[out] state    bool true=device turned on / false=device turned off
- * @return true         request handled properly
- * @return false        request can't be handled because some kind of error happened
- */
-bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
-  myPowerState = state;
-  return true; // request handled properly
-}
-
 
 // setup function for WiFi connection
 void setupWiFi() {
@@ -116,9 +100,6 @@ void setupWiFi() {
 void setupSinricPro() {
   // add device to SinricPro
   SinricProMotionsensor& myMotionsensor = SinricPro[MOTIONSENSOR_ID];
-
-  // set callback function to device
-  myMotionsensor.onPowerState(onPowerState);
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); });

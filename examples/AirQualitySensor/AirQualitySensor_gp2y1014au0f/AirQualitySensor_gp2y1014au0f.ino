@@ -39,7 +39,7 @@
 #define APP_KEY           ""   // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET        ""   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
 #define DEVICE_ID         ""   // Should look like "5dc1564130xxxxxxxxxxxxxx"
-#define BAUD_RATE         9600 // Change baudrate to your need
+#define BAUD_RATE         115200 // Change baudrate to your need
 
 // Air quality sensor event dispatch time.  Min is every 1 min.
 #define MIN (1000UL * 60 * 1)
@@ -76,9 +76,6 @@ void setupSinricPro() {
   // add device to SinricPro
   SinricProAirQualitySensor& mySinricProAirQualitySensor = SinricPro[DEVICE_ID];
 
-  // set callback function to device
- 
-
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
   SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
@@ -91,7 +88,6 @@ void setupDustSensor() {
   dustSensor.begin();
 }
 
-
 void setup() {
   Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
   setupWiFi();
@@ -99,26 +95,31 @@ void setup() {
   setupDustSensor();  
 }
 
-
 void loop() {
   SinricPro.handle();
 
- if((long)(millis() - dispatchTime) >= 0) {
-   Serial.print("Dust density: ");
-   Serial.print(dustSensor.getDustDensity());
-   Serial.print(" ug/m3; Running average: ");
-   Serial.print(dustSensor.getRunningAverage());
-   Serial.println(" ug/m3");
-  
-   SinricProAirQualitySensor &mySinricProAirQualitySensor = SinricPro[DEVICE_ID]; // get air q sensor device
-   
-   int pm1=0;
-   int pm2_5 = dustSensor.getRunningAverage();   
-   int pm10=0;   
-   
-   mySinricProAirQualitySensor.sendAirQualityEvent(pm1, pm2_5, pm10, "PERIODIC_POLL");
-   dispatchTime += MIN;
+  if((long)(millis() - dispatchTime) >= 0) {
+    Serial.print("Dust density: ");
+    Serial.print(dustSensor.getDustDensity());
+    Serial.print(" ug/m3; Running average: ");
+    Serial.print(dustSensor.getRunningAverage());
+    Serial.println(" ug/m3");
 
-   Serial.println("Sending Air Quality event ..");
- }  
+    SinricProAirQualitySensor &mySinricProAirQualitySensor = SinricPro[DEVICE_ID]; // get air q sensor device
+    
+    int pm1=0;
+    int pm2_5 = dustSensor.getRunningAverage();   
+    int pm10=0;   
+    
+    bool success = mySinricProAirQualitySensor.sendAirQualityEvent(pm1, pm2_5, pm10, "PERIODIC_POLL");
+    if(success) {
+      Serial.println("Air Quality event sent! ..");
+    } else {
+      Serial.printf("Something went wrong...could not send Event to server!\r\n");
+    }
+
+    dispatchTime += MIN;
+
+    Serial.println("Sending Air Quality event ..");
+  }  
 }

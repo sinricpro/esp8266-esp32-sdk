@@ -37,7 +37,7 @@
 #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
 #define POWERSENSOR_ID    "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
-#define BAUD_RATE         9600                // Change baudrate to your need (used for serial monitor)
+#define BAUD_RATE         115200                // Change baudrate to your need (used for serial monitor)
 #define SAMPLE_EVERY_SEC  60                  // Send every 60 seconds new data to server
 
 
@@ -62,29 +62,21 @@ void doPowerMeasure() {
   powerMeasure.apparentPower = powerMeasure.power + (random(10,20)/10.0f);
 }
 
-bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s power turned %s \r\n", deviceId.c_str(), state?"on":"off");
-  powerState = state;
-  if (powerState) doPowerMeasure(); // start a measurement when device is turned on
-  return true; // request handled properly
-}
-
-bool sendPowerSensorData() {
-  // dont send data if device is turned off
-  if (!powerState) return false;
-
+void sendPowerSensorData() {
   // limit data rate to SAMPLE_EVERY_SEC
   static unsigned long lastEvent = 0;
   unsigned long actualMillis = millis();
-  if (actualMillis - lastEvent < (SAMPLE_EVERY_SEC * 1000)) return false;
+  if (actualMillis - lastEvent < (SAMPLE_EVERY_SEC * 1000)) return;
   lastEvent = actualMillis;
+
+  doPowerMeasure();
 
   // send measured data
   SinricProPowerSensor &myPowerSensor = SinricPro[POWERSENSOR_ID];
   bool success = myPowerSensor.sendPowerSensorEvent(powerMeasure.voltage, powerMeasure.current, powerMeasure.power, powerMeasure.apparentPower);
-  // if measured data was sent do a new measure
-  if (success) doPowerMeasure();
-  return success;
+  if(!success) {
+    Serial.printf("Something went wrong...could not send Event to server!\r\n");
+  }
 }
 
 void setupWiFi() {
@@ -110,9 +102,6 @@ void setupWiFi() {
 
 void setupSinricPro() {
   SinricProPowerSensor &myPowerSensor = SinricPro[POWERSENSOR_ID];
-
-  // set callback function to device
-  myPowerSensor.onPowerState(onPowerState);
 
   // setup SinricPro
   //SinricPro.restoreDeviceStates(true); // Uncomment to restore the last known state from the server.

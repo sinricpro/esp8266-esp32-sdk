@@ -95,7 +95,7 @@ compiler.warning_flags.all=-Wall -Wextra
 #define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx". Get it from https://portal.sinric.pro/ -> Credentials
 #define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx" . Get it from https://portal.sinric.pro/ -> Credentials
 #define CAMERA_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx". Get it from https://portal.sinric.pro/ -> Devices
-
+#define BAUD_RATE         115200 // Change baudrate to your need
 
 OV2640 cam;
 CStreamer *streamer;
@@ -246,7 +246,7 @@ void handleStreaming() {
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(BAUD_RATE);
   while (!Serial);            //wait for serial connection.
   
   setupCamera();

@@ -42,7 +42,7 @@
 #define SWITCH_ID_3       "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define SWITCH_ID_4       "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 
-#define BAUD_RATE         9600                // Change baudrate to your need
+#define BAUD_RATE         115200                // Change baudrate to your need
 
 bool onPowerState1(const String &deviceId, bool &state) {
   Serial.printf("Device 1 turned %s\r\n", state?"on":"off");
