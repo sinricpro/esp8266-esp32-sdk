@@ -1,4 +1,9 @@
 # Changelog
+## Version 3.0.1
+Fixed:
+- SinricPro.isConnected() still returns true if the connection was lost
+- onDisconnectCallback does not fire if the connection is lost.
+
 ## Version 3.0.0
 - BREAKING CHANGE: Remove PowerStateController from Air Quality, Contact, Motion and Temperature sensor.
 - Fix examples
