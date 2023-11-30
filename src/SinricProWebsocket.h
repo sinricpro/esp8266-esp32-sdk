@@ -23,6 +23,12 @@
 #include "SinricProQueue.h"
 namespace SINRICPRO_NAMESPACE {
 
+enum class ConnectionState {
+    disconnected,
+    connecting,
+    connected
+};
+
 #if !defined(WEBSOCKETS_VERSION_INT) || (WEBSOCKETS_VERSION_INT < 2003005)
 #error "Wrong WebSockets Version! Minimum Version is 2.3.5!!!"
 #endif
@@ -53,6 +59,7 @@ class WebsocketListener : protected WebSocketsClient {
   protected:
     bool _begin;
     bool restoreDeviceStates;
+    ConnectionState connectionState;
 
     wsConnectedCallback    _wsConnectedCb;
     wsDisconnectedCallback _wsDisconnectedCb;
@@ -69,6 +76,7 @@ class WebsocketListener : protected WebSocketsClient {
 WebsocketListener::WebsocketListener()
     : _begin(false)
     , restoreDeviceStates(false)
+    , connectionState(ConnectionState::disconnected)
     , _wsConnectedCb(nullptr)
     , _wsDisconnectedCb(nullptr)
     , _wsPongCb(nullptr) {}
@@ -105,6 +113,7 @@ void WebsocketListener::setExtraHeaders() {
 void WebsocketListener::begin(String server, String appKey, String deviceIds, SinricProQueue_t* receiveQueue) {
     if (_begin) return;
     _begin = true;
+    connectionState = ConnectionState::connecting;
 
     this->receiveQueue = receiveQueue;
     this->appKey       = appKey;
@@ -133,6 +142,7 @@ void WebsocketListener::handle() {
 void WebsocketListener::stop() {
     disconnect();
     _begin = false;
+    connectionState = ConnectionState::disconnected;
 }
 
 void WebsocketListener::setRestoreDeviceStates(bool flag) {
@@ -161,8 +171,9 @@ void WebsocketListener::runCbEvent(WStype_t type, uint8_t* payload, size_t lengt
     switch (type) {
         case WStype_DISCONNECTED: {
                 DEBUG_SINRIC("[SinricPro:Websocket]: disconnected\r\n");
-                if (_wsDisconnectedCb) _wsDisconnectedCb();
-            }
+                if (connectionState == ConnectionState::connected && _wsDisconnectedCb) _wsDisconnectedCb();
+                connectionState = ConnectionState::disconnected;
+           }
             break;
 
         case WStype_CONNECTED:
@@ -172,6 +183,7 @@ void WebsocketListener::runCbEvent(WStype_t type, uint8_t* payload, size_t lengt
                 restoreDeviceStates = false;
                 setExtraHeaders();
             }
+            connectionState = ConnectionState::connected;
             break;
 
         case WStype_TEXT: {
