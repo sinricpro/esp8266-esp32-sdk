@@ -18,20 +18,20 @@ jobs:
     steps:
 
     - name: Step 1 - Checkout Repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Step 2 - Cache pip
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: ${{ runner.os }}-pip-
     - name: Step 3 - Cache PlatformIO
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.platformio
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
     - name: Step 4 - Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
     - name: Step 5 - Install PlatformIO
       run: |
         python -m pip install --upgrade pip
