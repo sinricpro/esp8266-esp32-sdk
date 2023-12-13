@@ -30,8 +30,7 @@ jobs:
         pio pkg install --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
     - name: Step 4 - Install library dependencies
       run: |
-        pio lib --global install "bblanchon/ArduinoJson"
-        pio lib --global install "links2004/WebSockets"
+        pio pkg install -l "bblanchon/ArduinoJson" -l "links2004/WebSockets" -g
     - name: Step 5 - Run build test using PlatformIO
       run: pio ci --lib="." -b rpipicow
       env:
