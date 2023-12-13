@@ -1,6 +1,7 @@
-name: Build for ESP8266-ESP32
-
+name: Build Examples for ESP8266 and ESP32
 on:
+  workflow_dispatch:
+  
   pull_request:
     branches: [ master ]
     paths:
@@ -31,15 +32,14 @@ jobs:
         path: ~/.platformio
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
     - name: Step 4 - Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v3
     - name: Step 5 - Install PlatformIO
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade platformio
     - name: Step 6 - Install library dependencies
       run: |
-        pio lib --global install "bblanchon/ArduinoJson"
-        pio lib --global install "links2004/WebSockets"
+        pio pkg install -l "bblanchon/ArduinoJson" -l "links2004/WebSockets" -g
     - name: Step 7 - Run build test using PlatformIO
       run: pio ci --lib="." -b esp12e -b esp32dev
       env:
