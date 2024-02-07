@@ -88,8 +88,8 @@ bool ColorController<T>::sendColorEvent(byte r, byte g, byte b, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_COLOR_setColor, cause.c_str());
-  JsonObject event_color = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value].createNestedObject(FSTR_COLOR_color);
+  JsonDocument eventMessage = device->prepareEvent(FSTR_COLOR_setColor, cause.c_str());
+  JsonObject event_color = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value][FSTR_COLOR_color].to<JsonObject>();
   event_color[FSTR_COLOR_r] = r;
   event_color[FSTR_COLOR_g] = g;
   event_color[FSTR_COLOR_b] = b;
@@ -108,7 +108,7 @@ bool ColorController<T>::handleColorController(SinricProRequest &request) {
     g = request.request_value[FSTR_COLOR_color][FSTR_COLOR_g];
     b = request.request_value[FSTR_COLOR_color][FSTR_COLOR_b];
     success = colorCallback(device->deviceId, r, g, b);
-    request.response_value.createNestedObject(FSTR_COLOR_color);
+    request.response_value[FSTR_COLOR_color].to<JsonObject>();
     request.response_value[FSTR_COLOR_color][FSTR_COLOR_r] = r;
     request.response_value[FSTR_COLOR_color][FSTR_COLOR_g] = g;
     request.response_value[FSTR_COLOR_color][FSTR_COLOR_b] = b;

@@ -141,7 +141,7 @@ bool ColorTemperatureController<T>::sendColorTemperatureEvent(int colorTemperatu
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_COLORTEMPERATURE_setColorTemperature, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_COLORTEMPERATURE_setColorTemperature, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   event_value[FSTR_COLORTEMPERATURE_colorTemperature] = colorTemperature;
   return device->sendEvent(eventMessage);

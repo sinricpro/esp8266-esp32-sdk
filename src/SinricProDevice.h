@@ -34,7 +34,7 @@ protected:
   void                                 registerRequestHandler(const SinricProRequestHandler &requestHandler);
   unsigned long                        getTimestamp();
   virtual bool                         sendEvent(JsonDocument &event);
-  virtual DynamicJsonDocument          prepareEvent(const char *action, const char *cause);
+  virtual JsonDocument          prepareEvent(const char *action, const char *cause);
 
   virtual String                       getProductType();
   virtual void                         begin(SinricProInterface *eventSender);
@@ -68,10 +68,10 @@ bool SinricProDevice::operator==(const String &other) {
   return other == deviceId; 
 }
 
-DynamicJsonDocument SinricProDevice::prepareEvent(const char* action, const char* cause) {
+JsonDocument SinricProDevice::prepareEvent(const char* action, const char* cause) {
   if (eventSender) return eventSender->prepareEvent(deviceId, action, cause);
   DEBUG_SINRIC("[SinricProDevice:prepareEvent()]: Device \"%s\" isn't configured correctly! The \'%s\' event will be ignored.\r\n", deviceId.c_str(), action);
-  return DynamicJsonDocument(1024);
+  return JsonDocument();
 }
 
 

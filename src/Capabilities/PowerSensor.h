@@ -55,7 +55,7 @@ bool PowerSensor<T>::sendPowerSensorEvent(float voltage, float current, float po
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERSENSOR_powerUsage, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_POWERSENSOR_powerUsage, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   if (power == -1)
     power = voltage * current;

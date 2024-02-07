@@ -110,7 +110,7 @@ bool VolumeController<T>::sendVolumeEvent(int volume, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_VOLUME_setVolume, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_VOLUME_setVolume, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   event_value[FSTR_VOLUME_volume] = volume;
   return device->sendEvent(eventMessage);

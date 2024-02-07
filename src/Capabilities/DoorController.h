@@ -79,7 +79,7 @@ bool DoorController<T>::sendDoorStateEvent(bool state, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_DOOR_setMode, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_DOOR_setMode, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   state ? event_value[FSTR_DOOR_mode] = FSTR_DOOR_Close : event_value[FSTR_DOOR_mode] = FSTR_DOOR_Open;
   return device->sendEvent(eventMessage);

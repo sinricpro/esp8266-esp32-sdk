@@ -85,7 +85,7 @@ bool ToggleController<T>::sendToggleStateEvent(const String &instance, bool stat
   
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_TOGGLE_setToggleState, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_TOGGLE_setToggleState, cause.c_str());
   eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   event_value[FSTR_TOGGLE_state] = state ? FSTR_TOGGLE_On : FSTR_TOGGLE_Off;

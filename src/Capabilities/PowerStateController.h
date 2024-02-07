@@ -81,7 +81,7 @@ bool PowerStateController<T>::sendPowerStateEvent(bool state, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_POWERSTATE_setPowerState, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_POWERSTATE_setPowerState, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   event_value[FSTR_POWERSTATE_state] = state ? FSTR_POWERSTATE_On : FSTR_POWERSTATE_Off;
   return device->sendEvent(eventMessage);

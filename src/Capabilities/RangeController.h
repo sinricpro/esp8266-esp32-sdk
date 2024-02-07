@@ -205,7 +205,7 @@ bool RangeController<T>::sendRangeValueEvent(int rangeValue, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
   
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   event_value[FSTR_RANGE_rangeValue] = rangeValue;
   return device->sendEvent(eventMessage);
@@ -227,7 +227,7 @@ bool RangeController<T>::sendRangeValueEvent(const String& instance, int rangeVa
   if (event_limiter_generic[instance]) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
   eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
 
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
@@ -241,7 +241,7 @@ bool RangeController<T>::sendRangeValueEvent(const String& instance, float range
   if (event_limiter_generic[instance]) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_RANGE_setRangeValue, cause.c_str());
   eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId] = instance;
 
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
