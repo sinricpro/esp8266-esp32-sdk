@@ -1,4 +1,8 @@
 # Changelog
+## Version 3.1.0
+Upgrade:
+  - Upgrade to ArduinoJson 7
+
 ## Version 3.0.1
 Fixed:
 - SinricPro.isConnected() still returns true if the connection was lost
