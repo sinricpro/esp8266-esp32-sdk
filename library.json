@@ -20,19 +20,27 @@
     "espressif32",
     "raspberrypi"
   ],
-  "dependencies":[
-    { 
+  "dependencies": [
+    {
       "name": "ArduinoJson",
       "version": "^7.0.3",
-      "platforms":["espressif32","espressif8266"]
+      "platforms": [
+        "espressif32",
+        "espressif8266",
+        "raspberrypi"
+      ]
     },
     {
       "name": "WebSockets",
       "version": "^2.4.0",
-      "platforms":["espressif32","espressif8266"]
+      "platforms": [
+        "espressif32",
+        "espressif8266",
+        "raspberrypi"
+      ]
     }
   ],
-  "examples":[
+  "examples": [
     "examples/*/*.ino",
     "examples/*/*/*.ino"
   ],

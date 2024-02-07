@@ -9,11 +9,6 @@
 
 [![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-esp8266-esp32.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-esp8266-esp32.yml)
 
-## Note
-1. Use the latest ESP8226/ESP32/RP2040 Arduino Core!
-2. Use the latest WebSocktes library!
-3. Use the latest ArduinoJson library!
-
 ## Installation
 
 ### VS Code & PlatformIO:
@@ -35,7 +30,7 @@
 ---
 
 ## Dependencies
-[ArduinoJson](https://github.com/bblanchon/ArduinoJson) by Benoit Blanchon (minimum Version 6.12.0)   
+[ArduinoJson](https://github.com/bblanchon/ArduinoJson) by Benoit Blanchon (minimum Version 7.0.3)
 [WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version 2.4.0)
 
 ---
