@@ -28,6 +28,7 @@
     },
     {
       "name": "WebSockets",
+      "version": "^2.4.0",
       "platforms":["espressif32","espressif8266"]
     }
   ],
