@@ -14,8 +14,8 @@
 ### VS Code & PlatformIO:
 1. Install [VS Code](https://code.visualstudio.com/)  
 2. Install [PlatformIO](https://platformio.org/platformio-ide)  
-3. Install **SinricPro** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/)  
-4. Use included [platformio.ini](examples/platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automaticly.
+3. Create a new Project
+4. Use the [Library Manager](https://docs.platformio.org/en/latest/librarymanager/) to add the library to your project or add `sinricpro/SinricPro` manually to your `lib_deps` in `platformio.ini`.
 
 ![sinricpro library manager](https://raw.githubusercontent.com/sinricpro/images/master/platformio-install-sinricpro.png)
 
@@ -30,8 +30,8 @@
 ---
 
 ## Dependencies
-[ArduinoJson](https://github.com/bblanchon/ArduinoJson) by Benoit Blanchon (minimum Version 7.0.3)
-[WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version 2.4.0)
+- [ArduinoJson](https://github.com/bblanchon/ArduinoJson) by Benoit Blanchon (minimum Version 7.0.3)
+- [WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version 2.4.0)
 
 ---
 
@@ -93,10 +93,6 @@ Example
 ```C++
   SinricProSwitch& mySwitch = SinricPro["YOUR-SWITCH-ID-HERE"];
 ```
-*Example 2 (alternatively)*
-```C++
-  SinricProSwitch& mySwitch = SinricPro.add<SinricProSwitch>("YOUR-SWITCH-ID-HERE");
-```
 
 ---
 ## How to retrieve a device for sending an event?
@@ -104,15 +100,10 @@ Syntax is
 ```C++
   DeviceType& myDevice = SinricPro[DEVICE_ID];
 ```
-Example 1
+Example 
 ```C++
   SinricProDoorbell& myDoorbell = SinricPro["YOUR-DOORBELL-ID-HERE"];
   myDoorbell.sendDoorbellEvent();
-```
-
-*Example 2 (alternatively)*
-```C++
-  SinricPro["YOUR-DOORBELL-ID-HERE"].as<SinricProDoorbell>().sendDoorbellEvent();
 ```
 
 ## How to send a push notification?
@@ -123,7 +114,7 @@ mySwitch.sendPushNotification("Hello SinricPro!");
 
 ---
 
-# Devices
+## Devices
 * Switch
 * Dimmable Switch
 * Light
