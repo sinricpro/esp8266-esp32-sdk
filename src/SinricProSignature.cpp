@@ -71,7 +71,7 @@ String calculateSignature(const char* key, String payload) {
 }
 
 String signMessage(String key, JsonDocument &jsonMessage) {
-  if (!jsonMessage.containsKey("signature")) jsonMessage.createNestedObject("signature");
+  if (!jsonMessage.containsKey("signature")) jsonMessage["signature"].to<JsonObject>();
   jsonMessage["signature"]["HMAC"] = calculateSignature(key.c_str(), jsonMessage["payload"]);
   String signedMessageString;
   serializeJson(jsonMessage, signedMessageString);

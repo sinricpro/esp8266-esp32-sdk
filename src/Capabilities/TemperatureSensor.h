@@ -42,7 +42,7 @@ bool TemperatureSensor<T>::sendTemperatureEvent(float temperature, float humidit
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_TEMPERATURE_currentTemperature, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_TEMPERATURE_currentTemperature, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   event_value[FSTR_TEMPERATURE_humidity] = roundf(humidity * 100) / 100.0;
   event_value[FSTR_TEMPERATURE_temperature] = roundf(temperature * 10) / 10.0;

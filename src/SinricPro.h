@@ -70,18 +70,18 @@ class SinricProClass : public SinricProInterface {
     void add(SinricProDeviceInterface& newDevice);
     void add(SinricProDeviceInterface* newDevice);
 
-    DynamicJsonDocument prepareResponse(JsonDocument& requestMessage);
-    DynamicJsonDocument prepareEvent(String deviceId, const char* action, const char* cause) override;
+    JsonDocument prepareResponse(JsonDocument& requestMessage);
+    JsonDocument prepareEvent(String deviceId, const char* action, const char* cause) override;
     void                sendMessage(JsonDocument& jsonMessage) override;
 
   private:
     void handleReceiveQueue();
     void handleSendQueue();
 
-    void handleRequest(DynamicJsonDocument& requestMessage, interface_t Interface);
-    void handleResponse(DynamicJsonDocument& responseMessage);
+    void handleRequest(JsonDocument& requestMessage, interface_t Interface);
+    void handleResponse(JsonDocument& responseMessage);
 
-    DynamicJsonDocument prepareRequest(String deviceId, const char* action);
+    JsonDocument prepareRequest(String deviceId, const char* action);
 
     void connect();
     void disconnect();
@@ -251,23 +251,23 @@ void SinricProClass::handle() {
     handleSendQueue();
 }
 
-DynamicJsonDocument SinricProClass::prepareRequest(String deviceId, const char* action) {
-    DynamicJsonDocument requestMessage(1024);
-    JsonObject          header              = requestMessage.createNestedObject(FSTR_SINRICPRO_header);
+JsonDocument SinricProClass::prepareRequest(String deviceId, const char* action) {
+    JsonDocument requestMessage;
+    JsonObject          header              = requestMessage[FSTR_SINRICPRO_header].to<JsonObject>();
     header[FSTR_SINRICPRO_payloadVersion]   = 2;
     header[FSTR_SINRICPRO_signatureVersion] = 1;
 
-    JsonObject payload                 = requestMessage.createNestedObject(FSTR_SINRICPRO_payload);
+    JsonObject payload                 = requestMessage[FSTR_SINRICPRO_payload].to<JsonObject>();
     payload[FSTR_SINRICPRO_action]     = action;
     payload[FSTR_SINRICPRO_createdAt]  = 0;
     payload[FSTR_SINRICPRO_deviceId]   = deviceId;
     payload[FSTR_SINRICPRO_replyToken] = MessageID().getID();
     payload[FSTR_SINRICPRO_type]       = FSTR_SINRICPRO_request;
-    payload.createNestedObject(FSTR_SINRICPRO_value);
+    payload[FSTR_SINRICPRO_value].to<JsonObject>();
     return requestMessage;
 }
 
-void SinricProClass::handleResponse(DynamicJsonDocument& responseMessage) {
+void SinricProClass::handleResponse(JsonDocument& responseMessage) {
     (void)responseMessage;
     DEBUG_SINRIC("[SinricPro.handleResponse()]:\r\n");
 
@@ -277,13 +277,13 @@ void SinricProClass::handleResponse(DynamicJsonDocument& responseMessage) {
 #endif
 }
 
-void SinricProClass::handleRequest(DynamicJsonDocument& requestMessage, interface_t Interface) {
+void SinricProClass::handleRequest(JsonDocument& requestMessage, interface_t Interface) {
     DEBUG_SINRIC("[SinricPro.handleRequest()]: handling request\r\n");
 #ifndef NODEBUG_SINRIC
     serializeJsonPretty(requestMessage, DEBUG_ESP_PORT);
 #endif
 
-    DynamicJsonDocument responseMessage = prepareResponse(requestMessage);
+    JsonDocument responseMessage = prepareResponse(requestMessage);
 
     // handle devices
     bool        success        = false;
@@ -325,7 +325,7 @@ void SinricProClass::handleReceiveQueue() {
     while (receiveQueue.size() > 0) {
         SinricProMessage* rawMessage = receiveQueue.front();
         receiveQueue.pop();
-        DynamicJsonDocument jsonMessage(1024);
+        JsonDocument jsonMessage;
         deserializeJson(jsonMessage, rawMessage->getMessage());
 
         bool sigMatch = false;
@@ -363,7 +363,7 @@ void SinricProClass::handleSendQueue() {
         SinricProMessage* rawMessage = sendQueue.front();
         sendQueue.pop();
 
-        DynamicJsonDocument jsonMessage(1024);
+        JsonDocument jsonMessage;
         deserializeJson(jsonMessage, rawMessage->getMessage());
         jsonMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_createdAt] = timestamp.getTimestamp();
         signMessage(appSecret, jsonMessage);
@@ -537,13 +537,13 @@ unsigned long SinricProClass::getTimestamp() {
     return timestamp.getTimestamp();
 }
 
-DynamicJsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage) {
-    DynamicJsonDocument responseMessage(1024);
-    JsonObject          header              = responseMessage.createNestedObject(FSTR_SINRICPRO_header);
+JsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage) {
+    JsonDocument responseMessage;
+    JsonObject          header              = responseMessage[FSTR_SINRICPRO_header].to<JsonObject>();
     header[FSTR_SINRICPRO_payloadVersion]   = 2;
     header[FSTR_SINRICPRO_signatureVersion] = 1;
 
-    JsonObject payload                = responseMessage.createNestedObject(FSTR_SINRICPRO_payload);
+    JsonObject payload                = responseMessage[FSTR_SINRICPRO_payload].to<JsonObject>();
     payload[FSTR_SINRICPRO_action]    = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_action];
     payload[FSTR_SINRICPRO_clientId]  = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_clientId];
     payload[FSTR_SINRICPRO_createdAt] = 0;
@@ -553,25 +553,25 @@ DynamicJsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage
     payload[FSTR_SINRICPRO_replyToken] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_replyToken];
     payload[FSTR_SINRICPRO_success]    = false;
     payload[FSTR_SINRICPRO_type]       = FSTR_SINRICPRO_response;
-    payload.createNestedObject(FSTR_SINRICPRO_value);
+    payload[FSTR_SINRICPRO_value].to<JsonObject>();
     return responseMessage;
 }
 
-DynamicJsonDocument SinricProClass::prepareEvent(String deviceId, const char* action, const char* cause) {
-    DynamicJsonDocument eventMessage(1024);
-    JsonObject          header              = eventMessage.createNestedObject(FSTR_SINRICPRO_header);
+JsonDocument SinricProClass::prepareEvent(String deviceId, const char* action, const char* cause) {
+    JsonDocument eventMessage;
+    JsonObject          header              = eventMessage[FSTR_SINRICPRO_header].to<JsonObject>();
     header[FSTR_SINRICPRO_payloadVersion]   = 2;
     header[FSTR_SINRICPRO_signatureVersion] = 1;
 
-    JsonObject payload             = eventMessage.createNestedObject(FSTR_SINRICPRO_payload);
+    JsonObject payload             = eventMessage[FSTR_SINRICPRO_payload].to<JsonObject>();
     payload[FSTR_SINRICPRO_action] = action;
-    payload[FSTR_SINRICPRO_cause].createNestedObject(FSTR_SINRICPRO_type);
+    payload[FSTR_SINRICPRO_cause][FSTR_SINRICPRO_type].to<JsonObject>();
     payload[FSTR_SINRICPRO_cause][FSTR_SINRICPRO_type] = cause;
     payload[FSTR_SINRICPRO_createdAt]                  = 0;
     payload[FSTR_SINRICPRO_deviceId]                   = deviceId;
     payload[FSTR_SINRICPRO_replyToken]                 = MessageID().getID();
     payload[FSTR_SINRICPRO_type]                       = FSTR_SINRICPRO_event;
-    payload.createNestedObject(FSTR_SINRICPRO_value);
+    payload[FSTR_SINRICPRO_value].to<JsonObject>();
     return eventMessage;
 }
 

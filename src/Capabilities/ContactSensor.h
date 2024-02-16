@@ -41,7 +41,7 @@ bool ContactSensor<T>::sendContactEvent(bool detected, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
   
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_CONTACT_setContactState, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_CONTACT_setContactState, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   event_value[FSTR_CONTACT_state] = detected ? FSTR_CONTACT_closed : FSTR_CONTACT_open;
   return device->sendEvent(eventMessage);

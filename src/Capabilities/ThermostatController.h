@@ -147,7 +147,7 @@ bool ThermostatController<T>::sendThermostatModeEvent(String thermostatMode, Str
   if (event_limiter_thermostatMode) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_THERMOSTAT_setThermostatMode, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_THERMOSTAT_setThermostatMode, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   event_value[FSTR_THERMOSTAT_thermostatMode] = thermostatMode;
   return device->sendEvent(eventMessage);
@@ -167,7 +167,7 @@ bool ThermostatController<T>::sendTargetTemperatureEvent(float temperature, Stri
   if (event_limiter_targetTemperature) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_THERMOSTAT_targetTemperature, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_THERMOSTAT_targetTemperature, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   event_value[FSTR_THERMOSTAT_temperature] = roundf(temperature * 10) / 10.0;
   return device->sendEvent(eventMessage);

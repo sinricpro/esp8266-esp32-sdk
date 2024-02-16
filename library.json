@@ -13,24 +13,34 @@
       "maintainer": true
     }
   ],
-  "version": "3.0.1",
+  "version": "3.1.0",
   "frameworks": "arduino",
   "platforms": [
     "espressif8266",
     "espressif32",
     "raspberrypi"
   ],
-  "dependencies":[
-    { 
+  "dependencies": [
+    {
       "name": "ArduinoJson",
-      "platforms":["espressif32","espressif8266"]
+      "version": "^7.0.3",
+      "platforms": [
+        "espressif32",
+        "espressif8266",
+        "raspberrypi"
+      ]
     },
     {
       "name": "WebSockets",
-      "platforms":["espressif32","espressif8266"]
+      "version": "^2.4.0",
+      "platforms": [
+        "espressif32",
+        "espressif8266",
+        "raspberrypi"
+      ]
     }
   ],
-  "examples":[
+  "examples": [
     "examples/*/*.ino",
     "examples/*/*/*.ino"
   ],

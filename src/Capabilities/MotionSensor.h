@@ -42,7 +42,7 @@ bool MotionSensor<T>::sendMotionEvent(bool detected, String cause) {
   if (event_limiter) return false;
   T* device = static_cast<T*>(this);
 
-  DynamicJsonDocument eventMessage = device->prepareEvent(FSTR_MOTION_motion, cause.c_str());
+  JsonDocument eventMessage = device->prepareEvent(FSTR_MOTION_motion, cause.c_str());
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   event_value[FSTR_MOTION_state] = detected ? FSTR_MOTION_detected : FSTR_MOTION_notDetected;
   return device->sendEvent(eventMessage);
