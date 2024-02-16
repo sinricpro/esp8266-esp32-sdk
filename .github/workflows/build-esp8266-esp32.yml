@@ -1,4 +1,4 @@
-name: Build Examples for ESP8266 and ESP32
+name: Build for ESP8266 and ESP32
 on:
   workflow_dispatch:
   
