@@ -1,17 +1,33 @@
-#if defined(ESP8266)
+#if defined(ESP8266) || defined(ARDUINO_ARCH_RP2040)
 
 #include <Arduino.h>
 #include <time.h>
-#include <WiFiClientSecure.h>
-#include "ESP8266httpUpdate.h"
-#include <ESP8266WiFi.h>
+
+#if defined(ARDUINO_ARCH_RP2040)
+  #include <HTTPClient.h>
+  #include <HTTPUpdate.h>
+  #include <WiFi.h>
+
+  #define OTA_CLASS httpUpdate
+
+#elif defined(ESP8266)
+  #include <ESP8266WiFi.h>
+  #include <WiFiClientSecure.h>
+  #include "ESP8266httpUpdate.h"
+
+  #define OTA_CLASS ESPhttpUpdate
+#endif
  
 // Function to perform the OTA update
 bool startOTAUpdate(const String& url) {
   Serial.println("Starting OTA update");
-  Serial.printf("Available RAM: %d\n", ESP.getFreeHeap()); 
-
-  BearSSL::WiFiClientSecure client;
+ 
+  #if defined(ARDUINO_ARCH_RP2040)
+    WiFiClientSecure client;    
+  #elif defined(ESP8266)
+     BearSSL::WiFiClientSecure client;     
+  #endif
+ 
   client.setInsecure();
   client.setBufferSizes(4096, 4096);
 
@@ -23,7 +39,7 @@ bool startOTAUpdate(const String& url) {
   // value is used to put the LED on. If the LED is on with HIGH, that value should be passed
   //ESPhttpUpdate.setLedPin(LED_BUILTIN, LOW);
 
-  auto http_ret = ESPhttpUpdate.update(client, url);
+  auto http_ret = OTA_CLASS.update(client, url);  
 
   //if success reboot 
 
@@ -33,7 +49,7 @@ bool startOTAUpdate(const String& url) {
       break;
 
     case HTTP_UPDATE_FAILED:
-      Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s\n", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
+      Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s\n", OTA_CLASS.getLastError(), OTA_CLASS.getLastErrorString().c_str());
       break;
 
     case HTTP_UPDATE_NO_UPDATES:

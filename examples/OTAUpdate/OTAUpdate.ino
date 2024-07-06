@@ -25,11 +25,14 @@
 
 #include <Arduino.h>
 
-#if defined(ESP32)
+#if defined(ESP8266)
+  #include <ESP8266WiFi.h>
+  #include "ESP8266OTAHelper.h"
+#elif defined(ESP32) 
   #include <WiFi.h>
   #include "ESP32OTAHelper.h"
-#else
-  #include <ESP8266WiFi.h>
+#elif defined(ARDUINO_ARCH_RP2040) 
+  #include <WiFi.h>
   #include "ESP8266OTAHelper.h"
 #endif
 
