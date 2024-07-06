@@ -79,6 +79,8 @@ WiFiInfo getWiFiInfo(const char* ssid) {
           case WIFI_AUTH_WAPI_PSK: info.encryptionType = "WAPI"; break;
           default: info.encryptionType = "unknown"; break;
         }
+
+        break;
       }
     }
   }

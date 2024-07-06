@@ -63,19 +63,19 @@ void SinricProModuleCommandHandler::onGetSetting(GetSettingCallbackHandler callb
 }
  
 bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
-  if (FSTR_OTA_otaUpdateAvailable == request.action && _otaUpdateCallbackHandler) {
+  if (strcmp(FSTR_OTA_otaUpdateAvailable, request.action.c_str()) == 0 && _otaUpdateCallbackHandler) {
     String url = request.request_value[FSTR_OTA_url];        
     int major  = request.request_value[FSTR_OTA_version][FSTR_OTA_major]; 
     int minor  = request.request_value[FSTR_OTA_version][FSTR_OTA_minor]; 
     int patch  = request.request_value[FSTR_OTA_version][FSTR_OTA_patch]; 
     return _otaUpdateCallbackHandler(url, major, minor, patch);
   }
-  else if (FSTR_SETTINGS_setSetting == request.action && _setSettingCallbackHandler) { 
+  else if (strcmp(FSTR_SETTINGS_setSetting, request.action.c_str()) == 0 && _setSettingCallbackHandler) {    
     String id = request.request_value[FSTR_SETTINGS_id];
     String value = request.request_value[FSTR_SETTINGS_value];
     return _setSettingCallbackHandler(id, value);
   }
-  else if (FSTR_SETTINGS_setSetting == request.action && _setSettingCallbackHandler) { 
+  else if (strcmp(FSTR_SETTINGS_getSetting, request.action.c_str()) == 0 && _getSettingCallbackHandler) {    
     String id = request.request_value[FSTR_SETTINGS_id];
     String value = request.request_value[FSTR_SETTINGS_value];
     return _getSettingCallbackHandler(id, value);

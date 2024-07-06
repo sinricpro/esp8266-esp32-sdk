@@ -1,71 +1,54 @@
+#if defined(ESP32)
+
 #include <Arduino.h>
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <Update.h>
 
-// Task handle for the update task
-TaskHandle_t updateTaskHandle = NULL;
+#define FOR_i(from, to) for(int i = (from); i < (to); i++)
 
-// Cloudflare Root CA Certificate (Baltimore CyberTrust Root)
+// Task handle for the ota update task
+TaskHandle_t otaUpdateTaskHandle = NULL;
+
+// Ref: https://projects.petrucci.ch/esp32/?page=ssl.php&url=otaupdates.sinric.pro
+
 const char rootCACertificate[] PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
-MIIDdzCCAl+gAwIBAgIEAgAAuTANBgkqhkiG9w0BAQUFADBaMQswCQYDVQQGEwJJ
-RTESMBAGA1UEChMJQmFsdGltb3JlMRMwEQYDVQQLEwpDeWJlclRydXN0MSIwIAYD
-VQQDExlCYWx0aW1vcmUgQ3liZXJUcnVzdCBSb290MB4XDTAwMDUxMjE4NDYwMFoX
-DTI1MDUxMjIzNTkwMFowWjELMAkGA1UEBhMCSUUxEjAQBgNVBAoTCUJhbHRpbW9y
-ZTETMBEGA1UECxMKQ3liZXJUcnVzdDEiMCAGA1UEAxMZQmFsdGltb3JlIEN5YmVy
-VHJ1c3QgUm9vdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKMEuyKr
-mD1X6CZymrV51Cni4eiVgLGw41uOKymaZN+hXe2wCQVt2yguzmKiYv60iNoS6zjr
-IZ3AQSsBUnuId9Mcj8e6uYi1agnnc+gRQKfRzMpijS3ljwumUNKoUMMo6vWrJYeK
-mpYcqWe4PwzV9/lSEy/CG9VwcPCPwBLKBsua4dnKM3p31vjsufFoREJIE9LAwqSu
-XmD+tqYF/LTdB1kC1FkYmGP1pWPgkAx9XbIGevOF6uvUA65ehD5f/xXtabz5OTZy
-dc93Uk3zyZAsuT3lySNTPx8kmCFcB5kpvcY67Oduhjprl3RjM71oGDHweI12v/ye
-jl0qhqdNkNwnGjkCAwEAAaNFMEMwHQYDVR0OBBYEFOWdWTCCR1jMrPoIVDaGezq1
-BE3wMBIGA1UdEwEB/wQIMAYBAf8CAQMwDgYDVR0PAQH/BAQDAgEGMA0GCSqGSIb3
-DQEBBQUAA4IBAQCFDF2O5G9RaEIFoN27TyclhAO992T9Ldcw46QQF+vaKSm2eT92
-9hkTI7gQCvlYpNRhcL0EYWoSihfVCr3FvDB81ukMJY2GQE/szKN+OMY3EU/t3Wgx
-jkzSswF07r51XgdIGn9w/xZchMB5hbgF/X++ZRGjD8ACtPhSNzkE1akxehi/oCr0
-Epn3o0WC4zxe9Z2etciefC7IpJ5OCBRLbf1wbWsaY71k5h+3zvDyny67G7fyUIhz
-ksLi4xaNmjICq44Y3ekQEe5+NauQrz4wlHrQMz2nZQ/1/I6eYs9HRCwBXbsdtTLS
-R9I4LtD+gdwyah617jzV/OeBHRnDJELqYzmp
+MIIEVzCCAj+gAwIBAgIRAIOPbGPOsTmMYgZigxXJ/d4wDQYJKoZIhvcNAQELBQAw
+TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh
+cmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMjQwMzEzMDAwMDAw
+WhcNMjcwMzEyMjM1OTU5WjAyMQswCQYDVQQGEwJVUzEWMBQGA1UEChMNTGV0J3Mg
+RW5jcnlwdDELMAkGA1UEAxMCRTUwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAQNCzqK
+a2GOtu/cX1jnxkJFVKtj9mZhSAouWXW0gQI3ULc/FnncmOyhKJdyIBwsz9V8UiBO
+VHhbhBRrwJCuhezAUUE8Wod/Bk3U/mDR+mwt4X2VEIiiCFQPmRpM5uoKrNijgfgw
+gfUwDgYDVR0PAQH/BAQDAgGGMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD
+ATASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBSfK1/PPCFPnQS37SssxMZw
+i9LXDTAfBgNVHSMEGDAWgBR5tFnme7bl5AFzgAiIyBpY9umbbjAyBggrBgEFBQcB
+AQQmMCQwIgYIKwYBBQUHMAKGFmh0dHA6Ly94MS5pLmxlbmNyLm9yZy8wEwYDVR0g
+BAwwCjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVu
+Y3Iub3JnLzANBgkqhkiG9w0BAQsFAAOCAgEAH3KdNEVCQdqk0LKyuNImTKdRJY1C
+2uw2SJajuhqkyGPY8C+zzsufZ+mgnhnq1A2KVQOSykOEnUbx1cy637rBAihx97r+
+bcwbZM6sTDIaEriR/PLk6LKs9Be0uoVxgOKDcpG9svD33J+G9Lcfv1K9luDmSTgG
+6XNFIN5vfI5gs/lMPyojEMdIzK9blcl2/1vKxO8WGCcjvsQ1nJ/Pwt8LQZBfOFyV
+XP8ubAp/au3dc4EKWG9MO5zcx1qT9+NXRGdVWxGvmBFRAajciMfXME1ZuGmk3/GO
+koAM7ZkjZmleyokP1LGzmfJcUd9s7eeu1/9/eg5XlXd/55GtYjAM+C4DG5i7eaNq
+cm2F+yxYIPt6cbbtYVNJCGfHWqHEQ4FYStUyFnv8sjyqU8ypgZaNJ9aVcWSICLOI
+E1/Qv/7oKsnZCWJ926wU6RqG1OYPGOi1zuABhLw61cuPVDT28nQS/e6z95cJXq0e
+K1BcaJ6fJZsmbjRgD5p3mvEf5vdQM7MCEvU0tHbsx2I5mHHJoABHb8KVBgWp/lcX
+GWiWaeOyB7RP+OfDtvi2OsapxXiV7vNVs7fMlrRjY1joKaqmmycnBvAq14AEbtyL
+sVfOS66B8apkeFX2NY4XPEYV4ZSCe8VHPrdrERk2wILG3T/EGmSIkCYVUMSnjmJd
+VQD9F6Na/+zmXCc=
 -----END CERTIFICATE-----
 )EOF";
 
-struct Version {
-    int major;
-    int minor;
-    int patch;
-
-    String toString() const {
-        return String(major) + "." + String(minor) + "." + String(patch);
-    }
-};
-
-Version parseVersion(const String& versionStr) {
-    Version v;
-    int firstDot = versionStr.indexOf('.');
-    int secondDot = versionStr.lastIndexOf('.');    
-    v.major = versionStr.substring(0, firstDot).toInt();
-    v.minor = versionStr.substring(firstDot + 1, secondDot).toInt();
-    v.patch = versionStr.substring(secondDot + 1).toInt();    
-    return v;
-}
-
-bool isNewerVersion(const Version& currentVersion, const Version& newVersion) {
-    if (newVersion.major > currentVersion.major) return true;
-    if (newVersion.major < currentVersion.major) return false;
-    
-    if (newVersion.minor > currentVersion.minor) return true;
-    if (newVersion.minor < currentVersion.minor) return false;
-    
-    return newVersion.patch > currentVersion.patch;
-}
 
 // Function to perform the OTA update
 bool performUpdate(const String& url) {
   WiFiClientSecure *client = new WiFiClientSecure;
+  
   if(client) {
     client->setCACert(rootCACertificate);
+    //client->setInsecure();
     {
       // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is 
       HTTPClient https;
@@ -135,36 +118,42 @@ bool performUpdate(const String& url) {
 }
 
 // Task function for OTA update
-void updateTask(void * parameter) {
+void otaUpdateTask(void * parameter) {
   String url = *((String*)parameter);
   delete (String*)parameter;
 
   Serial.println("Starting OTA update");
-  bool updateSuccess = performUpdate(url);
+ 
+  FOR_i(1, 5) { 
+     bool updateSuccess = performUpdate(url);
 
-  if (updateSuccess) {
-    Serial.println("Update successful. Rebooting...");
-    delay(1000);  // Give some time for the message to be sent
-    ESP.restart();
-  } else {
-    Serial.println("Update failed.");
-  }
+    if (updateSuccess) {
+      Serial.println("Update successful. Rebooting...");
+      ESP.restart();
+    } else {
+      Serial.println("Update failed. Retrying.."); // To fix random DNS lookup errors
+      delay(1000);
+    }
+  } 
 
   // Task is done, delete itself
   vTaskDelete(NULL);
 }
 
-void startOTAUpdate(const String& url) {
+bool startOTAUpdate(const String& url) {
   String* urlCopy = new String(url);
 
   // Create the task, passing the URL as a parameter
   xTaskCreate(
-    updateTask,          // Function to implement the task
-    "otaUpdateTask",        // Name of the task
+    otaUpdateTask,          // Function to implement the task
+    "otaUpdateTask",     // Name of the task
     10000,               // Stack size in words
     (void*)urlCopy,      // Task input parameter
     1,                   // Priority of the task
-    &updateTaskHandle    // Task handle
+    &otaUpdateTaskHandle    // Task handle
   );
+
+  return true;
 }
 
+#endif

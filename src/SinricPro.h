@@ -328,8 +328,7 @@ void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface
 #endif
 
     JsonDocument responseMessage = prepareResponse(requestMessage);
-    responseMessage.remove(FSTR_SINRICPRO_deviceId);
-
+    
     String      action           = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_action] | "";
     JsonObject  request_value    = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
     JsonObject  response_value   = responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
@@ -338,6 +337,7 @@ void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface
     bool success = _moduleCommandHandler.handleRequest(request);
     
     responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_success] = success;
+    responseMessage.remove(FSTR_SINRICPRO_deviceId);
 
     String responseString;
     serializeJson(responseMessage, responseString);
@@ -414,7 +414,7 @@ void SinricProClass::handleReceiveQueue() {
             if (messageType == FSTR_SINRICPRO_response) handleResponse(jsonMessage);
             if (messageType == FSTR_SINRICPRO_request)  {
                 String scope = jsonMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_scope] | FSTR_SINRICPRO_device;
-                if (FSTR_SINRICPRO_module == scope) {
+                if (strcmp(FSTR_SINRICPRO_module, scope.c_str()) == 0) {
                     handleModuleRequest(jsonMessage, rawMessage->getInterface());
                 } else {
                     handleDeviceRequest(jsonMessage, rawMessage->getInterface());

@@ -12,37 +12,40 @@
  */
 
 // Uncomment the following line to enable serial debug output
-#define ENABLE_DEBUG
+//#define ENABLE_DEBUG
 
-#define FIRMWARE_VERSION "1.1.1"  // Your firmware version. Must be above SinricPro.h. Do not rename FIRMWARE_VERSION.
+// Your firmware version. Must be above SinricPro.h. Do not rename this.
+#define FIRMWARE_VERSION "1.1.1"  
 
 #ifdef ENABLE_DEBUG
-#define DEBUG_ESP_PORT Serial
-#define NODEBUG_WEBSOCKETS
-#define NDEBUG
+  #define DEBUG_ESP_PORT Serial
+  #define NODEBUG_WEBSOCKETS
+  #define NDEBUG
 #endif
 
 #include <Arduino.h>
 
 #if defined(ESP32)
-#include <WiFi.h>
+  #include <WiFi.h>
+  #include "ESP32OTAHelper.h"
 #else
-#error "ESP8266 is not supported due to memory limitations"
+  #include <ESP8266WiFi.h>
+  #include "ESP8266OTAHelper.h"
 #endif
 
+#include "SemVer.h"
 #include "SinricPro.h"
-#include "OTAHelper.h"
 
 #define WIFI_SSID   "YOUR-WIFI-SSID"
 #define WIFI_PASS   "YOUR-WIFI-PASSWORD"
 #define APP_KEY     "YOUR-APP-KEY"     // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET  "YOUR-APP-SECRET"  // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define SWITCH_ID   "YOUR-DEVICE-ID"   // Should look like "5dc1564130xxxxxxxxxxxxxx"
+
 #define BAUD_RATE   115200             // Change baudrate to your need
 
 bool handleOTAUpdate(const String& url, int major, int minor, int patch) {
-  Version currentVersion = parseVersion(FIRMWARE_VERSION);
-  Version newVersion = parseVersion(String(major) + "." + String(minor) + "." + String(patch));
+  Version currentVersion  = parseVersion(FIRMWARE_VERSION);
+  Version newVersion      = parseVersion(String(major) + "." + String(minor) + "." + String(patch));
 
   bool updateAvailable = isNewerVersion(currentVersion, newVersion);
   Serial.print("URL: ");
@@ -54,7 +57,7 @@ bool handleOTAUpdate(const String& url, int major, int minor, int patch) {
 
   if (updateAvailable) {
     Serial.println("Update available!");
-    startOTAUpdate(url);
+    return startOTAUpdate(url);
   } else {
     Serial.println("Current version is up to date.");
   }
