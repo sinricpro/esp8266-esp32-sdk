@@ -1,5 +1,5 @@
 # Changelog
-## Version 4.0.0
+## Version 3.2.1
 ### New
   - Support OTA Updates
   - Module level command support for Settings

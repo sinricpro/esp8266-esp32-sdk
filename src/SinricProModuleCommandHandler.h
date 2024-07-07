@@ -19,7 +19,6 @@ FSTR(OTA, major);               // "major"
 FSTR(OTA, minor);               // "minor"
 FSTR(OTA, patch);               // "patch"
 FSTR(SETTINGS, setSetting);     // "setSetting"
-FSTR(SETTINGS, getSetting);     // "getSetting"
 FSTR(SETTINGS, id);             // "id"
 FSTR(SETTINGS, value);          // "value"
 
