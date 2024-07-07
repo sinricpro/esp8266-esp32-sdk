@@ -29,7 +29,7 @@ bool startOTAUpdate(const String& url) {
   #endif
  
   client.setInsecure();
-  client.setBufferSizes(4096, 4096);
+  client.setBufferSizes(4096, 4096); // For OTA to work on limited RAM
 
   // The line below is optional. It can be used to blink the LED on the board during flashing
   // The LED will be on during download of one buffer of data from the network. The LED will
