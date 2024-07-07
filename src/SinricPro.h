@@ -101,8 +101,7 @@ class SinricProClass : public SinricProInterface {
     unsigned long getTimestamp() override;
     Proxy         operator[](const String deviceId);
     void          onOTAUpdate(OTAUpdateCallbackHandler cb);
-    void          onSetSetting(SetSettingCallbackHandler cb);
-    void          onGetSetting(GetSettingCallbackHandler cb);
+    void          onSetSetting(SetSettingCallbackHandler cb); 
 
   protected:
     template <typename DeviceType>
@@ -517,20 +516,6 @@ void SinricProClass::onOTAUpdate(OTAUpdateCallbackHandler cb) {
  */
 void SinricProClass::onSetSetting(SetSettingCallbackHandler cb) {
     _moduleCommandHandler.onSetSetting(cb);
-}
-
-/**
- * @brief Set callback function for retrieving a module setting.
- * 
- * This method registers a callback function that will be called when a request to get
- * the current value of a module setting is received.
- *
- * @param cb A function pointer or lambda of type GetSettingCallbackHandler.
- *           The callback should return a boolean indicating whether the setting was successfully retrieved.
- *
- */
-void SinricProClass::onGetSetting(GetSettingCallbackHandler cb) {
-    _moduleCommandHandler.onGetSetting(cb);
 }
 
 /**

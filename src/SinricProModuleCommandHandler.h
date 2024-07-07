@@ -25,7 +25,6 @@ FSTR(SETTINGS, value);          // "value"
 
 using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major, int minor, int patch)>;
 using SetSettingCallbackHandler = std::function<bool(const String& id, const String& value)>;
-using GetSettingCallbackHandler = std::function<bool(const String& id, String& value)>;
 
 class SinricProModuleCommandHandler {
   public:
@@ -35,12 +34,10 @@ class SinricProModuleCommandHandler {
     bool handleRequest(SinricProRequest &request);
     void onOTAUpdate(OTAUpdateCallbackHandler callback);
     void onSetSetting(SetSettingCallbackHandler callback);
-    void onGetSetting(GetSettingCallbackHandler callback);
 
   private:
     OTAUpdateCallbackHandler  _otaUpdateCallbackHandler;
     SetSettingCallbackHandler _setSettingCallbackHandler;
-    GetSettingCallbackHandler _getSettingCallbackHandler;
 };
 
 SinricProModuleCommandHandler::SinricProModuleCommandHandler()
@@ -56,10 +53,6 @@ void SinricProModuleCommandHandler::onOTAUpdate(OTAUpdateCallbackHandler callbac
 
 void SinricProModuleCommandHandler::onSetSetting(SetSettingCallbackHandler callback) {
   _setSettingCallbackHandler = callback;
-}
-
-void SinricProModuleCommandHandler::onGetSetting(GetSettingCallbackHandler callback) {
-  _getSettingCallbackHandler = callback;
 }
  
 bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
