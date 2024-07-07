@@ -82,7 +82,7 @@ void setupWiFi() {
 // setup function for SinricPro
 void setupSinricPro() {
   SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
-  mySwitch1.onSetSetting(onSetDeviceSetting);
+  mySwitch.onSetSetting(onSetDeviceSetting);
   
   // setup SinricPro
   SinricPro.onConnected([]() {
