@@ -63,18 +63,6 @@ using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major
  */
 using SetSettingCallbackHandler = std::function<bool(const String& id, const String& value)>;
 
-/**
- * @brief Function signature for retrieving a module setting.
- *
- * This callback is used to get the current value of a specific setting identified by its ID.
- * The value is passed by reference, allowing the callback to modify it directly.
- * 
- * @param id The unique identifier of the setting to be retrieved.
- * @param value A reference to a String that will be updated with the current value of the setting.
- * @return bool Returns true if the setting was successfully retrieved, false otherwise.
- */
-using GetSettingCallbackHandler = std::function<bool(const String& id, String& value)>;
-
 using PongCallback = std::function<void(uint32_t)>;
 
 /**

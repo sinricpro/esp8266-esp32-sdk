@@ -42,8 +42,7 @@ class SinricProModuleCommandHandler {
 
 SinricProModuleCommandHandler::SinricProModuleCommandHandler()
     : _otaUpdateCallbackHandler(nullptr),
-     _setSettingCallbackHandler(nullptr),
-     _getSettingCallbackHandler(nullptr) {}
+     _setSettingCallbackHandler(nullptr) {}
 
 SinricProModuleCommandHandler::~SinricProModuleCommandHandler() {}
 
@@ -67,11 +66,6 @@ bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
     String id = request.request_value[FSTR_SETTINGS_id];
     String value = request.request_value[FSTR_SETTINGS_value];
     return _setSettingCallbackHandler(id, value);
-  }
-  else if (strcmp(FSTR_SETTINGS_getSetting, request.action.c_str()) == 0 && _getSettingCallbackHandler) {    
-    String id = request.request_value[FSTR_SETTINGS_id];
-    String value = request.request_value[FSTR_SETTINGS_value];
-    return _getSettingCallbackHandler(id, value);
   }
   return false;
 }
