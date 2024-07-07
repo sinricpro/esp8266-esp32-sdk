@@ -12,22 +12,23 @@
  */
 
 // Uncomment the following line to enable serial debug output
-#define ENABLE_DEBUG
+//#define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
-#define DEBUG_ESP_PORT Serial
-#define NODEBUG_WEBSOCKETS
-#define NDEBUG
+  #define DEBUG_ESP_PORT Serial
+  #define NODEBUG_WEBSOCKETS
+  #define NDEBUG
 #endif
 
 #include <Arduino.h>
 #if defined(ESP8266)
-#include <ESP8266WiFi.h>
+  #include <ESP8266WiFi.h>
 #elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
-#include <WiFi.h>
+  #include <WiFi.h>
 #endif
 
 #include "SinricPro.h"
+#include "SinricProSwitch.h"
 #include "ArduinoJson.h"
 
 #define WIFI_SSID "YOUR-WIFI-SSID"
@@ -37,75 +38,26 @@
 #define SWITCH_ID "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 #define BAUD_RATE 115200              // Change baudrate to your need
 
-#define SET_WIFI "pro.sinric::set.wifi"
-#define GET_CONNECTED_WIFI_INFO "pro.sinric::get.connected.wifi.info"
+#define SET_WIFI_PRIMARY   "pro.sinric::set.wifi.primary"
+#define SET_WIFI_SECONDARY "pro.sinric::set.wifi.secondary"
 
-struct WiFiInfo {
-  int32_t channel;
-  long rssi;
-  String encryptionType;
-};
+bool onSetDeviceSetting(const String& deviceId, const String& settingId, const String& settingValue) {
+    // Handle device settings.
+    return true;
+}
 
-bool handleSetSetting(const String& id, const String& value) {
-  if (id == SET_WIFI) {
-    // Connect to another WiFi
-    // JsonDocument doc;
-    // deserializeJson(doc, value);
-    // const char* ssid = doc["ssid"];
-    // const char* password = doc["password"];
+bool onSetModuleSetting(const String& id, const String& value) {
+  // Handle module settings.
+
+  if (id == SET_WIFI_PRIMARY) {
+    // Set primary WiFi
+  } else if (id == SET_WIFI_SECONDARY) {
+    // Set secondary WiFi
   }
-
+  
   return true;
 }
-
-WiFiInfo getWiFiInfo(const char* ssid) {
-  struct WiFiInfo info;
-
-  if (int32_t n = WiFi.scanNetworks()) {
-    for (uint8_t i = 0; i < n; i++) {
-      if (!strcmp(ssid, WiFi.SSID(i).c_str())) {
-        info.channel = WiFi.channel(i);
-        info.rssi = WiFi.RSSI(i);
-
-        switch (WiFi.encryptionType(i)) {
-          case WIFI_AUTH_OPEN: info.encryptionType = "open"; break;
-          case WIFI_AUTH_WEP: info.encryptionType = "WEP"; break;
-          case WIFI_AUTH_WPA_PSK: info.encryptionType = "WPA"; break;
-          case WIFI_AUTH_WPA2_PSK: info.encryptionType = "WPA2"; break;
-          case WIFI_AUTH_WPA_WPA2_PSK: info.encryptionType = "WPA+WPA2"; break;
-          case WIFI_AUTH_WPA2_ENTERPRISE: info.encryptionType = "WPA2-EAP"; break;
-          case WIFI_AUTH_WPA3_PSK: info.encryptionType = "WPA3"; break;
-          case WIFI_AUTH_WPA2_WPA3_PSK: info.encryptionType = "WPA2+WPA3"; break;
-          case WIFI_AUTH_WAPI_PSK: info.encryptionType = "WAPI"; break;
-          default: info.encryptionType = "unknown"; break;
-        }
-
-        break;
-      }
-    }
-  }
-
-  // Delete the scan result to free memory
-  WiFi.scanDelete();
-
-  return info;
-}
-
-bool handleGetSetting(const String& id, String& value) {
-  if (id == GET_CONNECTED_WIFI_INFO) {
-    WiFiInfo info = getWiFiInfo(WIFI_SSID);
-
-    JsonDocument doc;
-    doc["rssi"] = info.rssi;
-    doc["channel"] = info.channel;
-    doc["ssid"] = info.encryptionType;
-
-    serializeJson(doc, value);
-  }
-
-  return true;
-}
-
+ 
 // setup function for WiFi connection
 void setupWiFi() {
   Serial.printf("\r\n[Wifi]: Connecting");
@@ -129,7 +81,9 @@ void setupWiFi() {
 
 // setup function for SinricPro
 void setupSinricPro() {
-
+  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
+  mySwitch1.onSetSetting(onSetDeviceSetting);
+  
   // setup SinricPro
   SinricPro.onConnected([]() {
     Serial.printf("Connected to SinricPro\r\n");
@@ -137,8 +91,8 @@ void setupSinricPro() {
   SinricPro.onDisconnected([]() {
     Serial.printf("Disconnected from SinricPro\r\n");
   });
-  SinricPro.onSetSetting(handleSetSetting);
-  SinricPro.onGetSetting(handleGetSetting);
+  
+  SinricPro.onSetSetting(onSetModuleSetting);
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
