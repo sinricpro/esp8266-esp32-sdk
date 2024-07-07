@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        example: [examples/ACUnit, examples/AirQualitySensor/AirQualitySensor, examples/Blinds, examples/ContactSensor, examples/DimSwitch, examples/doorbell, examples/Fan, examples/GarageDoor, examples/Light/Light, examples/Lock/Lock, examples/Lock/Lock_with_feedback, examples/MotionSensor, examples/PowerSensor, examples/Relay/MultiRelays_advance, examples/Relay/Relay, examples/Speaker, examples/Switch/MultiSwitch_advance, examples/Switch/MultiSwitch_beginner, examples/Switch/MultiSwitch_intermediate, examples/Switch/Switch, examples/Thermostat, examples/TV]
+        example: [examples/ACUnit, examples/AirQualitySensor/AirQualitySensor, examples/Blinds, examples/ContactSensor, examples/DimSwitch, examples/doorbell, examples/Fan, examples/GarageDoor, examples/Light/Light, examples/Lock/Lock, examples/Lock/Lock_with_feedback, examples/MotionSensor, examples/PowerSensor, examples/Relay/MultiRelays_advance, examples/Relay/Relay, examples/Speaker, examples/Switch/MultiSwitch_advance, examples/Switch/MultiSwitch_beginner, examples/Switch/MultiSwitch_intermediate, examples/Switch/Switch, examples/Thermostat, examples/TV, examples/OTAUpdate, examples/Settings]
 
     steps:
     - name: Step 1 - Checkout Repo
