@@ -17,6 +17,8 @@
 // Your firmware version. Must be above SinricPro.h. Do not rename this.
 #define FIRMWARE_VERSION "1.1.1"  
 
+// Sketch -> Export Compiled Binary to export
+
 #ifdef ENABLE_DEBUG
   #define DEBUG_ESP_PORT Serial
   #define NODEBUG_WEBSOCKETS
@@ -38,11 +40,13 @@
 
 #include "SemVer.h"
 #include "SinricPro.h"
+#include "SinricProSwitch.h"
 
 #define WIFI_SSID   "YOUR-WIFI-SSID"
 #define WIFI_PASS   "YOUR-WIFI-PASSWORD"
-#define APP_KEY     "YOUR-APP-KEY"     // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
-#define APP_SECRET  "YOUR-APP-SECRET"  // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define APP_KEY     "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+#define APP_SECRET  "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define SWITCH_ID   "SWITCH_ID"         // Should look like "5dc1564130xxxxxxxxxxxxxx"
 
 #define BAUD_RATE   115200             // Change baudrate to your need
 
@@ -65,7 +69,8 @@ bool handleOTAUpdate(const String& url, int major, int minor, int patch) {
     Serial.println("Current version is up to date.");
   }
 
-  return true;  // OTA Update started successfully
+  // Does not reach here. Gets rebooted above.
+  return true;
 }
 
 // setup function for WiFi connection
@@ -86,11 +91,16 @@ void setupWiFi() {
     Serial.printf(".");
     delay(250);
   }
+
+  WiFi.config(WiFi.localIP(), IPAddress(8, 8, 8, 8)); // set to Google DNS to avoid DNS look-up errors
+
   Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
 // setup function for SinricPro
 void setupSinricPro() {
+   SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
+
   // setup SinricPro
   SinricPro.onConnected([]() {
     Serial.printf("Connected to SinricPro\r\n");

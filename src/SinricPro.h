@@ -324,7 +324,7 @@ void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface
     bool success = _moduleCommandHandler.handleRequest(request);
     
     responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_success] = success;
-    responseMessage.remove(FSTR_SINRICPRO_deviceId);
+    responseMessage[FSTR_SINRICPRO_payload].remove(FSTR_SINRICPRO_deviceId);
 
     String responseString;
     serializeJson(responseMessage, responseString);

@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include <time.h>
+#include "Cert.h"
 
 #if defined(ARDUINO_ARCH_RP2040)
   #include <HTTPClient.h>
@@ -17,19 +18,37 @@
 
   #define OTA_CLASS ESPhttpUpdate
 #endif
- 
+
+String extractOTAHostname(const String& url) {
+  int index = url.indexOf("//") + 2;
+  if (index < 0) {
+    return "";  // Handle invalid URL format
+  }
+
+  int endIndex = url.indexOf("/", index);
+  if (endIndex < 0) {
+    endIndex = url.length();
+  }
+
+  return url.substring(index, endIndex);
+}
+
 // Function to perform the OTA update
 bool startOTAUpdate(const String& url) {
-  Serial.println("Starting OTA update");
- 
+  
   #if defined(ARDUINO_ARCH_RP2040)
     WiFiClientSecure client;    
+    client.setBufferSizes(4096, 4096); // For OTA to work on limited RAM
   #elif defined(ESP8266)
-     BearSSL::WiFiClientSecure client;     
+    BearSSL::WiFiClientSecure client;     
+    // Use MFLN to reduce the memory usage 
+    String host = extractOTAHostname(url);
+    bool mfln = client.probeMaxFragmentLength(host, 443, 512);
+    Serial.printf("MFLN supported: %s\n", mfln ? "yes" : "no");
+    if (mfln) { client.setBufferSizes(512, 512); } else client.setBufferSizes(4096, 4096);
   #endif
  
-  client.setInsecure();
-  client.setBufferSizes(4096, 4096); // For OTA to work on limited RAM
+  client.setInsecure();  
 
   // The line below is optional. It can be used to blink the LED on the board during flashing
   // The LED will be on during download of one buffer of data from the network. The LED will
@@ -39,9 +58,10 @@ bool startOTAUpdate(const String& url) {
   // value is used to put the LED on. If the LED is on with HIGH, that value should be passed
   //ESPhttpUpdate.setLedPin(LED_BUILTIN, LOW);
 
+  Serial.printf("Starting the OTA update. This may take few mins to complete!\n");
   auto http_ret = OTA_CLASS.update(client, url);  
 
-  //if success reboot 
+  //if success reboot will reboot! 
 
   switch (http_ret) {
     case HTTP_UPDATE_OK:
