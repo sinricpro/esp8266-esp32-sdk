@@ -65,6 +65,8 @@ bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
     String id = request.request_value[FSTR_SETTINGS_id];
     String value = request.request_value[FSTR_SETTINGS_value];
     return _setSettingCallbackHandler(id, value);
+  } else {
+     DEBUG_SINRIC("[SinricProModuleCommandHandler:handleRequest]: action: %s not supported!\r\n", request.action.c_str());
   }
   return false;
 }
