@@ -92,9 +92,10 @@ void setupWiFi() {
     delay(250);
   }
 
-  #if defined(ESP32)
-    WiFi.config(WiFi.localIP(), IPAddress(8, 8, 8, 8)); // Use Google DNS to fix DNS look-up errors.  
-  #endif
+  // Enable to fix random DNS lookup errors
+  // #if defined(ESP32)
+  //   WiFi.config(WiFi.localIP(), IPAddress(8, 8, 8, 8));
+  // #endif
 
   Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
