@@ -27,6 +27,7 @@
 #endif
 
 #include <Arduino.h>
+#include "OTAResult.h"
 
 #if defined(ESP8266)
   #include <ESP8266WiFi.h>
@@ -42,6 +43,7 @@
 #include "SemVer.h"
 #include "SinricPro.h"
 #include "SinricProSwitch.h"
+
 
 #define WIFI_SSID   "YOUR-WIFI-SSID"
 #define WIFI_PASS   "YOUR-WIFI-PASSWORD"

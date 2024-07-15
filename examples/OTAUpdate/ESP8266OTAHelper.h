@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 #include <time.h>
-#include "Cert.h"
+#include "Cert.h" 
 
 #if defined(ARDUINO_ARCH_RP2040)
   #include <HTTPClient.h>
@@ -34,8 +34,9 @@ String extractOTAHostname(const String& url) {
 }
 
 // Function to perform the OTA update
-bool startOTAUpdate(const String& url) {
-  
+OTAResult startOTAUpdate(const String& url) {
+  OTAResult result = { false, "" };
+
   #if defined(ARDUINO_ARCH_RP2040)
     WiFiClientSecure client;    
     client.setBufferSizes(4096, 4096); // For OTA to work on limited RAM
@@ -65,19 +66,23 @@ bool startOTAUpdate(const String& url) {
 
   switch (http_ret) {
     case HTTP_UPDATE_OK:
+      result.success = true;
       Serial.printf("HTTP_UPDATE_OK\n");
       break;
 
     case HTTP_UPDATE_FAILED:
+      result.success = false;
       Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s\n", OTA_CLASS.getLastError(), OTA_CLASS.getLastErrorString().c_str());
       break;
 
     case HTTP_UPDATE_NO_UPDATES:
+      result.success = false;
       Serial.println("HTTP_UPDATE_NO_UPDATES");
       break;
   }
 
-  return false;
+  
+  return result;
 }
 
 #endif

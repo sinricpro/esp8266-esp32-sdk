@@ -4,12 +4,7 @@
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <Update.h>
-#include "Cert.h"
-
-struct OTAResult {
-  bool success;
-  String errorMessage;
-};
+#include "Cert.h" 
 
 OTAResult startOTAUpdate(const String &url) {
   OTAResult result = { false, "" };
