@@ -83,7 +83,12 @@ bool onSetModuleSetting(const String& id, const String& value) {
 
   bool connect = doc["connectNow"] | false;
   if (connect) {
-    wifiMulti.APlistClean();
+    #if defined(ESP8266)
+      wifiMulti.cleanAPlist();
+    #elif defined(ESP32)
+      wifiMulti.APlistClean();
+    #endif
+
     wifiMulti.addAP(ssid, password);
     return waitForConnectResult();
   }
@@ -93,7 +98,12 @@ bool onSetModuleSetting(const String& id, const String& value) {
 
 bool setupLittleFS() {
   // Sets up the LittleFS.
-  if (!LittleFS.begin(true)) {
+  #if defined(ESP8266)
+    if (!LittleFS.begin()) {
+  #elif defined(ESP32)
+    if (!LittleFS.begin(true)) {
+  #endif
+
     Serial.println("An Error has occurred while mounting LittleFS");
 
     if (formatLittleFSIfFailed) {
