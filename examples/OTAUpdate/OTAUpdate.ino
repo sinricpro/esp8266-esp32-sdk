@@ -12,7 +12,8 @@
  */
 
 // Uncomment the following line to enable serial debug output
-//#define ENABLE_DEBUG
+// #define SINRICPRO_NOSSL // Uncomment if you have memory limitation issues.
+#define ENABLE_DEBUG
 
 // Your firmware version. Must be above SinricPro.h. Do not rename this.
 #define FIRMWARE_VERSION "1.1.1"  
@@ -50,27 +51,35 @@
 
 #define BAUD_RATE   115200             // Change baudrate to your need
 
-bool handleOTAUpdate(const String& url, int major, int minor, int patch) {
+bool handleOTAUpdate(const String& url, int major, int minor, int patch, bool forceUpdate) {
   Version currentVersion  = parseVersion(FIRMWARE_VERSION);
   Version newVersion      = parseVersion(String(major) + "." + String(minor) + "." + String(patch));
+  bool updateAvailable    = isNewerVersion(currentVersion, newVersion);
 
-  bool updateAvailable = isNewerVersion(currentVersion, newVersion);
   Serial.print("URL: ");
   Serial.println(url.c_str());
   Serial.print("Current version: ");
   Serial.println(currentVersion.toString());
   Serial.print("New version: ");
   Serial.println(newVersion.toString());
+  if (forceUpdate) Serial.println("Enforcing OTA update!");
 
-  if (updateAvailable) {
-    Serial.println("Update available!");
-    return startOTAUpdate(url);
+  // Handle OTA update based on forceUpdate flag and update availability
+  if (forceUpdate || updateAvailable) {
+    if (updateAvailable) {
+      Serial.println("Update available!");
+    }
+
+    OTAResult result = startOTAUpdate(url);
+    if (!result.success) {
+      SinricPro.setResponseMessage(std::move(result.errorMessage));
+    }
+    return result.success;
   } else {
+    SinricPro.setResponseMessage("Current version is up to date.");
     Serial.println("Current version is up to date.");
+    return false;
   }
-
-  // Does not reach here. Gets rebooted above.
-  return true;
 }
 
 // setup function for WiFi connection
@@ -91,11 +100,6 @@ void setupWiFi() {
     Serial.printf(".");
     delay(250);
   }
-
-  // Enable to fix random DNS lookup errors
-  // #if defined(ESP32)
-  //   WiFi.config(WiFi.localIP(), IPAddress(8, 8, 8, 8));
-  // #endif
 
   Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }

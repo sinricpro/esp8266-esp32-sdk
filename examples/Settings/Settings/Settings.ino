@@ -36,10 +36,8 @@
 #define APP_KEY "YOUR-APP-KEY"        // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
 #define APP_SECRET "YOUR-APP-SECRET"  // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
 #define SWITCH_ID "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
-#define BAUD_RATE 115200              // Change baudrate to your need
 
-#define SET_WIFI_PRIMARY   "pro.sinric::set.wifi.primary"
-#define SET_WIFI_SECONDARY "pro.sinric::set.wifi.secondary"
+#define BAUD_RATE 115200              // Change baudrate to your need
 
 bool onSetDeviceSetting(const String& deviceId, const String& settingId, const String& settingValue) {
     // Handle device settings.
@@ -48,13 +46,6 @@ bool onSetDeviceSetting(const String& deviceId, const String& settingId, const S
 
 bool onSetModuleSetting(const String& id, const String& value) {
   // Handle module settings.
-
-  if (id == SET_WIFI_PRIMARY) {
-    // Set primary WiFi
-  } else if (id == SET_WIFI_SECONDARY) {
-    // Set secondary WiFi
-  }
-  
   return true;
 }
  
