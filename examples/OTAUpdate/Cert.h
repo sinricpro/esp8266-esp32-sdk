@@ -1,3 +1,4 @@
+#pragma once
 
 // Ref: https://projects.petrucci.ch/esp32/?page=ssl.php&url=otaupdates.sinric.pro
 

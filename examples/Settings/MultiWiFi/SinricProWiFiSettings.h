@@ -1,5 +1,4 @@
-#ifndef SinricProWiFiSettings_H
-#define SinricProWiFiSettings_H
+#pragma once
 
 #include <Arduino.h>
 #include "FS.h"
@@ -119,5 +118,3 @@ private:
    */
   void deleteAllSettings();
 };
-
-#endif  // SinricProWiFiSettings_H

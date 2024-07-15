@@ -13,7 +13,7 @@
 
 // Uncomment the following line to enable serial debug output
 // #define SINRICPRO_NOSSL // Uncomment if you have memory limitation issues.
-#define ENABLE_DEBUG
+// #define ENABLE_DEBUG
 
 // Your firmware version. Must be above SinricPro.h. Do not rename this.
 #define FIRMWARE_VERSION "1.1.1"  
