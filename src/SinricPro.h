@@ -48,9 +48,10 @@ using DisconnectedCallbackHandler = std::function<void(void)>;
  * @param major The major version number
  * @param minor The minor version number
  * @param patch The patch version number
+ * @param forceUpdate Skip the version check and apply the update.
  * @return bool True if the update process started successful, false otherwise.
  */
-using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major, int minor, int patch)>;
+using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major, int minor, int patch, bool enforce)>;
 
 /**
  * @brief Function signature for setting a module setting.
@@ -325,6 +326,14 @@ void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface
     
     responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_success] = success;
     responseMessage[FSTR_SINRICPRO_payload].remove(FSTR_SINRICPRO_deviceId);
+    if (!success) {
+        if (responseMessageStr.length() > 0) {
+            responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_message] = responseMessageStr;
+            responseMessageStr = "";
+        } else {
+            responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_message] = "Module did not handle \"" + action + "\"";
+        }
+    }
 
     String responseString;
     serializeJson(responseMessage, responseString);

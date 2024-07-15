@@ -18,11 +18,12 @@ FSTR(OTA, version);             // "version"
 FSTR(OTA, major);               // "major"
 FSTR(OTA, minor);               // "minor"
 FSTR(OTA, patch);               // "patch"
+FSTR(OTA, forceUpdate);         // "forceUpdate"
 FSTR(SETTINGS, setSetting);     // "setSetting"
 FSTR(SETTINGS, id);             // "id"
 FSTR(SETTINGS, value);          // "value"
 
-using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major, int minor, int patch)>;
+using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major, int minor, int patch, bool forceUpdate)>;
 using SetSettingCallbackHandler = std::function<bool(const String& id, const String& value)>;
 
 class SinricProModuleCommandHandler {
@@ -59,7 +60,8 @@ bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
     int major  = request.request_value[FSTR_OTA_version][FSTR_OTA_major]; 
     int minor  = request.request_value[FSTR_OTA_version][FSTR_OTA_minor]; 
     int patch  = request.request_value[FSTR_OTA_version][FSTR_OTA_patch]; 
-    return _otaUpdateCallbackHandler(url, major, minor, patch);
+    bool forceUpdate  = request.request_value[FSTR_OTA_version][FSTR_OTA_forceUpdate] | false; 
+    return _otaUpdateCallbackHandler(url, major, minor, patch, forceUpdate);
   }
   else if (strcmp(FSTR_SETTINGS_setSetting, request.action.c_str()) == 0 && _setSettingCallbackHandler) {    
     String id = request.request_value[FSTR_SETTINGS_id];
