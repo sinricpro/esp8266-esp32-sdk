@@ -194,7 +194,7 @@ DeviceType& SinricProClass::getDeviceInstance(String deviceId) {
     DeviceType* tmp_device = (DeviceType*)getDevice(deviceId);
     if (tmp_device) return *tmp_device;
 
-    DEBUG_SINRIC("[SinricPro]: Device \"%s\" does not exist. Creating new device\r\n", deviceId.c_str());
+    DEBUG_SINRIC("[SinricPro]: Device \"%s\" does not exist in the internal device list. creating new device\r\n", deviceId.c_str());
     DeviceType& tmp_deviceInstance = add<DeviceType>(deviceId);
 
     if (isConnected()) {
