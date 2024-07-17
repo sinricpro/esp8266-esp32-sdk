@@ -1,8 +1,8 @@
 # Changelog
-## Version 3.2.1
+## Version 3.2.0
 ### New
   - Support OTA Updates
-  - Module level command support for Settings
+  - Module level command support for WiFi settings, ESP Health
 
 ## Version 3.1.0
 Upgrade:
