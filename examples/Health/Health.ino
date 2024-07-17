@@ -33,11 +33,11 @@
 #include "SinricProSwitch.h"
 #include "HealthDiagnostics.h"
 
-#define WIFI_SSID   "June"
-#define WIFI_PASS   "wifipassword"
-#define APP_KEY     "6c2eb41b-5f3b-457c-9b71-e227f6c7d7c4"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
-#define APP_SECRET  "62c10d6c-889a-459f-94a3-0e577cef5920-17bbf3e2-1eff-4ad7-b8aa-1348a07977cd"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define SWITCH_ID   "668824bc433af2075035036f"         // Should look like "5dc1564130xxxxxxxxxxxxxx"
+#define WIFI_SSID         "YOUR-WIFI-SSID"    
+#define WIFI_PASS         "YOUR-WIFI-PASSWORD"
+#define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+#define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 
 #define BAUD_RATE   115200             // Change baudrate to your need
  
