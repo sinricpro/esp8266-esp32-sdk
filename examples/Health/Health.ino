@@ -15,35 +15,35 @@
 #define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
-  #define DEBUG_ESP_PORT Serial
-  #define NODEBUG_WEBSOCKETS
-  #define NDEBUG
+#define DEBUG_ESP_PORT Serial
+#define NODEBUG_WEBSOCKETS
+#define NDEBUG
 #endif
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
 
 #if defined(ESP8266)
-  #include <ESP8266WiFi.h>
-#elif defined(ESP32) 
-  #include <WiFi.h>
+#include <ESP8266WiFi.h>
+#elif defined(ESP32)
+#include <WiFi.h>
 #endif
 
 #include "SinricPro.h"
 #include "SinricProSwitch.h"
 #include "HealthDiagnostics.h"
 
-#define WIFI_SSID         "YOUR-WIFI-SSID"    
-#define WIFI_PASS         "YOUR-WIFI-PASSWORD"
-#define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
-#define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define SWITCH_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
+#define WIFI_SSID "YOUR-WIFI-SSID"
+#define WIFI_PASS "YOUR-WIFI-PASSWORD"
+#define APP_KEY "YOUR-APP-KEY"        // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+#define APP_SECRET "YOUR-APP-SECRET"  // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define SWITCH_ID "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx"
 
-#define BAUD_RATE   115200             // Change baudrate to your need
- 
+#define BAUD_RATE 115200  // Change baudrate to your need
+
 HealthDiagnostics healthDiagnostics;
 
-bool handleReportHelath(String& healthReport) {  
+bool handleReportHelath(String& healthReport) {
   return healthDiagnostics.reportHealth(healthReport);
 }
 
@@ -71,13 +71,13 @@ void setupWiFi() {
 
 // setup function for SinricPro
 void setupSinricPro() {
-   SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
+  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
 
   // setup SinricPro
   SinricPro.onConnected([]() {
     Serial.printf("Connected to SinricPro\r\n");
   });
-  
+
   SinricPro.onDisconnected([]() {
     Serial.printf("Disconnected from SinricPro\r\n");
   });

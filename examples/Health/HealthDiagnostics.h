@@ -3,21 +3,21 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#ifdef ESP32
-  #include <esp_wifi.h>
-  #include <esp_heap_caps.h>
-#else
-  extern "C" {
-    #include "umm_malloc/umm_heap_select.h"
-    #include "umm_malloc/umm_malloc.h"
-  }
-#endif
-#if defined(ESP8266)
-  #include <ESP8266WiFi.h>
-  #include <user_interface.h>
-#elif defined(ESP32) 
-  #include <WiFi.h>  
-  #include "esp_system.h"
+
+#if defined(ESP32)
+#include <WiFi.h>
+#include "esp_system.h"
+#include <esp_wifi.h>
+#include <esp_heap_caps.h>
+#elif defined(ESP8266)
+#include <ESP8266WiFi.h>
+#include <user_interface.h>
+extern "C" {
+#include "umm_malloc/umm_heap_select.h"
+#include "umm_malloc/umm_malloc.h"
+}
+#elif defined(ARDUINO_ARCH_RP2040)
+#include <WiFi.h>
 #endif
 
 /**
@@ -33,13 +33,12 @@ public:
      */
   bool reportHealth(String& healthReport);
 
-private:  
+private:
   String getChipId();
   void addHeapInfo(JsonObject& doc);
   void addWiFiInfo(JsonObject& doc);
   void addSketchInfo(JsonObject& doc);
   void addResetCause(JsonObject& doc);
-  String getResetReasonESP32(esp_reset_reason_t resetReason);
 };
 
 #endif  // HEALTH_DIAGNOSTICS_H
