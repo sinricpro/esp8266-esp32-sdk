@@ -22,9 +22,12 @@ FSTR(OTA, forceUpdate);         // "forceUpdate"
 FSTR(SETTINGS, setSetting);     // "setSetting"
 FSTR(SETTINGS, id);             // "id"
 FSTR(SETTINGS, value);          // "value"
+FSTR(INSIGHTS, health);         // "health"
+FSTR(INSIGHTS, report);         // "report"
 
 using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major, int minor, int patch, bool forceUpdate)>;
 using SetSettingCallbackHandler = std::function<bool(const String& id, const String& value)>;
+using ReportHealthCallbackHandler = std::function<bool(String& healthReport)>;
 
 class SinricProModuleCommandHandler {
   public:
@@ -34,15 +37,18 @@ class SinricProModuleCommandHandler {
     bool handleRequest(SinricProRequest &request);
     void onOTAUpdate(OTAUpdateCallbackHandler callback);
     void onSetSetting(SetSettingCallbackHandler callback);
+    void onReportHelath(ReportHealthCallbackHandler callback);
 
   private:
-    OTAUpdateCallbackHandler  _otaUpdateCallbackHandler;
+    OTAUpdateCallbackHandler _otaUpdateCallbackHandler;
     SetSettingCallbackHandler _setSettingCallbackHandler;
+    ReportHealthCallbackHandler _reportHealthCallbackHandler;
 };
 
 SinricProModuleCommandHandler::SinricProModuleCommandHandler()
     : _otaUpdateCallbackHandler(nullptr),
-     _setSettingCallbackHandler(nullptr) {}
+     _setSettingCallbackHandler(nullptr),
+     _reportHealthCallbackHandler(nullptr) {}
 
 SinricProModuleCommandHandler::~SinricProModuleCommandHandler() {}
 
@@ -53,7 +59,11 @@ void SinricProModuleCommandHandler::onOTAUpdate(OTAUpdateCallbackHandler callbac
 void SinricProModuleCommandHandler::onSetSetting(SetSettingCallbackHandler callback) {
   _setSettingCallbackHandler = callback;
 }
- 
+
+void SinricProModuleCommandHandler::onReportHelath(ReportHealthCallbackHandler callback) {
+  _reportHealthCallbackHandler = callback;
+}
+
 bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
   if (strcmp(FSTR_OTA_otaUpdateAvailable, request.action.c_str()) == 0 && _otaUpdateCallbackHandler) {
     String url = request.request_value[FSTR_OTA_url];        
@@ -67,7 +77,16 @@ bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
     String id = request.request_value[FSTR_SETTINGS_id];
     String value = request.request_value[FSTR_SETTINGS_value];
     return _setSettingCallbackHandler(id, value);
-  } else {
+  } 
+  else if (strcmp(FSTR_INSIGHTS_health, request.action.c_str()) == 0 && _reportHealthCallbackHandler) {    
+    String healthReport = "";
+    bool success = _reportHealthCallbackHandler(healthReport);
+    if (success) {
+      request.response_value[FSTR_INSIGHTS_report] = healthReport;
+    }
+    return success;
+  }
+  else {
      DEBUG_SINRIC("[SinricProModuleCommandHandler:handleRequest]: action: %s not supported!\r\n", request.action.c_str());
   }
   return false;

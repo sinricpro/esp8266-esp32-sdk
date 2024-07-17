@@ -64,6 +64,21 @@ using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major
  */
 using SetSettingCallbackHandler = std::function<bool(const String& id, const String& value)>;
 
+/**
+ * @typedef ReportHealthCallbackHandler
+ * @brief Defines a function type for reporting device health status.
+ *
+ * This typedef creates an alias for a std::function that takes a reference to a String
+ * and returns a boolean value. It's designed to be used as a callback for health reporting
+ *
+ * @param healthReport A reference to a String that will contain the health status information.
+ *                     The callback function should populate this string with relevant health data.
+ *
+ * @return bool Returns true if the health report was successfully handled
+ *              false otherwise.
+ */
+using ReportHealthCallbackHandler = std::function<bool(String& healthReport)>;
+
 using PongCallback = std::function<void(uint32_t)>;
 
 /**
@@ -91,6 +106,7 @@ class SinricProClass : public SinricProInterface {
     Proxy         operator[](const String deviceId);
     void          onOTAUpdate(OTAUpdateCallbackHandler cb);
     void          onSetSetting(SetSettingCallbackHandler cb); 
+    void          onReportHelath(ReportHealthCallbackHandler cb);
 
   protected:
     template <typename DeviceType>
@@ -506,13 +522,29 @@ void SinricProClass::onOTAUpdate(OTAUpdateCallbackHandler cb) {
  * 
  * This method registers a callback function that will be called when a request to change
  * a module setting is received.
- *
+ * @return void
  * @param cb A function pointer or lambda of type SetSettingCallbackHandler.
  *           The callback should return a boolean indicating whether the setting was successfully updated.
  *
  */
 void SinricProClass::onSetSetting(SetSettingCallbackHandler cb) {
     _moduleCommandHandler.onSetSetting(cb);
+}
+
+/**
+ * @brief Sets the callback function for reporting device health status.
+ *
+ * This method allows the user to set a custom callback function that will be called
+ * when the SinricPro system needs to report the device's health status.
+ *
+ * @param cb A function pointer of type ReportHealthCallbackHandler.
+ *           This callback should populate a String with health information and return a boolean 
+ *           indicating success or failure of the health reporting process.
+ * @return void
+ * @see ReportHealthCallbackHandler for the definition of the callback function type.
+ */
+void SinricProClass::onReportHelath(ReportHealthCallbackHandler cb) {
+    _moduleCommandHandler.onReportHelath(cb);
 }
 
 /**
