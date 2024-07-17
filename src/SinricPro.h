@@ -106,7 +106,7 @@ class SinricProClass : public SinricProInterface {
     Proxy         operator[](const String deviceId);
     void          onOTAUpdate(OTAUpdateCallbackHandler cb);
     void          onSetSetting(SetSettingCallbackHandler cb); 
-    void          onReportHelath(ReportHealthCallbackHandler cb);
+    void          onReportHealth(ReportHealthCallbackHandler cb);
 
   protected:
     template <typename DeviceType>
@@ -543,8 +543,8 @@ void SinricProClass::onSetSetting(SetSettingCallbackHandler cb) {
  * @return void
  * @see ReportHealthCallbackHandler for the definition of the callback function type.
  */
-void SinricProClass::onReportHelath(ReportHealthCallbackHandler cb) {
-    _moduleCommandHandler.onReportHelath(cb);
+void SinricProClass::onReportHealth(ReportHealthCallbackHandler cb) {
+    _moduleCommandHandler.onReportHealth(cb);
 }
 
 /**

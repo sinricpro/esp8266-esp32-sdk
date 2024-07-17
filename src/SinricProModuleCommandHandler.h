@@ -37,7 +37,7 @@ class SinricProModuleCommandHandler {
     bool handleRequest(SinricProRequest &request);
     void onOTAUpdate(OTAUpdateCallbackHandler callback);
     void onSetSetting(SetSettingCallbackHandler callback);
-    void onReportHelath(ReportHealthCallbackHandler callback);
+    void onReportHealth(ReportHealthCallbackHandler callback);
 
   private:
     OTAUpdateCallbackHandler _otaUpdateCallbackHandler;
@@ -60,7 +60,7 @@ void SinricProModuleCommandHandler::onSetSetting(SetSettingCallbackHandler callb
   _setSettingCallbackHandler = callback;
 }
 
-void SinricProModuleCommandHandler::onReportHelath(ReportHealthCallbackHandler callback) {
+void SinricProModuleCommandHandler::onReportHealth(ReportHealthCallbackHandler callback) {
   _reportHealthCallbackHandler = callback;
 }
 
