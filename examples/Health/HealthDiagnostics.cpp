@@ -29,18 +29,17 @@ void HealthDiagnostics::addHeapInfo(JsonObject& doc) {
   internalHeap["freeBlocks"] = heap_info.free_blocks;
   internalHeap["totalBlocks"] = heap_info.total_blocks;
 
-  #ifdef CONFIG_SPIRAM_SUPPORT
-    heap_caps_get_info(&heap_info, MALLOC_CAP_SPIRAM);
-
-    JsonObject psram = doc["psram"].to<JsonObject>();
-    psram["totalFreeBytes"] = heap_info.total_free_bytes;
-    psram["totalAllocatedBytes"] = heap_info.total_allocated_bytes;
-    psram["largestFreeBlock"] = heap_info.largest_free_block;
-    psram["minimumFreeBytes"] = heap_info.minimum_free_bytes;
-    psram["allocatedBlocks"] = heap_info.allocated_blocks;
-    psram["freeBlocks"] = heap_info.free_blocks;
-    psram["totalBlocks"] = heap_info.total_blocks;
-  #endif
+  heap_caps_get_info(&heap_info, MALLOC_CAP_SPIRAM);
+  
+  JsonObject psram = doc["psram"].to<JsonObject>();
+  psram["totalFreeBytes"] = heap_info.total_free_bytes;
+  psram["totalAllocatedBytes"] = heap_info.total_allocated_bytes;
+  psram["largestFreeBlock"] = heap_info.largest_free_block;
+  psram["minimumFreeBytes"] = heap_info.minimum_free_bytes;
+  psram["allocatedBlocks"] = heap_info.allocated_blocks;
+  psram["freeBlocks"] = heap_info.free_blocks;
+  psram["totalBlocks"] = heap_info.total_blocks;
+ 
 #elif defined(ESP8266)
   doc["freeHeap"] = ESP.getFreeHeap();
   doc["heapFragmentation"] = ESP.getHeapFragmentation();
