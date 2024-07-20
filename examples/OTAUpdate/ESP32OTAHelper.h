@@ -6,91 +6,43 @@
 #include <Update.h>
 #include "Cert.h" 
 
-OTAResult startOTAUpdate(const String &url) {
-  OTAResult result = { false, "" };
-  WiFiClientSecure *client = new WiFiClientSecure;
+String startOtaUpdate(const String &url) {
+    WiFiClientSecure client;
+    client.setCACert(rootCACertificate);
 
-  if (client) {
-    client->setCACert(rootCACertificate);
-    {
-      // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is
-      HTTPClient https;
+    HTTPClient https;
+    Serial.print("[startOtaUpdate()] begin...\n");
+    if (!https.begin(client, url)) return "Unable to connect";
 
-      Serial.print("[startOTAUpdate()] begin...\n");
-      if (https.begin(*client, url)) {
-        Serial.print("[startOTAUpdate()] GET...\n");
-        // start connection and send HTTP header
-        int httpCode = https.GET();
+    Serial.print("[startOtaUpdate()] GET...\n");
+    // start connection and send HTTP header
+    int httpCode = https.GET();
+    if (httpCode < 0) return "GET... failed, error: " + https.errorToString(httpCode);
+    if (httpCode != HTTP_CODE_OK || httpCode != HTTP_CODE_MOVED_PERMANENTLY) return "HTTP response code: " + String(httpCode);
 
-        // httpCode will be negative on error
-        if (httpCode > 0) {
-          // HTTP header has been sent and Server response header has been handled
-          Serial.printf("[startOTAUpdate()] GET... code: %d\n", httpCode);
+    int contentLength = https.getSize();
+    Serial.printf("Content-Length: %d\n", contentLength);
 
-          // file found at server
-          if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
-            // get length of document (is -1 when Server sends no Content-Length header)
-            int contentLength = https.getSize();
-            Serial.printf("Content-Length: %d\n", contentLength);
+    if (contentLength == 0) return "There was no content length in the response";
 
-            if (contentLength > 0) {
-              bool canBegin = Update.begin(contentLength);
-              if (canBegin) {
-                WiFiClient *stream = https.getStreamPtr();
-                size_t written = Update.writeStream(*stream);
+    bool canBegin = Update.begin(contentLength);
 
-                if (written == contentLength) {
-                  Serial.println("[startOTAUpdate()] Written : " + String(written) + " successfully");
-                } else {
-                  result.errorMessage = "Written only : " + String(written) + "/" + String(contentLength) + ". Retry?";
-                  Serial.println("[startOTAUpdate()] " + result.errorMessage);
-                }
+    if (!canBegin) return "Not enough space to begin OTA";
 
-                if (Update.end()) {
-                  Serial.println("[startOTAUpdate()] OTA done!");
-                  if (Update.isFinished()) {
-                    Serial.println("[startOTAUpdate()] Update successfully completed. Rebooting.");
-                    ESP.restart();
-                    result.success = true;
-                    return result;
-                  } else {
-                    result.errorMessage = "Update not finished? Something went wrong!";
-                    Serial.println("[startOTAUpdate()] " + result.errorMessage);
-                  }
-                } else {
-                  result.errorMessage = "Error Occurred. Error #: " + String(Update.getError());
-                  Serial.println("[startOTAUpdate()] " + result.errorMessage);
-                }
-              } else {
-                result.errorMessage = "Not enough space to begin OTA";
-                Serial.println("[startOTAUpdate()] " + result.errorMessage);
-              }
-            } else {
-              result.errorMessage = "There was no content length in the response";
-              Serial.println("[startOTAUpdate()] " + result.errorMessage);
-            }
-          } else {
-            result.errorMessage = "HTTP response code: " + String(httpCode);
-            Serial.println("[startOTAUpdate()] " + result.errorMessage);
-          }
-        } else {
-          result.errorMessage = "GET... failed, error: " + https.errorToString(httpCode);
-          Serial.println("[startOTAUpdate()] " + result.errorMessage);
-        }
+    WiFiClient *stream  = https.getStreamPtr();
+    size_t      written = Update.writeStream(*stream);
 
-        https.end();
-      } else {
-        result.errorMessage = "Unable to connect";
-        Serial.println("[startOTAUpdate()] " + result.errorMessage);
-      }
-    }
-    delete client;
-  } else {
-    result.errorMessage = "Unable to create client";
-    Serial.println("[startOTAUpdate()] " + result.errorMessage);
-  }
+    if (written != contentLength) return "Written only : " + String(written) + "/" + String(contentLength) + ". Retry?";
+    Serial.println("[startOtaUpdate()] Written : " + String(written) + " successfully");
+    
+    if (!Update.end()) return "Error Occurred. Error #: " + String(Update.getError());
+    Serial.println("[startOtaUpdate()] OTA done!");
 
-  return result;
+    if (!Update.isFinished()) return "Update not finished? Something went wrong!";
+    Serial.println("[startOtaUpdate()] Update successfully completed. Rebooting.");
+    ESP.restart();
+
+    return "";
 }
 
 #endif

@@ -54,9 +54,9 @@
 #define BAUD_RATE   115200             // Change baudrate to your need
 
 bool handleOTAUpdate(const String& url, int major, int minor, int patch, bool forceUpdate) {
-  Version currentVersion  = parseVersion(FIRMWARE_VERSION);
-  Version newVersion      = parseVersion(String(major) + "." + String(minor) + "." + String(patch));
-  bool updateAvailable    = isNewerVersion(currentVersion, newVersion);
+  Version currentVersion  = Version(FIRMWARE_VERSION);
+  Version newVersion      = Version(String(major) + "." + String(minor) + "." + String(patch));
+  bool updateAvailable    = newVersion > currentVersion;
 
   Serial.print("URL: ");
   Serial.println(url.c_str());
@@ -72,14 +72,16 @@ bool handleOTAUpdate(const String& url, int major, int minor, int patch, bool fo
       Serial.println("Update available!");
     }
 
-    OTAResult result = startOTAUpdate(url);
-    if (!result.success) {
-      SinricPro.setResponseMessage(std::move(result.errorMessage));
-    }
-    return result.success;
+    String result = startOtaUpdate(url);
+    if (!result.isEmpty()) {
+      SinricPro.setResponseMessage(std::move(result));
+      return false;
+    } 
+    return true;
   } else {
-    SinricPro.setResponseMessage("Current version is up to date.");
-    Serial.println("Current version is up to date.");
+    String result = "Current version is up to date.";
+    SinricPro.setResponseMessage(result);
+    Serial.println(result);
     return false;
   }
 }

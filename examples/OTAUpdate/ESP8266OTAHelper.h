@@ -34,9 +34,7 @@ String extractOTAHostname(const String& url) {
 }
 
 // Function to perform the OTA update
-OTAResult startOTAUpdate(const String& url) {
-  OTAResult result = { false, "" };
-
+String startOtaUpdate(const String& url) {  
   #if defined(ARDUINO_ARCH_RP2040)
     WiFiClientSecure client;    
     client.setBufferSizes(4096, 4096); // For OTA to work on limited RAM
@@ -45,7 +43,7 @@ OTAResult startOTAUpdate(const String& url) {
     // Use MFLN to reduce the memory usage 
     String host = extractOTAHostname(url);
     bool mfln = client.probeMaxFragmentLength(host, 443, 512);
-    Serial.printf("MFLN supported: %s\n", mfln ? "yes" : "no");
+    Serial.printf("[startOtaUpdate()] MFLN supported: %s\n", mfln ? "yes" : "no");
     if (mfln) { client.setBufferSizes(512, 512); } else client.setBufferSizes(4096, 4096);
   #endif
  
@@ -59,30 +57,29 @@ OTAResult startOTAUpdate(const String& url) {
   // value is used to put the LED on. If the LED is on with HIGH, that value should be passed
   //ESPhttpUpdate.setLedPin(LED_BUILTIN, LOW);
 
-  Serial.printf("Starting the OTA update. This may take few mins to complete!\n");
+  Serial.printf("[startOtaUpdate()] Starting the OTA update. This may take few mins to complete!\n");
   auto http_ret = OTA_CLASS.update(client, url);  
 
   //if success reboot will reboot! 
+  String errorMsg = "";
 
   switch (http_ret) {
     case HTTP_UPDATE_OK:
-      result.success = true;
-      Serial.printf("HTTP_UPDATE_OK\n");
+      Serial.printf("[startOtaUpdate()] HTTP_UPDATE_OK\n");
       break;
 
     case HTTP_UPDATE_FAILED:
-      result.success = false;
-      Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s\n", OTA_CLASS.getLastError(), OTA_CLASS.getLastErrorString().c_str());
+      errorMsg = String("HTTP_UPDATE_FAILED Error (") + OTA_CLASS.getLastError() + "): " + OTA_CLASS.getLastErrorString();
+      Serial.printf("%s\n", errorMsg.c_str());
       break;
 
     case HTTP_UPDATE_NO_UPDATES:
-      result.success = false;
-      Serial.println("HTTP_UPDATE_NO_UPDATES");
+      errorMsg = "HTTP_UPDATE_NO_UPDATES";
+      Serial.println(errorMsg);
       break;
   }
-
   
-  return result;
+  return errorMsg;
 }
 
 #endif

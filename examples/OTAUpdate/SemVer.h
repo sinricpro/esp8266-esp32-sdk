@@ -2,32 +2,55 @@
 
 #include <Arduino.h>
 
-struct Version {
+class Version {
+  public:
+    Version(const String& versionStr);
+    String toString() const;
+
+    bool operator > (const Version& other) const;
+    bool operator < (const Version& other) const;
+    bool operator == (const Version& other) const;
+    bool operator != (const Version& other) const;
+
+  protected:
     int major;
     int minor;
     int patch;
-
-    String toString() const {
-        return String(major) + "." + String(minor) + "." + String(patch);
-    }
 };
 
-Version parseVersion(const String& versionStr) {
-    Version v;
-    int firstDot = versionStr.indexOf('.');
-    int secondDot = versionStr.lastIndexOf('.');    
-    v.major = versionStr.substring(0, firstDot).toInt();
-    v.minor = versionStr.substring(firstDot + 1, secondDot).toInt();
-    v.patch = versionStr.substring(secondDot + 1).toInt();    
-    return v;
+Version::Version(const String& versionStr) {
+    int     firstDot  = versionStr.indexOf('.');
+    int     secondDot = versionStr.lastIndexOf('.');
+    major           = versionStr.substring(0, firstDot).toInt();
+    minor           = versionStr.substring(firstDot + 1, secondDot).toInt();
+    patch           = versionStr.substring(secondDot + 1).toInt();
 }
 
-bool isNewerVersion(const Version& currentVersion, const Version& newVersion) {
-    if (newVersion.major > currentVersion.major) return true;
-    if (newVersion.major < currentVersion.major) return false;
-    
-    if (newVersion.minor > currentVersion.minor) return true;
-    if (newVersion.minor < currentVersion.minor) return false;
-    
-    return newVersion.patch > currentVersion.patch;
+String Version::toString() const {
+    return String(major) + "." + String(minor) + "." + String(patch);
+}
+
+bool Version::operator>(const Version& other) const {
+    if (major > other.major) return true;
+    if (minor > other.minor) return true;
+    if (patch > other.patch) return true;
+    return false;
+}
+
+bool Version::operator<(const Version& other) const {
+    if (major < other.major) return true;
+    if (minor < other.minor) return true;
+    if (patch < other.patch) return true;
+    return false;
+}
+
+bool Version::operator==(const Version& other) const {
+    if (major != other.major) return false;
+    if (minor != other.minor) return false;
+    if (patch != other.patch) return false;
+    return true;
+}
+
+bool Version::operator!=(const Version& other) const {
+    return !operator==(other);
 }
