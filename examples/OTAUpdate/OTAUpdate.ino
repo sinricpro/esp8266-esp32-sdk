@@ -79,7 +79,7 @@ bool handleOTAUpdate(const String& url, int major, int minor, int patch, bool fo
     return true;
   } else {
     String result = "Current version is up to date.";
-    SinricPro.setResponseMessage(result);
+    SinricPro.setResponseMessage(std::move(result));
     Serial.println(result);
     return false;
   }
