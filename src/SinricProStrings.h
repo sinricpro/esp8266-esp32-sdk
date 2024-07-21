@@ -38,5 +38,8 @@ FSTR(SINRICPRO, PERIODIC_POLL);           // "PERIODIC_POLL"
 FSTR(SINRICPRO, PHYSICAL_INTERACTION);    // "PHYSICAL_INTERACTION"
 FSTR(SINRICPRO, ALERT);                   // "ALERT"
 FSTR(SINRICPRO, OK);                      // "OK"
+FSTR(SINRICPRO, scope);                   // "scope"
+FSTR(SINRICPRO, module);                  // "module"
+FSTR(SINRICPRO, device);                  // "device"
 
 } // SINRICPRO_NAMESPACE
