@@ -24,12 +24,8 @@
 
 #if defined(ESP8266)
 #include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
-ESP8266WiFiMulti wifiMulti;  ///< ESP8266 WiFi multi instance.
 #elif defined(ESP32)
 #include <WiFi.h>
-#include <WiFiMulti.h>
-WiFiMulti wifiMulti;  ///< ESP32 WiFi multi instance.
 #endif
 
 #include "FS.h"
@@ -40,9 +36,9 @@ WiFiMulti wifiMulti;  ///< ESP32 WiFi multi instance.
 #include "SinricProSwitch.h"
 #include "SinricProWiFiSettings.h"
 
-#define APP_KEY ""        // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
-#define APP_SECRET ""     // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define SWITCH_ID ""      // Should look like "5dc1564130xxxxxxxxxxxxxx"
+#define APP_KEY ""     // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+#define APP_SECRET ""  // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define SWITCH_ID ""   // Should look like "5dc1564130xxxxxxxxxxxxxx"
 
 #define BAUD_RATE 115200  // Change baudrate to your need
 
@@ -50,15 +46,13 @@ WiFiMulti wifiMulti;  ///< ESP32 WiFi multi instance.
 #define SET_WIFI_SECONDARY "pro.sinric::set.wifi.secondary"
 
 const bool formatLittleFSIfFailed = true;
-const unsigned long NO_WIFI_REBOOT_TIMEOUT = 300000;  // 5 minutes in milliseconds
-unsigned long wifiStartTime;
 
-const char* primary_ssid = "";       // Set to your primary wifi's ssid
-const char* primary_password = "";   // Set to your primary wifi's password
-const char* secondary_ssid = "";     // Set to your secondary wifi's ssid
-const char* secondary_password = ""; // Set to your secondary wifi's password
+const char* primarySSID = "";        // Set to your primary wifi's ssid
+const char* primaryPassword = "";    // Set to your primary wifi's password
+const char* secondarySSID = "";      // Set to your secondary wifi's ssid
+const char* secondaryPassword = "";  // Set to your secondary wifi's password
 
-SinricProWiFiSettings spws(primary_ssid, primary_password, secondary_ssid, secondary_password, "/wificonfig.dat");
+SinricProWiFiSettings spws(primarySSID, primaryPassword, secondarySSID, secondaryPassword, "/wificonfig.dat");
 
 bool onSetModuleSetting(const String& id, const String& value) {
   // Handle module settings.
@@ -81,28 +75,21 @@ bool onSetModuleSetting(const String& id, const String& value) {
     spws.updateSecondarySettings(ssid, password);
   }
 
-  bool connect = doc["connectNow"] | false;
-  if (connect) {
-    #if defined(ESP8266)
-      wifiMulti.cleanAPlist();
-    #elif defined(ESP32)
-      wifiMulti.APlistClean();
-    #endif
-
-    wifiMulti.addAP(ssid, password);
-    return waitForConnectResult();
+  bool connectNow = doc["connectNow"] | false;
+  if(connectNow) {
+    return connectToWiFi(ssid, password);
   }
 
   return true;
 }
 
 bool setupLittleFS() {
-  // Sets up the LittleFS.
-  #if defined(ESP8266)
-    if (!LittleFS.begin()) {
-  #elif defined(ESP32)
-    if (!LittleFS.begin(true)) {
-  #endif
+// Sets up the LittleFS.
+#if defined(ESP8266)
+  if (!LittleFS.begin()) {
+#elif defined(ESP32)
+  if (!LittleFS.begin(true)) {
+#endif
 
     Serial.println("An Error has occurred while mounting LittleFS");
 
@@ -127,50 +114,51 @@ bool setupLittleFS() {
   return true;
 }
 
-bool waitForConnectResult() {
-  unsigned long startTime = millis();
-  constexpr unsigned int connectTimeout = 10000;
-
-  Serial.println("Connecting Wifi...");
-  while (wifiMulti.run() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-    if (millis() - startTime >= connectTimeout) {
-      Serial.println("WIFI not connected");
-      return false;
-    }
-  }
-
-  Serial.printf("\nWiFi connected\nIP address: %s\n", WiFi.localIP().toString().c_str());
-  return true;
-}
-
 // setup function for WiFi connection
 void setupWiFi() {
   Serial.printf("\r\n[Wifi]: Connecting");
-
-  WiFi.mode(WIFI_STA);
-#if defined(ESP8266)
-  WiFi.setSleepMode(WIFI_NONE_SLEEP);
-#elif defined(ESP32)
-  WiFi.setSleep(false);
-#endif
-  WiFi.setAutoReconnect(true);
 
   // Load settings from file or using defaults if loading fails.
   spws.begin();
 
   const SinricProWiFiSettings::wifi_settings_t& settings = spws.getWiFiSettings();
+  bool connected = false;
 
   if (spws.isValidSetting(settings.primarySSID, settings.primaryPassword)) {
-    wifiMulti.addAP(settings.primarySSID, settings.primaryPassword);
+    connected = connectToWiFi(settings.primarySSID, settings.primaryPassword);
   }
 
-  if (spws.isValidSetting(settings.secondarySSID, settings.secondaryPassword)) {
-    wifiMulti.addAP(settings.secondarySSID, settings.secondaryPassword);
+  if (!connected && spws.isValidSetting(settings.secondarySSID, settings.secondaryPassword)) {
+    connected = connectToWiFi(settings.secondarySSID, settings.secondaryPassword);
   }
+}
 
-  waitForConnectResult();
+bool connectToWiFi(const char* ssid, const char* password) {
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.disconnect();
+  delay(10);
+
+#if defined(ESP32)
+  WiFi.setSleep(false);
+  WiFi.begin(ssid, password);
+#elif defined(ESP8266)
+  WiFi.setSleepMode(WIFI_NONE_SLEEP);
+  WiFi.begin(ssid, password);
+#elif defined(ARDUINO_ARCH_RP2040)
+  WiFi.begin(ssid, password);
+#endif
+
+  int timeout = 0;
+  while (WiFi.status() != WL_CONNECTED && timeout < 30) {
+    delay(500);
+    Serial.print(".");
+    timeout++;
+  }
+  Serial.println();
+
+  return WiFi.status() == WL_CONNECTED;
 }
 
 // setup function for SinricPro
@@ -198,19 +186,7 @@ void setup() {
   setupSinricPro();
 }
 
-void rebootIfNoWiFi() {
-  // If no WiFI connection for 5 mins reboot the ESP. ESP will connect to either primary or secondary based on availability
-  if (WiFi.status() != WL_CONNECTED && (millis() - wifiStartTime >= NO_WIFI_REBOOT_TIMEOUT)) {
-    Serial.println("WiFi connection timed out. Rebooting...");
-    ESP.restart();
-  } else {
-    // Reset the start time if WiFi is connected
-    wifiStartTime = millis();
-  }
-}
-
 void loop() {
-  wifiMulti.run();
   SinricPro.handle();
-  rebootIfNoWiFi();
+  if (WiFi.status() != WL_CONNECTED) ESP.restart();
 }
