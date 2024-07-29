@@ -68,50 +68,35 @@ bool onSetModuleSetting(const String& id, const String& value) {
 
   const char* password = doc["password"].as<const char*>();
   const char* ssid = doc["ssid"].as<const char*>();
+  bool connectNow = doc["connectNow"] | false;
 
   if (id == SET_WIFI_PRIMARY) {  // Set primary WiFi
     spws.updatePrimarySettings(ssid, password);
   } else if (id == SET_WIFI_SECONDARY) {  // Set secondary WiFi
     spws.updateSecondarySettings(ssid, password);
   }
-
-  bool connectNow = doc["connectNow"] | false;
-  if(connectNow) {
-    return connectToWiFi(ssid, password);
-  }
-
-  return true;
+  
+  return connectNow ? connectToWiFi(ssid, password) : true;
 }
 
 bool setupLittleFS() {
-// Sets up the LittleFS.
 #if defined(ESP8266)
-  if (!LittleFS.begin()) {
+  if (!LittleFS.begin() && formatLittleFSIfFailed) {
 #elif defined(ESP32)
-  if (!LittleFS.begin(true)) {
+  if (!LittleFS.begin(true) && formatLittleFSIfFailed) {
 #endif
-
-    Serial.println("An Error has occurred while mounting LittleFS");
-
-    if (formatLittleFSIfFailed) {
-      Serial.println("Formatting LittleFS...");
-      if (LittleFS.format()) {
-        Serial.println("LittleFS formatted successfully!");
-        return true;
-      } else {
-        Serial.println("LittleFS formatting error!");
-        return false;
-      }
+    Serial.println("Formatting LittleFS...");
+    if (LittleFS.format()) {
+      Serial.println("LittleFS formatted successfully!");
+      return true;
     } else {
-      Serial.println("LittleFS error!");
+      Serial.println("LittleFS formatting error!");
       return false;
     }
   } else {
     Serial.println("LittleFS Mount successful");
     return true;
   }
-
-  return true;
 }
 
 // setup function for WiFi connection
@@ -121,7 +106,7 @@ void setupWiFi() {
   // Load settings from file or using defaults if loading fails.
   spws.begin();
 
-  const SinricProWiFiSettings::wifi_settings_t& settings = spws.getWiFiSettings();
+  auto& settings = spws.getWiFiSettings();
   bool connected = false;
 
   if (spws.isValidSetting(settings.primarySSID, settings.primaryPassword)) {
@@ -130,6 +115,12 @@ void setupWiFi() {
 
   if (!connected && spws.isValidSetting(settings.secondarySSID, settings.secondaryPassword)) {
     connected = connectToWiFi(settings.secondarySSID, settings.secondaryPassword);
+  }
+
+  if (connected) {
+    Serial.println("Connected to WiFi!");
+  } else {
+    Serial.println("Failed to connect to WiFi!");
   }
 }
 
@@ -145,8 +136,6 @@ bool connectToWiFi(const char* ssid, const char* password) {
   WiFi.begin(ssid, password);
 #elif defined(ESP8266)
   WiFi.setSleepMode(WIFI_NONE_SLEEP);
-  WiFi.begin(ssid, password);
-#elif defined(ARDUINO_ARCH_RP2040)
   WiFi.begin(ssid, password);
 #endif
 
