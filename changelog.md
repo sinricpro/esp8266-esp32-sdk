@@ -1,4 +1,9 @@
 # Changelog
+
+## Version 3.2.1
+  - Fixed Arduino Lint errors
+  - LICENSE.txt added
+
 ## Version 3.2.0
 ### New
   - Support OTA Updates
