@@ -17,14 +17,14 @@ String startOtaUpdate(const String &url) {
     Serial.print("[startOtaUpdate()] GET...\n");
     // start connection and send HTTP header
     int httpCode = https.GET();
-    if (httpCode < 0) return "GET... failed, error: " + https.errorToString(httpCode);
-    if (httpCode != HTTP_CODE_OK || httpCode != HTTP_CODE_MOVED_PERMANENTLY) return "HTTP response code: " + String(httpCode);
-
+    if (httpCode != HTTP_CODE_OK) return "GET... failed, error: " + https.errorToString(httpCode);
+    
     int contentLength = https.getSize();
-    Serial.printf("Content-Length: %d\n", contentLength);
+    Serial.printf("OTA size: %d bytes \n", contentLength);
 
     if (contentLength == 0) return "There was no content length in the response";
 
+    Serial.printf("Beginning update..!\n");
     bool canBegin = Update.begin(contentLength);
 
     if (!canBegin) return "Not enough space to begin OTA";
