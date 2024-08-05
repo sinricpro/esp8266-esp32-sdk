@@ -11,10 +11,10 @@
 class SinricProWiFiSettings {
 public:
   struct wifi_settings_t {
-    char primarySSID[32];        ///< Primary SSID of the WiFi network.
-    char primaryPassword[64];    ///< Primary password of the WiFi network.
-    char secondarySSID[32];      ///< Secondary SSID of the WiFi network.
-    char secondaryPassword[64];  ///< Secondary password of the WiFi network.
+    char primarySSID[32+1];        ///< Primary SSID of the WiFi network.
+    char primaryPassword[64+1];    ///< Primary password of the WiFi network.
+    char secondarySSID[32+1];      ///< Secondary SSID of the WiFi network.
+    char secondaryPassword[64+1];  ///< Secondary password of the WiFi network.
   };
 
   /**

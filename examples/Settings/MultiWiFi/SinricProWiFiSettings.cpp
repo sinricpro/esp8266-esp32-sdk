@@ -18,8 +18,8 @@ void SinricProWiFiSettings::begin() {
 
 void SinricProWiFiSettings::updatePrimarySettings(const char* newSSID, const char* newPassword) {
   if (isValidSetting(newSSID, newPassword)) {
-    strncpy(wifiSettings.primarySSID, newSSID, sizeof(wifiSettings.primarySSID));
-    strncpy(wifiSettings.primaryPassword, newPassword, sizeof(wifiSettings.primaryPassword));
+    strlcpy(wifiSettings.primarySSID, newSSID, sizeof(wifiSettings.primarySSID));
+    strlcpy(wifiSettings.primaryPassword, newPassword, sizeof(wifiSettings.primaryPassword));
     saveToFile();
   } else {
     Serial.println("Invalid Primary SSID or Password");
@@ -28,8 +28,8 @@ void SinricProWiFiSettings::updatePrimarySettings(const char* newSSID, const cha
 
 void SinricProWiFiSettings::updateSecondarySettings(const char* newSSID, const char* newPassword) {
   if (isValidSetting(newSSID, newPassword)) {
-    strncpy(wifiSettings.secondarySSID, newSSID, sizeof(wifiSettings.secondarySSID));
-    strncpy(wifiSettings.secondaryPassword, newPassword, sizeof(wifiSettings.secondaryPassword));
+    strlcpy(wifiSettings.secondarySSID, newSSID, sizeof(wifiSettings.secondarySSID));
+    strlcpy(wifiSettings.secondaryPassword, newPassword, sizeof(wifiSettings.secondaryPassword));
     saveToFile();
   } else {
     Serial.println("Invalid Secondary SSID or Password");
@@ -75,10 +75,10 @@ bool SinricProWiFiSettings::loadFromFile() {
 void SinricProWiFiSettings::saveDefaultSettings() {
   Serial.println("Saving default WiFi login!");
 
-  strncpy(wifiSettings.primarySSID, defaultPrimarySSID, sizeof(wifiSettings.primarySSID));
-  strncpy(wifiSettings.primaryPassword, defaultPrimaryPassword, sizeof(wifiSettings.primaryPassword));
-  strncpy(wifiSettings.secondarySSID, defaultSecondarySSID, sizeof(wifiSettings.secondarySSID));
-  strncpy(wifiSettings.secondaryPassword, defaultSecondaryPassword, sizeof(wifiSettings.secondaryPassword));
+  strlcpy(wifiSettings.primarySSID, defaultPrimarySSID, sizeof(wifiSettings.primarySSID));
+  strlcpy(wifiSettings.primaryPassword, defaultPrimaryPassword, sizeof(wifiSettings.primaryPassword));
+  strlcpy(wifiSettings.secondarySSID, defaultSecondarySSID, sizeof(wifiSettings.secondarySSID));
+  strlcpy(wifiSettings.secondaryPassword, defaultSecondaryPassword, sizeof(wifiSettings.secondaryPassword));
 
   saveToFile();
 }
