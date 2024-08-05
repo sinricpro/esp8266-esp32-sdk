@@ -46,12 +46,7 @@ void SinricProWiFiSettings::printSettings() const {
 }
 
 void SinricProWiFiSettings::saveToFile() {
-  
-  #if defined(ESP8266)
-    File file = fs.open(configFileName, "w");
-  #elif defined(ESP32)
-    File file = fs.open(configFileName, FILE_WRITE);
-  #endif
+  File file = fs.open(configFileName, "w");
 
   if (file) {
     file.write(reinterpret_cast<const uint8_t*>(&wifiSettings), sizeof(wifiSettings));
@@ -60,11 +55,7 @@ void SinricProWiFiSettings::saveToFile() {
 }
 
 bool SinricProWiFiSettings::loadFromFile() {
-  #if defined(ESP8266)
-    File file = fs.open(configFileName, "r");
-  #elif defined(ESP32)
-    File file = fs.open(configFileName, FILE_READ);
-  #endif
+  File file = fs.open(configFileName, "r");
   
   if (file && file.size() == sizeof(wifiSettings)) {
     file.read(reinterpret_cast<uint8_t*>(&wifiSettings), sizeof(wifiSettings));
