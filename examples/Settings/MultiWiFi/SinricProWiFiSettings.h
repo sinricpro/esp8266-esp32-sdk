@@ -1,8 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
-#include "FS.h"
-#include "LittleFS.h"
+#include <FS.h>
 
 
 /**
@@ -26,7 +25,8 @@ public:
    * @param defaultSecondaryPassword Default secondary password.
    * @param configFileName File name for storing WiFi settings.
    */
-  SinricProWiFiSettings(const char* defaultPrimarySSID, const char* defaultPrimaryPassword,
+  SinricProWiFiSettings(fs::FS& fs,
+                        const char* defaultPrimarySSID, const char* defaultPrimaryPassword,
                         const char* defaultSecondarySSID, const char* defaultSecondaryPassword,
                         const char* configFileName);
 
@@ -71,6 +71,7 @@ public:
   const wifi_settings_t& getWiFiSettings() const;
 
 private:
+  fs::FS& fs;                            // filesystem to be used
   const char* defaultPrimarySSID;        ///< Default primary SSID.
   const char* defaultPrimaryPassword;    ///< Default primary password.
   const char* defaultSecondarySSID;      ///< Default secondary SSID.

@@ -1,9 +1,11 @@
 #include "SinricProWiFiSettings.h"
 
-SinricProWiFiSettings::SinricProWiFiSettings(const char* defaultPrimarySSID, const char* defaultPrimaryPassword,
+SinricProWiFiSettings::SinricProWiFiSettings(fs::FS& fs,
+                                             const char* defaultPrimarySSID, const char* defaultPrimaryPassword,
                                              const char* defaultSecondarySSID, const char* defaultSecondaryPassword,
                                              const char* configFileName)
-  : defaultPrimarySSID(defaultPrimarySSID), defaultPrimaryPassword(defaultPrimaryPassword),
+  : fs(fs)
+  , defaultPrimarySSID(defaultPrimarySSID), defaultPrimaryPassword(defaultPrimaryPassword),
     defaultSecondarySSID(defaultSecondarySSID), defaultSecondaryPassword(defaultSecondaryPassword),
     configFileName(configFileName) {
   memset(&wifiSettings, 0, sizeof(wifiSettings));
@@ -46,9 +48,9 @@ void SinricProWiFiSettings::printSettings() const {
 void SinricProWiFiSettings::saveToFile() {
   
   #if defined(ESP8266)
-    File file = LittleFS.open(configFileName, "w");
+    File file = fs.open(configFileName, "w");
   #elif defined(ESP32)
-    File file = LittleFS.open(configFileName, FILE_WRITE);
+    File file = fs.open(configFileName, FILE_WRITE);
   #endif
 
   if (file) {
@@ -59,9 +61,9 @@ void SinricProWiFiSettings::saveToFile() {
 
 bool SinricProWiFiSettings::loadFromFile() {
   #if defined(ESP8266)
-    File file = LittleFS.open(configFileName, "r");
+    File file = fs.open(configFileName, "r");
   #elif defined(ESP32)
-    File file = LittleFS.open(configFileName, FILE_READ);
+    File file = fs.open(configFileName, FILE_READ);
   #endif
   
   if (file && file.size() == sizeof(wifiSettings)) {
@@ -85,8 +87,8 @@ void SinricProWiFiSettings::saveDefaultSettings() {
 
 void SinricProWiFiSettings::deleteAllSettings() {
   memset(&wifiSettings, 0, sizeof(wifiSettings));
-  if (LittleFS.exists(configFileName)) {
-    LittleFS.remove(configFileName);
+  if (fs.exists(configFileName)) {
+    fs.remove(configFileName);
   }
   Serial.println("All WiFi settings have been deleted.");
 }
