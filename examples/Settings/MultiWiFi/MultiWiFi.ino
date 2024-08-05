@@ -28,12 +28,11 @@
 #include <WiFi.h>
 #endif
 
-#include "FS.h"
-#include "LittleFS.h"
-#include "ArduinoJson.h"
+#include <LittleFS.h>
+#include <ArduinoJson.h>
 
-#include "SinricPro.h"
-#include "SinricProSwitch.h"
+#include <SinricPro.h>
+#include <SinricProSwitch.h>
 #include "SinricProWiFiSettings.h"
 
 #define APP_KEY ""     // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
@@ -52,7 +51,7 @@ const char* primaryPassword = "";    // Set to your primary wifi's password
 const char* secondarySSID = "";      // Set to your secondary wifi's ssid
 const char* secondaryPassword = "";  // Set to your secondary wifi's password
 
-SinricProWiFiSettings spws(primarySSID, primaryPassword, secondarySSID, secondaryPassword, "/wificonfig.dat");
+SinricProWiFiSettings spws(LittleFS, primarySSID, primaryPassword, secondarySSID, secondaryPassword, "/wificonfig.dat");
 
 bool onSetModuleSetting(const String& id, const String& value) {
   // Handle module settings.
