@@ -138,5 +138,14 @@ mySwitch.sendPushNotification("Hello SinricPro!");
 * Custom devices
 ---
 
+## Licensing and Credits
+* The Arduino IDE is developed and maintained by the Arduino team. The IDE is licensed under GPL.
+* [ArduinoJson](https://github.com/bblanchon/ArduinoJson) is licensed under the MIT.
+* [WebSockets](https://github.com/Links2004/arduinoWebSockets) is licensed under the GNU LGPL.
+* The (PlatformIO)[https://github.com/platformio] is developed and maintained by the PlatformIO team. The Core is licensed under Apache License 2.0.
+
+## Other boards
+[https://github.com/sinricpro/arduino-variants-sdk](https://github.com/sinricpro/arduino-variants-sdk)
+
 ## Join the community!
 Join us on our [Official Discord Server](https://discord.gg/rq9vcRcSqA)!
