@@ -119,23 +119,29 @@ mySwitch.sendPushNotification("Hello SinricPro!");
 
 ---
 
-## Devices
-* Switch
-* Dimmable Switch
-* Light
-* TV
-* Speaker
-* Thermostat
-* Fan (US and non US version)
-* Lock
-* Doorbell
-* Temperaturesensor
-* Motionsensor
-* Contactsensor
-* Windows Air Conditioner
-* Interior Blinds
-* Garage Door
-* Custom devices
+## Device Types
+* [Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Switch)
+* [Dimmable Switch](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/DimSwitch)
+* [Light](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Light)
+* [TV](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/TV)
+* [Speaker](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Speaker)
+* [Thermostat](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Thermostat)
+* [Fan](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Fan)
+* [Lock](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Lock)
+* [Doorbell](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/doorbell)
+* [Temperature Sensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/temperaturesensor)
+* [Motion Sensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/MotionSensor)
+* [Contact Sensor](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/ContactSensor)
+* [Windows Air Conditioner](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/ACUnit)
+* [Blinds](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Blinds)
+* [Garage Door](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/GarageDoor)
+* [Custom devices](https://help.sinric.pro/pages/custom-templates)
+* [Camera](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Camera)
+
+### Other
+* [OTA](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/OTAUpdate)
+* [MultiWiFi](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Settings/MultiWiFi)
+* [Health](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Health)
 ---
 
 ## Licensing and Credits
@@ -144,7 +150,7 @@ mySwitch.sendPushNotification("Hello SinricPro!");
 * [WebSockets](https://github.com/Links2004/arduinoWebSockets) is licensed under the GNU LGPL.
 * The [PlatformIO](https://github.com/platformio) is developed and maintained by the PlatformIO team. The Core is licensed under Apache License 2.0.
 
-## Other boards
+## Support for other boards
 [https://github.com/sinricpro/arduino-variants-sdk](https://github.com/sinricpro/arduino-variants-sdk)
 
 ## Join the community!
