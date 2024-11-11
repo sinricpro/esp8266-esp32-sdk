@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 3.3.1
+  - Support SmartButton.
+
 ## Version 3.2.1
   - Fixed Arduino Lint errors
   - LICENSE.txt added
