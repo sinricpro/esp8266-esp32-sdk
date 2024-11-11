@@ -15,9 +15,7 @@ FSTR(BUTTONSTATE, longPress);           // Long press state value
 FSTR(BUTTONSTATE, setSmartButtonState); // Set state action name
 
 // Callback type definitions for different button press events
-using SmartButtonSinglePressCallback = std::function<bool(const String &)>;
-using SmartButtonDoublePressCallback = std::function<bool(const String &)>;
-using SmartButtonLongPressCallback  = std::function<bool(const String &)>;
+using SmartButtonPressCallback = std::function<bool(const String &)>;
 
 /**
  * @brief Controller class for managing smart button state and interactions
@@ -37,19 +35,19 @@ public:
      * @brief Register callback for single press event from app
      * @param cb Callback function to handle single press
      */
-    void onSinglePress(SmartButtonSinglePressCallback cb);
+    void onSinglePress(SmartButtonPressCallback cb);
 
     /**
      * @brief Register callback for double press event from app
      * @param cb Callback function to handle double press
      */
-    void onDoublePress(SmartButtonDoublePressCallback cb);
+    void onDoublePress(SmartButtonPressCallback cb);
 
     /**
      * @brief Register callback for long press event from app
      * @param cb Callback function to handle long press
      */
-    void onLongPress(SmartButtonLongPressCallback cb);
+    void onLongPress(SmartButtonPressCallback cb);
 
 protected:
     /**
@@ -60,9 +58,9 @@ protected:
     bool handleSmartButtonStateController(SinricProRequest &request);
 
 private:
-    SmartButtonSinglePressCallback smartButtonSinglePressCallback;
-    SmartButtonDoublePressCallback smartButtonDoublePressCallback;
-    SmartButtonLongPressCallback   smartButtonLongPressCallback;
+    SmartButtonPressCallback smartButtonSinglePressCallback;
+    SmartButtonPressCallback smartButtonDoublePressCallback;
+    SmartButtonPressCallback smartButtonLongPressCallback;
 
     /**
      * returns true if states match, false otherwise
@@ -85,17 +83,17 @@ SmartButtonStateController<T>::SmartButtonStateController() {
 }
 
 template <typename T>
-void SmartButtonStateController<T>::onSinglePress(SmartButtonSinglePressCallback cb) {
+void SmartButtonStateController<T>::onSinglePress(SmartButtonPressCallback cb) {
     smartButtonSinglePressCallback = cb;
 }
 
 template <typename T>
-void SmartButtonStateController<T>::onDoublePress(SmartButtonDoublePressCallback cb) {
+void SmartButtonStateController<T>::onDoublePress(SmartButtonPressCallback cb) {
     smartButtonDoublePressCallback = cb;
 }
 
 template <typename T>
-void SmartButtonStateController<T>::onLongPress(SmartButtonLongPressCallback cb) {
+void SmartButtonStateController<T>::onLongPress(SmartButtonPressCallback cb) {
     smartButtonLongPressCallback = cb;
 }
 
