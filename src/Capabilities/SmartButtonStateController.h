@@ -5,17 +5,25 @@
 #include "../SinricProStrings.h"
 #include "../SinricProNamespace.h"
 
+/**
+ * @brief Enum defining the different types of button press events
+ */
+enum class SmartButtonPressType {
+    SINGLE_PRESS,
+    DOUBLE_PRESS,
+    LONG_PRESS
+};
+
 namespace SINRICPRO_NAMESPACE {
 
-// String constants for button states and actions
 FSTR(BUTTONSTATE, state);               // Button state key
 FSTR(BUTTONSTATE, singlePress);         // Single press state value
 FSTR(BUTTONSTATE, doublePress);         // Double press state value
 FSTR(BUTTONSTATE, longPress);           // Long press state value
 FSTR(BUTTONSTATE, setSmartButtonState); // Set state action name
 
-// Callback type definitions for different button press events
-using SmartButtonPressCallback = std::function<bool(const String &)>;
+// Callback type definition for button press events
+using SmartButtonPressCallback = std::function<bool(const String&, SmartButtonPressType)>;
 
 /**
  * @brief Controller class for managing smart button state and interactions
@@ -32,22 +40,10 @@ public:
     SmartButtonStateController();
 
     /**
-     * @brief Register callback for single press event from app
-     * @param cb Callback function to handle single press
+     * @brief Register callback for button press events
+     * @param cb Callback function to handle button press events
      */
-    void onSinglePress(SmartButtonPressCallback cb);
-
-    /**
-     * @brief Register callback for double press event from app
-     * @param cb Callback function to handle double press
-     */
-    void onDoublePress(SmartButtonPressCallback cb);
-
-    /**
-     * @brief Register callback for long press event from app
-     * @param cb Callback function to handle long press
-     */
-    void onLongPress(SmartButtonPressCallback cb);
+    void onButtonPress(SmartButtonPressCallback cb);
 
 protected:
     /**
@@ -58,9 +54,14 @@ protected:
     bool handleSmartButtonStateController(SinricProRequest &request);
 
 private:
-    SmartButtonPressCallback smartButtonSinglePressCallback;
-    SmartButtonPressCallback smartButtonDoublePressCallback;
-    SmartButtonPressCallback smartButtonLongPressCallback;
+    SmartButtonPressCallback buttonPressCallback;
+
+    /**
+     * @brief Convert string state to SmartButtonPressType enum
+     * @param stateStr The state string from the request
+     * @return corresponding SmartButtonPressType enum value
+     */
+    SmartButtonPressType getSmartButtonPressType(const String& stateStr);
 
     /**
      * returns true if states match, false otherwise
@@ -69,8 +70,6 @@ private:
         return request.request_value[FSTR_BUTTONSTATE_state] == stateValue;
     }
 };
-
-// Implementation
 
 template <typename T>
 SmartButtonStateController<T>::SmartButtonStateController() {
@@ -83,44 +82,40 @@ SmartButtonStateController<T>::SmartButtonStateController() {
 }
 
 template <typename T>
-void SmartButtonStateController<T>::onSinglePress(SmartButtonPressCallback cb) {
-    smartButtonSinglePressCallback = cb;
+void SmartButtonStateController<T>::onButtonPress(SmartButtonPressCallback cb) {
+    buttonPressCallback = cb;
 }
 
 template <typename T>
-void SmartButtonStateController<T>::onDoublePress(SmartButtonPressCallback cb) {
-    smartButtonDoublePressCallback = cb;
-}
-
-template <typename T>
-void SmartButtonStateController<T>::onLongPress(SmartButtonPressCallback cb) {
-    smartButtonLongPressCallback = cb;
+SmartButtonPressType SmartButtonStateController<T>::getSmartButtonPressType(const String& stateStr) {
+    if (stateStr == FSTR_BUTTONSTATE_singlePress) {
+        return SmartButtonPressType::SINGLE_PRESS;
+    } else if (stateStr == FSTR_BUTTONSTATE_doublePress) {
+        return SmartButtonPressType::DOUBLE_PRESS;
+    } else {
+        return SmartButtonPressType::LONG_PRESS;
+    }
 }
 
 template <typename T>
 bool SmartButtonStateController<T>::handleSmartButtonStateController(SinricProRequest &request) {
     // Only process setSmartButtonState actions
-    if (request.action != FSTR_BUTTONSTATE_setSmartButtonState) {
+    if (request.action != FSTR_BUTTONSTATE_setSmartButtonState || !buttonPressCallback) {
         return false;
     }
 
     T* device = static_cast<T*>(this);
-    bool success = false;
-
-    // Handle single press
-    if (smartButtonSinglePressCallback && isStateMatch(request, FSTR_BUTTONSTATE_singlePress)) {
-        success = smartButtonSinglePressCallback(device->deviceId);
-    }
-    // Handle double press
-    else if (smartButtonDoublePressCallback && isStateMatch(request, FSTR_BUTTONSTATE_doublePress)) {
-        success = smartButtonDoublePressCallback(device->deviceId);
-    }
-    // Handle long press
-    else if (smartButtonLongPressCallback && isStateMatch(request, FSTR_BUTTONSTATE_longPress)) {
-        success = smartButtonLongPressCallback(device->deviceId);
+    String stateStr = request.request_value[FSTR_BUTTONSTATE_state];
+    
+    // Only process valid button states
+    if (stateStr != FSTR_BUTTONSTATE_singlePress && 
+        stateStr != FSTR_BUTTONSTATE_doublePress && 
+        stateStr != FSTR_BUTTONSTATE_longPress) {
+        return false;
     }
 
-    return success;
+    SmartButtonPressType pressType = getSmartButtonPressType(stateStr);
+    return buttonPressCallback(device->deviceId, pressType);
 }
 
 } // namespace SINRICPRO_NAMESPACE
