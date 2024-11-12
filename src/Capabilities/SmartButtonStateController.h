@@ -62,13 +62,6 @@ private:
      * @return corresponding SmartButtonPressType enum value
      */
     SmartButtonPressType getSmartButtonPressType(const String& stateStr);
-
-    /**
-     * returns true if states match, false otherwise
-     */
-    inline bool isStateMatch(const SinricProRequest &request, const char* stateValue) {
-        return request.request_value[FSTR_BUTTONSTATE_state] == stateValue;
-    }
 };
 
 template <typename T>
