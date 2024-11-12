@@ -40,7 +40,7 @@ public:
     SmartButtonStateController();
 
     /**
-     * @brief Register callback for button press events
+     * @brief Register callback for button press events from the app
      * @param cb Callback function to handle button press events
      */
     void onButtonPress(SmartButtonPressCallback cb);
