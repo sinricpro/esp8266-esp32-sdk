@@ -1,9 +1,11 @@
 #include "SinricProWiFiSettings.h"
 
-SinricProWiFiSettings::SinricProWiFiSettings(const char* defaultPrimarySSID, const char* defaultPrimaryPassword,
+SinricProWiFiSettings::SinricProWiFiSettings(fs::FS& fs,
+                                             const char* defaultPrimarySSID, const char* defaultPrimaryPassword,
                                              const char* defaultSecondarySSID, const char* defaultSecondaryPassword,
                                              const char* configFileName)
-  : defaultPrimarySSID(defaultPrimarySSID), defaultPrimaryPassword(defaultPrimaryPassword),
+  : fs(fs)
+  , defaultPrimarySSID(defaultPrimarySSID), defaultPrimaryPassword(defaultPrimaryPassword),
     defaultSecondarySSID(defaultSecondarySSID), defaultSecondaryPassword(defaultSecondaryPassword),
     configFileName(configFileName) {
   memset(&wifiSettings, 0, sizeof(wifiSettings));
@@ -18,8 +20,8 @@ void SinricProWiFiSettings::begin() {
 
 void SinricProWiFiSettings::updatePrimarySettings(const char* newSSID, const char* newPassword) {
   if (isValidSetting(newSSID, newPassword)) {
-    strncpy(wifiSettings.primarySSID, newSSID, sizeof(wifiSettings.primarySSID));
-    strncpy(wifiSettings.primaryPassword, newPassword, sizeof(wifiSettings.primaryPassword));
+    strlcpy(wifiSettings.primarySSID, newSSID, sizeof(wifiSettings.primarySSID));
+    strlcpy(wifiSettings.primaryPassword, newPassword, sizeof(wifiSettings.primaryPassword));
     saveToFile();
   } else {
     Serial.println("Invalid Primary SSID or Password");
@@ -28,8 +30,8 @@ void SinricProWiFiSettings::updatePrimarySettings(const char* newSSID, const cha
 
 void SinricProWiFiSettings::updateSecondarySettings(const char* newSSID, const char* newPassword) {
   if (isValidSetting(newSSID, newPassword)) {
-    strncpy(wifiSettings.secondarySSID, newSSID, sizeof(wifiSettings.secondarySSID));
-    strncpy(wifiSettings.secondaryPassword, newPassword, sizeof(wifiSettings.secondaryPassword));
+    strlcpy(wifiSettings.secondarySSID, newSSID, sizeof(wifiSettings.secondarySSID));
+    strlcpy(wifiSettings.secondaryPassword, newPassword, sizeof(wifiSettings.secondaryPassword));
     saveToFile();
   } else {
     Serial.println("Invalid Secondary SSID or Password");
@@ -44,12 +46,7 @@ void SinricProWiFiSettings::printSettings() const {
 }
 
 void SinricProWiFiSettings::saveToFile() {
-  
-  #if defined(ESP8266)
-    File file = LittleFS.open(configFileName, "w");
-  #elif defined(ESP32)
-    File file = LittleFS.open(configFileName, FILE_WRITE);
-  #endif
+  File file = fs.open(configFileName, "w");
 
   if (file) {
     file.write(reinterpret_cast<const uint8_t*>(&wifiSettings), sizeof(wifiSettings));
@@ -58,11 +55,7 @@ void SinricProWiFiSettings::saveToFile() {
 }
 
 bool SinricProWiFiSettings::loadFromFile() {
-  #if defined(ESP8266)
-    File file = LittleFS.open(configFileName, "r");
-  #elif defined(ESP32)
-    File file = LittleFS.open(configFileName, FILE_READ);
-  #endif
+  File file = fs.open(configFileName, "r");
   
   if (file && file.size() == sizeof(wifiSettings)) {
     file.read(reinterpret_cast<uint8_t*>(&wifiSettings), sizeof(wifiSettings));
@@ -75,18 +68,18 @@ bool SinricProWiFiSettings::loadFromFile() {
 void SinricProWiFiSettings::saveDefaultSettings() {
   Serial.println("Saving default WiFi login!");
 
-  strncpy(wifiSettings.primarySSID, defaultPrimarySSID, sizeof(wifiSettings.primarySSID));
-  strncpy(wifiSettings.primaryPassword, defaultPrimaryPassword, sizeof(wifiSettings.primaryPassword));
-  strncpy(wifiSettings.secondarySSID, defaultSecondarySSID, sizeof(wifiSettings.secondarySSID));
-  strncpy(wifiSettings.secondaryPassword, defaultSecondaryPassword, sizeof(wifiSettings.secondaryPassword));
+  strlcpy(wifiSettings.primarySSID, defaultPrimarySSID, sizeof(wifiSettings.primarySSID));
+  strlcpy(wifiSettings.primaryPassword, defaultPrimaryPassword, sizeof(wifiSettings.primaryPassword));
+  strlcpy(wifiSettings.secondarySSID, defaultSecondarySSID, sizeof(wifiSettings.secondarySSID));
+  strlcpy(wifiSettings.secondaryPassword, defaultSecondaryPassword, sizeof(wifiSettings.secondaryPassword));
 
   saveToFile();
 }
 
 void SinricProWiFiSettings::deleteAllSettings() {
   memset(&wifiSettings, 0, sizeof(wifiSettings));
-  if (LittleFS.exists(configFileName)) {
-    LittleFS.remove(configFileName);
+  if (fs.exists(configFileName)) {
+    fs.remove(configFileName);
   }
   Serial.println("All WiFi settings have been deleted.");
 }
