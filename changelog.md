@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 3.4.0
+  - Support Image upload on camera devices
+
 ## Version 3.3.1
   - Support SmartButton.
 
