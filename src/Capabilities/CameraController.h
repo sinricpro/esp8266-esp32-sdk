@@ -74,7 +74,6 @@ int CameraController<T>::uploadImage(uint8_t* buffer, size_t len) {
     http.addHeader("signature", signature);
 
     int resCode = http.POST(buffer, len);
-    http.PUT(buffer, len);
     http.end();
 
     return resCode;
