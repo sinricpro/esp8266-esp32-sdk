@@ -18,7 +18,7 @@ class CameraController {
   public:
     CameraController();
     void onSnapshot(SnapshotCallback cb);
-    int uploadImage(uint8_t* buffer, size_t len);
+    int sendSnapshot(uint8_t* buffer, size_t len);
 
   protected:
     bool handleCameraController(SinricProRequest &request);
@@ -54,7 +54,7 @@ bool CameraController<T>::handleCameraController(SinricProRequest &request) {
 }
 
 template <typename T>
-int CameraController<T>::uploadImage(uint8_t* buffer, size_t len) {
+int CameraController<T>::sendSnapshot(uint8_t* buffer, size_t len) {
     T *device = static_cast<T *>(this);
 
     if (!buffer) return -1;
