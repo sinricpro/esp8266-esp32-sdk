@@ -1,7 +1,12 @@
 # Changelog
 
 ## Version 3.4.0
+  New: 
   - Support Image upload on camera devices
+  
+  Fixed: 
+  - Removed calls to `containsKey` - deprecated since ArduinoJSON 7.2
+  - Missing includes
 
 ## Version 3.3.1
   - Support SmartButton.
