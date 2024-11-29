@@ -41,6 +41,10 @@
 #define SINRICPRO_CAMERA_URL "camera.sinric.pro"
 #endif
 
+#ifndef SINRICPRO_CAMERA_PATH
+#define SINRICPRO_CAMERA_PATH "/snapshot"
+#endif
+
 // UDP Configuration
 #ifndef UDP_MUTLICAST_IP
 #define UDP_MULTICAST_IP IPAddress(224,9,9,9)
