@@ -685,7 +685,7 @@ JsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage) {
     payload[FSTR_SINRICPRO_scope]     = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_scope];
     payload[FSTR_SINRICPRO_createdAt] = 0;
     payload[FSTR_SINRICPRO_deviceId]  = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_deviceId];
-    if (requestMessage[FSTR_SINRICPRO_payload].containsKey(FSTR_SINRICPRO_instanceId)) payload[FSTR_SINRICPRO_instanceId] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId];
+    if (requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId].is<String>()) payload[FSTR_SINRICPRO_instanceId] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId];
     payload[FSTR_SINRICPRO_message]    = FSTR_SINRICPRO_OK;
     payload[FSTR_SINRICPRO_replyToken] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_replyToken];
     payload[FSTR_SINRICPRO_success]    = false;
