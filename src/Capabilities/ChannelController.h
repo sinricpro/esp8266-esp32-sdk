@@ -157,13 +157,13 @@ bool ChannelController<T>::handleChannelController(SinricProRequest &request) {
 
   if (request.action == FSTR_CHANNEL_changeChannel) {
 
-    if (changeChannelCallback && request.request_value[FSTR_CHANNEL_channel].containsKey(FSTR_CHANNEL_name)) {
+    if (changeChannelCallback && request.request_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name].is<String>()) {
       String channelName = request.request_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] | "";
       success = changeChannelCallback(device->deviceId, channelName);
       request.response_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_name] = channelName;
     }
 
-    if (changeChannelNumberCallback && request.request_value[FSTR_CHANNEL_channel].containsKey(FSTR_CHANNEL_number)) {
+    if (changeChannelNumberCallback && request.request_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_number].is<String>()) {
       String channelName("");
       int channelNumber = request.request_value[FSTR_CHANNEL_channel][FSTR_CHANNEL_number];
       success = changeChannelNumberCallback(device->deviceId, channelNumber, channelName);
