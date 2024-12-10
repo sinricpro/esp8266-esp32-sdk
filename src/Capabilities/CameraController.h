@@ -66,11 +66,11 @@ int CameraController<T>::sendSnapshot(uint8_t* buffer, size_t len) {
     if (!http.begin(client, SINRICPRO_CAMERA_URL, 443, SINRICPRO_CAMERA_PATH, true)) return -1;
 
     const String& deviceId = device->getDeviceId();
-    String timestamp = String(device->getTimestamp());
-    String signature = device->sign(deviceId+timestamp);
+    String createdAt = String(device->getTimestamp());
+    String signature = device->sign(deviceId+createdAt);
 
     http.addHeader(FSTR_SINRICPRO_deviceId, deviceId);
-    http.addHeader(FSTR_SINRICPRO_timestamp, timestamp);
+    http.addHeader(FSTR_SINRICPRO_createdAt, createdAt);
     http.addHeader(FSTR_SINRICPRO_signature, signature);
 
     int resCode = http.POST(buffer, len);
