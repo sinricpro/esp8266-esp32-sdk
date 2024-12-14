@@ -172,10 +172,8 @@ void setupCamera() {
 
 void setup() {
   Serial.begin(BAUD_RATE);
-  Serial.setDebugOutput(true);
   Serial.println();
-  delay(1500);
-
+  
   setupCamera();
   setupWiFi();
   setupSinricPro();  
