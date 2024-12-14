@@ -33,8 +33,9 @@ protected:
 
   void                                 registerRequestHandler(const SinricProRequestHandler &requestHandler);
   unsigned long                        getTimestamp();
+  String                               sign(const String& message);
   virtual bool                         sendEvent(JsonDocument &event);
-  virtual JsonDocument          prepareEvent(const char *action, const char *cause);
+  virtual JsonDocument                 prepareEvent(const char *action, const char *cause);
 
   virtual String                       getProductType();
   virtual void                         begin(SinricProInterface *eventSender);
@@ -74,6 +75,10 @@ JsonDocument SinricProDevice::prepareEvent(const char* action, const char* cause
   return JsonDocument();
 }
 
+String SinricProDevice::sign(const String& message) {
+  if (eventSender) return eventSender->sign(message);
+  return "";
+}
 
 bool SinricProDevice::sendEvent(JsonDocument& event) {
   if (!SinricPro.isConnected()) {

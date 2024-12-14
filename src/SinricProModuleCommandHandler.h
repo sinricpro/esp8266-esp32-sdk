@@ -8,8 +8,10 @@
 #pragma once
 
 #include "SinricProRequest.h"
-
+#include "SinricProStrings.h"
 #include "SinricProNamespace.h"
+#include "SinricProDebug.h"
+
 namespace SINRICPRO_NAMESPACE {
 
 FSTR(OTA, otaUpdateAvailable);  // "otaUpdateAvailable"

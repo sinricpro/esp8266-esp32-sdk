@@ -10,6 +10,7 @@
 #include "SinricProDeviceInterface.h"
 #include "SinricProInterface.h"
 #include "SinricProMessageid.h"
+#include "SinricProModuleCommandHandler.h"
 #include "SinricProNamespace.h"
 #include "SinricProQueue.h"
 #include "SinricProSignature.h"
@@ -17,7 +18,6 @@
 #include "SinricProUDP.h"
 #include "SinricProWebsocket.h"
 #include "Timestamp.h"
-#include "SinricProModuleCommandHandler.h"
 namespace SINRICPRO_NAMESPACE {
 
 /**
@@ -57,7 +57,7 @@ using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major
  * @brief Function signature for setting a module setting.
  *
  * This callback is used to set a value for a specific setting identified by its ID.
- * 
+ *
  * @param id The unique identifier of the setting to be set.
  * @param value The new value to be assigned to the setting.
  * @return bool Returns true if the setting was successfully updated, false otherwise.
@@ -93,20 +93,21 @@ class SinricProClass : public SinricProInterface {
     class Proxy;
 
   public:
-    void          begin(String appKey, String appSecret, String serverURL = SINRICPRO_SERVER_URL);
-    void          handle();
-    void          stop();
-    bool          isConnected();
-    void          onConnected(ConnectedCallbackHandler cb);
-    void          onDisconnected(DisconnectedCallbackHandler cb);
-    void          onPong(PongCallback cb);
-    void          restoreDeviceStates(bool flag);
-    void          setResponseMessage(String&& message);
-    unsigned long getTimestamp() override;
-    Proxy         operator[](const String deviceId);
-    void          onOTAUpdate(OTAUpdateCallbackHandler cb);
-    void          onSetSetting(SetSettingCallbackHandler cb); 
-    void          onReportHealth(ReportHealthCallbackHandler cb);
+    void           begin(String appKey, String appSecret, String serverURL = SINRICPRO_SERVER_URL);
+    void           handle();
+    void           stop();
+    bool           isConnected();
+    void           onConnected(ConnectedCallbackHandler cb);
+    void           onDisconnected(DisconnectedCallbackHandler cb);
+    void           onPong(PongCallback cb);
+    void           restoreDeviceStates(bool flag);
+    void           setResponseMessage(String&& message);
+    unsigned long  getTimestamp() override;
+    virtual String sign(const String& message);
+    Proxy          operator[](const String deviceId);
+    void           onOTAUpdate(OTAUpdateCallbackHandler cb);
+    void           onSetSetting(SetSettingCallbackHandler cb);
+    void           onReportHealth(ReportHealthCallbackHandler cb);
 
   protected:
     template <typename DeviceType>
@@ -117,7 +118,7 @@ class SinricProClass : public SinricProInterface {
 
     JsonDocument prepareResponse(JsonDocument& requestMessage);
     JsonDocument prepareEvent(String deviceId, const char* action, const char* cause) override;
-    void                sendMessage(JsonDocument& jsonMessage) override;
+    void         sendMessage(JsonDocument& jsonMessage) override;
 
   private:
     void handleReceiveQueue();
@@ -301,7 +302,7 @@ void SinricProClass::handle() {
 
 JsonDocument SinricProClass::prepareRequest(String deviceId, const char* action) {
     JsonDocument requestMessage;
-    JsonObject          header              = requestMessage[FSTR_SINRICPRO_header].to<JsonObject>();
+    JsonObject   header                     = requestMessage[FSTR_SINRICPRO_header].to<JsonObject>();
     header[FSTR_SINRICPRO_payloadVersion]   = 2;
     header[FSTR_SINRICPRO_signatureVersion] = 1;
 
@@ -332,20 +333,20 @@ void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface
 #endif
 
     JsonDocument responseMessage = prepareResponse(requestMessage);
-    
-    String      action           = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_action] | "";
-    JsonObject  request_value    = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-    JsonObject  response_value   = responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
-    SinricProRequest request{ action, "", request_value, response_value};
+
+    String           action         = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_action] | "";
+    JsonObject       request_value  = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    JsonObject       response_value = responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
+    SinricProRequest request{action, "", request_value, response_value};
 
     bool success = _moduleCommandHandler.handleRequest(request);
-    
+
     responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_success] = success;
     responseMessage[FSTR_SINRICPRO_payload].remove(FSTR_SINRICPRO_deviceId);
     if (!success) {
         if (responseMessageStr.length() > 0) {
             responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_message] = responseMessageStr;
-            responseMessageStr = "";
+            responseMessageStr                                              = "";
         } else {
             responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_message] = "Module did not handle \"" + action + "\"";
         }
@@ -424,13 +425,13 @@ void SinricProClass::handleReceiveQueue() {
             DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is valid. Processing message...\r\n");
             extractTimestamp(jsonMessage);
             if (messageType == FSTR_SINRICPRO_response) handleResponse(jsonMessage);
-            if (messageType == FSTR_SINRICPRO_request)  {
+            if (messageType == FSTR_SINRICPRO_request) {
                 String scope = jsonMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_scope] | FSTR_SINRICPRO_device;
                 if (strcmp(FSTR_SINRICPRO_module, scope.c_str()) == 0) {
                     handleModuleRequest(jsonMessage, rawMessage->getInterface());
                 } else {
                     handleDeviceRequest(jsonMessage, rawMessage->getInterface());
-                }                
+                }
             };
         } else {
             DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is invalid! \r\n");
@@ -505,7 +506,7 @@ bool SinricProClass::isConnected() {
 
 /**
  * @brief Set callback function for OTA (Over-The-Air) updates.
- * 
+ *
  * This method registers a callback function that will be called when an OTA update is available.
  * The callback should handle the process of downloading and applying the update.
  *
@@ -519,7 +520,7 @@ void SinricProClass::onOTAUpdate(OTAUpdateCallbackHandler cb) {
 
 /**
  * @brief Set callback function for setting a module setting.
- * 
+ *
  * This method registers a callback function that will be called when a request to change
  * a module setting is received.
  * @return void
@@ -538,7 +539,7 @@ void SinricProClass::onSetSetting(SetSettingCallbackHandler cb) {
  * when the SinricPro system needs to report the device's health status.
  *
  * @param cb A function pointer of type ReportHealthCallbackHandler.
- *           This callback should populate a String with health information and return a boolean 
+ *           This callback should populate a String with health information and return a boolean
  *           indicating success or failure of the health reporting process.
  * @return void
  * @see ReportHealthCallbackHandler for the definition of the callback function type.
@@ -660,17 +661,21 @@ void SinricProClass::setResponseMessage(String&& message) {
 }
 
 /**
- * @brief Get the current timestamp
+ * @brief
  *
- * @return unsigned long current timestamp (unix epoch time)
+ * return unsigned long current timestamp(unix epoch time) * /
  */
 unsigned long SinricProClass::getTimestamp() {
     return timestamp.getTimestamp();
 }
 
+String SinricProClass::sign(const String& message) {
+    return HMACbase64(message, appSecret);
+}
+
 JsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage) {
     JsonDocument responseMessage;
-    JsonObject          header              = responseMessage[FSTR_SINRICPRO_header].to<JsonObject>();
+    JsonObject   header                     = responseMessage[FSTR_SINRICPRO_header].to<JsonObject>();
     header[FSTR_SINRICPRO_payloadVersion]   = 2;
     header[FSTR_SINRICPRO_signatureVersion] = 1;
 
@@ -680,7 +685,7 @@ JsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage) {
     payload[FSTR_SINRICPRO_scope]     = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_scope];
     payload[FSTR_SINRICPRO_createdAt] = 0;
     payload[FSTR_SINRICPRO_deviceId]  = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_deviceId];
-    if (requestMessage[FSTR_SINRICPRO_payload].containsKey(FSTR_SINRICPRO_instanceId)) payload[FSTR_SINRICPRO_instanceId] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId];
+    if (requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId].is<String>()) payload[FSTR_SINRICPRO_instanceId] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_instanceId];
     payload[FSTR_SINRICPRO_message]    = FSTR_SINRICPRO_OK;
     payload[FSTR_SINRICPRO_replyToken] = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_replyToken];
     payload[FSTR_SINRICPRO_success]    = false;
@@ -691,7 +696,7 @@ JsonDocument SinricProClass::prepareResponse(JsonDocument& requestMessage) {
 
 JsonDocument SinricProClass::prepareEvent(String deviceId, const char* action, const char* cause) {
     JsonDocument eventMessage;
-    JsonObject          header              = eventMessage[FSTR_SINRICPRO_header].to<JsonObject>();
+    JsonObject   header                     = eventMessage[FSTR_SINRICPRO_header].to<JsonObject>();
     header[FSTR_SINRICPRO_payloadVersion]   = 2;
     header[FSTR_SINRICPRO_signatureVersion] = 1;
 

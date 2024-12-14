@@ -181,7 +181,7 @@ bool ThermostatController<T>::handleThermostatController(SinricProRequest &reque
 
   if (request.action == FSTR_THERMOSTAT_targetTemperature && targetTemperatureCallback) {
     float temperature;
-    if (request.request_value.containsKey(FSTR_THERMOSTAT_temperature))  {
+    if (request.request_value[FSTR_THERMOSTAT_temperature].is<float>())  {
       temperature = request.request_value[FSTR_THERMOSTAT_temperature];
     }  else {
       temperature = 1;
