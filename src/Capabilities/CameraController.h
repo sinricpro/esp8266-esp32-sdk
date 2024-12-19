@@ -83,26 +83,23 @@ int CameraController<T>::sendSnapshot(uint8_t* buffer, size_t len) {
     int resCode = -1;
 
 #if defined(ESP32)
-    T *device = static_cast<T *>(this);
-    
-    // Validate input buffer
+    T* device = static_cast<T*>(this);
+
     if (!buffer) return resCode;
 
     HTTPClient http;
     bool beginSuccess = false;
 
-    #ifdef SINRICPRO_NOSSL
-        WiFiClient *client = new WiFiClient();
-        if (!client) return resCode;
-        
-        beginSuccess = http.begin(*client, SINRICPRO_CAMERA_URL, 80, SINRICPRO_CAMERA_PATH, false);
-    #else
-        WiFiClientSecure *secureClient = new WiFiClientSecure();
-        if (!secureClient) return resCode;
-        
-        secureClient->setInsecure(); // Skip certificate validation
-        beginSuccess = http.begin(*secureClient, SINRICPRO_CAMERA_URL, 443, SINRICPRO_CAMERA_PATH, true);
-    #endif
+#ifdef SINRICPRO_NOSSL
+    std::unique_ptr<WiFiClient> client = std::make_unique<WiFiClient>();
+    if (!client) return resCode;
+    beginSuccess = http.begin(*client, SINRICPRO_CAMERA_URL, 80, SINRICPRO_CAMERA_PATH, false);
+#else
+    std::unique_ptr<WiFiClientSecure> secureClient = std::make_unique<WiFiClientSecure>();
+    if (!secureClient) return resCode;    
+    secureClient->setInsecure();
+    beginSuccess = http.begin(*secureClient, SINRICPRO_CAMERA_URL, 443, SINRICPRO_CAMERA_PATH, true);
+#endif
 
     if (!beginSuccess) {
         http.end();
@@ -111,7 +108,7 @@ int CameraController<T>::sendSnapshot(uint8_t* buffer, size_t len) {
 
     const String& deviceId = device->getDeviceId();
     String createdAt = String(device->getTimestamp());
-    String signature = device->sign(deviceId+createdAt);
+    String signature = device->sign(deviceId + createdAt);
 
     http.addHeader(FSTR_SINRICPRO_deviceId, deviceId);
     http.addHeader(FSTR_SINRICPRO_createdAt, createdAt);
@@ -120,8 +117,9 @@ int CameraController<T>::sendSnapshot(uint8_t* buffer, size_t len) {
     resCode = http.POST(buffer, len);
     http.end();
 #endif    
-    
+
     return resCode;
 }
+
 
 }  // namespace SINRICPRO_NAMESPACE
