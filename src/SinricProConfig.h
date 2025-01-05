@@ -41,8 +41,12 @@
 #define SINRICPRO_CAMERA_URL "camera.sinric.pro"
 #endif
 
-#ifndef SINRICPRO_CAMERA_PATH
-#define SINRICPRO_CAMERA_PATH "/snapshot"
+#ifndef SINRICPRO_CAMERA_API_SNAPSHOT_PATH
+#define SINRICPRO_CAMERA_API_SNAPSHOT_PATH "/snapshot"
+#endif
+
+#ifndef SINRICPRO_CAMERA_API_MOTION_PATH
+#define SINRICPRO_CAMERA_API_MOTION_PATH "/motion-capture"
 #endif
 
 // UDP Configuration
@@ -74,4 +78,13 @@
 
 #ifndef EVENT_LIMIT_SENSOR_VALUE
 #define EVENT_LIMIT_SENSOR_VALUE  60000
+#endif
+
+// Used when making a HTTP request in API
+#ifndef TCP_CONNECTION_TIMEOUT_VALUE
+#define TCP_CONNECTION_TIMEOUT_VALUE  5000
+#endif
+
+#ifndef HTTP_TIMEOUT_VALUE
+#define HTTP_TIMEOUT_VALUE  10000
 #endif

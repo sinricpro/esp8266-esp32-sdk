@@ -27,7 +27,7 @@
 // Select camera model
 // ===================
 // #define CAMERA_MODEL_WROVER_KIT  // Has PSRAM
-// #define CAMERA_MODEL_ESP_EYE  // Has PSRAM
+ #define CAMERA_MODEL_ESP_EYE  // Has PSRAM
 // #define CAMERA_MODEL_ESP32S3_EYE // Has PSRAM
 // #define CAMERA_MODEL_M5STACK_PSRAM // Has PSRAM
 // #define CAMERA_MODEL_M5STACK_V2_PSRAM // M5Camera version B Has PSRAM
@@ -37,6 +37,12 @@
 // #define CAMERA_MODEL_M5STACK_CAMS3_UNIT  // Has PSRAM
 // #define CAMERA_MODEL_AI_THINKER // Has PSRAM
 // #define CAMERA_MODEL_TTGO_T_JOURNAL  // No PSRAM
+// #define CAMERA_MODEL_TTGO_T_V16_VERSION
+// #define CAMERA_MODEL_TTGO_T_V05_VERSION
+// #define CAMERA_MODEL_TTGO_T_PLUS_VERSION
+// #define CAMERA_MODEL_TTGO_T_V162_VERSION
+// #define CAMERA_MODEL_TTGO_T_MINI_VERSION
+// #define CAMERA_MODEL_TTGO_T_V17_VERSION
 // #define CAMERA_MODEL_XIAO_ESP32S3 // Has PSRAM
 // ** Espressif Internal Boards **
 // #define CAMERA_MODEL_ESP32_CAM_BOARD
@@ -46,11 +52,12 @@
 // #define CAMERA_MODEL_DFRobot_Romeo_ESP32S3 // Has PSRAM
 #include "camera_pins.h"
 
-#define WIFI_SSID         "YOUR-WIFI-SSID"    
-#define WIFI_PASS         "YOUR-WIFI-PASSWORD"
-#define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
-#define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
-#define CAMERA_ID         "YOUR-ESP32-CAMERA-ID" // Should look like "5dc1564130xxxxxxxxxxxxxx"
+#define WIFI_SSID ""   // Your WiFi network SSID
+#define WIFI_PASS ""   // Your WiFi network password
+
+#define APP_KEY    "" // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx"
+#define APP_SECRET "" // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx"
+#define CAMERA_ID  "" // Should look like "5dc1564130xxxxxxxxxxxxxx"
 
 #define BAUD_RATE 115200  // Change baudrate to your need
 
@@ -63,9 +70,25 @@ bool onSnapshot(const String &deviceId) {
   }
 
   SinricProCamera &myCamera = SinricPro[deviceId];
-  int result = myCamera.sendSnapshot(fb->buf, fb->len);
-  esp_camera_fb_return(fb);
+  int responseCode = myCamera.sendSnapshot(fb->buf, fb->len);
 
+  // Handle different response codes
+  switch (responseCode) {
+    case 200:
+      Serial.println("Snapshot sent successfully");
+      break;
+    case 413:
+      Serial.println("Error: File exceeds maximum allowed size");
+      break;
+    case 429:
+      Serial.println("Error: Rate limit exceeded");
+      break;
+    default:
+      Serial.printf("Error: Send failed with code %d\n", responseCode);
+      break;
+  }
+
+  esp_camera_fb_return(fb);
   return result == 200;
 }
 
@@ -124,7 +147,6 @@ void setupCamera() {
   config.xclk_freq_hz = 20000000;
   config.frame_size = FRAMESIZE_XGA;
   config.pixel_format = PIXFORMAT_JPEG;  // do not change!
-  // config.pixel_format = PIXFORMAT_RGB565; // for face detection/recognition
   config.grab_mode = CAMERA_GRAB_WHEN_EMPTY;
   config.fb_location = CAMERA_FB_IN_PSRAM;
   config.jpeg_quality = 12;
@@ -133,7 +155,7 @@ void setupCamera() {
   if (psramFound()) {
     config.jpeg_quality = 10;
     config.fb_count = 2;
-    config.grab_mode = CAMERA_GRAB_LATEST;
+    config.grab_mode = CAMERA_GRAB_LATEST; 
   } else {
     // Limit the frame size when PSRAM is not available
     config.frame_size = FRAMESIZE_SVGA;
@@ -172,9 +194,6 @@ void setupCamera() {
 
 void setup() {
   Serial.begin(BAUD_RATE);
-  Serial.setDebugOutput(true);
-  Serial.println();
-  delay(1500);
 
   setupCamera();
   setupWiFi();
