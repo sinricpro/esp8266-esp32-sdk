@@ -89,7 +89,7 @@ bool onSnapshot(const String &deviceId) {
   }
 
   esp_camera_fb_return(fb);
-  return result == 200;
+  return responseCode == 200;
 }
 
 bool onPowerState(const String &deviceId, bool &state) {
