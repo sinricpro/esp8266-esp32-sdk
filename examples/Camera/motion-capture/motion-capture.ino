@@ -215,8 +215,7 @@ void setupSinricPro() {
   });
 
   // Start SinricPro
-  //SinricPro.begin(APP_KEY, APP_SECRET);
-  SinricPro.begin(APP_KEY, APP_SECRET, "testws.sinric.pro");
+  SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 /**
