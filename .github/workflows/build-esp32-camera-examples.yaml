@@ -1,0 +1,55 @@
+name: Compile Examples
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      # sketch paths to compile (recursive) for all boards
+      CAMERA_SKETCH_PATHS: |
+        - examples/Camera/motion-capture
+        - examples/Camera/snapshot-camera
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        board:          
+          - fqbn: esp32:esp32:esp32
+            type: esp32
+
+        # make board type-specific customizations to the matrix jobs
+        include:
+          # ESP32 boards
+          - board:
+              type: esp32
+            platforms: |
+              # Install ESP32 platform via Boards Manager
+              - name: esp32:esp32
+                source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+            libraries: |
+              - source-path: ./
+            sketch-paths:
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install ESP32 platform dependencies
+        if: matrix.board.type == 'esp32'
+        run: pip3 install pyserial
+
+      - name: Compile examples
+        uses: arduino/compile-sketches@v1
+        with:
+          platforms: ${{ matrix.platforms }}
+          fqbn: ${{ matrix.board.fqbn }}
+          libraries: |
+            ${{ matrix.libraries }}
+          sketch-paths: |
+            ${{ env.CAMERA_SKETCH_PATHS }}
+          cli-compile-flags: |
+            - --warnings="none"
+            # "compiler.cpp.extra_flags=-Werror"
