@@ -80,7 +80,7 @@
 #define EVENT_LIMIT_SENSOR_VALUE  60000
 #endif
 
-// Used when making a HTTP request in API
+// For HTTP API requests
 #ifndef TCP_CONNECTION_TIMEOUT_VALUE
 #define TCP_CONNECTION_TIMEOUT_VALUE  5000
 #endif
