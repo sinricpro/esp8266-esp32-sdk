@@ -1,4 +1,4 @@
-name: Compile Examples
+name: Compile Camera Examples
 
 on: [push, pull_request]
 
@@ -31,6 +31,8 @@ jobs:
                 source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
             libraries: |
               - source-path: ./
+              - source-url: "https://github.com/Links2004/arduinoWebSockets.git"
+              - source-url: "https://github.com/bblanchon/ArduinoJson.git"
             sketch-paths:
 
     steps:
