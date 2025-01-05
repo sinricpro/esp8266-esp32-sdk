@@ -194,7 +194,6 @@ void setupCamera() {
 
 void setup() {
   Serial.begin(BAUD_RATE);
-
   setupCamera();
   setupWiFi();
   setupSinricPro();  
