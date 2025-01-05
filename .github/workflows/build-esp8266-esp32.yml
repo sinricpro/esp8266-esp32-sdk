@@ -9,12 +9,11 @@ on:
       - examples/**
 
 jobs:
-  build-esp8266:
+  build-esp8266-esp32:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # Base examples that work on both platforms
-        example: &base_examples
+        example:
           - examples/ACUnit
           - examples/Blinds
           - examples/ContactSensor
@@ -70,21 +69,17 @@ jobs:
           pio pkg install -l "bblanchon/ArduinoJson" -l "links2004/WebSockets" -g
       
       - name: Run build test using PlatformIO
-        run: pio ci --lib="." -b esp12e
+        run: pio ci --lib="." -b esp12e -b esp32dev
         env:
           PLATFORMIO_CI_SRC: ${{ matrix.example }}
 
-  build-esp32:
+  build-camera-examples:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         example:
-          # Include all base examples
-          - *base_examples
-          # ESP32-specific examples
-          - &esp32_examples
-            - examples/Camera/motion-capture
-            - examples/Camera/snapshot-camera
+          - examples/Camera/motion-capture
+          - examples/Camera/snapshot-camera
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
