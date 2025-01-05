@@ -1,57 +1,45 @@
-name: Compile Camera Examples
+name: ESP32 Camera Examples
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+
+env:
+  SKETCHES: |
+    examples/Camera/motion-capture
+    examples/Camera/snapshot-camera
 
 jobs:
-  build:
+  compile-camera-examples:
     runs-on: ubuntu-latest
-
-    env:
-      # sketch paths to compile (recursive) for all boards
-      CAMERA_SKETCH_PATHS: |
-        - examples/Camera/motion-capture
-        - examples/Camera/snapshot-camera
-
+    
     strategy:
       fail-fast: false
-
       matrix:
-        board:          
-          - fqbn: esp32:esp32:esp32
-            type: esp32
-
-        # make board type-specific customizations to the matrix jobs
         include:
-          # ESP32 boards
-          - board:
-              type: esp32
-            platforms: |
-              # Install ESP32 platform via Boards Manager
-              - name: esp32:esp32
-                source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
-            libraries: |
-              - source-path: ./
-              - source-url: "https://github.com/Links2004/arduinoWebSockets.git"
-              - source-url: "https://github.com/bblanchon/ArduinoJson.git"
-            sketch-paths:
+          - board: "esp32:esp32:esp32"
+            platform-url: "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Install ESP32 platform dependencies
-        if: matrix.board.type == 'esp32'
-        run: pip3 install pyserial
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyserial
 
-      - name: Compile examples
+      - name: Compile ESP32 camera examples
         uses: arduino/compile-sketches@v1
         with:
-          platforms: ${{ matrix.platforms }}
-          fqbn: ${{ matrix.board.fqbn }}
+          fqbn: ${{ matrix.board }}
+          platforms: |
+            - name: esp32:esp32
+              source-url: ${{ matrix.platform-url }}
           libraries: |
-            ${{ matrix.libraries }}
-          sketch-paths: |
-            ${{ env.CAMERA_SKETCH_PATHS }}
+            - source-path: ./
+            - source-url: https://github.com/Links2004/arduinoWebSockets.git
+            - source-url: https://github.com/bblanchon/ArduinoJson.git
+          sketch-paths: ${{ env.SKETCHES }}
           cli-compile-flags: |
-            - --warnings="none"
-            # "compiler.cpp.extra_flags=-Werror"
+            - --warnings=none
