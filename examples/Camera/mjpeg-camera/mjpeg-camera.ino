@@ -27,8 +27,6 @@
 //#define CAMERA_MODEL_DFRobot_Romeo_ESP32S3 // Has PSRAM
 #include "camera_pins.h" 
 
-#include "camera_pins.h"
-
 #define WIFI_SSID         "YOUR-WIFI-SSID"
 #define WIFI_PASSWD       "YOUR-WIFI-PASSWORD"
 
