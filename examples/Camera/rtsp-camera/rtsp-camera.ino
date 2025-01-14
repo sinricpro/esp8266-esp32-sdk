@@ -1,10 +1,9 @@
 /*
- * 
- * Example for how to use SinricPro Camera device:
- * - update the Sinric Pro ESP SDK to v2.5.1 or newer
- * - update the Sinric Pro App to v2.7.1 or newer
- * - setup a camera device
- * - handle request using callback (turn on/off builtin led indicating device power state)
+ * Example for ESP32 RTSP Camera Streaming:
+ * - Create a Camera device from portal.
+ * - Copy the secrets below.
+ * - Update WiFi settings
+ * - This example needs SDK v3.4.0 or newer
  * 
  * If you encounter any issues:
  * - check the readme.md at https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md
@@ -17,13 +16,13 @@
  */
 
 // Uncomment the following line to enable serial debug output
-#define ENABLE_DEBUG
+// #define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
-  #define DEBUG_ESP_PORT Serial
-  #define NODEBUG_WEBSOCKETS
-  #define NDEBUG
-#endif 
+#define DEBUG_ESP_PORT Serial
+#define NODEBUG_WEBSOCKETS
+#define NDEBUG
+#endif
 
 //#define ENABLE_STATIC_IP
 
@@ -34,7 +33,7 @@
 #include "SinricPro.h"
 #include "SinricProCamera.h"
 
-// Micro-RTSP from https://github.com/geeksville/Micro-RTSP 
+// Micro-RTSP from https://github.com/geeksville/Micro-RTSP
 #include "SimStreamer.h"
 #include "OV2640Streamer.h"
 #include "CRtspSession.h"
@@ -51,7 +50,7 @@
 //#define CAMERA_MODEL_M5STACK_ESP32CAM // No PSRAM
 //#define CAMERA_MODEL_M5STACK_UNITCAM // No PSRAM
 //#define CAMERA_MODEL_M5STACK_CAMS3_UNIT  // Has PSRAM
-//#define CAMERA_MODEL_AI_THINKER // Has PSRAM
+//#define CAMERA_MODEL_AI_THINKER  // Has PSRAM
 //#define CAMERA_MODEL_TTGO_T_JOURNAL // No PSRAM
 //#define CAMERA_MODEL_XIAO_ESP32S3 // Has PSRAM
 // ** Espressif Internal Boards **
@@ -60,49 +59,15 @@
 //#define CAMERA_MODEL_ESP32S3_CAM_LCD
 //#define CAMERA_MODEL_DFRobot_FireBeetle2_ESP32S3 // Has PSRAM
 //#define CAMERA_MODEL_DFRobot_Romeo_ESP32S3 // Has PSRAM
-#include "camera_pins.h" 
-
-/*
-Notice:
-
-With latest version of ESP32 Core Micro-RTSP does not compile. To fix it
-
-1. Goto C:\Users\<username>\AppData\Local\Arduino15\packages\esp32\hardware\esp32\<version>
-
-2. Make a copy of platform.txt and rename it to platform.local.txt.
-
-3. Open platform.txt. Change
-
-# Arduino Compile Warning Levels
-compiler.warning_flags=-w
-compiler.warning_flags.none=-w
-compiler.warning_flags.default=
-compiler.warning_flags.more=-Wall -Werror=all
-compiler.warning_flags.all=-Wall -Werror=all -Wextra
-
-To:
-
-# Arduino Compile Warning Levels
-compiler.warning_flags=-w
-compiler.warning_flags.none=-w
-compiler.warning_flags.default=
-compiler.warning_flags.more=-Wall
-compiler.warning_flags.all=-Wall -Wextra
-
-4. Restart Arduino IDE !!!!
-
-*/
-
-
 #include "camera_pins.h"
- 
-#define WIFI_SSID         "YOUR-WIFI-SSID"
-#define WIFI_PASSWD       "YOUR-WIFI-PASSWORD"
 
-#define APP_KEY           "YOUR-APP-KEY"      // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx". Get it from https://portal.sinric.pro/ -> Credentials
-#define APP_SECRET        "YOUR-APP-SECRET"   // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx" . Get it from https://portal.sinric.pro/ -> Credentials
-#define CAMERA_ID         "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx". Get it from https://portal.sinric.pro/ -> Devices
-#define BAUD_RATE         115200 // Change baudrate to your need
+#define WIFI_SSID "YOUR-WIFI-SSID"
+#define WIFI_PASSWD "YOUR-WIFI-PASSWORD"
+
+#define APP_KEY "YOUR-APP-KEY"        // Should look like "de0bxxxx-1x3x-4x3x-ax2x-5dabxxxxxxxx". Get it from https://portal.sinric.pro/ -> Credentials
+#define APP_SECRET "YOUR-APP-SECRET"  // Should look like "5f36xxxx-x3x7-4x3x-xexe-e86724a9xxxx-4c4axxxx-3x3x-x5xe-x9x3-333d65xxxxxx" . Get it from https://portal.sinric.pro/ -> Credentials
+#define CAMERA_ID "YOUR-DEVICE-ID"    // Should look like "5dc1564130xxxxxxxxxxxxxx". Get it from https://portal.sinric.pro/ -> Devices
+#define BAUD_RATE 115200              // Change baudrate to your need
 
 OV2640 cam;
 CStreamer *streamer;
@@ -110,49 +75,85 @@ CStreamer *streamer;
 WiFiServer rtspServer(8554);
 
 #ifdef ENABLE_STATIC_IP
-  // Optional but important for stability. 
-  IPAddress local_IP(192, 168, 1, 124);
-  IPAddress gateway(192, 168, 1, 1);
-  IPAddress subnet(255, 255, 255, 0);
-  IPAddress primaryDNS(8, 8, 8, 8);   //optional
-  IPAddress secondaryDNS(8, 8, 4, 4); //optional
-#endif 
+// Optional but important for stability.
+IPAddress local_IP(192, 168, 1, 124);
+IPAddress gateway(192, 168, 1, 1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress primaryDNS(8, 8, 8, 8);    //optional
+IPAddress secondaryDNS(8, 8, 4, 4);  //optional
+#endif
 
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
-  return true; // request handled properly
+  Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state ? "on" : "off");
+  return true;  // request handled properly
+}
+
+bool onSnapshot(const String &deviceId) {
+  camera_fb_t *fb = esp_camera_fb_get();
+
+  if (!fb) {
+    Serial.println("Failed to grab image");
+    return false;
+  }
+
+  SinricProCamera &myCamera = SinricPro[deviceId];
+  int responseCode = myCamera.sendSnapshot(fb->buf, fb->len);
+
+  // Handle different response codes
+  switch (responseCode) {
+    case 200:
+      Serial.println("Snapshot sent successfully");
+      break;
+    case 413:
+      Serial.println("Error: File exceeds maximum allowed size");
+      break;
+    case 429:
+      Serial.println("Error: Rate limit exceeded");
+      break;
+    default:
+      Serial.printf("Error: Send failed with code %d\n", responseCode);
+      break;
+  }
+
+  esp_camera_fb_return(fb);
+  return responseCode == 200;
 }
 
 // setup function for SinricPro
 void setupSinricPro() {
   // add device to SinricPro
-  SinricProCamera& mySwitch = SinricPro[CAMERA_ID];
+  SinricProCamera &myCamera = SinricPro[CAMERA_ID];
 
   // set callback function to device
-  mySwitch.onPowerState(onPowerState);
+  myCamera.onPowerState(onPowerState);
+  myCamera.onSnapshot(onSnapshot);
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([]() {
+    Serial.printf("Connected to SinricPro\r\n");
+  });
+  SinricPro.onDisconnected([]() {
+    Serial.printf("Disconnected from SinricPro\r\n");
+  });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 void setupWiFi() {
   IPAddress ip;
-  
-  #ifdef ENABLE_STATIC_IP
-    // Configures static IP address
-    if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
-      Serial.println("Failed to configure IP");
-    }
-  #endif 
+
+#ifdef ENABLE_STATIC_IP
+  // Configures static IP address
+  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
+    Serial.println("Failed to configure IP");
+  }
+#endif
 
   WiFi.begin(WIFI_SSID, WIFI_PASSWD);
   while (WiFi.status() != WL_CONNECTED) {
-      delay(500);
-      Serial.print(".");
+    delay(500);
+    Serial.print(".");
   }
-  
+
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
@@ -180,10 +181,10 @@ void setupCamera() {
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.pixel_format = PIXFORMAT_JPEG; //PIXFORMAT_YUV422 PIXFORMAT_GRAYSCALE PIXFORMAT_RGB565 PIXFORMAT_JPEG
- 
+  config.pixel_format = PIXFORMAT_JPEG;  //PIXFORMAT_YUV422 PIXFORMAT_GRAYSCALE PIXFORMAT_RGB565 PIXFORMAT_JPEG
 
-/* 
+
+  /* 
     FRAMESIZE_96X96,    // 96x96
     FRAMESIZE_QQVGA,    // 160x120
     FRAMESIZE_QCIF,     // 176x144
@@ -200,10 +201,10 @@ void setupCamera() {
     FRAMESIZE_UXGA,     // 1600x1200
   */
 
-  if(psramFound()){
+  if (psramFound()) {
     Serial.println("psram found");
     config.frame_size = FRAMESIZE_VGA;
-    config.jpeg_quality = 10; //10-63 lower number means higher quality
+    config.jpeg_quality = 10;  //10-63 lower number means higher quality
     config.fb_count = 2;
   } else {
     Serial.println("psram not found");
@@ -216,54 +217,54 @@ void setupCamera() {
 }
 
 void setupStreaming() {
-    rtspServer.begin();  
-    streamer = new OV2640Streamer(cam);             // our streamer for UDP/TCP based RTP transport
-    Serial.print("Use 'rtsp://"); Serial.print(WiFi.localIP()); Serial.println(":8554/mjpeg/1' to stream via VLC");
+  rtspServer.begin();
+  streamer = new OV2640Streamer(cam);  // our streamer for UDP/TCP based RTP transport
+  Serial.print("Use 'rtsp://");
+  Serial.print(WiFi.localIP());
+  Serial.println(":8554/mjpeg/1' to stream via VLC");
 }
 
 void handleStreaming() {
-    uint32_t msecPerFrame = 100;
-    static uint32_t lastimage = millis();
+  uint32_t msecPerFrame = 100;
+  static uint32_t lastimage = millis();
 
-    // If we have an active client connection, just service that until gone
-    streamer->handleRequests(0); // we don't use a timeout here,
-    // instead we send only if we have new enough frames
-    uint32_t now = millis();
-    if(streamer->anySessions()) {
-        if(now > lastimage + msecPerFrame || now < lastimage) { // handle clock rollover
-            streamer->streamImage(now);
-            lastimage = now;
+  // If we have an active client connection, just service that until gone
+  streamer->handleRequests(0);  // we don't use a timeout here,
+  // instead we send only if we have new enough frames
+  uint32_t now = millis();
+  if (streamer->anySessions()) {
+    if (now > lastimage + msecPerFrame || now < lastimage) {  // handle clock rollover
+      streamer->streamImage(now);
+      lastimage = now;
 
-            // check if we are overrunning our max frame rate
-            now = millis();
-            if(now > lastimage + msecPerFrame) {
-                printf("warning exceeding max frame rate of %d ms\n", now - lastimage);
-            }
-        }
+      // check if we are overrunning our max frame rate
+      now = millis();
+      if (now > lastimage + msecPerFrame) {
+        printf("warning exceeding max frame rate of %d ms\n", now - lastimage);
+      }
     }
-    
-    WiFiClient rtspClient = rtspServer.accept();
-    if(rtspClient) {
-        Serial.print("client: ");
-        Serial.print(rtspClient.remoteIP());
-        Serial.println();
-        streamer->addSession(rtspClient);
-    }
+  }
+
+  WiFiClient rtspClient = rtspServer.accept();
+  if (rtspClient) {
+    Serial.print("client: ");
+    Serial.print(rtspClient.remoteIP());
+    Serial.println();
+    streamer->addSession(rtspClient);
+  }
 }
 
-void setup()
-{
+void setup() {
   Serial.begin(BAUD_RATE);
-  while (!Serial);            //wait for serial connection.
-  
+  while (!Serial);  //wait for serial connection.
+
   setupCamera();
-  setupWiFi();   
+  setupWiFi();
   setupSinricPro();
   setupStreaming();
 }
 
-void loop()
-{ 
+void loop() {
   SinricPro.handle();
   handleStreaming();
 }

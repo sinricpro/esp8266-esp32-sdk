@@ -1,3 +1,21 @@
+/*
+ * Example for ESP32 Camera Streaming:
+ * - Create a Camera device from portal.
+ * - Copy the secrets below.
+ * - Update WiFi settings
+ * - This example needs SDK v3.4.0 or newer
+ * 
+ * If you encounter any issues:
+ * - check the readme.md at https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md
+ * - ensure all dependent libraries are installed
+ *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#arduinoide
+ *   - see https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/README.md#dependencies
+ * - open serial monitor and check whats happening
+ * - check full user documentation at https://sinricpro.github.io/esp8266-esp32-sdk
+ * - visit https://github.com/sinricpro/esp8266-esp32-sdk/issues and check for existing issues or open a new one
+ */
+
+
 #include "esp_camera.h"
 #include <WiFi.h>
 
@@ -57,18 +75,49 @@ void setupWiFi() {
 }
 
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
+  Serial.printf("Camera %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
   return true; // request handled properly
 }
 
+bool onSnapshot(const String &deviceId) {
+  camera_fb_t *fb = esp_camera_fb_get();
+
+  if (!fb) {
+    Serial.println("Failed to grab image");
+    return false;
+  }
+
+  SinricProCamera &myCamera = SinricPro[deviceId];
+  int responseCode = myCamera.sendSnapshot(fb->buf, fb->len);
+
+  // Handle different response codes
+  switch (responseCode) {
+    case 200:
+      Serial.println("Snapshot sent successfully");
+      break;
+    case 413:
+      Serial.println("Error: File exceeds maximum allowed size");
+      break;
+    case 429:
+      Serial.println("Error: Rate limit exceeded");
+      break;
+    default:
+      Serial.printf("Error: Send failed with code %d\n", responseCode);
+      break;
+  }
+
+  esp_camera_fb_return(fb);
+  return responseCode == 200;
+}
 
 // setup function for SinricPro
 void setupSinricPro() {
   // add device to SinricPro
-  SinricProCamera& mySwitch = SinricPro[CAMERA_ID];
+  SinricProCamera& myCamera = SinricPro[CAMERA_ID];
 
   // set callback function to device
-  mySwitch.onPowerState(onPowerState);
+  myCamera.onPowerState(onPowerState);
+  myCamera.onSnapshot(onSnapshot);
 
   // setup SinricPro
   SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
@@ -145,7 +194,6 @@ void cameraInit(void){
   //                      for larger pre-allocated frame buffer.
   if(config.pixel_format == PIXFORMAT_JPEG){
     if(psramFound()){
-      Serial.printf("PSRAM found!\n");
       config.jpeg_quality = 10;
       config.fb_count = 2;
       config.grab_mode = CAMERA_GRAB_LATEST;
