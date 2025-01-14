@@ -1,8 +1,7 @@
 #if defined(ESP8266) || defined(ARDUINO_ARCH_RP2040)
 
 #include <Arduino.h>
-#include <time.h>
-#include "Cert.h" 
+#include <time.h> 
 
 #if defined(ARDUINO_ARCH_RP2040)
   #include <HTTPClient.h>
