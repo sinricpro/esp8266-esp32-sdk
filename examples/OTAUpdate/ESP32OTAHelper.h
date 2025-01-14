@@ -4,11 +4,10 @@
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <Update.h>
-#include "Cert.h" 
 
 String startOtaUpdate(const String &url) {
     WiFiClientSecure client;
-    client.setCACert(rootCACertificate);
+    client.setInsecure();
 
     HTTPClient https;
     Serial.print("[startOtaUpdate()] begin...\n");
