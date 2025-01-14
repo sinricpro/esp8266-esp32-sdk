@@ -18,7 +18,7 @@ namespace SINRICPRO_NAMESPACE {
 
 /**
  * @class SinricProCamera
- * @brief Camera suporting basic on / off command
+ * @brief Camera suporting snapshots, motions and on / off commands
  * @ingroup Devices
  **/
 class SinricProCamera : public SinricProDevice,
