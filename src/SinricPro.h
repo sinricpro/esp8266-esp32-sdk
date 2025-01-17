@@ -127,6 +127,7 @@ class SinricProClass : public SinricProInterface {
     void handleDeviceRequest(JsonDocument& requestMessage, interface_t Interface);
     void handleModuleRequest(JsonDocument& requestMessage, interface_t Interface);
     void handleResponse(JsonDocument& responseMessage);
+    void handleInvalidSignatureRequest(JsonDocument& requestMessage, interface_t Interface);
 
     JsonDocument prepareRequest(String deviceId, const char* action);
 
@@ -327,7 +328,7 @@ void SinricProClass::handleResponse(JsonDocument& responseMessage) {
 }
 
 void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface_t Interface) {
-    DEBUG_SINRIC("[SinricPro.handleModuleScopeRequest()]: handling device sope request\r\n");
+    DEBUG_SINRIC("[SinricPro.handleModuleScopeRequest()]: handling module sope request\r\n");
 #ifndef NODEBUG_SINRIC
     serializeJsonPretty(requestMessage, DEBUG_ESP_PORT);
 #endif
@@ -434,11 +435,26 @@ void SinricProClass::handleReceiveQueue() {
                 }
             };
         } else {
-            DEBUG_SINRIC("[SinricPro.handleReceiveQueue()]: Signature is invalid! \r\n");
-            if (messageType == FSTR_SINRICPRO_request) handleDeviceRequest(jsonMessage, rawMessage->getInterface());
+            handleInvalidSignatureRequest(jsonMessage, rawMessage->getInterface());
         }
         delete rawMessage;
     }
+}
+
+void SinricProClass::handleInvalidSignatureRequest(JsonDocument& requestMessage, interface_t Interface) { 
+    DEBUG_SINRIC("[SinricPro.handleInvalidSignatureRequest()]: Signature is invalid!\r\n");
+    
+#ifndef NODEBUG_SINRIC
+    serializeJsonPretty(requestMessage, DEBUG_ESP_PORT);
+#endif
+
+    JsonDocument responseMessage = prepareResponse(requestMessage);    
+    responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_success] = false;
+    responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_message] = "Signature is invalid";
+
+    String responseString;
+    serializeJson(responseMessage, responseString);
+    sendQueue.push(new SinricProMessage(Interface, responseString.c_str()));
 }
 
 void SinricProClass::handleSendQueue() {

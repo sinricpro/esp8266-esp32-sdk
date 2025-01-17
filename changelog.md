@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 3.4.1
+  New: 
+  - Fix: invalid signature error message.
+
 ## Version 3.4.0
   New: 
   - Support Image upload on camera devices
