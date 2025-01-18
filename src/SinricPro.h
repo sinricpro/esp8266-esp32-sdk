@@ -328,7 +328,7 @@ void SinricProClass::handleResponse(JsonDocument& responseMessage) {
 }
 
 void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface_t Interface) {
-    DEBUG_SINRIC("[SinricPro.handleModuleScopeRequest()]: handling module sope request\r\n");
+    DEBUG_SINRIC("[SinricPro.handleModuleScopeRequest()]: handling module scope request\r\n");
 #ifndef NODEBUG_SINRIC
     serializeJsonPretty(requestMessage, DEBUG_ESP_PORT);
 #endif
