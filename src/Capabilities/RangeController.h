@@ -194,7 +194,7 @@ void RangeController<T>::onAdjustRangeValue(const String &instance, GenericAdjus
 /**
  * @brief Send `rangeValue` event to report curent rangeValue to SinricPro server
  * 
- * @param   rangeValue  Value between 0..3
+ * @param   rangeValue  value for the range.
  * @param   cause       (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
  * @return  the success of sending the even
  * @retval  true        event has been sent successfully
@@ -215,7 +215,7 @@ bool RangeController<T>::sendRangeValueEvent(int rangeValue, String cause) {
  * @brief Send `rangeValue` event to report curent rangeValue to SinricPro server for a specific instance (custom device)
  * 
  * @param   instance    String instance name
- * @param   rangeValue  Value between 0..3
+ * @param   rangeValue  value for the range
  * @param   cause       (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
  * @return  the success of sending the even
  * @retval  true        event has been sent successfully
