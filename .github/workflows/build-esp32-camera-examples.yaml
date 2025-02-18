@@ -42,6 +42,7 @@ jobs:
             - source-path: ./
             - source-url: https://github.com/Links2004/arduinoWebSockets.git
             - source-url: https://github.com/bblanchon/ArduinoJson.git
+            - source-url: https://github.com/geeksville/Micro-RTSP.git
           sketch-paths: ${{ env.SKETCHES }}
           cli-compile-flags: |
             - --warnings=none
