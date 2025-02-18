@@ -54,6 +54,7 @@
 #define BAUD_RATE         115200 // Change baudrate to your need
 
 void cameraInit(void);
+void setupLedFlash(int pin);
 void startCameraServer();
 
 void setupWiFi() {
