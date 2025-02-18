@@ -9,7 +9,6 @@ env:
     examples/Camera/motion-capture
     examples/Camera/snapshot-camera
     examples/Camera/mjpeg-camera
-    examples/Camera/rtsp-camera
 
 jobs:
   compile-camera-examples:
