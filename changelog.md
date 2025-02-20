@@ -1,8 +1,15 @@
 # Changelog
 
-## Version 3.4.1
+## Version 3.5.1
+  Fixed: 
+  - Logging messages.
+  
   New: 
-  - Fix: invalid signature error message.
+  - Support Start/Stop Controller for custom device types
+
+## Version 3.4.1
+  Fixed: 
+    - Fix: invalid signature error message.
 
 ## Version 3.4.0
   New: 
