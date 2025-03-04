@@ -148,10 +148,6 @@ bool StartStopController<T>::sendPauseUnpauseEvent(bool pause, String cause) {
 
 template <typename T>
 bool StartStopController<T>::handleStartStopController(SinricProRequest &request) {
-  if (request.action != FSTR_START_STOP_setStartStop || request.action != FSTR_START_STOP_setPauseUnpause) {
-    return false;
-  }
-
   T* device = static_cast<T*>(this);
 
   bool success = false;
@@ -162,14 +158,15 @@ bool StartStopController<T>::handleStartStopController(SinricProRequest &request
     request.response_value[FSTR_START_STOP_start] = start;
     return success;
   }
-  else if (startStopCallbackCallback && request.action == FSTR_START_STOP_setPauseUnpause) {
+  
+  if (pauseUnpauseCallback && request.action == FSTR_START_STOP_setPauseUnpause) {
     bool pause = request.request_value[FSTR_START_STOP_pause];
-    success = startStopCallbackCallback(device->deviceId, pause);
+    success = pauseUnpauseCallback(device->deviceId, pause);
     request.response_value[FSTR_START_STOP_pause] = pause;
     return success;
   }
 
-  return success;
+  return false;
 }
 
 } // SINRICPRO_NAMESPACE

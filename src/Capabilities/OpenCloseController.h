@@ -238,15 +238,11 @@ bool OpenCloseController<T>::sendOpenCloseEvent(int openPercent, String cause) {
  */
 template <typename T>
 bool OpenCloseController<T>::handleOpenCloseController(SinricProRequest &request) {
-  if (request.action != FSTR_OPEN_CLOSE_setOpenClose && request.action != FSTR_OPEN_CLOSE_adjustOpenClose) {
-    return false;
-  }
-
   T* device = static_cast<T*>(this);
 
   bool success = false;
 
-  if ((directionOpenCloseCallback || openCloseCallback) && request.action == FSTR_OPEN_CLOSE_setOpenClose) {
+  if (request.action == FSTR_OPEN_CLOSE_setOpenClose) {
     bool hasOpenDirection = !request.request_value[FSTR_OPEN_CLOSE_openDirection].isNull();
     int openPercent = request.request_value[FSTR_OPEN_CLOSE_openPercent];
 
@@ -259,9 +255,11 @@ bool OpenCloseController<T>::handleOpenCloseController(SinricProRequest &request
       success = openCloseCallback(device->deviceId, openPercent);
       request.response_value[FSTR_OPEN_CLOSE_openPercent] = openPercent;
     }
+
+    return success;
   }
 
-  if ((adjustOpenCloseCallback || adjustDirectionOpenCloseCallback) && request.action == FSTR_OPEN_CLOSE_adjustOpenClose) {
+  if (request.action == FSTR_OPEN_CLOSE_adjustOpenClose) {
     bool hasOpenDirection = !request.request_value[FSTR_OPEN_CLOSE_openDirection].isNull();
     int openRelativePercent = request.request_value[FSTR_OPEN_CLOSE_openRelativePercent];
 
@@ -274,9 +272,11 @@ bool OpenCloseController<T>::handleOpenCloseController(SinricProRequest &request
       success = adjustOpenCloseCallback(device->deviceId, openRelativePercent);
       request.response_value[FSTR_OPEN_CLOSE_openPercent] = openRelativePercent;
     }
+
+    return success;
   }
 
-  return success;
+  return false;
 }
 
 } // SINRICPRO_NAMESPACE
