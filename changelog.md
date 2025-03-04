@@ -1,11 +1,8 @@
 # Changelog
 
-## Version 3.5.1
-  Fixed: 
-  - Logging messages.
-  
+## Version 3.5.0
   New: 
-  - Support Start/Stop Controller for custom device types
+  - Support Start/Stop and Open/Close capabilities.
 
 ## Version 3.4.1
   Fixed: 
