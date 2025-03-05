@@ -1,8 +1,12 @@
 # Changelog
 
-## Version 3.4.1
+## Version 3.5.0
   New: 
-  - Fix: invalid signature error message.
+  - Support Start/Stop and Open/Close capabilities.
+
+## Version 3.4.1
+  Fixed: 
+    - Fix: invalid signature error message.
 
 ## Version 3.4.0
   New: 

@@ -1,48 +1,38 @@
 {
   "name": "SinricPro",
-  "keywords": "ethernet, sinric, alexa, iot",
-  "description": "Library for https://sinric.pro - simple way to connect your device to alexa",
+  "keywords": "sinric, alexa, google home, iot",
+  "description": "Library for https://sinric.pro - simple way to connect your device to alexa and google home",
   "repository": {
     "type": "git",
     "url": "https://github.com/sinricpro/esp8266-esp32-sdk"
   },
   "authors": [
     {
+      "name": "SinricPro",
+      "url": "https://sinric.pro"
+    },
+    {
       "name": "Boris Jaeger",
       "email": "sivar2311@gmail.com",
       "maintainer": true
     }
   ],
-  "version": "3.4.1",
+  "homepage": "https://sinric.pro",
+  "version": "3.5.0",
   "frameworks": "arduino",
-  "platforms": [
-    "espressif8266",
-    "espressif32",
-    "raspberrypi"
-  ],
+  "platforms": ["espressif8266", "espressif32", "raspberrypi"],
   "dependencies": [
     {
       "name": "ArduinoJson",
       "version": "^7.0.3",
-      "platforms": [
-        "espressif32",
-        "espressif8266",
-        "raspberrypi"
-      ]
+      "platforms": ["espressif32", "espressif8266", "raspberrypi"]
     },
     {
       "name": "WebSockets",
       "version": "^2.4.0",
-      "platforms": [
-        "espressif32",
-        "espressif8266",
-        "raspberrypi"
-      ]
+      "platforms": ["espressif32", "espressif8266", "raspberrypi"]
     }
   ],
-  "examples": [
-    "examples/*/*.ino",
-    "examples/*/*/*.ino"
-  ],
+  "examples": ["examples/*/*.ino", "examples/*/*/*.ino"],
   "license": "CC-BY-SA-4.0"
 }
