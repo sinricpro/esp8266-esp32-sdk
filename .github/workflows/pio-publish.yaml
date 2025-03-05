@@ -27,4 +27,4 @@ jobs:
       - name: Publish
         env:
           PLATFORMIO_AUTH_TOKEN: ${{ secrets.PLATFORMIO_PAT }}
-        run: pio pkg publish --no-interactive
+        run: pio pkg publish --owner sinricpro --no-interactive
