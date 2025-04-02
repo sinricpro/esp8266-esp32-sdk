@@ -59,7 +59,7 @@ bool PowerSensor<T>::sendPowerSensorEvent(float voltage, float current, float po
   JsonObject event_value = eventMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
   if (power == -1)
     power = voltage * current;
-  if (apparentPower != -1)
+  if (factor == -1 && apparentPower != -1)
     factor = power / apparentPower;
 
   unsigned long currentTimestamp = device->getTimestamp();

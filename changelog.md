@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 3.5.1
+  Fixed: 
+    - Fix: sendPowerSensorEvent sets factor even when specified.
+
 ## Version 3.5.0
   New: 
   - Support Start/Stop and Open/Close capabilities.
