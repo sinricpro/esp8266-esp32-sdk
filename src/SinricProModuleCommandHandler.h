@@ -72,7 +72,7 @@ bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
     int major  = request.request_value[FSTR_OTA_version][FSTR_OTA_major]; 
     int minor  = request.request_value[FSTR_OTA_version][FSTR_OTA_minor]; 
     int patch  = request.request_value[FSTR_OTA_version][FSTR_OTA_patch]; 
-    bool forceUpdate  = request.request_value[FSTR_OTA_version][FSTR_OTA_forceUpdate] | false; 
+    bool forceUpdate = request.request_value[FSTR_OTA_forceUpdate] | false;
     return _otaUpdateCallbackHandler(url, major, minor, patch, forceUpdate);
   }
   else if (strcmp(FSTR_SETTINGS_setSetting, request.action.c_str()) == 0 && _setSettingCallbackHandler) {    
