@@ -648,7 +648,7 @@ void SinricProClass::sendMessage(JsonDocument& jsonMessage) {
  *
  * @param flag `true` = enabled \n `false`= disabled
  **/
-void SinricProClass::restoreDeviceStates(bool flag) {
+__attribute__((deprecated("Use SinricPro Portal: Edit Device > Other > 'Restore Device State When Connect' instead"))) void SinricProClass::restoreDeviceStates(bool flag) {
     _websocketListener.setRestoreDeviceStates(flag);
 }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 3.5.3
+  New: 
+    -  `restoreDeviceStates` method has been deprecated. You can use Portal > Edit Device > Other > 'Restore Device State When Connect' instead
+
 ## Version 3.5.2
   Fixed: 
     - Fix: Force OTA update does not work [#430](https://github.com/sinricpro/esp8266-esp32-sdk/issues/430)
