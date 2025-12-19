@@ -646,6 +646,8 @@ void SinricProClass::sendMessage(JsonDocument& jsonMessage) {
  * For every state the corresponding callback (like `onPowerState`) will be called \n
  * This is useful after a power failure / reboot of your device.
  *
+ * @deprecated Device state restoration is now configured exclusively via the SinricPro Portal. Please go to **Portal → Edit Device → Other → Enable "Restore Device State When Connect"** instead.
+ *
  * @param flag `true` = enabled \n `false`= disabled
  **/
 __attribute__((deprecated("Use SinricPro Portal: Edit Device > Other > 'Restore Device State When Connect' instead"))) void SinricProClass::restoreDeviceStates(bool flag) {
