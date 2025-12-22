@@ -38,8 +38,6 @@
     return true;
   }
   ```
-
-  **Migration**: Update your `onSetDeviceSetting` and `onSetModuleSetting` callback implementations to accept `SettingValue&` and use its type-checking and conversion methods (`isInt()`, `asBool()`, `asString()`, etc.) instead of treating the value as a plain string.
 ```
 
 ## Version 3.5.3
