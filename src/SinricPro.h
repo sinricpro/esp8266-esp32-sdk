@@ -59,10 +59,10 @@ using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major
  * This callback is used to set a value for a specific setting identified by its ID.
  *
  * @param id The unique identifier of the setting to be set.
- * @param value The new value to be assigned to the setting.
+ * @param value The setting value (can be int, bool, float or String - use isFloat(), isInt(), isBool(), isString() to check type).
  * @return bool Returns true if the setting was successfully updated, false otherwise.
  */
-using SetSettingCallbackHandler = std::function<bool(const String& id, const String& value)>;
+using SetSettingCallbackHandler = std::function<bool(const String& id, SettingValue& value)>;
 
 /**
  * @typedef ReportHealthCallbackHandler

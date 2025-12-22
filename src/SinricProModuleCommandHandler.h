@@ -11,6 +11,7 @@
 #include "SinricProStrings.h"
 #include "SinricProNamespace.h"
 #include "SinricProDebug.h"
+#include "Capabilities/SettingController.h"
 
 namespace SINRICPRO_NAMESPACE {
 
@@ -28,7 +29,7 @@ FSTR(INSIGHTS, health);         // "health"
 FSTR(INSIGHTS, report);         // "report"
 
 using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major, int minor, int patch, bool forceUpdate)>;
-using SetSettingCallbackHandler = std::function<bool(const String& id, const String& value)>;
+using SetSettingCallbackHandler = std::function<bool(const String& id, SettingValue& value)>;
 using ReportHealthCallbackHandler = std::function<bool(String& healthReport)>;
 
 class SinricProModuleCommandHandler {
@@ -75,10 +76,44 @@ bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
     bool forceUpdate = request.request_value[FSTR_OTA_forceUpdate] | false;
     return _otaUpdateCallbackHandler(url, major, minor, patch, forceUpdate);
   }
-  else if (strcmp(FSTR_SETTINGS_setSetting, request.action.c_str()) == 0 && _setSettingCallbackHandler) {    
+  else if (strcmp(FSTR_SETTINGS_setSetting, request.action.c_str()) == 0 && _setSettingCallbackHandler) {
     String id = request.request_value[FSTR_SETTINGS_id];
-    String value = request.request_value[FSTR_SETTINGS_value];
-    return _setSettingCallbackHandler(id, value);
+    JsonVariant valueVariant = request.request_value[FSTR_SETTINGS_value];
+
+    SettingValue settingValue;
+
+    if (valueVariant.is<bool>()) {
+      settingValue = SettingValue(valueVariant.as<bool>());
+    } else if (valueVariant.is<float>()) {
+      settingValue = SettingValue(valueVariant.as<float>());
+    } else if (valueVariant.is<int>()) {
+      settingValue = SettingValue(valueVariant.as<int>());
+    } else if (valueVariant.is<const char*>()) {
+      settingValue = SettingValue(valueVariant.as<const char*>());
+    }
+
+    bool success = _setSettingCallbackHandler(id, settingValue);
+
+    request.response_value[FSTR_SETTINGS_id] = id;
+
+    switch (settingValue.getType()) {
+      case SettingValue::Type::Int:
+        request.response_value[FSTR_SETTINGS_value] = settingValue.asInt();
+        break;
+      case SettingValue::Type::Float:
+        request.response_value[FSTR_SETTINGS_value] = settingValue.asFloat();
+        break;
+      case SettingValue::Type::Bool:
+        request.response_value[FSTR_SETTINGS_value] = settingValue.asBool();
+        break;
+      case SettingValue::Type::String:
+        request.response_value[FSTR_SETTINGS_value] = settingValue.asString();
+        break;
+      default:
+        break;
+    }
+
+    return success;
   } 
   else if (strcmp(FSTR_INSIGHTS_health, request.action.c_str()) == 0 && _reportHealthCallbackHandler) {    
     String healthReport = "";

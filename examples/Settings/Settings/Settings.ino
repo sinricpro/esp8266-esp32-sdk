@@ -39,13 +39,31 @@
 
 #define BAUD_RATE 115200  // Change baudrate to your need
 
-bool onSetDeviceSetting(const String& deviceId, const String& settingId, const String& settingValue) {
-  // Handle device settings.
+bool onSetDeviceSetting(const String& deviceId, const String& settingId, SettingValue& settingValue) {
+  // Handle device settings based on value type
+  if (settingValue.isInt()) {
+    Serial.printf("Device %s: Setting %s = %d\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asInt());
+  } else if (settingValue.isFloat()) {
+    Serial.printf("Device %s: Setting %s = %.2f\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asFloat());
+  } else if (settingValue.isBool()) {
+    Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asBool() ? "true" : "false");
+  } else if (settingValue.isString()) {
+    Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asString().c_str());
+  }
   return true;
 }
 
-bool onSetModuleSetting(const String& id, const String& value) {
-  // Handle module settings.
+bool onSetModuleSetting(const String& id, SettingValue& value) {
+  // Handle module settings based on value type
+  if (value.isInt()) {
+    Serial.printf("Module setting %s = %d\r\n", id.c_str(), value.asInt());
+  } else if (value.isFloat()) {
+    Serial.printf("Module setting %s = %.2f\r\n", id.c_str(), value.asFloat());
+  } else if (value.isBool()) {
+    Serial.printf("Module setting %s = %s\r\n", id.c_str(), value.asBool() ? "true" : "false");
+  } else if (value.isString()) {
+    Serial.printf("Module setting %s = %s\r\n", id.c_str(), value.asString().c_str());
+  }
   return true;
 }
 

@@ -1,5 +1,48 @@
 # Changelog
 
+```md
+## Version 4.0.0
+
+- **BREAKING CHANGE**: Updated the callback signature in `SettingController.h` to use the `SettingValue` class instead of `String` for setting values.
+
+**Before:**
+  ```cpp
+  bool onSetDeviceSetting(const String& deviceId, const String& settingId, const String& settingValue) {
+    // Handle device settings.
+    return true;
+  }
+
+  bool onSetModuleSetting(const String& id, const String& value) {
+    // Handle module settings.
+    return true;
+  }
+  ```
+
+  **After:**
+  ```cpp
+  bool onSetDeviceSetting(const String& deviceId, const String& settingId, SettingValue& settingValue) {
+    // Handle device settings based on value type
+    if (settingValue.isInt()) {
+      Serial.printf("Device %s: Setting %s = %d\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asInt());
+    } else if (settingValue.isFloat()) {
+      Serial.printf("Device %s: Setting %s = %.2f\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asFloat());
+    } else if (settingValue.isBool()) {
+      Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asBool() ? "true" : "false");
+    } else if (settingValue.isString()) {
+      Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asString().c_str());
+    }
+    return true;
+  }
+
+  bool onSetModuleSetting(const String& id, SettingValue& value) {
+    // Handle module settings.
+    return true;
+  }
+  ```
+
+  **Migration**: Update your `onSetDeviceSetting` and `onSetModuleSetting` callback implementations to accept `SettingValue&` and use its type-checking and conversion methods (`isInt()`, `asBool()`, `asString()`, etc.) instead of treating the value as a plain string.
+```
+
 ## Version 3.5.3
   New: 
     -  `restoreDeviceStates` method has been deprecated. You can use Portal > Edit Device > Other > 'Restore Device State When Connect' instead
