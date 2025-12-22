@@ -1,6 +1,5 @@
 # Changelog
 
-```md
 ## Version 4.0.0
 
 - **BREAKING CHANGE**: Updated the callback signature in `SettingController.h` to use the `SettingValue` class instead of `String` for setting values.
