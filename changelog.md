@@ -2,7 +2,9 @@
 
 ## Version 4.0.0
 
-- **BREAKING CHANGE**: Updated the callback signature in `SettingController.h` to use the `SettingValue` class instead of `String` for setting values.
+- **BREAKING CHANGE**: Updated the callback signature in `SettingController.h` to use the `SettingValue` class instead of `String` for setting values. 
+
+This release requires Espressif Arduino 3.x.
 
 **Before:**
   ```cpp
