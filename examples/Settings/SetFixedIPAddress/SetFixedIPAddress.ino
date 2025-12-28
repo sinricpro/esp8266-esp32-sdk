@@ -43,13 +43,13 @@
 
 bool onSetModuleSetting(const String &id, SettingValue &value) {
   // Handle module settings.
-  if (!value.isString()) {
+  if (!std::holds_alternative<String>(value)) {
     Serial.println(F("onSetModuleSetting: Expected string value"));
     return false;
   }
 
   JsonDocument doc;
-  DeserializationError error = deserializeJson(doc, value.asString());
+  DeserializationError error = deserializeJson(doc, std::get<String>(value));
 
   if (error) {
     Serial.print(F("onSetModuleSetting::deserializeJson() failed: "));

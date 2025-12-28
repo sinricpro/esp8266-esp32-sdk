@@ -83,34 +83,27 @@ bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
     SettingValue settingValue;
 
     if (valueVariant.is<bool>()) {
-      settingValue = SettingValue(valueVariant.as<bool>());
+      settingValue = valueVariant.as<bool>();
     } else if (valueVariant.is<float>()) {
-      settingValue = SettingValue(valueVariant.as<float>());
+      settingValue = valueVariant.as<float>();
     } else if (valueVariant.is<int>()) {
-      settingValue = SettingValue(valueVariant.as<int>());
+      settingValue = valueVariant.as<int>();
     } else if (valueVariant.is<const char*>()) {
-      settingValue = SettingValue(valueVariant.as<const char*>());
+      settingValue = String(valueVariant.as<const char*>());
     }
 
     bool success = _setSettingCallbackHandler(id, settingValue);
 
     request.response_value[FSTR_SETTINGS_id] = id;
 
-    switch (settingValue.getType()) {
-      case SettingValue::Type::Int:
-        request.response_value[FSTR_SETTINGS_value] = settingValue.asInt();
-        break;
-      case SettingValue::Type::Float:
-        request.response_value[FSTR_SETTINGS_value] = settingValue.asFloat();
-        break;
-      case SettingValue::Type::Bool:
-        request.response_value[FSTR_SETTINGS_value] = settingValue.asBool();
-        break;
-      case SettingValue::Type::String:
-        request.response_value[FSTR_SETTINGS_value] = settingValue.asString();
-        break;
-      default:
-        break;
+    if (std::holds_alternative<int>(settingValue)) {
+      request.response_value[FSTR_SETTINGS_value] = std::get<int>(settingValue);
+    } else if (std::holds_alternative<float>(settingValue)) {
+      request.response_value[FSTR_SETTINGS_value] = std::get<float>(settingValue);
+    } else if (std::holds_alternative<bool>(settingValue)) {
+      request.response_value[FSTR_SETTINGS_value] = std::get<bool>(settingValue);
+    } else if (std::holds_alternative<String>(settingValue)) {
+      request.response_value[FSTR_SETTINGS_value] = std::get<String>(settingValue);
     }
 
     return success;
