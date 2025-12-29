@@ -4,7 +4,7 @@
 
 - **BREAKING CHANGE**: Updated the callback signature in `SettingController.h` to use the `SettingValue` class instead of `String` for setting values. 
 
-This release requires Espressif Arduino 3.x.
+This release requires Arduino 3.x.
 
 **Before:**
   ```cpp
@@ -23,23 +23,21 @@ This release requires Espressif Arduino 3.x.
   ```cpp
   bool onSetDeviceSetting(const String& deviceId, const String& settingId, SettingValue& settingValue) {
     // Handle device settings based on value type
-    if (settingValue.isInt()) {
-      Serial.printf("Device %s: Setting %s = %d\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asInt());
-    } else if (settingValue.isFloat()) {
-      Serial.printf("Device %s: Setting %s = %.2f\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asFloat());
-    } else if (settingValue.isBool()) {
-      Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asBool() ? "true" : "false");
-    } else if (settingValue.isString()) {
-      Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), settingValue.asString().c_str());
+    if (std::holds_alternative<int>(settingValue)) {
+      Serial.printf("Device %s: Setting %s = %d\r\n", deviceId.c_str(), settingId.c_str(), std::get<int>(settingValue));
+    } else if (std::holds_alternative<float>(settingValue)) {
+      Serial.printf("Device %s: Setting %s = %.2f\r\n", deviceId.c_str(), settingId.c_str(), std::get<float>(settingValue));
+    } else if (std::holds_alternative<bool>(settingValue)) {
+      Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), std::get<bool>(settingValue) ? "true" : "false");
+    } else if (std::holds_alternative<String>(settingValue)) {
+      Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), std::get<String>(settingValue).c_str());
     }
     return true;
   }
 
   bool onSetModuleSetting(const String& id, SettingValue& value) {
-    // Handle module settings.
-    return true;
+    // Handle module settings based on value type
   }
-  ```
 ```
 
 ## Version 3.5.3

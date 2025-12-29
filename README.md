@@ -19,10 +19,14 @@
 ### VS Code & PlatformIO:
 1. Install [VS Code](https://code.visualstudio.com/)  
 2. Install [PlatformIO](https://platformio.org/platformio-ide)  
-3. Create a new Project
-4. Use the [Library Manager](https://docs.platformio.org/en/latest/librarymanager/) to add the library to your project or add `sinricpro/SinricPro` manually to your `lib_deps` in `platformio.ini`.
+3. Create a new Project and use the [Library Manager](https://docs.platformio.org/en/latest/librarymanager/) to add the library to your project or add `sinricpro/SinricPro` manually to your `lib_deps` in `platformio.ini`.
+4. Complete `platformio.ini` is available [here](https://github.com/sinricpro/esp8266-esp32-sdk/blob/master/examples/platformio/platformio.ini) 
+
+
 
 ![sinricpro library manager](https://raw.githubusercontent.com/sinricpro/images/master/platformio-install-sinricpro.png)
+
+
 
 ### ArduinoIDE
 1. Open Library Manager (*Tools / Manage Libraries*)  
@@ -35,6 +39,7 @@
 ---
 
 ## Dependencies
+- Arduino core 3.x
 - [ArduinoJson](https://github.com/bblanchon/ArduinoJson) by Benoit Blanchon (minimum Version 7.0.3)
 - [WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version 2.4.0)
 
