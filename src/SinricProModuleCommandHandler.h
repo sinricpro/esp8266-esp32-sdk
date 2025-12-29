@@ -88,6 +88,10 @@ bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
       settingValue = valueVariant.as<float>();
     } else if (valueVariant.is<int>()) {
       settingValue = valueVariant.as<int>();
+    } else if (valueVariant.is<JsonObject>()) {
+      String jsonString;
+      serializeJson(valueVariant, jsonString);
+      settingValue = jsonString;
     } else if (valueVariant.is<const char*>()) {
       settingValue = String(valueVariant.as<const char*>());
     }
@@ -96,7 +100,9 @@ bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
 
     request.response_value[FSTR_SETTINGS_id] = id;
 
-    if (std::holds_alternative<int>(settingValue)) {
+    if (valueVariant.is<JsonObject>()) {
+      request.response_value[FSTR_SETTINGS_value] = valueVariant;
+    } else if (std::holds_alternative<int>(settingValue)) {
       request.response_value[FSTR_SETTINGS_value] = std::get<int>(settingValue);
     } else if (std::holds_alternative<float>(settingValue)) {
       request.response_value[FSTR_SETTINGS_value] = std::get<float>(settingValue);
