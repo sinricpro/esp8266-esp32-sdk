@@ -74,7 +74,7 @@ bool SettingController<T>::handleSettingController(SinricProRequest &request) {
     request.response_value[FSTR_SETTING_id] = settingId;
 
     if (valueVariant.is<JsonObject>()) {
-      request.response_value[FSTR_SETTINGS_value] = valueVariant;
+      request.response_value[FSTR_SETTING_value] = valueVariant;
     } else if (std::holds_alternative<int>(settingValue)) {
       request.response_value[FSTR_SETTING_value] = std::get<int>(settingValue);
     } else if (std::holds_alternative<float>(settingValue)) {
