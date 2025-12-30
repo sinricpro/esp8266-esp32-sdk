@@ -147,6 +147,7 @@ mySwitch.sendPushNotification("Hello SinricPro!");
 * [OTA](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/OTAUpdate)
 * [MultiWiFi](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Settings/MultiWiFi)
 * [Health](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Health)
+* [Settings](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples/Settings)
 ---
 
 ## Licensing and Credits
