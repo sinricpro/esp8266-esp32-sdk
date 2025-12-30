@@ -1,5 +1,45 @@
 # Changelog
 
+## Version 4.0.0
+
+- **BREAKING CHANGE**: Updated the callback signature in `SettingController.h` to use the `SettingValue` class instead of `String` for setting values. 
+
+This release requires Arduino 3.x.
+
+**Before:**
+  ```cpp
+  bool onSetDeviceSetting(const String& deviceId, const String& settingId, const String& settingValue) {
+    // Handle device settings.
+    return true;
+  }
+
+  bool onSetModuleSetting(const String& id, const String& value) {
+    // Handle module settings.
+    return true;
+  }
+  ```
+
+  **After:**
+  ```cpp
+  bool onSetDeviceSetting(const String& deviceId, const String& settingId, SettingValue& settingValue) {
+    // Handle device settings based on value type
+    if (std::holds_alternative<int>(settingValue)) {
+      Serial.printf("Device %s: Setting %s = %d\r\n", deviceId.c_str(), settingId.c_str(), std::get<int>(settingValue));
+    } else if (std::holds_alternative<float>(settingValue)) {
+      Serial.printf("Device %s: Setting %s = %.2f\r\n", deviceId.c_str(), settingId.c_str(), std::get<float>(settingValue));
+    } else if (std::holds_alternative<bool>(settingValue)) {
+      Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), std::get<bool>(settingValue) ? "true" : "false");
+    } else if (std::holds_alternative<String>(settingValue)) {
+      Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), std::get<String>(settingValue).c_str());
+    }
+    return true;
+  }
+
+  bool onSetModuleSetting(const String& id, SettingValue& value) {
+    // Handle module settings based on value type
+  }
+```
+
 ## Version 3.5.3
   New: 
     -  `restoreDeviceStates` method has been deprecated. You can use Portal > Edit Device > Other > 'Restore Device State When Connect' instead

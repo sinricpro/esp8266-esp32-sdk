@@ -39,13 +39,31 @@
 
 #define BAUD_RATE 115200  // Change baudrate to your need
 
-bool onSetDeviceSetting(const String& deviceId, const String& settingId, const String& settingValue) {
-  // Handle device settings.
+bool onSetDeviceSetting(const String& deviceId, const String& settingId, SettingValue& settingValue) {
+  // Handle device settings based on value type
+  if (std::holds_alternative<int>(settingValue)) {
+    Serial.printf("Device %s: Setting %s = %d\r\n", deviceId.c_str(), settingId.c_str(), std::get<int>(settingValue));
+  } else if (std::holds_alternative<float>(settingValue)) {
+    Serial.printf("Device %s: Setting %s = %.2f\r\n", deviceId.c_str(), settingId.c_str(), std::get<float>(settingValue));
+  } else if (std::holds_alternative<bool>(settingValue)) {
+    Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), std::get<bool>(settingValue) ? "true" : "false");
+  } else if (std::holds_alternative<String>(settingValue)) {
+    Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), std::get<String>(settingValue).c_str());
+  }
   return true;
 }
 
-bool onSetModuleSetting(const String& id, const String& value) {
-  // Handle module settings.
+bool onSetModuleSetting(const String& id, SettingValue& value) {
+  // Handle module settings based on value type
+  if (std::holds_alternative<int>(value)) {
+    Serial.printf("Module setting %s = %d\r\n", id.c_str(), std::get<int>(value));
+  } else if (std::holds_alternative<float>(value)) {
+    Serial.printf("Module setting %s = %.2f\r\n", id.c_str(), std::get<float>(value));
+  } else if (std::holds_alternative<bool>(value)) {
+    Serial.printf("Module setting %s = %s\r\n", id.c_str(), std::get<bool>(value) ? "true" : "false");
+  } else if (std::holds_alternative<String>(value)) {
+    Serial.printf("Module setting %s = %s\r\n", id.c_str(), std::get<String>(value).c_str());
+  }
   return true;
 }
 

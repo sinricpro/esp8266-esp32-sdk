@@ -1,18 +1,18 @@
-name: Build for ESP8266 and ESP32 
+name: Build for ESP8266 and ESP32
 on:
   workflow_dispatch:
-  
+
   pull_request:
-    branches: [ master ]
+    branches: [master]
     paths:
       - src/**
       - examples/**
-    
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         example:
           - examples/ACUnit
@@ -40,33 +40,44 @@ jobs:
           - examples/Health
           - examples/Settings/MultiWiFi
           - examples/AirQualitySensor/AirQualitySensor
+        board:
+          - fqbn: esp8266:esp8266:nodemcuv2
+            platform: esp8266:esp8266
+          - fqbn: esp32:esp32:esp32
+            platform: esp32:esp32
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Step 1 - Checkout Repo
-      uses: actions/checkout@v4
-    - name: Step 2 - Cache pip
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: ${{ runner.os }}-pip-
-    - name: Step 3 - Cache PlatformIO
-      uses: actions/cache@v3
-      with:
-        path: ~/.platformio
-        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-    - name: Step 4 - Set up Python
-      uses: actions/setup-python@v3
-    - name: Step 5 - Install PlatformIO
-      run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade platformio
-        pip install intelhex      
-    - name: Step 6 - Install library dependencies
-      run: |
-        pio pkg install -l "bblanchon/ArduinoJson" -l "links2004/WebSockets" -g
-    - name: Step 7 - Run build test using PlatformIO
-      run: pio ci --lib="." -b esp12e -b esp32dev
-      env:
-        PLATFORMIO_CI_SRC: ${{ matrix.example }}
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Install board platforms
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://arduino.esp8266.com/stable/package_esp8266com_index.json
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install ${{ matrix.board.platform }}
+
+      - name: Install library dependencies
+        run: |
+          arduino-cli lib install "ArduinoJson"
+          arduino-cli lib install "WebSockets"
+
+      - name: Link library to Arduino libraries folder
+        run: |
+          mkdir -p ~/Arduino/libraries
+          ln -s $GITHUB_WORKSPACE ~/Arduino/libraries/SinricPro
+
+      - name: Get sketch name
+        id: sketch
+        run: |
+          SKETCH_PATH="${{ matrix.example }}"
+          SKETCH_NAME=$(basename "$SKETCH_PATH")
+          echo "path=${SKETCH_PATH}/${SKETCH_NAME}.ino" >> $GITHUB_OUTPUT
+
+      - name: Compile sketch
+        run: |
+          arduino-cli compile --fqbn ${{ matrix.board.fqbn }} ${{ steps.sketch.outputs.path }}
