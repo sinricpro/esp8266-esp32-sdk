@@ -18,6 +18,7 @@
 #include "SinricProUDP.h"
 #include "SinricProWebsocket.h"
 #include "Timestamp.h"
+#include "EventLimiter.h"
 namespace SINRICPRO_NAMESPACE {
 
 /**
@@ -108,6 +109,7 @@ class SinricProClass : public SinricProInterface {
     void           onOTAUpdate(OTAUpdateCallbackHandler cb);
     void           onSetSetting(SetSettingCallbackHandler cb);
     void           onReportHealth(ReportHealthCallbackHandler cb);
+    bool           sendSettingEvent(String settingId, SettingValue settingValue, String cause = FSTR_SINRICPRO_PHYSICAL_INTERACTION);
 
   protected:
     template <typename DeviceType>
@@ -162,6 +164,7 @@ class SinricProClass : public SinricProInterface {
     String responseMessageStr = "";
 
     SinricProModuleCommandHandler _moduleCommandHandler;
+    EventLimiter _settingEventLimiter{EVENT_LIMIT_STATE};
 };
 
 class SinricProClass::Proxy {
@@ -562,6 +565,42 @@ void SinricProClass::onSetSetting(SetSettingCallbackHandler cb) {
  */
 void SinricProClass::onReportHealth(ReportHealthCallbackHandler cb) {
     _moduleCommandHandler.onReportHealth(cb);
+}
+
+/**
+ * @brief Send `setSetting` event to SinricPro Server at module level
+ *
+ * @param settingId   `String` the setting identifier
+ * @param settingValue `SettingValue` (int, float, bool, or String) the setting value
+ * @param cause       (optional) `String` reason why event is sent (default = `"PHYSICAL_INTERACTION"`)
+ * @return the success of sending the event
+ * @retval true   event has been sent successfully
+ * @retval false  event has not been sent, maybe you sent too many events in a short distance of time
+ **/
+bool SinricProClass::sendSettingEvent(String settingId, SettingValue settingValue, String cause) {
+    if (_settingEventLimiter) return false;
+
+    JsonDocument eventMessage = prepareEvent("", FSTR_SETTING_setSetting, cause.c_str());
+    JsonObject payload = eventMessage[FSTR_SINRICPRO_payload];
+
+    payload.remove(FSTR_SINRICPRO_deviceId);
+    payload[FSTR_SINRICPRO_scope] = FSTR_SINRICPRO_module;
+
+    JsonObject event_value = payload[FSTR_SINRICPRO_value];
+    event_value[FSTR_SETTING_id] = settingId;
+
+    if (std::holds_alternative<int>(settingValue)) {
+        event_value[FSTR_SETTING_value] = std::get<int>(settingValue);
+    } else if (std::holds_alternative<float>(settingValue)) {
+        event_value[FSTR_SETTING_value] = std::get<float>(settingValue);
+    } else if (std::holds_alternative<bool>(settingValue)) {
+        event_value[FSTR_SETTING_value] = std::get<bool>(settingValue);
+    } else if (std::holds_alternative<String>(settingValue)) {
+        event_value[FSTR_SETTING_value] = std::get<String>(settingValue);
+    }
+
+    sendMessage(eventMessage);
+    return true;
 }
 
 /**
