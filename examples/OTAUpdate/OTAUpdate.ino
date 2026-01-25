@@ -31,11 +31,20 @@
 #if defined(ESP8266)
   #include <ESP8266WiFi.h>
   #include "ESP8266OTAHelper.h"
-#elif defined(ESP32) 
+#elif defined(ESP32)
   #include <WiFi.h>
   #include "ESP32OTAHelper.h"
-#elif defined(ARDUINO_ARCH_RP2040) 
+#elif defined(ARDUINO_ARCH_RP2040)
   #include <WiFi.h>
+  #include "ESP8266OTAHelper.h"
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+  #include <WiFiNINA.h>
+  #include "ESP8266OTAHelper.h"
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  #include <WiFiS3.h>
+  #ifndef SINRICPRO_NOSSL
+    #define SINRICPRO_NOSSL
+  #endif
   #include "ESP8266OTAHelper.h"
 #endif
 

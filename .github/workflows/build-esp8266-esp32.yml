@@ -1,4 +1,4 @@
-name: Build for ESP8266 and ESP32
+name: Build for ESP8266, ESP32, and Arduino Boards
 on:
   workflow_dispatch:
 
@@ -43,8 +43,19 @@ jobs:
         board:
           - fqbn: esp8266:esp8266:nodemcuv2
             platform: esp8266:esp8266
+            needs_wifinina: false
           - fqbn: esp32:esp32:esp32
             platform: esp32:esp32
+            needs_wifinina: false
+          - fqbn: arduino:renesas_uno:unor4wifi
+            platform: arduino:renesas_uno
+            needs_wifinina: false
+          - fqbn: arduino:samd:nano_33_iot
+            platform: arduino:samd
+            needs_wifinina: true
+          - fqbn: arduino:samd:mkrwifi1010
+            platform: arduino:samd
+            needs_wifinina: true
 
     steps:
       - name: Checkout repository
@@ -65,6 +76,9 @@ jobs:
         run: |
           arduino-cli lib install "ArduinoJson"
           arduino-cli lib install "WebSockets"
+          if [ "${{ matrix.board.needs_wifinina }}" = "true" ]; then
+            arduino-cli lib install "WiFiNINA"
+          fi
 
       - name: Link library to Arduino libraries folder
         run: |

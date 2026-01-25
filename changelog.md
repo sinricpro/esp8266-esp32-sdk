@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 5.0.0
+
+### Added
+- **Arduino UNO R4 WiFi support** (WiFiS3, non-SSL)
+- **Arduino Nano 33 IoT support** (WiFiNINA, SSL enabled)
+- **Arduino MKR WiFi 1010 support** (WiFiNINA, SSL enabled) 
+---
+
 ## Version 4.1.0
   New: 
   1. The `sendSettingEvent` method has been added to SettingController.
