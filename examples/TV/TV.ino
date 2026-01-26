@@ -86,14 +86,14 @@ void setupChannelNumbers() {
 
 bool onAdjustVolume(const String &deviceId, int &volumeDelta, bool volumeDefault) {
   tvVolume += volumeDelta;  // calcualte new absolute volume
-  Serial.printf("Volume changed about %i to %i\r\n", volumeDelta, tvVolume);
+  SINRICPRO_PRINTF("Volume changed about %i to %i\r\n", volumeDelta, tvVolume);
   volumeDelta = tvVolume; // return new absolute volume
   return true;
 }
 
 bool onChangeChannel(const String &deviceId, String &channel) {
   tvChannel = channelNumbers[channel]; // save new channelNumber in tvChannel variable
-  Serial.printf("Change channel to \"%s\" (channel number %d)\r\n", channel.c_str(), tvChannel);
+  SINRICPRO_PRINTF("Change channel to \"%s\" (channel number %d)\r\n", channel.c_str(), tvChannel);
   return true;
 }
 
@@ -104,12 +104,12 @@ bool onChangeChannelNumber(const String& deviceId, int channelNumber, String& ch
 
   channelName = channelNames[tvChannel]; // return the channelName
 
-  Serial.printf("Change to channel to %d (channel name \"%s\")\r\n", tvChannel, channelName.c_str());
+  SINRICPRO_PRINTF("Change to channel to %d (channel name \"%s\")\r\n", tvChannel, channelName.c_str());
   return true;
 }
 
 bool onMediaControl(const String &deviceId, String &control) {
-  Serial.printf("MediaControl: %s\r\n", control.c_str());
+  SINRICPRO_PRINTF("MediaControl: %s\r\n", control.c_str());
   if (control == "Play") {}           // do whatever you want to do here
   if (control == "Pause") {}          // do whatever you want to do here
   if (control == "Stop") {}           // do whatever you want to do here
@@ -122,24 +122,24 @@ bool onMediaControl(const String &deviceId, String &control) {
 }
 
 bool onMute(const String &deviceId, bool &mute) {
-  Serial.printf("TV volume is %s\r\n", mute?"muted":"unmuted");
+  SINRICPRO_PRINTF("TV volume is %s\r\n", mute?"muted":"unmuted");
   tvMuted = mute; // set tvMuted state
   return true;
 }
 
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("TV turned %s\r\n", state?"on":"off");
+  SINRICPRO_PRINTF("TV turned %s\r\n", state?"on":"off");
   tvPowerState = state; // set powerState
   return true; 
 }
 
 bool onSelectInput(const String &deviceId, String &input) {
-  Serial.printf("Input changed to %s\r\n", input.c_str());
+  SINRICPRO_PRINTF("Input changed to %s\r\n", input.c_str());
   return true;
 }
 
 bool onSetVolume(const String &deviceId, int &volume) {
-  Serial.printf("Volume set to:  %i\r\n", volume);
+  SINRICPRO_PRINTF("Volume set to:  %i\r\n", volume);
   tvVolume = volume; // update tvVolume
   return true;
 }
@@ -150,14 +150,14 @@ bool onSkipChannels(const String &deviceId, const int channelCount, String &chan
   if (tvChannel > MAX_CHANNELS-1) tvChannel = MAX_CHANNELS-1;
   channelName = String(channelNames[tvChannel]); // return channel name
 
-  Serial.printf("Skip channel: %i (number: %i / name: \"%s\")\r\n", channelCount, tvChannel, channelName.c_str());
+  SINRICPRO_PRINTF("Skip channel: %i (number: %i / name: \"%s\")\r\n", channelCount, tvChannel, channelName.c_str());
 
   return true;
 }
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -170,11 +170,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS); 
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 // setup function for SinricPro
@@ -194,15 +194,15 @@ void setupSinricPro() {
   myTV.onSkipChannels(onSkipChannels);
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
-  Serial.printf("%d channels configured\r\n", MAX_CHANNELS);
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
+  SINRICPRO_PRINTF("%d channels configured\r\n", MAX_CHANNELS);
 
   setupWiFi();
   setupSinricPro();

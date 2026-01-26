@@ -134,7 +134,7 @@ void setupFlipSwitches() {
 
 bool onPowerState(String deviceId, bool &state)
 {
-  Serial.printf("%s: %s\r\n", deviceId.c_str(), state ? "on" : "off");
+  SINRICPRO_PRINTF("%s: %s\r\n", deviceId.c_str(), state ? "on" : "off");
   int relayPIN = devices[deviceId].relayPIN; // get the relay pin for corresponding device
   digitalWrite(relayPIN, state);             // set the new relay state
   return true;
@@ -163,7 +163,7 @@ void handleFlipSwitches() {
           SinricProSwitch &mySwitch = SinricPro[deviceId];                        // get Switch device from SinricPro
           bool success = mySwitch.sendPowerStateEvent(newRelayState);             // send the event
           if(!success) {
-            Serial.printf("Something went wrong...could not send Event to server!\r\n");
+            SINRICPRO_PRINTF("Something went wrong...could not send Event to server!\r\n");
           }
 
 #ifdef TACTILE_BUTTON
@@ -177,7 +177,7 @@ void handleFlipSwitches() {
 
 void setupWiFi()
 {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
   
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -191,11 +191,11 @@ void setupWiFi()
 
   while (WiFi.status() != WL_CONNECTED)
   {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   digitalWrite(LED_BUILTIN, HIGH);
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
 void setupSinricPro()

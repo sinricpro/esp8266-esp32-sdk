@@ -16,26 +16,27 @@
   #include "mbedtls/md.h"
 #endif
 #if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
-  #include <bearssl/bearssl_hmac.h>
-#endif
+  #include "SinricProCrypto.h"
+#else
   #include <libb64/cencode.h>
+#endif
   
 #include "SinricProNamespace.h"
 namespace SINRICPRO_NAMESPACE {
 
 String HMACbase64(const String &message, const String &key) {
   byte hmacResult[32];
-#if defined(ESP8266) || defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
-  br_hmac_key_context keyContext; // Holds general HMAC info
-  br_hmac_context hmacContext;    // Holds general HMAC info + specific info for the current operation
+#if defined(ESP8266) || defined(ARDUINO_ARCH_RP2040)
+  // BearSSL implementation (built into ESP8266/RP2040 cores)
+  br_hmac_key_context keyContext;
+  br_hmac_context hmacContext;
 
   br_hmac_key_init(&keyContext, &br_sha256_vtable, key.c_str(), key.length());
   br_hmac_init(&hmacContext, &keyContext, 32);
   br_hmac_update(&hmacContext, message.c_str(), message.length());
   br_hmac_out(&hmacContext, hmacResult);
-#endif
-
-#if defined(ESP32)
+#elif defined(ESP32)
+  // mbedtls implementation (built into ESP32 core)
   mbedtls_md_context_t ctx;
   mbedtls_md_type_t md_type = MBEDTLS_MD_SHA256;
 
@@ -45,18 +46,32 @@ String HMACbase64(const String &message, const String &key) {
   mbedtls_md_hmac_update(&ctx, (const unsigned char*) message.c_str(), message.length());
   mbedtls_md_hmac_finish(&ctx, hmacResult);
   mbedtls_md_free(&ctx);
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  // Portable HMAC-SHA256 implementation for Arduino boards
+  SINRICPRO_CRYPTO::HMAC_SHA256::compute(
+    (const uint8_t*)key.c_str(), key.length(),
+    (const uint8_t*)message.c_str(), message.length(),
+    hmacResult
+  );
 #endif
 
-
+  // Base64 encode the HMAC result
+#if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  // Use portable base64 encoding for Arduino boards
+  char base64encodedHMAC[SINRICPRO_CRYPTO::Base64::encodedLength(32)];
+  SINRICPRO_CRYPTO::Base64::encode(hmacResult, 32, base64encodedHMAC);
+#else
+  // Use libb64 for ESP8266/ESP32/RP2040
   base64_encodestate _state;
   base64_init_encodestate(&_state);
 #if defined(base64_encode_expected_len_nonewlines)
   _state.stepsnewline = -1;
-#endif  
+#endif
   char base64encodedHMAC[base64_encode_expected_len(32) + 1];
   int len = base64_encode_block((const char *)hmacResult, 32, base64encodedHMAC, &_state);
   base64_encode_blockend((base64encodedHMAC + len), &_state);
-  
+#endif
+
   return String { base64encodedHMAC };
 }
 

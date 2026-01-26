@@ -102,7 +102,7 @@ std::vector<RelayInfo> relays = {
 bool onPowerState(const String &deviceId, bool &state) {
   for (auto &relay : relays) {                                                            // for each relay configuration
     if (deviceId == relay.deviceId) {                                                       // check if deviceId matches
-      Serial.printf("Device %s turned %s\r\n", relay.name.c_str(), state ? "on" : "off");     // print relay name and state to serial
+      SINRICPRO_PRINTF("Device %s turned %s\r\n", relay.name.c_str(), state ? "on" : "off");     // print relay name and state to serial
       digitalWrite(relay.pin, state);                                                         // set state to digital pin / gpio
       return true;                                                                            // return with success true
     }
@@ -117,7 +117,7 @@ void setupRelayPins() {
 }
 
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   #if defined(ESP8266)
@@ -127,10 +127,10 @@ void setupWiFi() {
   #endif
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
 void setupSinricPro() {
@@ -139,8 +139,8 @@ void setupSinricPro() {
     mySwitch.onPowerState(onPowerState);                     // attach onPowerState callback to the new device
   }
 
-  SinricPro.onConnected([]() { Serial.printf("Connected to SinricPro\r\n"); });
-  SinricPro.onDisconnected([]() { Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([]() { SINRICPRO_PRINTF("Connected to SinricPro\r\n"); });
+  SinricPro.onDisconnected([]() { SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
 
   SinricPro.begin(APP_KEY, APP_SECRET);
 }

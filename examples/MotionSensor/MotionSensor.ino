@@ -70,20 +70,20 @@ void handleMotionsensor() {
   bool actualMotionState = digitalRead(MOTIONSENSOR_PIN);   // read actual state of motion sensor
 
   if (actualMotionState != lastMotionState) {         // if state has changed
-    Serial.printf("Motion %s\r\n", actualMotionState?"detected":"not detected");
+    SINRICPRO_PRINTF("Motion %s\r\n", actualMotionState?"detected":"not detected");
     lastMotionState = actualMotionState;              // update last known state
     lastChange = actualMillis;                        // update debounce time
     SinricProMotionsensor &myMotionsensor = SinricPro[MOTIONSENSOR_ID]; // get motion sensor device
     bool success = myMotionsensor.sendMotionEvent(actualMotionState);
     if(!success) {
-      Serial.printf("Something went wrong...could not send Event to server!\r\n");
+      SINRICPRO_PRINTF("Something went wrong...could not send Event to server!\r\n");
     }
   }
 }
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -96,11 +96,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 // setup function for SinricPro
@@ -109,14 +109,14 @@ void setupSinricPro() {
   SinricProMotionsensor& myMotionsensor = SinricPro[MOTIONSENSOR_ID];
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); });
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); });
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
 
   pinMode(MOTIONSENSOR_PIN, INPUT);
 

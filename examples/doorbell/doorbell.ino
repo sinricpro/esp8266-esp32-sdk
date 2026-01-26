@@ -60,7 +60,7 @@ void checkButtonPress() {
 
   if (actualMillis-lastBtnPress > 500) {
     if (digitalRead(BUTTON_PIN)==LOW) {
-      Serial.printf("Ding dong...\r\n");
+      SINRICPRO_PRINTF("Ding dong...\r\n");
       lastBtnPress = actualMillis;
 
       // get Doorbell device back
@@ -69,7 +69,7 @@ void checkButtonPress() {
       // send doorbell event
       bool success = myDoorbell.sendDoorbellEvent();
       if(!success) {
-        Serial.printf("Something went wrong...could not send Event to server!\r\n");
+        SINRICPRO_PRINTF("Something went wrong...could not send Event to server!\r\n");
       }
     }
   }
@@ -77,7 +77,7 @@ void checkButtonPress() {
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -90,11 +90,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 // setup function for SinricPro
@@ -102,8 +102,8 @@ void setupSinricPro() {
   // add doorbell device to SinricPro
   SinricProDoorbell& myDoorbell = SinricPro[DOORBELL_ID];
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
@@ -111,7 +111,7 @@ void setupSinricPro() {
 void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP); // BUTTIN_PIN as INPUT
 
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

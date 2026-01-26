@@ -49,44 +49,44 @@ bool globalPowerState;
 int globalFanSpeed;
 
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Thermostat %s turned %s\r\n", deviceId.c_str(), state?"on":"off");
+  SINRICPRO_PRINTF("Thermostat %s turned %s\r\n", deviceId.c_str(), state?"on":"off");
   globalPowerState = state; 
   return true; // request handled properly
 }
 
 bool onTargetTemperature(const String &deviceId, float &temperature) {
-  Serial.printf("Thermostat %s set temperature to %f\r\n", deviceId.c_str(), temperature);
+  SINRICPRO_PRINTF("Thermostat %s set temperature to %f\r\n", deviceId.c_str(), temperature);
   globalTemperature = temperature;
   return true;
 }
 
 bool onAdjustTargetTemperature(const String & deviceId, float &temperatureDelta) {
   globalTemperature += temperatureDelta;  // calculate absolut temperature
-  Serial.printf("Thermostat %s changed temperature about %f to %f", deviceId.c_str(), temperatureDelta, globalTemperature);
+  SINRICPRO_PRINTF("Thermostat %s changed temperature about %f to %f", deviceId.c_str(), temperatureDelta, globalTemperature);
   temperatureDelta = globalTemperature; // return absolut temperature
   return true;
 }
 
 bool onThermostatMode(const String &deviceId, String &mode) {
-  Serial.printf("Thermostat %s set to mode %s\r\n", deviceId.c_str(), mode.c_str());
+  SINRICPRO_PRINTF("Thermostat %s set to mode %s\r\n", deviceId.c_str(), mode.c_str());
   return true;
 }
 
 bool onRangeValue(const String &deviceId, int &rangeValue) {
-  Serial.printf("Fan speed set to %d\r\n", rangeValue);
+  SINRICPRO_PRINTF("Fan speed set to %d\r\n", rangeValue);
   globalFanSpeed = rangeValue;
   return true;
 }
 
 bool onAdjustRangeValue(const String &deviceId, int &valueDelta) {
   globalFanSpeed += valueDelta;
-  Serial.printf("Fan speed changed about %d to %d\r\n", valueDelta, globalFanSpeed);
+  SINRICPRO_PRINTF("Fan speed changed about %d to %d\r\n", valueDelta, globalFanSpeed);
   valueDelta = globalFanSpeed;
   return true;
 }
 
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -99,11 +99,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS);  
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 void setupSinricPro() {
@@ -116,13 +116,13 @@ void setupSinricPro() {
   myAcUnit.onAdjustRangeValue(onAdjustRangeValue);
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

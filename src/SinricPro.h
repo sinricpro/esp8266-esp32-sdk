@@ -233,10 +233,10 @@ void SinricProClass::begin(String appKey, String appSecret, String serverURL) {
     // - Must be 36 characters
     // - UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     if (appKey.length() != 36) {
-        Serial.printf("[SinricPro:begin()]: Invalid App Key '%s' detected (Length: %d; Expected: 36). Initialization aborted! Please check your SinricPro credentials.\r\n", appKey.c_str(), appKey.length());
+        SINRICPRO_PRINTF("[SinricPro:begin()]: Invalid App Key '%s' detected (Length: %d; Expected: 36). Initialization aborted! Please check your SinricPro credentials.\r\n", appKey.c_str(), appKey.length());
         success = false;
     } else if (appKey.charAt(8) != '-' || appKey.charAt(13) != '-' || appKey.charAt(18) != '-' || appKey.charAt(23) != '-') {
-        Serial.printf("[SinricPro:begin()]: App Key '%s' is in an invalid format. Initialization aborted!\r\n", appKey.c_str());
+        SINRICPRO_PRINTF("[SinricPro:begin()]: App Key '%s' is in an invalid format. Initialization aborted!\r\n", appKey.c_str());
         success = false;
     }
 
@@ -244,11 +244,11 @@ void SinricProClass::begin(String appKey, String appSecret, String serverURL) {
     // - Must be 73 characters
     // - Double UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     if (appSecret.length() != 73) {
-        Serial.printf("[SinricPro:begin()]: Invalid App Secret '%s' detected (Length: %d; Expected: 73). Initialization aborted! Please check your SinricPro credentials.\r\n", appSecret.c_str(), appSecret.length());
+        SINRICPRO_PRINTF("[SinricPro:begin()]: Invalid App Secret '%s' detected (Length: %d; Expected: 73). Initialization aborted! Please check your SinricPro credentials.\r\n", appSecret.c_str(), appSecret.length());
         success = false;
     } else if (appSecret.charAt(8) != '-' || appSecret.charAt(13) != '-' || appSecret.charAt(18) != '-' || appSecret.charAt(23) != '-' ||
                appSecret.charAt(36) != '-' || appSecret.charAt(45) != '-' || appSecret.charAt(50) != '-' || appSecret.charAt(55) != '-' || appSecret.charAt(60) != '-') {
-        Serial.printf("[SinricPro:begin()]: App Secret '%s' is in an invalid format. Initialization aborted!\r\n", appSecret.c_str());
+        SINRICPRO_PRINTF("[SinricPro:begin()]: App Secret '%s' is in an invalid format. Initialization aborted!\r\n", appSecret.c_str());
         success = false;
     }
 
@@ -271,7 +271,7 @@ DeviceType& SinricProClass::add(String deviceId) {
     // - Hexadecimal only (0-9, a-f, A-F)
     // - Format: 695b4624f6e5944047661b8a
     if (deviceId.length() != 24) {
-        Serial.printf("[SinricPro:add()]: Device Id \"%s\" is invalid (wrong length: expected 24, got %d)!! Please check your device-id!!\r\n", deviceId.c_str(), deviceId.length());
+        SINRICPRO_PRINTF("[SinricPro:add()]: Device Id \"%s\" is invalid (wrong length: expected 24, got %d)!! Please check your device-id!!\r\n", deviceId.c_str(), deviceId.length());
     }
 
     DeviceType* newDevice = new DeviceType(deviceId);

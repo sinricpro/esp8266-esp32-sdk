@@ -111,8 +111,8 @@ void WebsocketListener::setExtraHeaders() {
     const char* platform = "UNKNOWN";
 #endif
 
-#if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
-    // WiFiNINA returns byte array, format as string
+#if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+    // WiFiNINA and WiFiS3 return byte array, format as string
     auto formatMacAddress = []() -> String {
         byte mac[6];
         WiFi.macAddress(mac);
@@ -127,7 +127,7 @@ void WebsocketListener::setExtraHeaders() {
     headers += "\r\ndeviceids:" + deviceIds;
     headers += "\r\nrestoredevicestates:" + String(restoreDeviceStates ? "true" : "false");
     headers += "\r\nip:" + WiFi.localIP().toString();
-#if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+#if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
     headers += "\r\nmac:" + formatMacAddress();
 #else
     headers += "\r\nmac:" + WiFi.macAddress();

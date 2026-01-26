@@ -56,7 +56,7 @@ String SWITCH_IDs[DEVICES] = {                // define deviceIds in an array
 bool onPowerState(const String &deviceId, bool &state) {
   for (int i=0; i < DEVICES; i++) {     // go through the devices
     if (deviceId == SWITCH_IDs[i]) {    // if deviceId matches
-      Serial.printf("Device number %i turned %s\r\n", i, state?"on":"off");   // print power state for device
+      SINRICPRO_PRINTF("Device number %i turned %s\r\n", i, state?"on":"off");   // print power state for device
     }
   }
   return true; // request handled properly
@@ -64,7 +64,7 @@ bool onPowerState(const String &deviceId, bool &state) {
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -77,11 +77,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS); 
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
 
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
 // setup function for SinricPro
@@ -93,14 +93,14 @@ void setupSinricPro() {
   }
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

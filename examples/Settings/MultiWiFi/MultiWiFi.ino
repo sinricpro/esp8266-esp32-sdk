@@ -113,7 +113,7 @@ bool setupLittleFS() {
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   // Load settings from file or using defaults if loading fails.
   spws.begin();
@@ -168,10 +168,10 @@ void setupSinricPro() {
 
   // setup SinricPro
   SinricPro.onConnected([]() {
-    Serial.printf("Connected to SinricPro\r\n");
+    SINRICPRO_PRINTF("Connected to SinricPro\r\n");
   });
   SinricPro.onDisconnected([]() {
-    Serial.printf("Disconnected from SinricPro\r\n");
+    SINRICPRO_PRINTF("Disconnected from SinricPro\r\n");
   });
 
   SinricPro.onSetSetting(onSetModuleSetting);
@@ -181,7 +181,7 @@ void setupSinricPro() {
 // main setup function
 void setup() {
   Serial.begin(BAUD_RATE);
-  Serial.printf("\r\n\r\n");
+  SINRICPRO_PRINTF("\r\n\r\n");
   setupLittleFS();
   setupWiFi();
   setupSinricPro();

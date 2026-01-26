@@ -48,19 +48,19 @@ int blindsPosition = 0;
 bool powerState = false;
 
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s power turned %s \r\n", deviceId.c_str(), state?"on":"off");
+  SINRICPRO_PRINTF("Device %s power turned %s \r\n", deviceId.c_str(), state?"on":"off");
   powerState = state;
   return true; // request handled properly
 }
 
 bool onRangeValue(const String &deviceId, int &position) {
-  Serial.printf("Device %s set position to %d\r\n", deviceId.c_str(), position);
+  SINRICPRO_PRINTF("Device %s set position to %d\r\n", deviceId.c_str(), position);
   return true; // request handled properly
 }
 
 bool onAdjustRangeValue(const String &deviceId, int &positionDelta) {
   blindsPosition += positionDelta;
-  Serial.printf("Device %s position changed about %i to %d\r\n", deviceId.c_str(), positionDelta, blindsPosition);
+  SINRICPRO_PRINTF("Device %s position changed about %i to %d\r\n", deviceId.c_str(), positionDelta, blindsPosition);
   positionDelta = blindsPosition; // calculate and return absolute position
   return true; // request handled properly
 }
@@ -68,7 +68,7 @@ bool onAdjustRangeValue(const String &deviceId, int &positionDelta) {
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -81,11 +81,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 void setupSinricPro() {
@@ -96,14 +96,14 @@ void setupSinricPro() {
   myBlinds.onAdjustRangeValue(onAdjustRangeValue);
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

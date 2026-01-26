@@ -69,20 +69,20 @@ void handleContactsensor() {
   bool actualContactState = digitalRead(CONTACT_PIN);   // read actual state of contactsensor
 
   if (actualContactState != lastContactState) {         // if state has changed
-    Serial.printf("Contactsensor is %s now\r\n", actualContactState?"open":"closed");
+    SINRICPRO_PRINTF("Contactsensor is %s now\r\n", actualContactState?"open":"closed");
     lastContactState = actualContactState;              // update last known state
     lastChange = actualMillis;                          // update debounce time
     SinricProContactsensor &myContact = SinricPro[CONTACT_ID]; // get contact sensor device
     bool success = myContact.sendContactEvent(actualContactState);      // send event with actual state
     if(!success) {
-      Serial.printf("Something went wrong...could not send Event to server!\r\n");
+      SINRICPRO_PRINTF("Something went wrong...could not send Event to server!\r\n");
     }
   }
 }
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -95,11 +95,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 // setup function for SinricPro
@@ -108,14 +108,14 @@ void setupSinricPro() {
   SinricProContactsensor& myContact = SinricPro[CONTACT_ID];
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); });
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); });
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
 
   pinMode(CONTACT_PIN, INPUT);
 

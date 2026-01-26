@@ -152,7 +152,7 @@ bool onDecreaseColorTemperature(const String& devceId, int& colorTemperature) {
 }
 
 void setupWiFi() {
-    Serial.printf("WiFi: connecting");
+    SINRICPRO_PRINTF("WiFi: connecting");
 
     #if defined(ESP8266)
         WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -165,10 +165,10 @@ void setupWiFi() {
     WiFi.begin(WIFI_SSID, WIFI_PASS); 
     
     while (WiFi.status() != WL_CONNECTED) {
-        Serial.printf(".");
+        SINRICPRO_PRINTF(".");
         delay(250);
     }
-    Serial.printf("connected\r\nIP is %s\r\n", WiFi.localIP().toString().c_str());
+    SINRICPRO_PRINTF("connected\r\nIP is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
 void setupSinricPro() {
