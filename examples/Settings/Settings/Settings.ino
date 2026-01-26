@@ -48,28 +48,28 @@
 
 bool onSetDeviceSetting(const String& deviceId, const String& settingId, SettingValue& settingValue) {
   // Handle device settings based on value type
-  if (std::holds_alternative<int>(settingValue)) {
-    SINRICPRO_PRINTF("Device %s: Setting %s = %d\r\n", deviceId.c_str(), settingId.c_str(), std::get<int>(settingValue));
-  } else if (std::holds_alternative<float>(settingValue)) {
-    SINRICPRO_PRINTF("Device %s: Setting %s = %.2f\r\n", deviceId.c_str(), settingId.c_str(), std::get<float>(settingValue));
-  } else if (std::holds_alternative<bool>(settingValue)) {
-    SINRICPRO_PRINTF("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), std::get<bool>(settingValue) ? "true" : "false");
-  } else if (std::holds_alternative<String>(settingValue)) {
-    SINRICPRO_PRINTF("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), std::get<String>(settingValue).c_str());
+  if (settingValue.holds<int>()) {
+    SINRICPRO_PRINTF("Device %s: Setting %s = %d\r\n", deviceId.c_str(), settingId.c_str(), settingValue.get<int>());
+  } else if (settingValue.holds<float>()) {
+    SINRICPRO_PRINTF("Device %s: Setting %s = %.2f\r\n", deviceId.c_str(), settingId.c_str(), settingValue.get<float>());
+  } else if (settingValue.holds<bool>()) {
+    SINRICPRO_PRINTF("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), settingValue.get<bool>() ? "true" : "false");
+  } else if (settingValue.holds<String>()) {
+    SINRICPRO_PRINTF("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), settingValue.get<String>().c_str());
   }
   return true;
 }
 
 bool onSetModuleSetting(const String& id, SettingValue& value) {
   // Handle module settings based on value type
-  if (std::holds_alternative<int>(value)) {
-    SINRICPRO_PRINTF("Module setting %s = %d\r\n", id.c_str(), std::get<int>(value));
-  } else if (std::holds_alternative<float>(value)) {
-    SINRICPRO_PRINTF("Module setting %s = %.2f\r\n", id.c_str(), std::get<float>(value));
-  } else if (std::holds_alternative<bool>(value)) {
-    SINRICPRO_PRINTF("Module setting %s = %s\r\n", id.c_str(), std::get<bool>(value) ? "true" : "false");
-  } else if (std::holds_alternative<String>(value)) {
-    SINRICPRO_PRINTF("Module setting %s = %s\r\n", id.c_str(), std::get<String>(value).c_str());
+  if (value.holds<int>()) {
+    SINRICPRO_PRINTF("Module setting %s = %d\r\n", id.c_str(), value.get<int>());
+  } else if (value.holds<float>()) {
+    SINRICPRO_PRINTF("Module setting %s = %.2f\r\n", id.c_str(), value.get<float>());
+  } else if (value.holds<bool>()) {
+    SINRICPRO_PRINTF("Module setting %s = %s\r\n", id.c_str(), value.get<bool>() ? "true" : "false");
+  } else if (value.holds<String>()) {
+    SINRICPRO_PRINTF("Module setting %s = %s\r\n", id.c_str(), value.get<String>().c_str());
   }
   return true;
 }

@@ -17,6 +17,17 @@
 #endif
 
 /**
+ * @brief Buffer size for SINRICPRO_PRINTF output
+ *
+ * Define SINRICPRO_PRINTF_BUFFER_SIZE before including SinricPro headers
+ * to customize the buffer size for memory-constrained boards.
+ * Default is 256 bytes.
+ */
+#ifndef SINRICPRO_PRINTF_BUFFER_SIZE
+  #define SINRICPRO_PRINTF_BUFFER_SIZE 256
+#endif
+
+/**
  * @brief Portable printf function that works on all Arduino boards
  *
  * Use this instead of Serial.printf() for cross-platform compatibility.
@@ -26,7 +37,7 @@
  * @param ... variable arguments
  */
 inline void SINRICPRO_PRINTF(const char* format, ...) {
-  char buf[256];
+  char buf[SINRICPRO_PRINTF_BUFFER_SIZE];
   va_list args;
   va_start(args, format);
   vsnprintf(buf, sizeof(buf), format, args);
@@ -39,7 +50,7 @@ inline void SINRICPRO_PRINTF(const char* format, ...) {
   #ifdef SINRICPRO_NO_SERIAL_PRINTF
     // For boards without printf, use portable version
     #define DEBUG_SINRIC(...) do { \
-      char _dbg_buf[256]; \
+      char _dbg_buf[SINRICPRO_PRINTF_BUFFER_SIZE]; \
       snprintf(_dbg_buf, sizeof(_dbg_buf), __VA_ARGS__); \
       DEBUG_ESP_PORT.print(_dbg_buf); \
     } while(0)

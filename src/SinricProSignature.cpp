@@ -53,6 +53,8 @@ String HMACbase64(const String &message, const String &key) {
     (const uint8_t*)message.c_str(), message.length(),
     hmacResult
   );
+#else
+  #error "Unsupported platform: No HMAC-SHA256 implementation available. Please add support for your platform."
 #endif
 
   // Base64 encode the HMAC result

@@ -112,7 +112,9 @@ void WebsocketListener::setExtraHeaders() {
 #endif
 
 #if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
-    // WiFiNINA and WiFiS3 return byte array, format as string
+    // WiFiNINA and WiFiS3 return MAC address as byte array in network order (LSB first).
+    // mac[0] = LSB, mac[5] = MSB. We format it in standard notation (MSB:...:LSB).
+    // This matches the format returned by ESP8266/ESP32 WiFi.macAddress() string.
     auto formatMacAddress = []() -> String {
         byte mac[6];
         WiFi.macAddress(mac);
