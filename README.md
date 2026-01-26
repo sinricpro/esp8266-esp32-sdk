@@ -15,6 +15,8 @@
 
 [![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-rpipicow.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-rpipicow.yml)
 
+[![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-arduino-boards.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-arduino-boards.yml)
+
 [![Discord](https://img.shields.io/badge/discord-%23esp8266--esp32-blue.svg)](https://discord.gg/rq9vcRcSqA) </br>
   
 ## Installation
