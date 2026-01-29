@@ -20,6 +20,10 @@
 
 // Sketch -> Export Compiled Binary to export
 
+// WARNNING: The ESP8266 chip has limited memory. 
+// While basic sketches can usually perform OTA updates successfully, 
+// more complex use cases may cause the update to fail due to memory constraints.
+
 #ifdef ENABLE_DEBUG
   #define DEBUG_ESP_PORT Serial
   #define NODEBUG_WEBSOCKETS
@@ -116,9 +120,15 @@ void setupWiFi() {
   SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
+bool onPowerState(const String &deviceId, bool &state) {
+  SINRICPRO_PRINTF("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
+  return true; // request handled properly
+}
+
 // setup function for SinricPro
 void setupSinricPro() {
-   SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
+  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
+  mySwitch.onPowerState(onPowerState);
 
   // setup SinricPro
   SinricPro.onConnected([]() {
