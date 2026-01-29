@@ -46,7 +46,7 @@
   #define RELAYPIN_6 D6
   #define RELAYPIN_7 D7
   #define RELAYPIN_8 D8
-#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+#else
   #define RELAYPIN_1 16
   #define RELAYPIN_2 17
   #define RELAYPIN_3 18

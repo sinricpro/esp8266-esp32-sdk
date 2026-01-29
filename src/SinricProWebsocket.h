@@ -111,6 +111,10 @@ void WebsocketListener::setExtraHeaders() {
     const char* platform = "UNKNOWN";
 #endif
 
+    String headers = "appkey:" + appKey;
+    headers += "\r\ndeviceids:" + deviceIds;
+    headers += "\r\nrestoredevicestates:" + String(restoreDeviceStates ? "true" : "false");
+    headers += "\r\nip:" + WiFi.localIP().toString();
 #if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
     // WiFiNINA and WiFiS3 return MAC address as byte array in network order (LSB first).
     // mac[0] = LSB, mac[5] = MSB. We format it in standard notation (MSB:...:LSB).
@@ -123,13 +127,6 @@ void WebsocketListener::setExtraHeaders() {
                  mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
         return String(macStr);
     };
-#endif
-
-    String headers = "appkey:" + appKey;
-    headers += "\r\ndeviceids:" + deviceIds;
-    headers += "\r\nrestoredevicestates:" + String(restoreDeviceStates ? "true" : "false");
-    headers += "\r\nip:" + WiFi.localIP().toString();
-#if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
     headers += "\r\nmac:" + formatMacAddress();
 #else
     headers += "\r\nmac:" + WiFi.macAddress();

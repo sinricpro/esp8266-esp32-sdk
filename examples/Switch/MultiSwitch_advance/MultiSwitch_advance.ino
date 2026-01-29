@@ -70,7 +70,7 @@
   #define SWITCHPIN_2 D7
   #define SWITCHPIN_3 D6
   #define SWITCHPIN_4 D5
-#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+#else
   #define LED_BUILTIN 2
 
   #define RELAYPIN_1 16

@@ -44,7 +44,7 @@
 
 #if defined(ESP8266)
   #define RELAY_PIN         D5                  // Pin where the relay is connected (D5 = GPIO 14 on ESP8266)
-#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+#else
   #define RELAY_PIN         16                  // Pin where the relay is connected (GPIO 16 on ESP32)
 #endif
 
