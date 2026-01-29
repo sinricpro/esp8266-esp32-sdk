@@ -60,7 +60,7 @@ using OTAUpdateCallbackHandler = std::function<bool(const String& url, int major
  * This callback is used to set a value for a specific setting identified by its ID.
  *
  * @param id The unique identifier of the setting to be set.
- * @param value The setting value as std::variant<int, float, bool, String>. Use std::holds_alternative<T>() and std::get<T>() to access.
+ * @param value The setting value as SettingValue (can hold int, float, bool, or String). Use value.holds<T>() and value.get<T>() to access.
  * @return bool Returns true if the setting was successfully updated, false otherwise.
  */
 using SetSettingCallbackHandler = std::function<bool(const String& id, SettingValue& value)>;
@@ -612,14 +612,14 @@ bool SinricProClass::sendSettingEvent(String settingId, SettingValue settingValu
     JsonObject event_value = payload[FSTR_SINRICPRO_value];
     event_value[FSTR_SETTING_id] = settingId;
 
-    if (std::holds_alternative<int>(settingValue)) {
-        event_value[FSTR_SETTING_value] = std::get<int>(settingValue);
-    } else if (std::holds_alternative<float>(settingValue)) {
-        event_value[FSTR_SETTING_value] = std::get<float>(settingValue);
-    } else if (std::holds_alternative<bool>(settingValue)) {
-        event_value[FSTR_SETTING_value] = std::get<bool>(settingValue);
-    } else if (std::holds_alternative<String>(settingValue)) {
-        event_value[FSTR_SETTING_value] = std::get<String>(settingValue);
+    if (settingValue.holds<int>()) {
+        event_value[FSTR_SETTING_value] = settingValue.get<int>();
+    } else if (settingValue.holds<float>()) {
+        event_value[FSTR_SETTING_value] = settingValue.get<float>();
+    } else if (settingValue.holds<bool>()) {
+        event_value[FSTR_SETTING_value] = settingValue.get<bool>();
+    } else if (settingValue.holds<String>()) {
+        event_value[FSTR_SETTING_value] = settingValue.get<String>();
     }
 
     sendMessage(eventMessage);

@@ -102,14 +102,14 @@ bool SinricProModuleCommandHandler::handleRequest(SinricProRequest &request) {
 
     if (valueVariant.is<JsonObject>()) {
       request.response_value[FSTR_SETTINGS_value] = valueVariant;
-    } else if (std::holds_alternative<int>(settingValue)) {
-      request.response_value[FSTR_SETTINGS_value] = std::get<int>(settingValue);
-    } else if (std::holds_alternative<float>(settingValue)) {
-      request.response_value[FSTR_SETTINGS_value] = std::get<float>(settingValue);
-    } else if (std::holds_alternative<bool>(settingValue)) {
-      request.response_value[FSTR_SETTINGS_value] = std::get<bool>(settingValue);
-    } else if (std::holds_alternative<String>(settingValue)) {
-      request.response_value[FSTR_SETTINGS_value] = std::get<String>(settingValue);
+    } else if (settingValue.holds<int>()) {
+      request.response_value[FSTR_SETTINGS_value] = settingValue.get<int>();
+    } else if (settingValue.holds<float>()) {
+      request.response_value[FSTR_SETTINGS_value] = settingValue.get<float>();
+    } else if (settingValue.holds<bool>()) {
+      request.response_value[FSTR_SETTINGS_value] = settingValue.get<bool>();
+    } else if (settingValue.holds<String>()) {
+      request.response_value[FSTR_SETTINGS_value] = settingValue.get<String>();
     }
 
     return success;
