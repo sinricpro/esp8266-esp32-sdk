@@ -52,7 +52,7 @@
 #if defined(ESP8266)
   #define LOCK_PIN          D1                       // PIN where the lock is connected to: HIGH = locked, LOW = unlocked
   #define LOCK_STATE_PIN    D2                       // PIN where the lock feedback is connected to (HIGH:locked, LOW:unlocked)
-#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+#else
   #define LOCK_PIN          16                       // PIN where the lock is connected to: HIGH = locked, LOW = unlocked
   #define LOCK_STATE_PIN    17                       // PIN where the lock feedback is connected to (HIGH:locked, LOW:unlocked)
 #endif
