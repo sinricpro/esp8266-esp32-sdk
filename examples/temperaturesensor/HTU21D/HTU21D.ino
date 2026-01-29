@@ -37,7 +37,7 @@
   #ifndef SINRICPRO_NOSSL
     #define SINRICPRO_NOSSL
   #endif
-#endiff
+#endif
 
 #include "SinricPro.h"
 #include "SinricProTemperaturesensor.h"
@@ -58,7 +58,7 @@ Adafruit_HTU21DF htu = Adafruit_HTU21DF();
 #if defined(ESP8266)
   #define I2C_SCL 14    //D5                
   #define I2C_SDA 12    //D6
-#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+#else
   #define I2C_SCL 18                    
   #define I2C_SDA 19 
 #endif
