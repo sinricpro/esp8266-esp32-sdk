@@ -28,6 +28,13 @@
   #include <ESP8266WiFi.h>
 #elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
   #include <WiFi.h>
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+  #include <WiFiNINA.h>
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  #include <WiFiS3.h>
+  #ifndef SINRICPRO_NOSSL
+    #define SINRICPRO_NOSSL
+  #endif
 #endif
 
 #include "SinricPro.h"
@@ -60,7 +67,7 @@ unsigned long lastBtnPress = 0;
  *  true if request should be marked as handled correctly / false if not
  */
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
+  SINRICPRO_PRINTF("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
   myPowerState = state;
   digitalWrite(LED_PIN, myPowerState?LOW:HIGH);
   return true; // request handled properly
@@ -81,34 +88,34 @@ void handleButtonPress() {
     // send powerstate event
     bool success = mySwitch.sendPowerStateEvent(myPowerState); // send the new powerState to SinricPro server
     if(!success) {
-      Serial.printf("Something went wrong...could not send Event to server!\r\n");
+      SINRICPRO_PRINTF("Something went wrong...could not send Event to server!\r\n");
     }
 
-    Serial.printf("Device %s turned %s (manually via flashbutton)\r\n", mySwitch.getDeviceId().c_str(), myPowerState?"on":"off");
+    SINRICPRO_PRINTF("Device %s turned %s (manually via flashbutton)\r\n", mySwitch.getDeviceId().c_str(), myPowerState?"on":"off");
 
     lastBtnPress = actualMillis;  // update last button press variable
-  } 
+  }
 }
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
-    WiFi.setSleepMode(WIFI_NONE_SLEEP); 
+    WiFi.setSleepMode(WIFI_NONE_SLEEP);
     WiFi.setAutoReconnect(true);
   #elif defined(ESP32)
-    WiFi.setSleep(false); 
+    WiFi.setSleep(false);
     WiFi.setAutoReconnect(true);
   #endif
 
-  WiFi.begin(WIFI_SSID, WIFI_PASS); 
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
 // setup function for SinricPro
@@ -120,8 +127,8 @@ void setupSinricPro() {
   mySwitch.onPowerState(onPowerState);
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); });
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   //SinricPro.restoreDeviceStates(true); // Uncomment to restore the last known state from the server.
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
@@ -132,7 +139,7 @@ void setup() {
   pinMode(LED_PIN, OUTPUT); // define LED GPIO as output
   digitalWrite(LED_PIN, HIGH); // turn off LED on bootup
 
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

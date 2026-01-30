@@ -23,6 +23,13 @@
   #include <ESP8266WiFi.h>
 #elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
   #include <WiFi.h>
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+  #include <WiFiNINA.h>
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  #include <WiFiS3.h>
+  #ifndef SINRICPRO_NOSSL
+    #define SINRICPRO_NOSSL
+  #endif
 #endif
 
 #include "SinricPro.h"
@@ -46,10 +53,10 @@ std::map<int, int> colorTemperatureIndex;
 // so that the map can be used to do a reverse search like
 // int index = colorTemperateIndex[4000]; <- will result in index == 2
 void setupColorTemperatureIndex() {
-  Serial.printf("Setup color temperature lookup table\r\n");
+  SINRICPRO_PRINTF("Setup color temperature lookup table\r\n");
   for (int i=0;i < max_color_temperatures; i++) {
     colorTemperatureIndex[colorTemperatureArray[i]] = i;
-    Serial.printf("colorTemperatureIndex[%i] = %i\r\n", colorTemperatureArray[i], colorTemperatureIndex[colorTemperatureArray[i]]);
+    SINRICPRO_PRINTF("colorTemperatureIndex[%i] = %i\r\n", colorTemperatureArray[i], colorTemperatureIndex[colorTemperatureArray[i]]);
   }
 }
 
@@ -66,20 +73,20 @@ struct {
 } device_state; 
 
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Device %s power turned %s \r\n", deviceId.c_str(), state?"on":"off");
+  SINRICPRO_PRINTF("Device %s power turned %s \r\n", deviceId.c_str(), state?"on":"off");
   device_state.powerState = state;
   return true; // request handled properly
 }
 
 bool onBrightness(const String &deviceId, int &brightness) {
   device_state.brightness = brightness;
-  Serial.printf("Device %s brightness level changed to %d\r\n", deviceId.c_str(), brightness);
+  SINRICPRO_PRINTF("Device %s brightness level changed to %d\r\n", deviceId.c_str(), brightness);
   return true;
 }
 
 bool onAdjustBrightness(const String &deviceId, int brightnessDelta) {
   device_state.brightness += brightnessDelta;
-  Serial.printf("Device %s brightness level changed about %i to %d\r\n", deviceId.c_str(), brightnessDelta, device_state.brightness);
+  SINRICPRO_PRINTF("Device %s brightness level changed about %i to %d\r\n", deviceId.c_str(), brightnessDelta, device_state.brightness);
   brightnessDelta = device_state.brightness;
   return true;
 }
@@ -88,13 +95,13 @@ bool onColor(const String &deviceId, byte &r, byte &g, byte &b) {
   device_state.color.r = r;
   device_state.color.g = g;
   device_state.color.b = b;
-  Serial.printf("Device %s color changed to %d, %d, %d (RGB)\r\n", deviceId.c_str(), device_state.color.r, device_state.color.g, device_state.color.b);
+  SINRICPRO_PRINTF("Device %s color changed to %d, %d, %d (RGB)\r\n", deviceId.c_str(), device_state.color.r, device_state.color.g, device_state.color.b);
   return true;
 }
 
 bool onColorTemperature(const String &deviceId, int &colorTemperature) {
   device_state.colorTemperature = colorTemperature;
-  Serial.printf("Device %s color temperature changed to %d\r\n", deviceId.c_str(), device_state.colorTemperature);
+  SINRICPRO_PRINTF("Device %s color temperature changed to %d\r\n", deviceId.c_str(), device_state.colorTemperature);
   return true;
 }
 
@@ -104,7 +111,7 @@ bool onIncreaseColorTemperature(const String &deviceId, int &colorTemperature) {
   if (index < 0) index = 0;                                               // make sure that index stays within array boundaries
   if (index > max_color_temperatures-1) index = max_color_temperatures-1; // make sure that index stays within array boundaries
   device_state.colorTemperature = colorTemperatureArray[index];                  // get the color temperature value
-  Serial.printf("Device %s increased color temperature to %d\r\n", deviceId.c_str(), device_state.colorTemperature);
+  SINRICPRO_PRINTF("Device %s increased color temperature to %d\r\n", deviceId.c_str(), device_state.colorTemperature);
   colorTemperature = device_state.colorTemperature;                              // return current color temperature value
   return true;
 }
@@ -115,13 +122,13 @@ bool onDecreaseColorTemperature(const String &deviceId, int &colorTemperature) {
   if (index < 0) index = 0;                                               // make sure that index stays within array boundaries
   if (index > max_color_temperatures-1) index = max_color_temperatures-1; // make sure that index stays within array boundaries
   device_state.colorTemperature = colorTemperatureArray[index];                  // get the color temperature value
-  Serial.printf("Device %s decreased color temperature to %d\r\n", deviceId.c_str(), device_state.colorTemperature);
+  SINRICPRO_PRINTF("Device %s decreased color temperature to %d\r\n", deviceId.c_str(), device_state.colorTemperature);
   colorTemperature = device_state.colorTemperature;                              // return current color temperature value
   return true;
 }
 
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -134,11 +141,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS); 
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 void setupSinricPro() {
@@ -155,14 +162,14 @@ void setupSinricPro() {
   myLight.onDecreaseColorTemperature(onDecreaseColorTemperature);
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
   setupColorTemperatureIndex(); // setup our helper map
   setupWiFi();
   setupSinricPro();

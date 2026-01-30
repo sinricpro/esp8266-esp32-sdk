@@ -1,5 +1,7 @@
 #pragma once
 
+#if !defined(ARDUINO_UNOWIFIR4) && !defined(ARDUINO_MINIMA) && !defined(ARDUINO_SAMD_MKRWIFI1010) && !defined(ARDUINO_SAMD_NANO_33_IOT)
+
 #include "../SinricProRequest.h"
 
 #include "../EventLimiter.h"
@@ -8,8 +10,8 @@
 
 #include <FS.h>
 
-#if defined(ESP32)  
-  #include <HTTPClient.h>  
+#if defined(ESP32)
+  #include <HTTPClient.h>
   #include <WiFiClientSecure.h>
 #endif
 
@@ -179,7 +181,9 @@ int CameraController<T>::sendMotion(fs::FS &fs, const char * path) {
 #endif
 }
 
-}  // namespace SINRICPRO_NAMESPACE 
+}  // namespace SINRICPRO_NAMESPACE
 
 template <typename T>
 using CameraController = SINRICPRO_NAMESPACE::CameraController<T>;
+
+#endif  // Exclude UNO R4, MINIMA, MKR WiFi 1010, and Nano 33 IoT

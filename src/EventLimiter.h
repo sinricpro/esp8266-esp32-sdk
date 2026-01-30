@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SinricProConfig.h"
+#include "SinricProDebug.h"
 #include "SinricProNamespace.h"
 
 namespace SINRICPRO_NAMESPACE {
@@ -45,7 +46,9 @@ EventLimiter::operator bool() {
   }
 
   fail_counter++;
-  if (fail_counter == fail_threshold) Serial.printf("WARNING: YOUR CODE SENDS EXCESSIVE EVENTS! EVENTS ARE NOW LIMITED BY AN ADDITIONAL DELAY OF %lu SECONDS. PLEASE CHECK YOUR CODE!\r\n", extra_distance / 1000);
+  if (fail_counter == fail_threshold) {
+    SINRICPRO_PRINTF("WARNING: YOUR CODE SENDS EXCESSIVE EVENTS! EVENTS ARE NOW LIMITED BY AN ADDITIONAL DELAY OF %lu SECONDS. PLEASE CHECK YOUR CODE!\r\n", extra_distance / 1000);
+  }
 
   return true;
 }

@@ -25,6 +25,13 @@
   #include <ESP8266WiFi.h>
 #elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
   #include <WiFi.h>
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+  #include <WiFiNINA.h>
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  #include <WiFiS3.h>
+  #ifndef SINRICPRO_NOSSL
+    #define SINRICPRO_NOSSL
+  #endif
 #endif
 
 #include "SinricPro.h"
@@ -39,12 +46,12 @@
 
 
 bool onLockState(String deviceId, bool &lockState) {
-  Serial.printf("Device %s is %s\r\n", deviceId.c_str(), lockState?"locked":"unlocked");
+  SINRICPRO_PRINTF("Device %s is %s\r\n", deviceId.c_str(), lockState?"locked":"unlocked");
   return true;
 }
 
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -57,11 +64,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS); 
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 void setupSinricPro() {
@@ -69,13 +76,13 @@ void setupSinricPro() {
   myLock.onLockState(onLockState);
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

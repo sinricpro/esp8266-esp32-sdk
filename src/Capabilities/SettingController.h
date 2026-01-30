@@ -1,7 +1,5 @@
 #pragma once
 
-#include <variant>
-
 #include "../SinricProRequest.h"
 #include "../SinricProStrings.h"
 #include "../EventLimiter.h"
@@ -14,9 +12,77 @@ FSTR(SETTING, id);             // "id"
 FSTR(SETTING, value);          // "value"
 
 /**
- * @brief Variant type for setting values that can hold int, float, bool, or String
+ * @brief C++11-compatible variant type for setting values that can hold int, float, bool, or String
+ *
+ * This is a lightweight alternative to std::variant (C++17) for Arduino boards.
  */
-using SettingValue = std::variant<int, float, bool, String>;
+class SettingValue {
+  public:
+    enum class Type { INT, FLOAT, BOOL, STRING, NONE };
+
+    SettingValue() : type_(Type::NONE), int_val(0) {}
+    SettingValue(int val) : type_(Type::INT), int_val(val) {}
+    SettingValue(float val) : type_(Type::FLOAT), float_val(val) {}
+    SettingValue(bool val) : type_(Type::BOOL), bool_val(val) {}
+    SettingValue(const String& val) : type_(Type::STRING), string_val(val) {}
+    SettingValue(const char* val) : type_(Type::STRING), string_val(val) {}
+
+    SettingValue(const SettingValue& other) : type_(other.type_) {
+      switch (type_) {
+        case Type::INT:    int_val = other.int_val; break;
+        case Type::FLOAT:  float_val = other.float_val; break;
+        case Type::BOOL:   bool_val = other.bool_val; break;
+        case Type::STRING: string_val = other.string_val; break;
+        case Type::NONE:   break;
+      }
+    }
+
+    SettingValue& operator=(int val) { type_ = Type::INT; int_val = val; return *this; }
+    SettingValue& operator=(float val) { type_ = Type::FLOAT; float_val = val; return *this; }
+    SettingValue& operator=(bool val) { type_ = Type::BOOL; bool_val = val; return *this; }
+    SettingValue& operator=(const String& val) { type_ = Type::STRING; string_val = val; return *this; }
+    SettingValue& operator=(const char* val) { type_ = Type::STRING; string_val = val; return *this; }
+
+    SettingValue& operator=(const SettingValue& other) {
+      if (this != &other) {
+        type_ = other.type_;
+        switch (type_) {
+          case Type::INT:    int_val = other.int_val; break;
+          case Type::FLOAT:  float_val = other.float_val; break;
+          case Type::BOOL:   bool_val = other.bool_val; break;
+          case Type::STRING: string_val = other.string_val; break;
+          case Type::NONE:   break;
+        }
+      }
+      return *this;
+    }
+
+    template<typename T> bool holds() const;
+    template<typename T> T get() const;
+
+    Type type() const { return type_; }
+
+  private:
+    Type type_;
+    union {
+      int int_val;
+      float float_val;
+      bool bool_val;
+    };
+    String string_val;  // Can't be in union
+};
+
+// Template specializations for holds()
+template<> inline bool SettingValue::holds<int>() const { return type_ == Type::INT; }
+template<> inline bool SettingValue::holds<float>() const { return type_ == Type::FLOAT; }
+template<> inline bool SettingValue::holds<bool>() const { return type_ == Type::BOOL; }
+template<> inline bool SettingValue::holds<String>() const { return type_ == Type::STRING; }
+
+// Template specializations for get()
+template<> inline int SettingValue::get<int>() const { return int_val; }
+template<> inline float SettingValue::get<float>() const { return float_val; }
+template<> inline bool SettingValue::get<bool>() const { return bool_val; }
+template<> inline String SettingValue::get<String>() const { return string_val; }
 
 using SetSettingCallback = std::function<bool(const String&, const String&, SettingValue&)>;
 
@@ -67,14 +133,14 @@ bool SettingController<T>::sendSettingEvent(String settingId, SettingValue setti
   eventMessage[FSTR_SINRICPRO_scope] = FSTR_SINRICPRO_device;
   event_value[FSTR_SETTING_id] = settingId;
 
-  if (std::holds_alternative<int>(settingValue)) {
-    event_value[FSTR_SETTING_value] = std::get<int>(settingValue);
-  } else if (std::holds_alternative<float>(settingValue)) {
-    event_value[FSTR_SETTING_value] = std::get<float>(settingValue);
-  } else if (std::holds_alternative<bool>(settingValue)) {
-    event_value[FSTR_SETTING_value] = std::get<bool>(settingValue);
-  } else if (std::holds_alternative<String>(settingValue)) {
-    event_value[FSTR_SETTING_value] = std::get<String>(settingValue);
+  if (settingValue.holds<int>()) {
+    event_value[FSTR_SETTING_value] = settingValue.get<int>();
+  } else if (settingValue.holds<float>()) {
+    event_value[FSTR_SETTING_value] = settingValue.get<float>();
+  } else if (settingValue.holds<bool>()) {
+    event_value[FSTR_SETTING_value] = settingValue.get<bool>();
+  } else if (settingValue.holds<String>()) {
+    event_value[FSTR_SETTING_value] = settingValue.get<String>();
   }
 
   return device->sendEvent(eventMessage);
@@ -112,14 +178,14 @@ bool SettingController<T>::handleSettingController(SinricProRequest &request) {
 
     if (valueVariant.is<JsonObject>()) {
       request.response_value[FSTR_SETTING_value] = valueVariant;
-    } else if (std::holds_alternative<int>(settingValue)) {
-      request.response_value[FSTR_SETTING_value] = std::get<int>(settingValue);
-    } else if (std::holds_alternative<float>(settingValue)) {
-      request.response_value[FSTR_SETTING_value] = std::get<float>(settingValue);
-    } else if (std::holds_alternative<bool>(settingValue)) {
-      request.response_value[FSTR_SETTING_value] = std::get<bool>(settingValue);
-    } else if (std::holds_alternative<String>(settingValue)) {
-      request.response_value[FSTR_SETTING_value] = std::get<String>(settingValue);
+    } else if (settingValue.holds<int>()) {
+      request.response_value[FSTR_SETTING_value] = settingValue.get<int>();
+    } else if (settingValue.holds<float>()) {
+      request.response_value[FSTR_SETTING_value] = settingValue.get<float>();
+    } else if (settingValue.holds<bool>()) {
+      request.response_value[FSTR_SETTING_value] = settingValue.get<bool>();
+    } else if (settingValue.holds<String>()) {
+      request.response_value[FSTR_SETTING_value] = settingValue.get<String>();
     }
 
     return success;

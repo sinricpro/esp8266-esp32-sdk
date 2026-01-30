@@ -23,6 +23,13 @@
   #include <ESP8266WiFi.h>
 #elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
   #include <WiFi.h>
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+  #include <WiFiNINA.h>
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  #include <WiFiS3.h>
+  #ifndef SINRICPRO_NOSSL
+    #define SINRICPRO_NOSSL
+  #endif
 #endif
 
 #include "SinricPro.h"
@@ -37,7 +44,7 @@
 
 #if defined(ESP8266)
   #define RELAY_PIN         D5                  // Pin where the relay is connected (D5 = GPIO 14 on ESP8266)
-#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+#else
   #define RELAY_PIN         16                  // Pin where the relay is connected (GPIO 16 on ESP32)
 #endif
 

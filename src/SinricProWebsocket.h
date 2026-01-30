@@ -11,6 +11,13 @@
     #include <ESP8266WiFi.h>
 #elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
     #include <WiFi.h>
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+    #include <WiFiNINA.h>
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+    #include <WiFiS3.h>
+    #ifndef SINRICPRO_NOSSL
+        #define SINRICPRO_NOSSL
+    #endif
 #endif
 
 #include <ArduinoJson.h>
@@ -92,13 +99,38 @@ void WebsocketListener::setExtraHeaders() {
     const char* platform = "ESP32";
 #elif defined(ARDUINO_ARCH_RP2040)
     const char* platform = "RP2040";
+#elif defined(ARDUINO_UNOWIFIR4)
+    const char* platform = "UNOWIFIR4";
+#elif defined(ARDUINO_MINIMA)
+    const char* platform = "MINIMA";
+#elif defined(ARDUINO_SAMD_MKRWIFI1010)
+    const char* platform = "MKRWIFI1010";
+#elif defined(ARDUINO_SAMD_NANO_33_IOT)
+    const char* platform = "NANO_33_IOT";
+#else
+    const char* platform = "UNKNOWN";
 #endif
 
     String headers = "appkey:" + appKey;
     headers += "\r\ndeviceids:" + deviceIds;
     headers += "\r\nrestoredevicestates:" + String(restoreDeviceStates ? "true" : "false");
     headers += "\r\nip:" + WiFi.localIP().toString();
+#if defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+    // WiFiNINA and WiFiS3 return MAC address as byte array in network order (LSB first).
+    // mac[0] = LSB, mac[5] = MSB. We format it in standard notation (MSB:...:LSB).
+    // This matches the format returned by ESP8266/ESP32 WiFi.macAddress() string.
+    auto formatMacAddress = []() -> String {
+        byte mac[6];
+        WiFi.macAddress(mac);
+        char macStr[18];
+        snprintf(macStr, sizeof(macStr), "%02X:%02X:%02X:%02X:%02X:%02X",
+                 mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
+        return String(macStr);
+    };
+    headers += "\r\nmac:" + formatMacAddress();
+#else
     headers += "\r\nmac:" + WiFi.macAddress();
+#endif
     headers += "\r\nplatform:" + String(platform);
     headers += "\r\nSDKVersion:" + String(SINRICPRO_VERSION);
 

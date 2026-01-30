@@ -31,6 +31,13 @@
   #include <ESP8266WiFi.h>
 #elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
   #include <WiFi.h>
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+  #include <WiFiNINA.h>
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  #include <WiFiS3.h>
+  #ifndef SINRICPRO_NOSSL
+    #define SINRICPRO_NOSSL
+  #endif
 #endif
 
 #include "SinricPro.h"
@@ -47,7 +54,7 @@
 
 #if defined(ESP8266)
        #define DHT_PIN    D5
-#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+#else
        #define DHT_PIN    5
 #endif
 
@@ -75,7 +82,7 @@ void handleTemperaturesensor() {
   humidity = dht.getHumidity();                // get actual humidity
 
   if (isnan(temperature) || isnan(humidity)) { // reading failed... 
-    Serial.printf("DHT reading failed!\r\n");  // print error message
+    SINRICPRO_PRINTF("DHT reading failed!\r\n");  // print error message
     return;                                    // try again next time
   } 
 
@@ -84,9 +91,9 @@ void handleTemperaturesensor() {
   SinricProTemperaturesensor &mySensor = SinricPro[TEMP_SENSOR_ID];  // get temperaturesensor device
   bool success = mySensor.sendTemperatureEvent(temperature, humidity); // send event
   if (success) {  // if event was sent successfuly, print temperature and humidity to serial
-    Serial.printf("Temperature: %2.1f Celsius\tHumidity: %2.1f%%\r\n", temperature, humidity);
+    SINRICPRO_PRINTF("Temperature: %2.1f Celsius\tHumidity: %2.1f%%\r\n", temperature, humidity);
   } else {  // if sending event failed, print error message
-    Serial.printf("Something went wrong...could not send Event to server!\r\n");
+    SINRICPRO_PRINTF("Something went wrong...could not send Event to server!\r\n");
   }
 
   lastTemperature = temperature;  // save actual temperature for next compare
@@ -97,7 +104,7 @@ void handleTemperaturesensor() {
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -110,11 +117,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS); 
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 // setup function for SinricPro
@@ -123,15 +130,15 @@ void setupSinricPro() {
   SinricProTemperaturesensor &mySensor = SinricPro[TEMP_SENSOR_ID];
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   //SinricPro.restoreDeviceStates(true); // Uncomment to restore the last known state from the server.
   SinricPro.begin(APP_KEY, APP_SECRET);  
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
   dht.setup(DHT_PIN);
 
   setupWiFi();

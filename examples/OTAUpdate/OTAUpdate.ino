@@ -20,6 +20,10 @@
 
 // Sketch -> Export Compiled Binary to export
 
+// WARNNING: The ESP8266 chip has limited memory. 
+// While basic sketches can usually perform OTA updates successfully, 
+// more complex use cases may cause the update to fail due to memory constraints.
+
 #ifdef ENABLE_DEBUG
   #define DEBUG_ESP_PORT Serial
   #define NODEBUG_WEBSOCKETS
@@ -31,11 +35,20 @@
 #if defined(ESP8266)
   #include <ESP8266WiFi.h>
   #include "ESP8266OTAHelper.h"
-#elif defined(ESP32) 
+#elif defined(ESP32)
   #include <WiFi.h>
   #include "ESP32OTAHelper.h"
-#elif defined(ARDUINO_ARCH_RP2040) 
+#elif defined(ARDUINO_ARCH_RP2040)
   #include <WiFi.h>
+  #include "ESP8266OTAHelper.h"
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+  #include <WiFiNINA.h>
+  #include "ESP8266OTAHelper.h"
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  #include <WiFiS3.h>
+  #ifndef SINRICPRO_NOSSL
+    #define SINRICPRO_NOSSL
+  #endif
   #include "ESP8266OTAHelper.h"
 #endif
 
@@ -87,7 +100,7 @@ bool handleOTAUpdate(const String& url, int major, int minor, int patch, bool fo
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
 #if defined(ESP8266)
   WiFi.setSleepMode(WIFI_NONE_SLEEP);
@@ -100,23 +113,29 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
 
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
+}
+
+bool onPowerState(const String &deviceId, bool &state) {
+  SINRICPRO_PRINTF("Device %s turned %s (via SinricPro) \r\n", deviceId.c_str(), state?"on":"off");
+  return true; // request handled properly
 }
 
 // setup function for SinricPro
 void setupSinricPro() {
-   SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
+  SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
+  mySwitch.onPowerState(onPowerState);
 
   // setup SinricPro
   SinricPro.onConnected([]() {
-    Serial.printf("Connected to SinricPro\r\n");
+    SINRICPRO_PRINTF("Connected to SinricPro\r\n");
   });
   SinricPro.onDisconnected([]() {
-    Serial.printf("Disconnected from SinricPro\r\n");
+    SINRICPRO_PRINTF("Disconnected from SinricPro\r\n");
   });
   SinricPro.onOTAUpdate(handleOTAUpdate);
   SinricPro.begin(APP_KEY, APP_SECRET);
@@ -125,7 +144,7 @@ void setupSinricPro() {
 // main setup function
 void setup() {
   Serial.begin(BAUD_RATE);
-  Serial.printf("\r\n\r\n");
+  SINRICPRO_PRINTF("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

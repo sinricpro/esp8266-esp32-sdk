@@ -25,6 +25,13 @@
 #include <ESP8266WiFi.h>
 #elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
 #include <WiFi.h>
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+#include <WiFiNINA.h>
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+#include <WiFiS3.h>
+#ifndef SINRICPRO_NOSSL
+#define SINRICPRO_NOSSL
+#endif
 #endif
 
 #include "SinricPro.h"
@@ -41,35 +48,35 @@
 
 bool onSetDeviceSetting(const String& deviceId, const String& settingId, SettingValue& settingValue) {
   // Handle device settings based on value type
-  if (std::holds_alternative<int>(settingValue)) {
-    Serial.printf("Device %s: Setting %s = %d\r\n", deviceId.c_str(), settingId.c_str(), std::get<int>(settingValue));
-  } else if (std::holds_alternative<float>(settingValue)) {
-    Serial.printf("Device %s: Setting %s = %.2f\r\n", deviceId.c_str(), settingId.c_str(), std::get<float>(settingValue));
-  } else if (std::holds_alternative<bool>(settingValue)) {
-    Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), std::get<bool>(settingValue) ? "true" : "false");
-  } else if (std::holds_alternative<String>(settingValue)) {
-    Serial.printf("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), std::get<String>(settingValue).c_str());
+  if (settingValue.holds<int>()) {
+    SINRICPRO_PRINTF("Device %s: Setting %s = %d\r\n", deviceId.c_str(), settingId.c_str(), settingValue.get<int>());
+  } else if (settingValue.holds<float>()) {
+    SINRICPRO_PRINTF("Device %s: Setting %s = %.2f\r\n", deviceId.c_str(), settingId.c_str(), settingValue.get<float>());
+  } else if (settingValue.holds<bool>()) {
+    SINRICPRO_PRINTF("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), settingValue.get<bool>() ? "true" : "false");
+  } else if (settingValue.holds<String>()) {
+    SINRICPRO_PRINTF("Device %s: Setting %s = %s\r\n", deviceId.c_str(), settingId.c_str(), settingValue.get<String>().c_str());
   }
   return true;
 }
 
 bool onSetModuleSetting(const String& id, SettingValue& value) {
   // Handle module settings based on value type
-  if (std::holds_alternative<int>(value)) {
-    Serial.printf("Module setting %s = %d\r\n", id.c_str(), std::get<int>(value));
-  } else if (std::holds_alternative<float>(value)) {
-    Serial.printf("Module setting %s = %.2f\r\n", id.c_str(), std::get<float>(value));
-  } else if (std::holds_alternative<bool>(value)) {
-    Serial.printf("Module setting %s = %s\r\n", id.c_str(), std::get<bool>(value) ? "true" : "false");
-  } else if (std::holds_alternative<String>(value)) {
-    Serial.printf("Module setting %s = %s\r\n", id.c_str(), std::get<String>(value).c_str());
+  if (value.holds<int>()) {
+    SINRICPRO_PRINTF("Module setting %s = %d\r\n", id.c_str(), value.get<int>());
+  } else if (value.holds<float>()) {
+    SINRICPRO_PRINTF("Module setting %s = %.2f\r\n", id.c_str(), value.get<float>());
+  } else if (value.holds<bool>()) {
+    SINRICPRO_PRINTF("Module setting %s = %s\r\n", id.c_str(), value.get<bool>() ? "true" : "false");
+  } else if (value.holds<String>()) {
+    SINRICPRO_PRINTF("Module setting %s = %s\r\n", id.c_str(), value.get<String>().c_str());
   }
   return true;
 }
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
 #if defined(ESP8266)
   WiFi.setSleepMode(WIFI_NONE_SLEEP);
@@ -82,10 +89,10 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
 // setup function for SinricPro
@@ -95,10 +102,10 @@ void setupSinricPro() {
 
   // setup SinricPro
   SinricPro.onConnected([]() {
-    Serial.printf("Connected to SinricPro\r\n");
+    SINRICPRO_PRINTF("Connected to SinricPro\r\n");
   });
   SinricPro.onDisconnected([]() {
-    Serial.printf("Disconnected from SinricPro\r\n");
+    SINRICPRO_PRINTF("Disconnected from SinricPro\r\n");
   });
 
   SinricPro.onSetSetting(onSetModuleSetting);
@@ -108,7 +115,7 @@ void setupSinricPro() {
 // main setup function
 void setup() {
   Serial.begin(BAUD_RATE);
-  Serial.printf("\r\n\r\n");
+  SINRICPRO_PRINTF("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

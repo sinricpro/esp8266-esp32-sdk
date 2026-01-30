@@ -25,6 +25,13 @@
   #include <ESP8266WiFi.h>
 #elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
   #include <WiFi.h>
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+  #include <WiFiNINA.h>
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  #include <WiFiS3.h>
+  #ifndef SINRICPRO_NOSSL
+    #define SINRICPRO_NOSSL
+  #endif
 #endif
 
 #include "SinricPro.h"
@@ -60,32 +67,32 @@ struct {
 
 // Speaker device callbacks
 bool onPowerState(const String &deviceId, bool &state) {
-  Serial.printf("Speaker turned %s\r\n", state?"on":"off");
+  SINRICPRO_PRINTF("Speaker turned %s\r\n", state?"on":"off");
   speakerState.power = state; // set powerState
   return true; 
 }
 
 bool onSetVolume(const String &deviceId, int &volume) {
-  Serial.printf("Volume set to:  %i\r\n", volume);
+  SINRICPRO_PRINTF("Volume set to:  %i\r\n", volume);
   speakerState.volume = volume; // update Volume
   return true;
 }
 
 bool onAdjustVolume(const String &deviceId, int &volumeDelta, bool volumeDefault) {
   speakerState.volume += volumeDelta;  // calcualte new absolute volume
-  Serial.printf("Volume changed about %i to %i\r\n", volumeDelta, speakerState.volume);
+  SINRICPRO_PRINTF("Volume changed about %i to %i\r\n", volumeDelta, speakerState.volume);
   volumeDelta = speakerState.volume; // return new absolute volume
   return true;
 }
 
 bool onMute(const String &deviceId, bool &mute) {
-  Serial.printf("Speaker is %s\r\n", mute?"muted":"unmuted");
+  SINRICPRO_PRINTF("Speaker is %s\r\n", mute?"muted":"unmuted");
   speakerState.muted = mute; // update muted state
   return true;
 }
 
 bool onMediaControl(const String &deviceId, String &control) {
-  Serial.printf("MediaControl: %s\r\n", control.c_str());
+  SINRICPRO_PRINTF("MediaControl: %s\r\n", control.c_str());
   if (control == "Play") {}           // do whatever you want to do here
   if (control == "Pause") {}          // do whatever you want to do here
   if (control == "Stop") {}           // do whatever you want to do here
@@ -98,12 +105,12 @@ bool onMediaControl(const String &deviceId, String &control) {
 }
 
 bool onSelectInput(const String &deviceId, String &input) {
-  Serial.printf("Input changed to %s\r\n", input.c_str());
+  SINRICPRO_PRINTF("Input changed to %s\r\n", input.c_str());
   return true;
 }
 
 bool onSetMode(const String &deviceId, String &mode) {
-  Serial.printf("Speaker mode set to %s\r\n", mode.c_str());
+  SINRICPRO_PRINTF("Speaker mode set to %s\r\n", mode.c_str());
   if (mode == "MOVIE") speakerState.mode = mode_movie;
   if (mode == "MUSIC") speakerState.mode = mode_music;
   if (mode == "NIGHT") speakerState.mode = mode_night;
@@ -113,7 +120,7 @@ bool onSetMode(const String &deviceId, String &mode) {
 }
 
 bool onSetBands(const String& deviceId, const String &bands, int &level) {
-  Serial.printf("Device %s bands %s set to %d\r\n", deviceId.c_str(), bands.c_str(), level);
+  SINRICPRO_PRINTF("Device %s bands %s set to %d\r\n", deviceId.c_str(), bands.c_str(), level);
   int index;
   if (bands == "BASS") index = BANDS_INDEX_BASS;
   if (bands == "MIDRANGE") index = BANDS_INDEX_MIDRANGE;
@@ -130,7 +137,7 @@ bool onAdjustBands(const String &deviceId, const String &bands, int &levelDelta)
   speakerState.bands[index] += levelDelta;
   levelDelta = speakerState.bands[index]; // return absolute trebble level
 
-  Serial.printf("Device %s bands \"%s\" adjusted about %i to %d\r\n", deviceId.c_str(), bands.c_str(), levelDelta, speakerState.bands[index]);
+  SINRICPRO_PRINTF("Device %s bands \"%s\" adjusted about %i to %d\r\n", deviceId.c_str(), bands.c_str(), levelDelta, speakerState.bands[index]);
   return true; // request handled properly
 }  
 
@@ -142,14 +149,14 @@ bool onResetBands(const String &deviceId, const String &bands, int &level) {
   speakerState.bands[index] = 0;
   level = speakerState.bands[index]; // return new level
 
-  Serial.printf("Device %s bands \"%s\" reset to%d\r\n", deviceId.c_str(), bands.c_str(), speakerState.bands[index]);
+  SINRICPRO_PRINTF("Device %s bands \"%s\" reset to%d\r\n", deviceId.c_str(), bands.c_str(), speakerState.bands[index]);
   return true; // request handled properly
 }  
 
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   #if defined(ESP8266)
     WiFi.setSleepMode(WIFI_NONE_SLEEP); 
@@ -162,11 +169,11 @@ void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASS); 
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
   IPAddress localIP = WiFi.localIP();
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %d.%d.%d.%d\r\n", localIP[0], localIP[1], localIP[2], localIP[3]);
 }
 
 // setup function for SinricPro
@@ -187,14 +194,14 @@ void setupSinricPro() {
   speaker.onSelectInput(onSelectInput);
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 // main setup function
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
   setupWiFi();
   setupSinricPro();
 }

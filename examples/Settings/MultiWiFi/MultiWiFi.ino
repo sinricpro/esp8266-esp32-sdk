@@ -26,6 +26,15 @@
 #include <ESP8266WiFi.h>
 #elif defined(ESP32)
 #include <WiFi.h>
+#elif defined(ARDUINO_ARCH_RP2040)
+#include <WiFi.h>
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+#include <WiFiNINA.h>
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+#include <WiFiS3.h>
+#ifndef SINRICPRO_NOSSL
+#define SINRICPRO_NOSSL
+#endif
 #endif
 
 #include <LittleFS.h>
@@ -55,13 +64,13 @@ SinricProWiFiSettings spws(LittleFS, primarySSID, primaryPassword, secondarySSID
 
 bool onSetModuleSetting(const String& id, SettingValue& value) {
   // Handle module settings.
-  if (!std::holds_alternative<String>(value)) {
+  if (!value.holds<String>()) {
     Serial.println(F("onSetModuleSetting: Expected string value"));
     return false;
   }
 
   JsonDocument doc;
-  DeserializationError error = deserializeJson(doc, std::get<String>(value));
+  DeserializationError error = deserializeJson(doc, value.get<String>());
 
   if (error) {
     Serial.print(F("onSetModuleSetting::deserializeJson() failed: "));
@@ -104,7 +113,7 @@ bool setupLittleFS() {
 
 // setup function for WiFi connection
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
 
   // Load settings from file or using defaults if loading fails.
   spws.begin();
@@ -159,10 +168,10 @@ void setupSinricPro() {
 
   // setup SinricPro
   SinricPro.onConnected([]() {
-    Serial.printf("Connected to SinricPro\r\n");
+    SINRICPRO_PRINTF("Connected to SinricPro\r\n");
   });
   SinricPro.onDisconnected([]() {
-    Serial.printf("Disconnected from SinricPro\r\n");
+    SINRICPRO_PRINTF("Disconnected from SinricPro\r\n");
   });
 
   SinricPro.onSetSetting(onSetModuleSetting);
@@ -172,7 +181,7 @@ void setupSinricPro() {
 // main setup function
 void setup() {
   Serial.begin(BAUD_RATE);
-  Serial.printf("\r\n\r\n");
+  SINRICPRO_PRINTF("\r\n\r\n");
   setupLittleFS();
   setupWiFi();
   setupSinricPro();

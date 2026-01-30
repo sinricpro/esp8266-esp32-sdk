@@ -1,8 +1,11 @@
-# SinricPro (ESP8266 / ESP32 / RP2040)
+# SinricPro (ESP8266 / ESP32 / RP2040 / Arduino UNO R4 WiFi / Arduino Nano 33 IoT / MKR WiFi 1010)
 [![arduino-library-badge](https://www.ardu-badge.com/badge/SinricPro.svg?)](https://www.arduino.cc/reference/en/libraries/sinricpro) [![PlatformIO Registry](https://badges.registry.platformio.org/packages/sinricpro/library/SinricPro.svg)](https://registry.platformio.org/libraries/sinricpro/SinricPro)
 
 [![Platform ESP8266](https://img.shields.io/badge/Platform-Espressif8266-orange)](#) [![Platform ESP32](https://img.shields.io/badge/Platform-Espressif32-orange)](#)
 [![Raspberry Pi RP2040](https://img.shields.io/badge/Platform-Raspberry_Pi_RP2040-orange)](#)
+[![Arduino UNO R4](https://img.shields.io/badge/Platform-Arduino_UNO_R4_WiFi-orange)](#)
+[![Arduino Nano 33 IoT](https://img.shields.io/badge/Platform-Arduino_Nano_33_IoT-orange)](#)
+[![MKR WiFi 1010](https://img.shields.io/badge/Platform-MKR_WiFi_1010-orange)](#)
 
 [![Framework](https://img.shields.io/badge/Framework-Arduino-blue)](https://www.arduino.cc/)
 
@@ -11,6 +14,8 @@
 [![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-esp8266-esp32.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-esp8266-esp32.yml)
 
 [![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-rpipicow.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-rpipicow.yml)
+
+[![Build](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-arduino-boards.yml/badge.svg)](https://github.com/sinricpro/esp8266-esp32-sdk/actions/workflows/build-arduino-boards.yml)
 
 [![Discord](https://img.shields.io/badge/discord-%23esp8266--esp32-blue.svg)](https://discord.gg/rq9vcRcSqA) </br>
   
@@ -42,6 +47,31 @@
 - Arduino core 3.x
 - [ArduinoJson](https://github.com/bblanchon/ArduinoJson) by Benoit Blanchon (minimum Version 7.0.3)
 - [WebSockets](https://github.com/Links2004/arduinoWebSockets) by Markus Sattler (minimum Version 2.4.0)
+- [WiFiNINA](https://github.com/arduino-libraries/WiFiNINA) (for Arduino Nano 33 IoT and MKR WiFi 1010 only)
+
+---
+
+## Supported Boards
+
+### Fully Supported (All Features Including Camera)
+- **ESP8266** (all variants) - WiFi with SSL/TLS support
+- **ESP32** (all variants) - WiFi with SSL/TLS support
+- **Raspberry Pi Pico W (RP2040)** - WiFi with SSL/TLS support
+- **Arduino Nano 33 IoT** - WiFiNINA library, SSL/TLS enabled
+- **Arduino MKR WiFi 1010** - WiFiNINA library, SSL/TLS enabled
+- **Arduino UNO R4 WiFi** - WiFiS3 library, **no SSL/TLS support**
+
+All boards support switches, lights, sensors, thermostats, and other non-camera device types.
+
+### WiFi Library Requirements
+| Board | WiFi Library | SSL/TLS | Included |
+|-------|-------------|---------|----------|
+| ESP8266 | ESP8266WiFi.h | ✓ | ✓ |
+| ESP32 | WiFi.h | ✓ | ✓ |
+| RP2040 | WiFi.h | ✓ | ✓ |
+| Nano 33 IoT | WiFiNINA.h | ✓ | Install separately |
+| MKR WiFi 1010 | WiFiNINA.h | ✓ | Install separately |
+| UNO R4 WiFi | WiFiS3.h | ✗ | ✓ |
 
 ---
 

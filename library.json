@@ -18,19 +18,17 @@
     }
   ],
   "homepage": "https://sinric.pro",
-  "version": "4.1.0",
+  "version": "5.0.0",
   "frameworks": "arduino",
-  "platforms": ["espressif8266", "espressif32", "raspberrypi"],
+  "platforms": ["espressif8266", "espressif32", "raspberrypi", "atmelsam", "renesas_uno"],
   "dependencies": [
     {
       "name": "ArduinoJson",
-      "version": "^7.0.3",
-      "platforms": ["espressif32", "espressif8266", "raspberrypi"]
+      "version": "^7.0.3"
     },
     {
       "name": "WebSockets",
-      "version": "^2.4.0",
-      "platforms": ["espressif32", "espressif8266", "raspberrypi"]
+      "version": "^2.4.0"
     }
   ],
   "examples": ["examples/*/*.ino", "examples/*/*/*.ino"],

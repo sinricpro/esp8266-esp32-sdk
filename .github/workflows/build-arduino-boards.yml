@@ -1,4 +1,4 @@
-name: Build for ESP8266 and ESP32
+name: Build for Arduino UNO R4 WiFi, Nano 33 IoT, MKR WiFi 1010
 on:
   workflow_dispatch:
 
@@ -36,15 +36,17 @@ jobs:
           - examples/Switch/Switch
           - examples/Thermostat
           - examples/TV
-          - examples/OTAUpdate
-          - examples/Health
-          - examples/Settings/MultiWiFi
           - examples/AirQualitySensor/AirQualitySensor
         board:
-          - fqbn: esp8266:esp8266:nodemcuv2
-            platform: esp8266:esp8266
-          - fqbn: esp32:esp32:esp32
-            platform: esp32:esp32
+          - fqbn: arduino:renesas_uno:unor4wifi
+            platform: arduino:renesas_uno
+            name: UNO_R4_WiFi
+          - fqbn: arduino:samd:nano_33_iot
+            platform: arduino:samd
+            name: Nano_33_IoT
+          - fqbn: arduino:samd:mkrwifi1010
+            platform: arduino:samd
+            name: MKR_WiFi_1010
 
     steps:
       - name: Checkout repository
@@ -56,8 +58,6 @@ jobs:
       - name: Install board platforms
         run: |
           arduino-cli config init
-          arduino-cli config add board_manager.additional_urls https://arduino.esp8266.com/stable/package_esp8266com_index.json
-          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
           arduino-cli core update-index
           arduino-cli core install ${{ matrix.board.platform }}
 
@@ -65,6 +65,23 @@ jobs:
         run: |
           arduino-cli lib install "ArduinoJson"
           arduino-cli lib install "WebSockets"
+          # WiFiNINA required for SAMD boards
+          if [[ "${{ matrix.board.platform }}" == "arduino:samd" ]]; then
+            arduino-cli lib install "WiFiNINA"
+          fi
+          # DHT sensor library for temperature examples
+          if [[ "${{ matrix.example }}" == *"DHT22"* ]]; then
+            arduino-cli lib install "DHT sensor library"
+            arduino-cli lib install "Adafruit Unified Sensor"
+          fi
+          # AHT10 library for temperature examples
+          if [[ "${{ matrix.example }}" == *"AHT10"* ]]; then
+            arduino-cli lib install "Adafruit AHTX0"
+          fi
+          # HTU21D library for temperature examples
+          if [[ "${{ matrix.example }}" == *"HTU21D"* ]]; then
+            arduino-cli lib install "Adafruit HTU21DF Library"
+          fi
 
       - name: Link library to Arduino libraries folder
         run: |

@@ -30,6 +30,13 @@
   #include <ESP8266WiFi.h>
 #elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
   #include <WiFi.h>
+#elif defined(ARDUINO_SAMD_MKRWIFI1010) || defined(ARDUINO_SAMD_NANO_33_IOT)
+  #include <WiFiNINA.h>
+#elif defined(ARDUINO_UNOWIFIR4) || defined(ARDUINO_MINIMA)
+  #include <WiFiS3.h>
+  #ifndef SINRICPRO_NOSSL
+    #define SINRICPRO_NOSSL
+  #endif
 #endif
 
 #include "SinricPro.h"
@@ -45,7 +52,7 @@
 #if defined(ESP8266)
   #define LOCK_PIN          D1                       // PIN where the lock is connected to: HIGH = locked, LOW = unlocked
   #define LOCK_STATE_PIN    D2                       // PIN where the lock feedback is connected to (HIGH:locked, LOW:unlocked)
-#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+#else
   #define LOCK_PIN          16                       // PIN where the lock is connected to: HIGH = locked, LOW = unlocked
   #define LOCK_STATE_PIN    17                       // PIN where the lock feedback is connected to (HIGH:locked, LOW:unlocked)
 #endif
@@ -53,7 +60,7 @@
 bool lastLockState;
 
 bool onLockState(String deviceId, bool &lockState) {
-  Serial.printf("Device %s is %s\r\n", deviceId.c_str(), lockState?"locked":"unlocked");
+  SINRICPRO_PRINTF("Device %s is %s\r\n", deviceId.c_str(), lockState?"locked":"unlocked");
   digitalWrite(LOCK_PIN, lockState);  
   return true;
 }
@@ -61,17 +68,17 @@ bool onLockState(String deviceId, bool &lockState) {
 void checkLockState() {
   bool currentLockState = digitalRead(LOCK_STATE_PIN);                                    // get current lock state
   if (currentLockState == lastLockState) return;                                          // do nothing if state didn't changed
-  Serial.printf("Lock has been %s manually\r\n", currentLockState?"locked":"unlocked");   // print current lock state to serial
+  SINRICPRO_PRINTF("Lock has been %s manually\r\n", currentLockState?"locked":"unlocked");   // print current lock state to serial
   lastLockState = currentLockState;                                                       // update last known lock state
   SinricProLock &myLock = SinricPro[LOCK_ID];                                             // get the LockDevice
   bool success = myLock.sendLockStateEvent(currentLockState);                             // update LockState on Server
   if(!success) {
-      Serial.printf("Something went wrong...could not send Event to server!\r\n");
+      SINRICPRO_PRINTF("Something went wrong...could not send Event to server!\r\n");
   }
 }
 
 void setupWiFi() {
-  Serial.printf("\r\n[Wifi]: Connecting");
+  SINRICPRO_PRINTF("\r\n[Wifi]: Connecting");
   WiFi.begin(WIFI_SSID, WIFI_PASS);
 
   #if defined(ESP8266)
@@ -81,10 +88,10 @@ void setupWiFi() {
   #endif
 
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.printf(".");
+    SINRICPRO_PRINTF(".");
     delay(250);
   }
-  Serial.printf("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
+  SINRICPRO_PRINTF("connected!\r\n[WiFi]: IP-Address is %s\r\n", WiFi.localIP().toString().c_str());
 }
 
 void setupSinricPro() {
@@ -92,13 +99,13 @@ void setupSinricPro() {
   myLock.onLockState(onLockState);
 
   // setup SinricPro
-  SinricPro.onConnected([](){ Serial.printf("Connected to SinricPro\r\n"); }); 
-  SinricPro.onDisconnected([](){ Serial.printf("Disconnected from SinricPro\r\n"); });
+  SinricPro.onConnected([](){ SINRICPRO_PRINTF("Connected to SinricPro\r\n"); }); 
+  SinricPro.onDisconnected([](){ SINRICPRO_PRINTF("Disconnected from SinricPro\r\n"); });
   SinricPro.begin(APP_KEY, APP_SECRET);
 }
 
 void setup() {
-  Serial.begin(BAUD_RATE); Serial.printf("\r\n\r\n");
+  Serial.begin(BAUD_RATE); SINRICPRO_PRINTF("\r\n\r\n");
 
   pinMode(LOCK_PIN, OUTPUT);
   pinMode(LOCK_STATE_PIN, INPUT);
