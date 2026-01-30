@@ -37,9 +37,6 @@ jobs:
           - examples/Thermostat
           - examples/TV
           - examples/AirQualitySensor/AirQualitySensor
-          - examples/temperaturesensor/DHT22
-          - examples/temperaturesensor/AHT10
-          - examples/temperaturesensor/HTU21D
         board:
           - fqbn: arduino:renesas_uno:unor4wifi
             platform: arduino:renesas_uno
