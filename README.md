@@ -57,8 +57,6 @@
 - **ESP8266** (all variants) - WiFi with SSL/TLS support
 - **ESP32** (all variants) - WiFi with SSL/TLS support
 - **Raspberry Pi Pico W (RP2040)** - WiFi with SSL/TLS support
-
-### Supported (No Camera Features)
 - **Arduino Nano 33 IoT** - WiFiNINA library, SSL/TLS enabled
 - **Arduino MKR WiFi 1010** - WiFiNINA library, SSL/TLS enabled
 - **Arduino UNO R4 WiFi** - WiFiS3 library, **no SSL/TLS support**
