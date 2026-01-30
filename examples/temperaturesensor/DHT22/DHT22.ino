@@ -54,7 +54,7 @@
 
 #if defined(ESP8266)
        #define DHT_PIN    D5
-#elif defined(ESP32) || defined(ARDUINO_ARCH_RP2040)
+#else
        #define DHT_PIN    5
 #endif
 
