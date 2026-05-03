@@ -1,5 +1,42 @@
 # Changelog
 
+## Version 4.2.0
+
+### New — Local Control (LAN/UDP)
+
+1. **Completed UDP local-control path** — Commands sent directly to the device 
+   over the LAN are now fully dispatched through the same capability handlers 
+   as cloud commands. No sketch changes are required; existing `onPowerState`, 
+   `onBrightness`, etc. callbacks work for both cloud and LAN commands.
+
+2. **Fixed multicast re-bind bug** (`SinricProUDP.h`).
+   - ESP32: removed the unnecessary post-`endPacket()` `beginMulticast()` call.
+     The underlying IDF socket correctly retains multicast group membership
+     after a unicast send; the re-bind was harmless but wasteful.
+   - ESP8266: introduced a dedicated TX socket (`WiFiUDP _udpTx`) so the
+     multicast RX socket is never closed during a reply.  The previous code
+     called `endPacket()` on the multicast socket and then `beginMulticast()`
+     again; some SDK versions unbind the socket from the multicast group on
+     `endPacket()`, silently dropping all subsequent incoming packets.
+
+3. **Compile-time gate** — `SINRICPRO_NOMDNS` — define before including
+   `SinricPro.h` to disable the mDNS service announcement while keeping UDP
+   control active.
+
+4. **mDNS service announcement** (`SinricProMDNS.h`, new file) — the SDK
+   registers `_sinricpro._udp.local.` on `UDP_MULTICAST_PORT` (3333) with TXT
+   records `deviceIds=<csv>`, `sdk=<version>`, `udp=1`.  The record is updated
+   each time the WebSocket reconnects so DHCP renewals are automatically
+   reflected.  Gate with `SINRICPRO_NOMDNS`.
+
+### Behavior change
+
+- **Cloud echo suppressed for `IF_UDP` requests** — when a command arrives over
+  UDP the response is sent back over UDP only.  The response is no longer also
+  forwarded to the cloud via WebSocket.  The mobile app is responsible for
+  posting the new state that the cloud and other clients stay in sync.  Users on the
+  cloud path are unaffected.
+
 ## Version 4.1.0
   New: 
   1. The `sendSettingEvent` method has been added to SettingController.

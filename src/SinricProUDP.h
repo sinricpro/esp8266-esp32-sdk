@@ -31,49 +31,62 @@ class UdpListener {
 
   private:
     WiFiUDP           _udp;
+#if defined ESP8266
+    WiFiUDP           _udpTx;
+    bool              _txBegun = false;
+#endif
     SinricProQueue_t* receiveQueue;
+    IPAddress         _remoteIP;
+    uint16_t          _remotePort = 0;
 };
 
 void UdpListener::begin(SinricProQueue_t* receiveQueue) {
   this->receiveQueue = receiveQueue;
   #if defined ESP8266
     _udp.beginMulticast(WiFi.localIP(), UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
-  #endif  
+  #endif
   #if defined ESP32
     _udp.beginMulticast(UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
-  #endif  
+  #endif
 }
 
 void UdpListener::handle() {
   int len = _udp.parsePacket();
   if (!len) return;
 
-  if (len) {
-    char* buf = (char*) malloc(len+1);
-    memset(buf, 0, len+1);
-    _udp.read(buf, len);
-    SinricProMessage* request = new SinricProMessage(IF_UDP, buf);
-    DEBUG_SINRIC("[SinricPro:UDP]: receiving request\r\n%s\r\n", buf);
-    free(buf);
-    receiveQueue->push(request);
-  }
+  _remoteIP   = _udp.remoteIP();
+  _remotePort = _udp.remotePort();
+
+  char* buf = (char*) malloc(len + 1);
+  if (!buf) return;
+  memset(buf, 0, len + 1);
+  _udp.read(buf, len);
+  SinricProMessage* request = new SinricProMessage(IF_UDP, buf);
+  DEBUG_SINRIC("[SinricPro:UDP]: receiving request\r\n%s\r\n", buf);
+  free(buf);
+  receiveQueue->push(request);
 }
 
 void UdpListener::sendMessage(String &message) {
-  _udp.beginPacket(_udp.remoteIP(), _udp.remotePort());
+#if defined ESP8266
+  _udpTx.beginPacket(_remoteIP, _remotePort);
+  _udpTx.print(message);
+  _udpTx.endPacket();
+#endif
+
+#if defined ESP32
+  _udp.beginPacket(_remoteIP, _remotePort);
   _udp.print(message);
   _udp.endPacket();
-  // restart UDP??
-  #if defined ESP8266
-    _udp.beginMulticast(WiFi.localIP(), UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
-  #endif  
-  #if defined ESP32
-    _udp.beginMulticast(UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
-  #endif  
+#endif
 }
 
 void UdpListener::stop() {
   _udp.stop();
+#if defined ESP8266
+  _udpTx.stop();
+  _txBegun = false;
+#endif
 }
 
 } // SINRICPRO_NAMESPACE

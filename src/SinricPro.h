@@ -15,10 +15,11 @@
 #include "SinricProQueue.h"
 #include "SinricProSignature.h"
 #include "SinricProStrings.h"
-#include "SinricProUDP.h"
 #include "SinricProWebsocket.h"
 #include "Timestamp.h"
 #include "EventLimiter.h"
+#include "SinricProUDP.h"
+#include "SinricProMDNS.h"
 namespace SINRICPRO_NAMESPACE {
 
 /**
@@ -144,6 +145,8 @@ class SinricProClass : public SinricProInterface {
 
     SinricProDeviceInterface* getDevice(String deviceId);
 
+    String joinDeviceIds(char separator);
+
     template <typename DeviceType>
     DeviceType& getDeviceInstance(String deviceId);
 
@@ -155,6 +158,7 @@ class SinricProClass : public SinricProInterface {
 
     WebsocketListener _websocketListener;
     UdpListener       _udpListener;
+    SinricProMDNS     _mdnsListener;
     SinricProQueue_t  receiveQueue;
     SinricProQueue_t  sendQueue;
 
@@ -262,6 +266,14 @@ void SinricProClass::begin(String appKey, String appSecret, String serverURL) {
     this->serverURL = serverURL;
     _begin          = true;
     _udpListener.begin(&receiveQueue);
+#ifndef SINRICPRO_NOMDNS
+    {
+        String hostName = "sinricpro-" + WiFi.macAddress();
+        hostName.replace(":", "");
+        hostName.toLowerCase();
+        _mdnsListener.begin(hostName, joinDeviceIds(',')); //mDNS TXT uses ',' (CSV).
+    }
+#endif
 }
 
 template <typename DeviceType>
@@ -322,6 +334,9 @@ void SinricProClass::handle() {
     if (!isConnected()) connect();
     _websocketListener.handle();
     _udpListener.handle();
+#ifndef SINRICPRO_NOMDNS
+    _mdnsListener.handle();
+#endif
 
     handleReceiveQueue();
     handleSendQueue();
@@ -484,7 +499,6 @@ void SinricProClass::handleInvalidSignatureRequest(JsonDocument& requestMessage,
 }
 
 void SinricProClass::handleSendQueue() {
-    if (!isConnected()) return;
     if (!timestamp.getTimestamp()) return;
     while (sendQueue.size() > 0) {
         DEBUG_SINRIC("[SinricPro:handleSendQueue()]: %i message(s) in sendQueue\r\n", sendQueue.size());
@@ -508,8 +522,12 @@ void SinricProClass::handleSendQueue() {
 
         switch (rawMessage->getInterface()) {
             case IF_WEBSOCKET:
-                DEBUG_SINRIC("[SinricPro:handleSendQueue]: Sending to websocket\r\n");
-                _websocketListener.sendMessage(messageStr);
+                if (isConnected()) {
+                    DEBUG_SINRIC("[SinricPro:handleSendQueue]: Sending to websocket\r\n");
+                    _websocketListener.sendMessage(messageStr);
+                } else {
+                    DEBUG_SINRIC("[SinricPro:handleSendQueue]: Dropping WS message — not connected\r\n");
+                }
                 break;
             case IF_UDP:
                 DEBUG_SINRIC("[SinricPro:handleSendQueue]: Sending to UDP\r\n");
@@ -523,17 +541,24 @@ void SinricProClass::handleSendQueue() {
     }
 }
 
-void SinricProClass::connect() {
-    String deviceList;
-    int    i = 0;
+String SinricProClass::joinDeviceIds(char separator) {
+    String out;
+    int i = 0;
     for (auto& device : devices) {
-        String deviceId = device->getDeviceId();
-        if (i > 0) deviceList += ';';
-        deviceList += device->getDeviceId();
-        i++;
+        if (i++ > 0) out += separator;
+        out += device->getDeviceId();
     }
+    return out;
+}
 
-    _websocketListener.begin(serverURL, appKey, deviceList, &receiveQueue);
+void SinricProClass::connect() {
+    _websocketListener.begin(serverURL, appKey, joinDeviceIds(';'), &receiveQueue);
+
+#ifndef SINRICPRO_NOMDNS
+    // Refresh mDNS TXT record on each (re-)connect so additions between
+    // begin() and connect() are reflected.  mDNS TXT uses ',' (CSV).
+    _mdnsListener.update(joinDeviceIds(','));
+#endif
 }
 
 void SinricProClass::stop() {
