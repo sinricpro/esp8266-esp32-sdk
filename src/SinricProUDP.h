@@ -7,11 +7,15 @@
 
 #pragma once
 
-#if defined ESP8266
+#if defined(ESP8266)
   #include <ESP8266WiFi.h>
-#endif
-#if defined ESP32
+  #define SINRICPRO_UDP_LWIP
+#elif defined(ESP32)
   #include <WiFi.h>
+  #define SINRICPRO_UDP_ESP32
+#elif defined(ARDUINO_ARCH_RP2040)
+  #include <WiFi.h>
+  #define SINRICPRO_UDP_LWIP
 #endif
 
 #include <WiFiUdp.h>
@@ -31,9 +35,8 @@ class UdpListener {
 
   private:
     WiFiUDP           _udp;
-#if defined ESP8266
+#ifdef SINRICPRO_UDP_LWIP
     WiFiUDP           _udpTx;
-    bool              _txBegun = false;
 #endif
     SinricProQueue_t* receiveQueue;
     IPAddress         _remoteIP;
@@ -42,12 +45,11 @@ class UdpListener {
 
 void UdpListener::begin(SinricProQueue_t* receiveQueue) {
   this->receiveQueue = receiveQueue;
-  #if defined ESP8266
-    _udp.beginMulticast(WiFi.localIP(), UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
-  #endif
-  #if defined ESP32
-    _udp.beginMulticast(UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
-  #endif
+#if defined(SINRICPRO_UDP_LWIP)
+  _udp.beginMulticast(WiFi.localIP(), UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
+#elif defined(SINRICPRO_UDP_ESP32)
+  _udp.beginMulticast(UDP_MULTICAST_IP, UDP_MULTICAST_PORT);
+#endif
 }
 
 void UdpListener::handle() {
@@ -68,24 +70,23 @@ void UdpListener::handle() {
 }
 
 void UdpListener::sendMessage(String &message) {
-#if defined ESP8266
+#if defined(SINRICPRO_UDP_LWIP)
   _udpTx.beginPacket(_remoteIP, _remotePort);
   _udpTx.print(message);
   _udpTx.endPacket();
-#endif
-
-#if defined ESP32
+#elif defined(SINRICPRO_UDP_ESP32)
   _udp.beginPacket(_remoteIP, _remotePort);
   _udp.print(message);
   _udp.endPacket();
+#else
+  (void)message;
 #endif
 }
 
 void UdpListener::stop() {
   _udp.stop();
-#if defined ESP8266
+#ifdef SINRICPRO_UDP_LWIP
   _udpTx.stop();
-  _txBegun = false;
 #endif
 }
 

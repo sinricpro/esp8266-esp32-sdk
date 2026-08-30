@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 4.2.0
+## Version 5.0.0
 
 ### New — Local Control (LAN/UDP)
 

@@ -14,9 +14,25 @@
 #if defined(ESP8266)
   #include <ESP8266WiFi.h>
   #include <ESP8266mDNS.h>
+  #define SINRICPRO_MDNS_LEA
 #elif defined(ESP32)
   #include <WiFi.h>
   #include <ESPmDNS.h>
+  #define SINRICPRO_MDNS_ESP32
+#elif defined(ARDUINO_ARCH_RP2040) && !defined(ARDUINO_ARCH_MBED)
+  // arduino-pico ships LEAmDNS as a ESP8266mDNS replacement.
+  #include <WiFi.h>
+  #include <ESP8266mDNS.h>
+  #define SINRICPRO_MDNS_LEA
+#endif
+
+#if defined(SINRICPRO_MDNS_LEA) || defined(SINRICPRO_MDNS_ESP32)
+  #define SINRICPRO_MDNS_AVAILABLE
+#endif
+
+// Retry interval for starting the responder when it was not up yet
+#ifndef SINRICPRO_MDNS_RETRY_MS
+#define SINRICPRO_MDNS_RETRY_MS 5000
 #endif
 
 #include "SinricProVersion.h"
@@ -30,15 +46,15 @@ namespace SINRICPRO_NAMESPACE {
  *
  * Service: _sinricpro._udp.local.  on UDP_MULTICAST_PORT.
  * TXT records:
- *   deviceIds  — semicolon-separated list of registered device IDs
- *   sdk        — SDK version string (e.g. "4.2.0")
+ *   deviceIds  — comma-separated list of registered device IDs
+ *   sdk        — SDK version string (e.g. "5.0.0")
  *   udp        — always "1"
  *
  * Gate with SINRICPRO_NOMDNS to remove entirely.
  *
- * Call begin() once after WiFi is connected and MDNS.begin() has been called
- * by user code (or it will be called internally here).
- * Call update() whenever the device list changes (e.g. after adding a device).
+ * Call begin() once after WiFi is connected.  Call update() whenever the
+ * device list changes; update() is cheap and idempotent, so it is safe to
+ * call from a code path that runs on every loop().
  */
 class SinricProMDNS {
   public:
@@ -46,55 +62,66 @@ class SinricProMDNS {
     void update(const String& deviceIds);
     void handle();
   private:
-    bool _announced = false;
-    void announce(const String& deviceIds);
+    bool          _started    = false;
+    bool          _announced  = false;
+    unsigned long _lastStartTry = 0;
+    String        _hostName;
+    String        _deviceIds;
+
+    bool start();
+    void announce();
 };
 
-void SinricProMDNS::begin(const String& hostName, const String& deviceIds) {
-#if defined(ESP8266)
-    // On ESP8266, MDNS.begin() must be called with the desired hostname.
-    // If user code already called it, calling again is harmless.
-    MDNS.begin(hostName.c_str());
-#elif defined(ESP32)
-    MDNS.begin(hostName.c_str());
+bool SinricProMDNS::start() {
+#ifdef SINRICPRO_MDNS_AVAILABLE
+    _lastStartTry = millis();
+    _started      = MDNS.begin(_hostName.c_str());
+    if (!_started) {
+        DEBUG_SINRIC("[SinricPro:mDNS]: responder not started yet, will retry\r\n");
+    }
 #endif
-    announce(deviceIds);
+    return _started;
 }
 
-void SinricProMDNS::announce(const String& deviceIds) {
-    // Remove any existing SinricPro service record before re-adding so that
-    // the TXT record reflects the current device list.
-    if (_announced) {
-#if defined(ESP8266)
-        // ESP8266mDNS 3.x: removeService(instance, service, protocol)
-        // Passing nullptr as instance removes the default (unnamed) instance.
-        MDNS.removeService(nullptr, "sinricpro", "udp");
-#elif defined(ESP32)
-        // ESPmDNS on ESP32 does not expose removeService; restart the responder.
-        // The service port and hostname are small so this is fast.
-        MDNS.end();
-        MDNS.begin(WiFi.getHostname());
-#endif
+void SinricProMDNS::announce() {
+#ifdef SINRICPRO_MDNS_AVAILABLE
+    if (!_announced) {
+        MDNS.addService("sinricpro", "udp", UDP_MULTICAST_PORT);
+        MDNS.addServiceTxt("sinricpro", "udp", "sdk", SINRICPRO_VERSION);
+        MDNS.addServiceTxt("sinricpro", "udp", "udp", "1");
+        _announced = true;
     }
 
-    MDNS.addService("sinricpro", "udp", UDP_MULTICAST_PORT);
-    MDNS.addServiceTxt("sinricpro", "udp", "deviceIds", deviceIds.c_str());
-    MDNS.addServiceTxt("sinricpro", "udp", "sdk",       SINRICPRO_VERSION);
-    MDNS.addServiceTxt("sinricpro", "udp", "udp",       "1");
-    _announced = true;
+    MDNS.addServiceTxt("sinricpro", "udp", "deviceIds", _deviceIds.c_str());
     DEBUG_SINRIC("[SinricPro:mDNS]: announced _sinricpro._udp.local. port=%d deviceIds=%s\r\n",
-                 UDP_MULTICAST_PORT, deviceIds.c_str());
+                 UDP_MULTICAST_PORT, _deviceIds.c_str());
+#endif
+}
+
+void SinricProMDNS::begin(const String& hostName, const String& deviceIds) {
+    _hostName  = hostName;
+    _deviceIds = deviceIds;
+    if (start()) announce();
 }
 
 void SinricProMDNS::update(const String& deviceIds) {
-    announce(deviceIds);
+    if (_announced && _deviceIds == deviceIds) return;
+    _deviceIds = deviceIds;
+    if (_started) announce();
 }
 
 void SinricProMDNS::handle() {
-#if defined(ESP8266)
+#ifdef SINRICPRO_MDNS_AVAILABLE
+    if (!_started) {
+        if (millis() - _lastStartTry < SINRICPRO_MDNS_RETRY_MS) return;
+        if (start()) announce();
+        return;
+    }
+#ifdef SINRICPRO_MDNS_LEA
     MDNS.update();
 #endif
     // On ESP32 the mDNS stack runs in a FreeRTOS task; no polling needed.
+#endif
 }
 
 } // SINRICPRO_NAMESPACE

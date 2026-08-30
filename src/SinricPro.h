@@ -158,7 +158,10 @@ class SinricProClass : public SinricProInterface {
 
     WebsocketListener _websocketListener;
     UdpListener       _udpListener;
+#ifdef SINRICPRO_MDNS_ENABLED
     SinricProMDNS     _mdnsListener;
+    size_t            _mdnsDeviceCount = 0;
+#endif
     SinricProQueue_t  receiveQueue;
     SinricProQueue_t  sendQueue;
 
@@ -266,12 +269,13 @@ void SinricProClass::begin(String appKey, String appSecret, String serverURL) {
     this->serverURL = serverURL;
     _begin          = true;
     _udpListener.begin(&receiveQueue);
-#ifndef SINRICPRO_NOMDNS
+#ifdef SINRICPRO_MDNS_ENABLED
     {
         String hostName = "sinricpro-" + WiFi.macAddress();
         hostName.replace(":", "");
         hostName.toLowerCase();
         _mdnsListener.begin(hostName, joinDeviceIds(',')); //mDNS TXT uses ',' (CSV).
+        _mdnsDeviceCount = devices.size();
     }
 #endif
 }
@@ -334,7 +338,7 @@ void SinricProClass::handle() {
     if (!isConnected()) connect();
     _websocketListener.handle();
     _udpListener.handle();
-#ifndef SINRICPRO_NOMDNS
+#ifdef SINRICPRO_MDNS_ENABLED
     _mdnsListener.handle();
 #endif
 
@@ -499,12 +503,20 @@ void SinricProClass::handleInvalidSignatureRequest(JsonDocument& requestMessage,
 }
 
 void SinricProClass::handleSendQueue() {
-    if (!timestamp.getTimestamp()) return;
     while (sendQueue.size() > 0) {
         DEBUG_SINRIC("[SinricPro:handleSendQueue()]: %i message(s) in sendQueue\r\n", sendQueue.size());
-        DEBUG_SINRIC("[SinricPro:handleSendQueue()]: Sending message...\r\n");
 
         SinricProMessage* rawMessage = sendQueue.front();
+
+        if (rawMessage->getInterface() == IF_WEBSOCKET && !timestamp.getTimestamp()) {
+            if (isConnected()) return;  // timestamp is on its way, retry next loop()
+            DEBUG_SINRIC("[SinricPro:handleSendQueue()]: Dropping websocket message - offline and no timestamp\r\n");
+            sendQueue.pop();
+            delete rawMessage;
+            continue;
+        }
+
+        DEBUG_SINRIC("[SinricPro:handleSendQueue()]: Sending message...\r\n");
         sendQueue.pop();
 
         JsonDocument jsonMessage;
@@ -554,10 +566,11 @@ String SinricProClass::joinDeviceIds(char separator) {
 void SinricProClass::connect() {
     _websocketListener.begin(serverURL, appKey, joinDeviceIds(';'), &receiveQueue);
 
-#ifndef SINRICPRO_NOMDNS
-    // Refresh mDNS TXT record on each (re-)connect so additions between
-    // begin() and connect() are reflected.  mDNS TXT uses ',' (CSV).
-    _mdnsListener.update(joinDeviceIds(','));
+#ifdef SINRICPRO_MDNS_ENABLED
+    if (devices.size() != _mdnsDeviceCount) {
+        _mdnsDeviceCount = devices.size();
+        _mdnsListener.update(joinDeviceIds(','));
+    }
 #endif
 }
 

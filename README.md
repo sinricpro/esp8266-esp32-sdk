@@ -152,7 +152,7 @@ mySwitch.sendPushNotification("Hello SinricPro!");
 
 ## Local Control (LAN/UDP)
 
-Starting with SDK v4.2.0, SinricPro devices can be controlled directly on the
+Starting with SDK v5.0.0, SinricPro devices can be controlled directly on the
 local network without a cloud round-trip.  When the mobile app cannot reach the
 cloud within its timeout window, or when the user has selected "Local-first"
 mode, the app sends a signed UDP command directly to the device IP address and
@@ -175,7 +175,7 @@ automatically.  Local control is on by default.
 
 LAN availability is signaled implicitly: the app gates local-control on the
 device reporting a non-empty `deviceIp` in the cloud model combined with an SDK
-version >= 4.2.0.  No additional headers are required.  After a successful LAN
+version >= 5.0.0.  No additional headers are required.  After a successful LAN
 command the app posts the new state to `POST /api/v1/devices/:id/state` so the
 cloud and other clients stay in sync — the firmware does not echo UDP responses
 to the WebSocket.
@@ -212,7 +212,7 @@ When `SINRICPRO_NOMDNS` is not defined the SDK announces:
 Service type : _sinricpro._udp.local.
 Port         : 3333
 TXT records  : deviceIds=<comma-separated device IDs>
-               sdk=<SDK version, e.g. "4.2.0">
+               sdk=<SDK version, e.g. "5.0.0">
                udp=1
 ```
 
