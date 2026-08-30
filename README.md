@@ -153,71 +153,12 @@ mySwitch.sendPushNotification("Hello SinricPro!");
 ## Local Control (LAN/UDP)
 
 Starting with SDK v5.0.0, SinricPro devices can be controlled directly on the
-local network without a cloud round-trip.  When the mobile app cannot reach the
-cloud within its timeout window, or when the user has selected "Local-first"
-mode, the app sends a signed UDP command directly to the device IP address and
-port.  The same HMAC-SHA256 credentials used for cloud communication are reused
-for authentication — no separate provisioning step is needed.
+local network without a cloud round-trip.  Commands arrive over UDP, are
+verified with the same HMAC-SHA256 credentials as cloud commands, and are
+dispatched through the same capability callbacks — so existing sketches need no
+changes.  Gate the mDNS announcement off with `-DSINRICPRO_NOMDNS` if required.
 
-### What it is
-
-A UDP listener bound to the multicast group `224.9.9.9:3333` (also responds to
-unicast to the device IP on the same port).  Incoming commands use exactly the
-same JSON payload shape as cloud WebSocket commands and are dispatched through
-the same capability callbacks (`onPowerState`, `onBrightness`, etc.).
-
-### What changes for sketch authors
-
-Nothing.  Existing callback registrations work for both cloud and LAN commands
-automatically.  Local control is on by default.
-
-### What changes for app developers
-
-LAN availability is signaled implicitly: the app gates local-control on the
-device reporting a non-empty `deviceIp` in the cloud model combined with an SDK
-version >= 5.0.0.  No additional headers are required.  After a successful LAN
-command the app posts the new state to `POST /api/v1/devices/:id/state` so the
-cloud and other clients stay in sync — the firmware does not echo UDP responses
-to the WebSocket.
-
-### Compile-time flags
-
-| Flag | Effect |
-|---|---|
-| `SINRICPRO_NOMDNS` | Disable the mDNS service announcement while keeping UDP active. |
-
-Define this flag before including `SinricPro.h`, or pass it as a compiler
-flag (`-DSINRICPRO_NOMDNS`) in `platformio.ini` / Arduino IDE build flags.
-
-### Network requirements
-
-- The phone and device must be on the same LAN segment (or a routed LAN that
-  passes multicast and allows unicast to device IP:3333).
-- UDP multicast is required only for mDNS-based discovery; unicast commands use
-  the device IP reported by the cloud (`Device.lan.ip`).
-- Port 3333 UDP must not be firewalled between the phone and the device.
-- Enterprise or guest WiFi networks that block multicast/mDNS will fall back to
-  the cloud-reported IP automatically.
-
-### Security model
-
-All UDP commands are signed with HMAC-SHA256 using the same `APP_SECRET` as
-cloud commands.  The firmware verifies the signature before dispatching.
-
-### mDNS service record
-
-When `SINRICPRO_NOMDNS` is not defined the SDK announces:
-
-```
-Service type : _sinricpro._udp.local.
-Port         : 3333
-TXT records  : deviceIds=<comma-separated device IDs>
-               sdk=<SDK version, e.g. "5.0.0">
-               udp=1
-```
-
-Browse with `dns-sd -B _sinricpro._udp` (macOS) or
-`avahi-browse -r _sinricpro._udp` (Linux) to discover devices.
+See [CHANGELOG.md](CHANGELOG.md) for the protocol and network details.
 
 ---
 

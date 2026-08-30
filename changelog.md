@@ -38,6 +38,57 @@
   posting the new state that the cloud and other clients stay in sync.  Users on the
   cloud path are unaffected.
 
+### Local Control reference
+
+**What it is.** A UDP listener bound to the multicast group `224.9.9.9:3333`,
+which also answers unicast to the device IP on the same port.  Incoming
+commands use exactly the same JSON payload shape as cloud WebSocket commands
+and are dispatched through the same capability callbacks (`onPowerState`,
+`onBrightness`, etc.).
+
+**For sketch authors.** Nothing changes.  Existing callback registrations serve
+both cloud and LAN commands, and local control is active by default.
+
+**Compile-time flags.**
+
+| Flag | Effect |
+|---|---|
+| `SINRICPRO_NOMDNS` | Disable the mDNS service announcement while keeping UDP active. |
+
+Define the flag before including `SinricPro.h`, or pass it as a compiler flag
+(`-DSINRICPRO_NOMDNS`) in `platformio.ini` or the Arduino IDE build flags.
+
+**Network requirements.**
+
+- The client and the device must be on the same LAN segment, or on a routed LAN
+  that passes multicast and allows unicast to the device IP on port 3333.
+- Multicast is required only for mDNS discovery; unicast commands go to the
+  device address the cloud reported.
+- UDP port 3333 must not be firewalled between the client and the device.
+- Networks that block multicast (many guest and enterprise SSIDs) fall back to
+  the cloud-reported address.   
+
+**Security model.** Every UDP command is signed with HMAC-SHA256 using the same
+`APP_SECRET` as cloud commands, over the payload exactly as transmitted.  The
+firmware verifies the signature before dispatching and answers an invalid one
+with a signed `"Signature is invalid"` response.
+
+**mDNS service record.** When `SINRICPRO_NOMDNS` is not defined the SDK
+announces:
+
+```
+Service type : _sinricpro._udp.local.
+Host         : sinricpro-<mac>
+Port         : 3333
+TXT records  : deviceIds=<comma-separated device IDs>
+               sdk=<SDK version, e.g. "5.0.0">
+               udp=1
+```
+
+One board may serve several devices, in which case every device id it answers
+for appears in `deviceIds`.  Browse with `dns-sd -B _sinricpro._udp` (macOS) or
+`avahi-browse -r _sinricpro._udp` (Linux).
+
 ## Version 4.1.0
   New: 
   1. The `sendSettingEvent` method has been added to SettingController.
