@@ -8,6 +8,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include <IPAddress.h>
 #include <queue>
 
 #include "SinricProNamespace.h"
