@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <Arduino.h>
 #include <queue>
 
 #include "SinricProNamespace.h"
@@ -21,17 +22,27 @@ typedef enum {
 class SinricProMessage {
 public:
   SinricProMessage(interface_t interface, const char* message);
+  SinricProMessage(interface_t interface, const char* message, const IPAddress& remoteIP, uint16_t remotePort);
   ~SinricProMessage();
-  const char*   getMessage() const;
-  interface_t   getInterface() const;
+  const char*      getMessage() const;
+  interface_t      getInterface() const;
+  const IPAddress& getRemoteIP() const;
+  uint16_t         getRemotePort() const;
 private:
   interface_t   _interface;
   char*         _message;
+  IPAddress     _remoteIP;
+  uint16_t      _remotePort = 0;
 };
 
 SinricProMessage::SinricProMessage(interface_t interface, const char* message) : 
   _interface(interface) { 
   _message = strdup(message); 
+};
+
+SinricProMessage::SinricProMessage(interface_t interface, const char* message, const IPAddress& remoteIP, uint16_t remotePort) :
+  _interface(interface), _remoteIP(remoteIP), _remotePort(remotePort) {
+  _message = strdup(message);
 };
 
 SinricProMessage::~SinricProMessage() { 
@@ -44,6 +55,14 @@ const char* SinricProMessage::getMessage() const {
 
 interface_t SinricProMessage::getInterface() const { 
   return _interface; 
+};
+
+const IPAddress& SinricProMessage::getRemoteIP() const {
+  return _remoteIP;
+};
+
+uint16_t SinricProMessage::getRemotePort() const {
+  return _remotePort;
 };
 
 

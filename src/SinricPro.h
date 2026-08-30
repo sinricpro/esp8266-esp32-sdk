@@ -127,10 +127,10 @@ class SinricProClass : public SinricProInterface {
     void handleReceiveQueue();
     void handleSendQueue();
 
-    void handleDeviceRequest(JsonDocument& requestMessage, interface_t Interface);
-    void handleModuleRequest(JsonDocument& requestMessage, interface_t Interface);
+    void handleDeviceRequest(JsonDocument& requestMessage, const SinricProMessage* origin);
+    void handleModuleRequest(JsonDocument& requestMessage, const SinricProMessage* origin);
     void handleResponse(JsonDocument& responseMessage);
-    void handleInvalidSignatureRequest(JsonDocument& requestMessage, interface_t Interface);
+    void handleInvalidSignatureRequest(JsonDocument& requestMessage, const SinricProMessage* origin);
 
     JsonDocument prepareRequest(String deviceId, const char* action);
 
@@ -372,7 +372,7 @@ void SinricProClass::handleResponse(JsonDocument& responseMessage) {
 #endif
 }
 
-void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface_t Interface) {
+void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, const SinricProMessage* origin) {
     DEBUG_SINRIC("[SinricPro.handleModuleScopeRequest()]: handling module scope request\r\n");
 #ifndef NODEBUG_SINRIC
     serializeJsonPretty(requestMessage, DEBUG_ESP_PORT);
@@ -400,10 +400,11 @@ void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface
 
     String responseString;
     serializeJson(responseMessage, responseString);
-    sendQueue.push(new SinricProMessage(Interface, responseString.c_str()));
+    sendQueue.push(new SinricProMessage(origin->getInterface(), responseString.c_str(),
+                                       origin->getRemoteIP(), origin->getRemotePort()));
 }
 
-void SinricProClass::handleDeviceRequest(JsonDocument& requestMessage, interface_t Interface) {
+void SinricProClass::handleDeviceRequest(JsonDocument& requestMessage, const SinricProMessage* origin) {
     DEBUG_SINRIC("[SinricPro.handleDeviceRequest()]: handling device sope request\r\n");
 #ifndef NODEBUG_SINRIC
     serializeJsonPretty(requestMessage, DEBUG_ESP_PORT);
@@ -441,7 +442,8 @@ void SinricProClass::handleDeviceRequest(JsonDocument& requestMessage, interface
 
     String responseString;
     serializeJson(responseMessage, responseString);
-    sendQueue.push(new SinricProMessage(Interface, responseString.c_str()));
+    sendQueue.push(new SinricProMessage(origin->getInterface(), responseString.c_str(),
+                                       origin->getRemoteIP(), origin->getRemotePort()));
 }
 
 void SinricProClass::handleReceiveQueue() {
@@ -474,19 +476,19 @@ void SinricProClass::handleReceiveQueue() {
             if (messageType == FSTR_SINRICPRO_request) {
                 String scope = jsonMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_scope] | FSTR_SINRICPRO_device;
                 if (strcmp(FSTR_SINRICPRO_module, scope.c_str()) == 0) {
-                    handleModuleRequest(jsonMessage, rawMessage->getInterface());
+                    handleModuleRequest(jsonMessage, rawMessage);
                 } else {
-                    handleDeviceRequest(jsonMessage, rawMessage->getInterface());
+                    handleDeviceRequest(jsonMessage, rawMessage);
                 }
             };
         } else {
-            handleInvalidSignatureRequest(jsonMessage, rawMessage->getInterface());
+            handleInvalidSignatureRequest(jsonMessage, rawMessage);
         }
         delete rawMessage;
     }
 }
 
-void SinricProClass::handleInvalidSignatureRequest(JsonDocument& requestMessage, interface_t Interface) { 
+void SinricProClass::handleInvalidSignatureRequest(JsonDocument& requestMessage, const SinricProMessage* origin) { 
     DEBUG_SINRIC("[SinricPro.handleInvalidSignatureRequest()]: Signature is invalid!\r\n");
     
 #ifndef NODEBUG_SINRIC
@@ -499,7 +501,8 @@ void SinricProClass::handleInvalidSignatureRequest(JsonDocument& requestMessage,
 
     String responseString;
     serializeJson(responseMessage, responseString);
-    sendQueue.push(new SinricProMessage(Interface, responseString.c_str()));
+    sendQueue.push(new SinricProMessage(origin->getInterface(), responseString.c_str(),
+                                       origin->getRemoteIP(), origin->getRemotePort()));
 }
 
 void SinricProClass::handleSendQueue() {
@@ -543,7 +546,7 @@ void SinricProClass::handleSendQueue() {
                 break;
             case IF_UDP:
                 DEBUG_SINRIC("[SinricPro:handleSendQueue]: Sending to UDP\r\n");
-                _udpListener.sendMessage(messageStr);
+                _udpListener.sendMessage(messageStr, rawMessage->getRemoteIP(), rawMessage->getRemotePort());
                 break;
             default:
                 break;

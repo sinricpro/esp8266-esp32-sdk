@@ -25,9 +25,10 @@
 
 4. **mDNS service announcement** (`SinricProMDNS.h`, new file) — the SDK
    registers `_sinricpro._udp.local.` on `UDP_MULTICAST_PORT` (3333) with TXT
-   records `deviceIds=<csv>`, `sdk=<version>`, `udp=1`.  The record is updated
-   each time the WebSocket reconnects so DHCP renewals are automatically
-   reflected.  Gate with `SINRICPRO_NOMDNS`.
+   records `deviceIds=<csv>`, `sdk=<version>`, `udp=1`.  The TXT record is
+   refreshed whenever the registered device list changes; the responder itself
+   is never torn down, so mDNS services registered by user code (ArduinoOTA, a
+   web server, ...) are left untouched.  Gate with `SINRICPRO_NOMDNS`.
 
 ### Behavior change
 

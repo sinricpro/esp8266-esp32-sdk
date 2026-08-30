@@ -30,7 +30,7 @@ class UdpListener {
   public:
     void              begin(SinricProQueue_t* receiveQueue);
     void              handle();
-    void              sendMessage(String &message);
+    void              sendMessage(String &message, const IPAddress& remoteIP, uint16_t remotePort);
     void              stop();
 
   private:
@@ -39,8 +39,6 @@ class UdpListener {
     WiFiUDP           _udpTx;
 #endif
     SinricProQueue_t* receiveQueue;
-    IPAddress         _remoteIP;
-    uint16_t          _remotePort = 0;
 };
 
 void UdpListener::begin(SinricProQueue_t* receiveQueue) {
@@ -56,30 +54,32 @@ void UdpListener::handle() {
   int len = _udp.parsePacket();
   if (!len) return;
 
-  _remoteIP   = _udp.remoteIP();
-  _remotePort = _udp.remotePort();
-
   char* buf = (char*) malloc(len + 1);
   if (!buf) return;
   memset(buf, 0, len + 1);
   _udp.read(buf, len);
-  SinricProMessage* request = new SinricProMessage(IF_UDP, buf);
+  SinricProMessage* request = new SinricProMessage(IF_UDP, buf, _udp.remoteIP(), _udp.remotePort());
   DEBUG_SINRIC("[SinricPro:UDP]: receiving request\r\n%s\r\n", buf);
   free(buf);
   receiveQueue->push(request);
 }
 
-void UdpListener::sendMessage(String &message) {
+void UdpListener::sendMessage(String &message, const IPAddress& remoteIP, uint16_t remotePort) {
+  if (!remotePort) {
+    DEBUG_SINRIC("[SinricPro:UDP]: message has no peer to answer, dropping\r\n");
+    return;
+  }
 #if defined(SINRICPRO_UDP_LWIP)
-  _udpTx.beginPacket(_remoteIP, _remotePort);
+  _udpTx.beginPacket(remoteIP, remotePort);
   _udpTx.print(message);
   _udpTx.endPacket();
 #elif defined(SINRICPRO_UDP_ESP32)
-  _udp.beginPacket(_remoteIP, _remotePort);
+  _udp.beginPacket(remoteIP, remotePort);
   _udp.print(message);
   _udp.endPacket();
 #else
   (void)message;
+  (void)remoteIP;
 #endif
 }
 

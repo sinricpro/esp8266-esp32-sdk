@@ -5,6 +5,6 @@
  *  This file is part of the Sinric Pro (https://github.com/sinricpro/)
  */
 
-#include <ArduonoJson.h>
+#include <ArduinoJson.h>
 #include <WebSockets.h>
 #include "src/SinricPro.h"
