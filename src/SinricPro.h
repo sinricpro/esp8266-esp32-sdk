@@ -420,8 +420,11 @@ void SinricProClass::handleDeviceRequest(JsonDocument& requestMessage, const Sin
     JsonObject  request_value  = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
     JsonObject  response_value = responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
 
+    bool deviceIsOurs = false;
+
     for (auto& device : devices) {
         if (device->getDeviceId() == deviceId && success == false) {
+            deviceIsOurs = true;
             SinricProRequest request{
                 action,
                 instance,
@@ -438,6 +441,11 @@ void SinricProClass::handleDeviceRequest(JsonDocument& requestMessage, const Sin
                 }
             }
         }
+    }
+
+    if (!deviceIsOurs && origin->getInterface() == IF_UDP) {
+        DEBUG_SINRIC("[SinricPro.handleDeviceRequest()]: ignoring LAN request for unknown device \"%s\"\r\n", deviceId);
+        return;
     }
 
     String responseString;
