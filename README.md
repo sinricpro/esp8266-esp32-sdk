@@ -156,7 +156,9 @@ Starting with SDK v5.0.0, SinricPro devices can be controlled directly on the
 local network without a cloud round-trip.  Commands arrive over UDP, are
 verified with the same HMAC-SHA256 credentials as cloud commands, and are
 dispatched through the same capability callbacks — so existing sketches need no
-changes.  Gate the mDNS announcement off with `-DSINRICPRO_NOMDNS` if required.
+changes. Disable both UDP local control and mDNS discovery with
+`-DSINRICPRO_NO_LOCAL_CONTROL`, or disable only the mDNS announcement with
+`-DSINRICPRO_NOMDNS`. These flags can also be defined before including `SinricPro.h`.
 
 See [CHANGELOG.md](CHANGELOG.md) for the protocol and network details.
 

@@ -32,6 +32,10 @@
 
 ### Behavior change
 
+- **Pending cloud messages survive disconnects** — messages already queued for
+  WebSocket delivery wait for a connection and timestamp without blocking UDP
+  replies. Events submitted while already offline are still dropped.
+
 - **Cloud echo suppressed for `IF_UDP` requests** — when a command arrives over
   UDP the response is sent back over UDP only.  The response is no longer also
   forwarded to the cloud via WebSocket.  The mobile app is responsible for
@@ -53,6 +57,7 @@ both cloud and LAN commands, and local control is active by default.
 
 | Flag | Effect |
 |---|---|
+| `SINRICPRO_NO_LOCAL_CONTROL` | Disable UDP local control and the mDNS service announcement. |
 | `SINRICPRO_NOMDNS` | Disable the mDNS service announcement while keeping UDP active. |
 
 Define the flag before including `SinricPro.h`, or pass it as a compiler flag

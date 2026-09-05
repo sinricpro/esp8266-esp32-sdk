@@ -18,7 +18,9 @@
 #include "SinricProWebsocket.h"
 #include "Timestamp.h"
 #include "EventLimiter.h"
+#ifndef SINRICPRO_NO_LOCAL_CONTROL
 #include "SinricProUDP.h"
+#endif
 #include "SinricProMDNS.h"
 namespace SINRICPRO_NAMESPACE {
 
@@ -157,7 +159,9 @@ class SinricProClass : public SinricProInterface {
     String serverURL;
 
     WebsocketListener _websocketListener;
+#ifndef SINRICPRO_NO_LOCAL_CONTROL
     UdpListener       _udpListener;
+#endif
 #ifdef SINRICPRO_MDNS_ENABLED
     SinricProMDNS     _mdnsListener;
     size_t            _mdnsDeviceCount = 0;
@@ -268,7 +272,9 @@ void SinricProClass::begin(String appKey, String appSecret, String serverURL) {
     this->appSecret = appSecret;
     this->serverURL = serverURL;
     _begin          = true;
+#ifndef SINRICPRO_NO_LOCAL_CONTROL
     _udpListener.begin(&receiveQueue);
+#endif
 #ifdef SINRICPRO_MDNS_ENABLED
     {
         String hostName = "sinricpro-" + WiFi.macAddress();
@@ -337,7 +343,9 @@ void SinricProClass::handle() {
 
     if (!isConnected()) connect();
     _websocketListener.handle();
+#ifndef SINRICPRO_NO_LOCAL_CONTROL
     _udpListener.handle();
+#endif
 #ifdef SINRICPRO_MDNS_ENABLED
     _mdnsListener.handle();
 #endif
@@ -514,16 +522,17 @@ void SinricProClass::handleInvalidSignatureRequest(JsonDocument& requestMessage,
 }
 
 void SinricProClass::handleSendQueue() {
-    while (sendQueue.size() > 0) {
+    // Visit each pending message once so deferred cloud messages cannot block LAN replies.
+    size_t pending = sendQueue.size();
+    while (pending-- > 0) {
         DEBUG_SINRIC("[SinricPro:handleSendQueue()]: %i message(s) in sendQueue\r\n", sendQueue.size());
 
         SinricProMessage* rawMessage = sendQueue.front();
 
-        if (rawMessage->getInterface() == IF_WEBSOCKET && !timestamp.getTimestamp()) {
-            if (isConnected()) return;  // timestamp is on its way, retry next loop()
-            DEBUG_SINRIC("[SinricPro:handleSendQueue()]: Dropping websocket message - offline and no timestamp\r\n");
+        if (rawMessage->getInterface() == IF_WEBSOCKET &&
+            (!isConnected() || !timestamp.getTimestamp())) {
             sendQueue.pop();
-            delete rawMessage;
+            sendQueue.push(rawMessage);
             continue;
         }
 
@@ -553,8 +562,10 @@ void SinricProClass::handleSendQueue() {
                 }
                 break;
             case IF_UDP:
+#ifndef SINRICPRO_NO_LOCAL_CONTROL
                 DEBUG_SINRIC("[SinricPro:handleSendQueue]: Sending to UDP\r\n");
                 _udpListener.sendMessage(messageStr, rawMessage->getRemoteIP(), rawMessage->getRemotePort());
+#endif
                 break;
             default:
                 break;

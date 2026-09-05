@@ -56,7 +56,7 @@
 #define UDP_MULTICAST_PORT 3333
 #endif
 
-#ifndef SINRICPRO_NOMDNS
+#if !defined(SINRICPRO_NO_LOCAL_CONTROL) && !defined(SINRICPRO_NOMDNS)
   #define SINRICPRO_MDNS_ENABLED
 #endif
 
