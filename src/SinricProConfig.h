@@ -6,7 +6,7 @@
  */
 
 #pragma once
-/* 
+/*
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  * !!                                                 !!
  * !!             WARNING: DON'T TOUCH !              !!
@@ -17,8 +17,6 @@
  * !!                                                 !!
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
-
-#pragma once
 
 // Server Configuration
 #ifndef SINRICPRO_NOSSL
@@ -56,6 +54,10 @@
 
 #ifndef UDP_MULTICAST_PORT
 #define UDP_MULTICAST_PORT 3333
+#endif
+
+#if !defined(SINRICPRO_NO_LOCAL_CONTROL) && !defined(SINRICPRO_NOMDNS)
+  #define SINRICPRO_MDNS_ENABLED
 #endif
 
 // WebSocket Configuration

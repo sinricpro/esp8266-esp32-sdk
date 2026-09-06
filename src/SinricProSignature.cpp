@@ -8,6 +8,7 @@
 #include <WString.h>
 #include <ArduinoJson.h>
 #include "SinricProSignature.h"
+#include "SinricProDebug.h"
 
 #if defined (ESP8266) || defined(ARDUINO_ARCH_RP2040)
   #include <bearssl/bearssl_hmac.h>

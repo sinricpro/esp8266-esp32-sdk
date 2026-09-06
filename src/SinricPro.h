@@ -15,10 +15,13 @@
 #include "SinricProQueue.h"
 #include "SinricProSignature.h"
 #include "SinricProStrings.h"
-#include "SinricProUDP.h"
 #include "SinricProWebsocket.h"
 #include "Timestamp.h"
 #include "EventLimiter.h"
+#ifndef SINRICPRO_NO_LOCAL_CONTROL
+#include "SinricProUDP.h"
+#endif
+#include "SinricProMDNS.h"
 namespace SINRICPRO_NAMESPACE {
 
 /**
@@ -126,10 +129,10 @@ class SinricProClass : public SinricProInterface {
     void handleReceiveQueue();
     void handleSendQueue();
 
-    void handleDeviceRequest(JsonDocument& requestMessage, interface_t Interface);
-    void handleModuleRequest(JsonDocument& requestMessage, interface_t Interface);
+    void handleDeviceRequest(JsonDocument& requestMessage, const SinricProMessage* origin);
+    void handleModuleRequest(JsonDocument& requestMessage, const SinricProMessage* origin);
     void handleResponse(JsonDocument& responseMessage);
-    void handleInvalidSignatureRequest(JsonDocument& requestMessage, interface_t Interface);
+    void handleInvalidSignatureRequest(JsonDocument& requestMessage, const SinricProMessage* origin);
 
     JsonDocument prepareRequest(String deviceId, const char* action);
 
@@ -144,6 +147,8 @@ class SinricProClass : public SinricProInterface {
 
     SinricProDeviceInterface* getDevice(String deviceId);
 
+    String joinDeviceIds(char separator);
+
     template <typename DeviceType>
     DeviceType& getDeviceInstance(String deviceId);
 
@@ -154,7 +159,13 @@ class SinricProClass : public SinricProInterface {
     String serverURL;
 
     WebsocketListener _websocketListener;
+#ifndef SINRICPRO_NO_LOCAL_CONTROL
     UdpListener       _udpListener;
+#endif
+#ifdef SINRICPRO_MDNS_ENABLED
+    SinricProMDNS     _mdnsListener;
+    size_t            _mdnsDeviceCount = 0;
+#endif
     SinricProQueue_t  receiveQueue;
     SinricProQueue_t  sendQueue;
 
@@ -261,7 +272,18 @@ void SinricProClass::begin(String appKey, String appSecret, String serverURL) {
     this->appSecret = appSecret;
     this->serverURL = serverURL;
     _begin          = true;
+#ifndef SINRICPRO_NO_LOCAL_CONTROL
     _udpListener.begin(&receiveQueue);
+#endif
+#ifdef SINRICPRO_MDNS_ENABLED
+    {
+        String hostName = "sinricpro-" + WiFi.macAddress();
+        hostName.replace(":", "");
+        hostName.toLowerCase();
+        _mdnsListener.begin(hostName, joinDeviceIds(',')); //mDNS TXT uses ',' (CSV).
+        _mdnsDeviceCount = devices.size();
+    }
+#endif
 }
 
 template <typename DeviceType>
@@ -321,7 +343,12 @@ void SinricProClass::handle() {
 
     if (!isConnected()) connect();
     _websocketListener.handle();
+#ifndef SINRICPRO_NO_LOCAL_CONTROL
     _udpListener.handle();
+#endif
+#ifdef SINRICPRO_MDNS_ENABLED
+    _mdnsListener.handle();
+#endif
 
     handleReceiveQueue();
     handleSendQueue();
@@ -353,7 +380,7 @@ void SinricProClass::handleResponse(JsonDocument& responseMessage) {
 #endif
 }
 
-void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface_t Interface) {
+void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, const SinricProMessage* origin) {
     DEBUG_SINRIC("[SinricPro.handleModuleScopeRequest()]: handling module scope request\r\n");
 #ifndef NODEBUG_SINRIC
     serializeJsonPretty(requestMessage, DEBUG_ESP_PORT);
@@ -381,10 +408,11 @@ void SinricProClass::handleModuleRequest(JsonDocument& requestMessage, interface
 
     String responseString;
     serializeJson(responseMessage, responseString);
-    sendQueue.push(new SinricProMessage(Interface, responseString.c_str()));
+    sendQueue.push(new SinricProMessage(origin->getInterface(), responseString.c_str(),
+                                       origin->getRemoteIP(), origin->getRemotePort()));
 }
 
-void SinricProClass::handleDeviceRequest(JsonDocument& requestMessage, interface_t Interface) {
+void SinricProClass::handleDeviceRequest(JsonDocument& requestMessage, const SinricProMessage* origin) {
     DEBUG_SINRIC("[SinricPro.handleDeviceRequest()]: handling device sope request\r\n");
 #ifndef NODEBUG_SINRIC
     serializeJsonPretty(requestMessage, DEBUG_ESP_PORT);
@@ -400,8 +428,11 @@ void SinricProClass::handleDeviceRequest(JsonDocument& requestMessage, interface
     JsonObject  request_value  = requestMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
     JsonObject  response_value = responseMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_value];
 
+    bool deviceIsOurs = false;
+
     for (auto& device : devices) {
         if (device->getDeviceId() == deviceId && success == false) {
+            deviceIsOurs = true;
             SinricProRequest request{
                 action,
                 instance,
@@ -420,9 +451,15 @@ void SinricProClass::handleDeviceRequest(JsonDocument& requestMessage, interface
         }
     }
 
+    if (!deviceIsOurs && origin->getInterface() == IF_UDP) {
+        DEBUG_SINRIC("[SinricPro.handleDeviceRequest()]: ignoring LAN request for unknown device \"%s\"\r\n", deviceId);
+        return;
+    }
+
     String responseString;
     serializeJson(responseMessage, responseString);
-    sendQueue.push(new SinricProMessage(Interface, responseString.c_str()));
+    sendQueue.push(new SinricProMessage(origin->getInterface(), responseString.c_str(),
+                                       origin->getRemoteIP(), origin->getRemotePort()));
 }
 
 void SinricProClass::handleReceiveQueue() {
@@ -455,19 +492,19 @@ void SinricProClass::handleReceiveQueue() {
             if (messageType == FSTR_SINRICPRO_request) {
                 String scope = jsonMessage[FSTR_SINRICPRO_payload][FSTR_SINRICPRO_scope] | FSTR_SINRICPRO_device;
                 if (strcmp(FSTR_SINRICPRO_module, scope.c_str()) == 0) {
-                    handleModuleRequest(jsonMessage, rawMessage->getInterface());
+                    handleModuleRequest(jsonMessage, rawMessage);
                 } else {
-                    handleDeviceRequest(jsonMessage, rawMessage->getInterface());
+                    handleDeviceRequest(jsonMessage, rawMessage);
                 }
             };
         } else {
-            handleInvalidSignatureRequest(jsonMessage, rawMessage->getInterface());
+            handleInvalidSignatureRequest(jsonMessage, rawMessage);
         }
         delete rawMessage;
     }
 }
 
-void SinricProClass::handleInvalidSignatureRequest(JsonDocument& requestMessage, interface_t Interface) { 
+void SinricProClass::handleInvalidSignatureRequest(JsonDocument& requestMessage, const SinricProMessage* origin) { 
     DEBUG_SINRIC("[SinricPro.handleInvalidSignatureRequest()]: Signature is invalid!\r\n");
     
 #ifndef NODEBUG_SINRIC
@@ -480,17 +517,26 @@ void SinricProClass::handleInvalidSignatureRequest(JsonDocument& requestMessage,
 
     String responseString;
     serializeJson(responseMessage, responseString);
-    sendQueue.push(new SinricProMessage(Interface, responseString.c_str()));
+    sendQueue.push(new SinricProMessage(origin->getInterface(), responseString.c_str(),
+                                       origin->getRemoteIP(), origin->getRemotePort()));
 }
 
 void SinricProClass::handleSendQueue() {
-    if (!isConnected()) return;
-    if (!timestamp.getTimestamp()) return;
-    while (sendQueue.size() > 0) {
+    // Visit each pending message once so deferred cloud messages cannot block LAN replies.
+    size_t pending = sendQueue.size();
+    while (pending-- > 0) {
         DEBUG_SINRIC("[SinricPro:handleSendQueue()]: %i message(s) in sendQueue\r\n", sendQueue.size());
-        DEBUG_SINRIC("[SinricPro:handleSendQueue()]: Sending message...\r\n");
 
         SinricProMessage* rawMessage = sendQueue.front();
+
+        if (rawMessage->getInterface() == IF_WEBSOCKET &&
+            (!isConnected() || !timestamp.getTimestamp())) {
+            sendQueue.pop();
+            sendQueue.push(rawMessage);
+            continue;
+        }
+
+        DEBUG_SINRIC("[SinricPro:handleSendQueue()]: Sending message...\r\n");
         sendQueue.pop();
 
         JsonDocument jsonMessage;
@@ -508,12 +554,18 @@ void SinricProClass::handleSendQueue() {
 
         switch (rawMessage->getInterface()) {
             case IF_WEBSOCKET:
-                DEBUG_SINRIC("[SinricPro:handleSendQueue]: Sending to websocket\r\n");
-                _websocketListener.sendMessage(messageStr);
+                if (isConnected()) {
+                    DEBUG_SINRIC("[SinricPro:handleSendQueue]: Sending to websocket\r\n");
+                    _websocketListener.sendMessage(messageStr);
+                } else {
+                    DEBUG_SINRIC("[SinricPro:handleSendQueue]: Dropping WS message — not connected\r\n");
+                }
                 break;
             case IF_UDP:
+#ifndef SINRICPRO_NO_LOCAL_CONTROL
                 DEBUG_SINRIC("[SinricPro:handleSendQueue]: Sending to UDP\r\n");
-                _udpListener.sendMessage(messageStr);
+                _udpListener.sendMessage(messageStr, rawMessage->getRemoteIP(), rawMessage->getRemotePort());
+#endif
                 break;
             default:
                 break;
@@ -523,17 +575,25 @@ void SinricProClass::handleSendQueue() {
     }
 }
 
-void SinricProClass::connect() {
-    String deviceList;
-    int    i = 0;
+String SinricProClass::joinDeviceIds(char separator) {
+    String out;
+    int i = 0;
     for (auto& device : devices) {
-        String deviceId = device->getDeviceId();
-        if (i > 0) deviceList += ';';
-        deviceList += device->getDeviceId();
-        i++;
+        if (i++ > 0) out += separator;
+        out += device->getDeviceId();
     }
+    return out;
+}
 
-    _websocketListener.begin(serverURL, appKey, deviceList, &receiveQueue);
+void SinricProClass::connect() {
+    _websocketListener.begin(serverURL, appKey, joinDeviceIds(';'), &receiveQueue);
+
+#ifdef SINRICPRO_MDNS_ENABLED
+    if (devices.size() != _mdnsDeviceCount) {
+        _mdnsDeviceCount = devices.size();
+        _mdnsListener.update(joinDeviceIds(','));
+    }
+#endif
 }
 
 void SinricProClass::stop() {
