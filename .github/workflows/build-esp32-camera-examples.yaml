@@ -18,7 +18,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - board: "esp32:esp32:esp32"
+          # Camera sketches do not fit the default partition: motion-capture reached 1,315,000
+          # bytes against its 1,310,720 limit, and the other two sit at 96-97%. Huge APP is what
+          # the tutorials tell users to select for these boards anyway.
+          - board: "esp32:esp32:esp32:PartitionScheme=huge_app"
             platform-url: "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
 
     steps:
@@ -46,34 +49,10 @@ jobs:
           cli-compile-flags: |
             - --warnings=none
 
-  # SinricProWebRTC ships precompiled archives tied to an exact core version, and the
-  # sketch needs a 3 MB app partition, so it cannot share the unpinned job above.
-  compile-webrtc-camera-example:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyserial
-
-      - name: Compile ESP32 WebRTC camera example
-        uses: arduino/compile-sketches@v1
-        with:
-          fqbn: esp32:esp32:esp32cam:PartitionScheme=huge_app
-          platforms: |
-            - name: esp32:esp32
-              source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
-              version: 3.3.11
-          libraries: |
-            - source-path: ./
-            - source-url: https://github.com/Links2004/arduinoWebSockets.git
-            - source-url: https://github.com/bblanchon/ArduinoJson.git
-            - source-url: https://github.com/sinricpro/arduino-esp32-webrtc-lib.git
-          sketch-paths: |
-            - examples/Camera/webrtc-camera
-          cli-compile-flags: |
-            - --warnings=none
+# examples/Camera/webrtc-camera is not built here yet. It needs SinricProWebRTC 0.2.0 for
+# Config::cameraConfig, and that library cannot be installed from a git clone: its esp_peer and
+# esp_h264 archives are release assets, not repository contents, and they are tied to an exact
+# Arduino core version. Add a job pinned to core 3.3.11 once 0.2.0 is released, installing the
+# ZIP asset rather than the repository:
+#
+#   - source-url: https://github.com/sinricpro/arduino-esp32-webrtc-lib/releases/download/0.2.0/SinricProWebRTC-0.2.0-arduino-3.3.11.zip
