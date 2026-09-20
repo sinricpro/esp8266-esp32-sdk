@@ -101,6 +101,7 @@ void WebsocketListener::setExtraHeaders() {
     headers += "\r\nmac:" + WiFi.macAddress();
     headers += "\r\nplatform:" + String(platform);
     headers += "\r\nSDKVersion:" + String(SINRICPRO_VERSION);
+    headers += "\r\nrssi:" + String(WiFi.RSSI());
 
 #ifdef FIRMWARE_VERSION
     headers += "\r\nfirmwareVersion:" + String(FIRMWARE_VERSION);

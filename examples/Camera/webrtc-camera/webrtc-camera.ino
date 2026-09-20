@@ -36,8 +36,8 @@
 #include <SinricProCamera.h>
 
 #include <esp_camera.h>
-#include <SinricProWebRTC.h>
-#include <SinricProWebRTCSession.h>
+#include <SinricProWebRTC.h> // https://github.com/sinricpro/arduino-esp32-webrtc-lib
+#include <SinricProWebRTCSession.h> // https://github.com/sinricpro/arduino-esp32-webrtc-lib
 
 // ===================
 // Select camera model
