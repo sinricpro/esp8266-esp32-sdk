@@ -10,6 +10,7 @@
 #include <vector>
 
 #if defined(ESP32)
+  #include <WiFi.h>
   #include <HTTPClient.h>
   #include <WiFiClientSecure.h>
   #include <mbedtls/base64.h>
@@ -31,6 +32,7 @@ FSTR(CAMERA, webrtc);                 // "webrtc"
 FSTR(CAMERA, webrtcAudio);            // "webrtcAudio"
 FSTR(CAMERA, webrtcVideo);            // "webrtcVideo"
 FSTR(CAMERA, webrtcVideoCodecs);      // "webrtcVideoCodecs"
+FSTR(CAMERA, rssi);                   // "rssi"
 
 using SnapshotCallback = std::function<bool(const String &)>;
 
@@ -230,6 +232,9 @@ template <typename T>
 bool CameraController<T>::handleCameraCapabilities(SinricProRequest &request) {
 #if defined(ESP32)
     bool webrtc = webRTCOfferCallback != nullptr;
+    // Viewers warn about a weak link before connecting: the answer still succeeds there, but the
+    // DTLS handshake that follows cannot get its records out.
+    request.response_value[FSTR_CAMERA_rssi] = WiFi.RSSI();
 #else
     bool webrtc = false;
 #endif
