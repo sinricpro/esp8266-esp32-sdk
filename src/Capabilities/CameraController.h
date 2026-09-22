@@ -5,6 +5,7 @@
 #include "../EventLimiter.h"
 #include "../SinricProStrings.h"
 #include "../SinricProNamespace.h"
+#include "../SinricProBase64.h"
 
 #include <FS.h>
 #include <vector>
@@ -13,7 +14,6 @@
   #include <WiFi.h>
   #include <HTTPClient.h>
   #include <WiFiClientSecure.h>
-  #include <mbedtls/base64.h>
 #endif
 
 namespace SINRICPRO_NAMESPACE {
@@ -158,27 +158,6 @@ class CameraController {
         http.setTimeout(HTTP_TIMEOUT_VALUE);
     }
 
-    static bool base64Decode(const char *input, String &output) {
-        size_t inputLength = strlen(input);
-        if (inputLength == 0) return false;
-
-        std::vector<unsigned char> buffer(inputLength * 3 / 4 + 4);
-        size_t outputLength = 0;
-        if (mbedtls_base64_decode(buffer.data(), buffer.size(), &outputLength, reinterpret_cast<const unsigned char *>(input), inputLength) != 0) return false;
-
-        output = "";
-        return output.concat(reinterpret_cast<const char *>(buffer.data()), outputLength);
-    }
-
-    static bool base64Encode(const String &input, String &output) {
-        // mbedtls writes a trailing NUL, hence the +1.
-        std::vector<unsigned char> buffer(((input.length() + 2) / 3) * 4 + 1);
-        size_t outputLength = 0;
-        if (mbedtls_base64_encode(buffer.data(), buffer.size(), &outputLength, reinterpret_cast<const unsigned char *>(input.c_str()), input.length()) != 0) return false;
-
-        output = "";
-        return output.concat(reinterpret_cast<const char *>(buffer.data()), outputLength);
-    }
 #endif
 };
 
@@ -277,8 +256,9 @@ bool CameraController<T>::handleWebRTCOffer(SinricProRequest &request) {
     String answerSdp;
     if (!webRTCOfferCallback(device->deviceId, offerSdp, iceServers, answerSdp) || answerSdp.length() == 0) return false;
 
-    String answer;
-    if (!base64Encode(answerSdp, answer)) return false;
+    // Empty only if the buffer could not be allocated; answerSdp is known to be non-empty.
+    String answer = base64Encode(reinterpret_cast<const uint8_t *>(answerSdp.c_str()), answerSdp.length());
+    if (answer.length() == 0) return false;
 
     request.response_value[FSTR_CAMERA_answer] = answer;
     return true;
