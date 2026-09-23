@@ -13,7 +13,7 @@
  * ESP32-S3 with "H.264 video track" ticked in the portal's Camera Stream Configuration.
  *
  * Requirements:
- * - SinricProWebRTC library (https://github.com/sinricpro/arduino-esp32-webrtc-lib)
+ * - SinricProWebRTC library 0.3.1 or later (https://github.com/sinricpro/arduino-esp32-webrtc-lib)
  * - ESP32 or ESP32-S3 board with PSRAM, Arduino ESP32 core 3.3.10 or 3.3.11
  * - Tools > PSRAM: Enabled, Tools > Partition Scheme: "Huge APP (3MB No OTA/1MB SPIFFS)"
  *
@@ -207,7 +207,9 @@ void setupSinricPro() {
   myCamera.onPowerState(onPowerState);
   myCamera.onSnapshot(onSnapshot);
   myCamera.onWebRTCOffer(onWebRTCOffer);
-  myCamera.enableWebRTCAudio(WEBRTC_MIC);  // viewers request an audio track only when this is set
+  // Lets viewers offer sound; they request it only when the user turns it on. On an ESP32-S3 an
+  // audio track alongside H.264 costs video packets, so live view opens as video only.
+  myCamera.enableWebRTCAudio(WEBRTC_MIC);
   myCamera.enableWebRTCVideo(WEBRTC_H264); // likewise for video; without it viewers get JPEG
 
   SinricPro.onConnected([]() {
@@ -260,6 +262,11 @@ void setupCamera() {
   pinMode(14, INPUT_PULLUP);
 #endif
 
+#if defined(CAMERA_MODEL_TTGO_T_V05_VERSION)
+  // At 20 MHz this board's camera stops the Wi-Fi TX buffers draining once a stream reaches VGA.
+  config.xclk_freq_hz = 10000000;
+#endif
+
   cameraConfig = config;
 
   // camera init
@@ -270,7 +277,9 @@ void setupCamera() {
   }
 
   sensor_t *s = esp_camera_sensor_get();
-  s->set_framesize(s, FRAMESIZE_VGA);  // start at VGA; viewers can switch up to SVGA
+  // Start small so live view opens quickly; viewers can switch up to SVGA. H.264 on an ESP32-S3
+  // takes its size from its own mode table, so this only sets the JPEG starting point.
+  s->set_framesize(s, FRAMESIZE_QVGA);
 
   // initial sensors are flipped vertically and colors are a bit saturated
   if (s->id.PID == OV3660_PID) {
