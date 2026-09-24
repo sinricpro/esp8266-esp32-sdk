@@ -127,7 +127,7 @@ bool readMicrophone(uint8_t *pcmu, size_t size) {
 
   for (size_t i = 0; i < size && 2 * i + 1 < 320; i++) {
     int16_t sample = (static_cast<int32_t>(pcm[2 * i]) + pcm[2 * i + 1]) / 2;
-    pcmu[i] = SinricWebRTC::encodeMuLaw(sample);
+    pcmu[i] = SinricProWebRTC::encodeMuLaw(sample);
   }
   return true;
 }
