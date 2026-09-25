@@ -51,16 +51,21 @@ jobs:
 
   # SinricProWebRTC's esp_peer and esp_h264 archives are release assets tied to an exact Arduino
   # core, so the library comes from its release ZIP and the core is pinned to match. The S3 build
-  # covers the H.264 path, which is compiled only for that target.
+  # covers the H.264 path, which is compiled only for that target. The XIAO build defines its camera
+  # model on top of the sketch's default so the microphone code, compiled only for it, is built too.
   compile-webrtc-camera-example:
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        board:
-          - "esp32:esp32:esp32:PSRAM=enabled,PartitionScheme=huge_app"
-          - "esp32:esp32:esp32s3:PSRAM=opi,PartitionScheme=huge_app"
+        include:
+          - board: "esp32:esp32:esp32:PSRAM=enabled,PartitionScheme=huge_app"
+            defines: ""
+          - board: "esp32:esp32:esp32s3:PSRAM=opi,PartitionScheme=huge_app"
+            defines: ""
+          - board: "esp32:esp32:XIAO_ESP32S3:PSRAM=opi"
+            defines: "-DCAMERA_MODEL_XIAO_ESP32S3"
 
     steps:
       - name: Checkout repository
@@ -88,3 +93,5 @@ jobs:
             - examples/Camera/webrtc-camera
           cli-compile-flags: |
             - --warnings=none
+            - --build-property
+            - compiler.cpp.extra_flags=${{ matrix.defines }}
