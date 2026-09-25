@@ -88,7 +88,7 @@ jobs:
             - source-path: ./
             - source-url: https://github.com/Links2004/arduinoWebSockets.git
             - source-url: https://github.com/bblanchon/ArduinoJson.git
-            - source-url: https://github.com/sinricpro/arduino-esp32-webrtc-lib/releases/download/0.4.0/SinricProWebRTC-0.4.0-arduino-3.3.11.zip
+            - source-url: https://github.com/sinricpro/arduino-esp32-webrtc-lib/releases/download/0.4.1/SinricProWebRTC-0.4.1-arduino-3.3.11.zip
           sketch-paths: |
             - examples/Camera/webrtc-camera
           cli-compile-flags: |
