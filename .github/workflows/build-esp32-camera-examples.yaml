@@ -18,7 +18,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - board: "esp32:esp32:esp32"
+          # Camera sketches do not fit the default partition: motion-capture reached 1,315,000
+          # bytes against its 1,310,720 limit, and the other two sit at 96-97%. Huge APP is what
+          # the tutorials tell users to select for these boards anyway.
+          - board: "esp32:esp32:esp32:PartitionScheme=huge_app"
             platform-url: "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
 
     steps:
@@ -45,3 +48,50 @@ jobs:
           sketch-paths: ${{ env.SKETCHES }}
           cli-compile-flags: |
             - --warnings=none
+
+  # SinricProWebRTC's esp_peer and esp_h264 archives are release assets tied to an exact Arduino
+  # core, so the library comes from its release ZIP and the core is pinned to match. The S3 build
+  # covers the H.264 path, which is compiled only for that target. The XIAO build defines its camera
+  # model on top of the sketch's default so the microphone code, compiled only for it, is built too.
+  compile-webrtc-camera-example:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - board: "esp32:esp32:esp32:PSRAM=enabled,PartitionScheme=huge_app"
+            defines: ""
+          - board: "esp32:esp32:esp32s3:PSRAM=opi,PartitionScheme=huge_app"
+            defines: ""
+          - board: "esp32:esp32:XIAO_ESP32S3:PSRAM=opi"
+            defines: "-DCAMERA_MODEL_XIAO_ESP32S3"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyserial
+
+      - name: Compile webrtc-camera example
+        uses: arduino/compile-sketches@v1
+        with:
+          fqbn: ${{ matrix.board }}
+          platforms: |
+            - name: esp32:esp32
+              source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+              version: 3.3.11
+          libraries: |
+            - source-path: ./
+            - source-url: https://github.com/Links2004/arduinoWebSockets.git
+            - source-url: https://github.com/bblanchon/ArduinoJson.git
+            - source-url: https://github.com/sinricpro/arduino-esp32-webrtc-lib/releases/download/0.4.1/SinricProWebRTC-0.4.1-arduino-3.3.11.zip
+          sketch-paths: |
+            - examples/Camera/webrtc-camera
+          cli-compile-flags: |
+            - --warnings=none
+            - --build-property
+            - compiler.cpp.extra_flags=${{ matrix.defines }}
