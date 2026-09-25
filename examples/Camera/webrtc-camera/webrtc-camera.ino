@@ -13,7 +13,7 @@
  * ESP32-S3 with "H.264 video track" ticked in the portal's Camera Stream Configuration.
  *
  * Requirements:
- * - SinricProWebRTC library 0.3.1 or later (https://github.com/sinricpro/arduino-esp32-webrtc-lib)
+ * - SinricProWebRTC library 0.4.0 or later (https://github.com/sinricpro/arduino-esp32-webrtc-lib)
  * - ESP32 or ESP32-S3 board with PSRAM, Arduino ESP32 core 3.3.10 or 3.3.11
  * - Tools > PSRAM: Enabled, Tools > Partition Scheme: "Huge APP (3MB No OTA/1MB SPIFFS)"
  *
