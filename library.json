@@ -9,16 +9,16 @@
   "authors": [
     {
       "name": "SinricPro",
-      "url": "https://sinric.pro"
+      "url": "https://sinric.pro",
+      "maintainer": true
     },
     {
       "name": "Boris Jaeger",
-      "email": "sivar2311@gmail.com",
-      "maintainer": true
+      "email": "sivar2311@gmail.com"
     }
   ],
   "homepage": "https://sinric.pro",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "frameworks": "arduino",
   "platforms": ["espressif8266", "espressif32", "raspberrypi"],
   "dependencies": [

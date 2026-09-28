@@ -1,5 +1,23 @@
 # Changelog
 
+## Version 5.1.0
+
+### New — WebRTC live view for ESP32 cameras
+
+1. **`CameraController::onWebRTCOffer()`** — answers WebRTC offers from the SinricPro
+   app and portal (`getWebRTCAnswer`). The request carries STUN/TURN servers; pair it
+   with the SinricProWebRTC library (see `examples/Camera/webrtc-camera`). ESP32 only.
+2. **`CameraController::enableWebRTCAudio()`** — declares that WebRTC sessions include a
+   microphone track, so viewers request audio in their offer.
+3. **`CameraController::enableWebRTCVideo()`** — declares that sessions carry an H.264
+   video track, so viewers offer one instead of falling back to JPEG frames over the
+   data channel. ESP32-S3 only, where esp_h264 encodes in software. Amazon Alexa and
+   Google Home need this track, and both refuse anything below 480p.
+4. **`getCameraCapabilities`** — answered automatically with
+   `{webrtc, webrtcAudio, webrtcVideo}` and, when video is enabled,
+   `webrtcVideoCodecs: ["H264"]`. Viewers query it before connecting and ask users
+   with older firmware to update.
+
 ## Version 5.0.0
 
 ### New — Local Control (LAN/UDP)
