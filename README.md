@@ -50,6 +50,13 @@ Please see here for [full user documentation](https://sinricpro.github.io/esp826
 
 ---
 
+## Getting started
+
+- [How to control an ESP32 or ESP8266 with Alexa and Google Home](https://help.sinric.pro/pages/tutorials/general/esp32-esp8266-alexa-google-home) (also in [Deutsch](https://help.sinric.pro/pages/tutorials/general/esp32-esp8266-alexa-google-home-de), [Italiano](https://help.sinric.pro/pages/tutorials/general/esp32-esp8266-alexa-google-home-it), [Español](https://help.sinric.pro/pages/tutorials/general/esp32-esp8266-alexa-google-home-es))
+- [How to install the Sinric Pro library in Arduino IDE and PlatformIO](https://help.sinric.pro/pages/tutorials/general/install-sinricpro-library)
+- [Quickstart tutorials](https://help.sinric.pro/pages/quickstarts): switches, lights, sensors, cameras and more
+- [Amazon Alexa](https://help.sinric.pro/pages/alexa) · [Google Home](https://help.sinric.pro/pages/google-home) · [Home Assistant](https://help.sinric.pro/pages/home-assistant)
+
 ## Examples
 See [examples](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples) on GitHub
 
