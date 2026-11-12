@@ -57,7 +57,6 @@ Please see here for [full user documentation](https://sinricpro.github.io/esp826
 - [Quickstart tutorials](https://help.sinric.pro/pages/quickstarts): switches, lights, sensors, cameras and more
 - [Amazon Alexa](https://help.sinric.pro/pages/alexa) · [Google Home](https://help.sinric.pro/pages/google-home) · [Home Assistant](https://help.sinric.pro/pages/home-assistant)
 
-## Examples
 See [examples](https://github.com/sinricpro/esp8266-esp32-sdk/tree/master/examples) on GitHub
 
 ---
