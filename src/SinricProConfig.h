@@ -61,13 +61,31 @@
 #endif
 
 // WebSocket Configuration
-#ifdef DEBUG_WIFI_ISSUE
-  #define WEBSOCKET_PING_INTERVAL 10000
-#else
-  #define WEBSOCKET_PING_INTERVAL 300000
+// The values below may be overridden by #defining them before #include <SinricPro.h>.
+// A link that dies silently (no TCP close) is detected after about
+// WEBSOCKET_PING_INTERVAL + WEBSOCKET_RETRY_COUNT * WEBSOCKET_PING_TIMEOUT ms.
+#ifndef WEBSOCKET_PING_INTERVAL
+  #ifdef DEBUG_WIFI_ISSUE
+    #define WEBSOCKET_PING_INTERVAL 10000
+  #else
+    #define WEBSOCKET_PING_INTERVAL 300000
+  #endif
 #endif
-#define WEBSOCKET_PING_TIMEOUT 10000
-#define WEBSOCKET_RETRY_COUNT 2
+#ifndef WEBSOCKET_PING_TIMEOUT
+  #define WEBSOCKET_PING_TIMEOUT 10000
+#endif
+#ifndef WEBSOCKET_RETRY_COUNT
+  #define WEBSOCKET_RETRY_COUNT 2
+#endif
+
+// Each reconnect attempt blocks handle() for the DNS lookup, TCP connect and TLS handshake,
+// so consecutive failures back off exponentially between these bounds (ms).
+#ifndef WEBSOCKET_RECONNECT_INTERVAL_MIN
+  #define WEBSOCKET_RECONNECT_INTERVAL_MIN 1000
+#endif
+#ifndef WEBSOCKET_RECONNECT_INTERVAL_MAX
+  #define WEBSOCKET_RECONNECT_INTERVAL_MAX 30000
+#endif
 
 // EventLimiter Configuration
 #ifndef EVENT_LIMIT_STATE

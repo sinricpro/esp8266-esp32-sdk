@@ -68,7 +68,9 @@ class WebsocketListener : protected WebSocketsClient {
     virtual void runCbEvent(WStype_t type, uint8_t* payload, size_t length) override;
 
     void              setExtraHeaders();
+    void              resetReconnectBackoff();
     SinricProQueue_t* receiveQueue;
+    unsigned long     reconnectBackoff;
     String            deviceIds;
     String            appKey;
 };
@@ -79,7 +81,8 @@ WebsocketListener::WebsocketListener()
     , connectionState(ConnectionState::disconnected)
     , _wsConnectedCb(nullptr)
     , _wsDisconnectedCb(nullptr)
-    , _wsPongCb(nullptr) {}
+    , _wsPongCb(nullptr)
+    , reconnectBackoff(WEBSOCKET_RECONNECT_INTERVAL_MIN) {}
 
 WebsocketListener::~WebsocketListener() {
     stop();
@@ -128,6 +131,7 @@ void WebsocketListener::begin(String server, String appKey, String deviceIds, Si
 
     if (isConnected()) stop();
     setExtraHeaders();
+    resetReconnectBackoff();
     enableHeartbeat(WEBSOCKET_PING_INTERVAL, WEBSOCKET_PING_TIMEOUT, WEBSOCKET_RETRY_COUNT);
 #ifdef WEBSOCKET_SSL
     WebSocketsClient::beginSSL(server.c_str(), SINRICPRO_SERVER_SSL_PORT, "/");
@@ -137,7 +141,20 @@ void WebsocketListener::begin(String server, String appKey, String deviceIds, Si
 }
 
 void WebsocketListener::handle() {
+    // WebSocketsClient stamps _lastConnectionFail with millis() on every failed attempt or
+    // disconnect and zeroes it on TCP success; it has no callback for a failed TCP connect.
+    unsigned long lastFail = _lastConnectionFail;
     loop();
+    if (_lastConnectionFail != lastFail && _lastConnectionFail != 0) {
+        setReconnectInterval(reconnectBackoff);
+        DEBUG_SINRIC("[SinricPro:Websocket]: next reconnect attempt in %lu ms\r\n", reconnectBackoff);
+        reconnectBackoff = reconnectBackoff >= WEBSOCKET_RECONNECT_INTERVAL_MAX / 2 ? WEBSOCKET_RECONNECT_INTERVAL_MAX : reconnectBackoff * 2;
+    }
+}
+
+void WebsocketListener::resetReconnectBackoff() {
+    reconnectBackoff = WEBSOCKET_RECONNECT_INTERVAL_MIN;
+    setReconnectInterval(WEBSOCKET_RECONNECT_INTERVAL_MIN);
 }
 
 void WebsocketListener::stop() {
@@ -185,6 +202,7 @@ void WebsocketListener::runCbEvent(WStype_t type, uint8_t* payload, size_t lengt
                 setExtraHeaders();
             }
             connectionState = ConnectionState::connected;
+            resetReconnectBackoff();
             break;
 
         case WStype_TEXT: {
