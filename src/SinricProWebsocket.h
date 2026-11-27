@@ -141,8 +141,6 @@ void WebsocketListener::begin(String server, String appKey, String deviceIds, Si
 }
 
 void WebsocketListener::handle() {
-    // WebSocketsClient stamps _lastConnectionFail with millis() on every failed attempt or
-    // disconnect and zeroes it on TCP success; it has no callback for a failed TCP connect.
     unsigned long lastFail = _lastConnectionFail;
     loop();
     if (_lastConnectionFail != lastFail && _lastConnectionFail != 0) {

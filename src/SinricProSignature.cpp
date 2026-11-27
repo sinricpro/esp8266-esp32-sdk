@@ -16,7 +16,6 @@
   #define SINRICPRO_HMAC_BEARSSL
 #elif defined (ESP32)
   #include <mbedtls/build_info.h>
-  // Mbed TLS 4 (ESP-IDF 6, arduino-esp32 4.x) dropped HMAC from the MD API; it is PSA-only.
   #if MBEDTLS_VERSION_MAJOR >= 4
     #include <psa/crypto.h>
     #define SINRICPRO_HMAC_PSA
@@ -49,7 +48,6 @@ String HMACbase64(const String &message, const String &key) {
 
   mbedtls_svc_key_id_t keyId = MBEDTLS_SVC_KEY_ID_INIT;
   size_t macLength = 0;
-  // psa_crypto_init() is idempotent and must precede any PSA call.
   if (psa_crypto_init() == PSA_SUCCESS &&
       psa_import_key(&attributes, (const uint8_t*) key.c_str(), key.length(), &keyId) == PSA_SUCCESS) {
     if (psa_mac_compute(keyId, alg, (const uint8_t*) message.c_str(), message.length(),
