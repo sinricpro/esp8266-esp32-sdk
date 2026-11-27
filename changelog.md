@@ -2,6 +2,13 @@
 
 ## Version 5.1.1
 
+### Fixed — build failure on ESP32 Arduino core 4.x
+
+1. **Message signing now builds on arduino-esp32 4.0** (ESP-IDF 6 / Mbed TLS 4), which
+   removed HMAC from the `mbedtls_md` API. On Mbed TLS 4 the signature is computed with
+   the PSA API (`psa_mac_compute`); core 3.x keeps the previous code path. Signatures are
+   identical on both.
+
 ### Improved — connection handling on unreliable networks
 
 1. **Reconnect backoff** — failed WebSocket connection attempts now back off
