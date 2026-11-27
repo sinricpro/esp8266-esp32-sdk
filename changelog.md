@@ -1,5 +1,33 @@
 # Changelog
 
+## Version 5.1.1
+
+### Fixed — build failure on ESP32 Arduino core 4.x
+
+1. **Message signing now builds on arduino-esp32 4.0** (ESP-IDF 6 / Mbed TLS 4), which
+   removed HMAC from the `mbedtls_md` API. On Mbed TLS 4 the signature is computed with
+   the PSA API (`psa_mac_compute`); core 3.x keeps the previous code path. Signatures are
+   identical on both.
+
+### Improved — connection handling on unreliable networks
+
+1. **Reconnect backoff** — failed WebSocket connection attempts now back off
+   exponentially from 1 s to 30 s instead of retrying every 500 ms. Each attempt
+   blocks `SinricPro.handle()` for the DNS lookup, TCP connect and TLS handshake, so
+   when the WiFi router is up but has no internet (e.g. a mobile hotspot), the sketch
+   no longer stalls almost continuously. The interval resets after a successful
+   connection. Bounds are configurable with `WEBSOCKET_RECONNECT_INTERVAL_MIN` /
+   `WEBSOCKET_RECONNECT_INTERVAL_MAX`.
+2. **Configurable heartbeat** — `WEBSOCKET_PING_INTERVAL`, `WEBSOCKET_PING_TIMEOUT` and
+   `WEBSOCKET_RETRY_COUNT` can now be overridden. A connection that drops without
+   closing is detected after about `PING_INTERVAL + RETRY_COUNT * PING_TIMEOUT`
+   (default ~5 min). For faster detection of `onDisconnected()`:
+
+   ```cpp
+   #define WEBSOCKET_PING_INTERVAL 30000   // before #include <SinricPro.h>
+   #include <SinricPro.h>
+   ```
+
 ## Version 5.1.0
 
 ### New — WebRTC live view for ESP32 cameras
